@@ -20,6 +20,6 @@ FAIL = 'FAIL'
 BLOCK = 'BLOCK'
 
 HOST_TEST = 'true'
-CLUSTER_TEST = 'false'
+CLUSTER_TEST = 'true'
 VM_TEST = 'false'
 POOL_TEST = 'false'
