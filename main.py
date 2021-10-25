@@ -1,6 +1,3 @@
-from __admin__.__data_center__ import admin_data_center
-from __admin__.__disk__ import admin_disk
-from __admin__.__domain__ import admin_domain
 from __common__.__driver__ import *
 from __common__.__parameter__ import *
 from __common__.__login__ import *
@@ -8,6 +5,9 @@ from __common__.__portal__ import *
 
 from __admin__.__host__ import *
 from __admin__.__cluster__ import *
+from __admin__.__data_center__ import *
+from __admin__.__disk__ import *
+from __admin__.__domain__ import *
 from __vm__.__vm__ import *
 
 
@@ -20,7 +20,7 @@ def main():
     _totalResult = []
 
     print('1. 브라우저 열기')
-    webDriver = SuperVM_driver()
+    webDriver = SuperVM_driver(headless=False)
     webDriver.openURL(SUPERVM_URL)
 
     print("2. SuperVM 버전 출력")
@@ -57,11 +57,13 @@ def main():
 
         if CLUSTER_TEST == 'true':
             print("5.2 cluster")
-            _cluster = admin_cluster()
-            _cluster.create(webDriver)
+            _cluster = admin_cluster(webDriver)
+            _cluster.create()
+            _cluster.remove()
             
             for i in _cluster._clusterResult:
                 _totalResult.append(i)
+        
         
         if DISK_TEST == 'true':
             print("5.3 disk")
