@@ -4,7 +4,7 @@ from __common__.__login__ import *
 from __common__.__portal__ import *
 
 from __admin__.__host__ import *
-from __vm__.__create__ import vm_create
+from __vm__.__vm__ import *
 
 
 ## 테스트 메인 파일
@@ -32,10 +32,12 @@ def main():
 
     if PORTAL_TYPE == 'admin':
         print("4.1 호스트")
-        host_create()
+        test_host = admin_host()
+        test_host.create()
     elif PORTAL_TYPE == 'vm':
         print("4.1 VM 생성")
-        vm_create()
+        test_vm_vm = vm_vm()
+        test_vm_vm.create()
 
     time.sleep(10)
 

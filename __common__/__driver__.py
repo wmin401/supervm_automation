@@ -9,8 +9,6 @@ from selenium import webdriver
 
 class SuperVM_driver:
 
-
-
     def __init__(self, headless = False):
         self.BROWSER_NAME = BROWSER_NAME.lower()
         self.BROWSER_VERSION = str(BROWSER_VERSION)
