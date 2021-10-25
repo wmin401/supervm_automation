@@ -1,4 +1,6 @@
+from __admin__.__data_center__ import admin_data_center
 from __admin__.__disk__ import admin_disk
+from __admin__.__domain__ import admin_domain
 from __common__.__driver__ import *
 from __common__.__parameter__ import *
 from __common__.__login__ import *
@@ -67,6 +69,22 @@ def main():
             _disk.create(webDriver)
             
             for i in _disk._diskResult:
+                _totalResult.append(i)
+        
+        if DOMAIN_TEST == 'true':
+            print("5.4 domain")
+            _domain = admin_domain()
+            _domain.create(webDriver)
+            
+            for i in _domain._domainResult:
+                _totalResult.append(i)
+
+        if DATA_CENTER_TEST == 'true':
+            print("5.5 data_center")
+            _data_center = admin_data_center()
+            _data_center.create(webDriver)
+            
+            for i in _data_center._data_centerResult:
                 _totalResult.append(i)
 
     elif PORTAL_TYPE == 'vm':

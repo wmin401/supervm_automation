@@ -23,5 +23,8 @@ BLOCK = 'BLOCK'
 HOST_TEST = 'true'
 CLUSTER_TEST = 'true'
 DISK_TEST = 'true'
+DOMAIN_TEST = 'true'
+DATA_CENTER_TEST = 'true'
+
 VM_TEST = 'false'
 POOL_TEST = 'false'
