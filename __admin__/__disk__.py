@@ -11,20 +11,20 @@ class admin_disk:
         
         try:
             # 스토리지
-            webDriver.waitUntilFindElement(10)
+            webDriver.implicitlyWait(10)
             _storageBtn = webDriver.findElement('id','MenuView_storageTab',True)
 
             # 디스크
-            webDriver.waitUntilFindElement(10)
+            webDriver.implicitlyWait(10)
             _diskBtn = webDriver.findElement('id','MenuView_disksAnchor',True)
 
             # 새로 만들기
             time.sleep(1)
-            webDriver.waitUntilFindElement(10)
+            webDriver.implicitlyWait(10)
             _newBtn = webDriver.findElement('id','ActionPanelView_New',True)
             
             # 취소 버튼
-            webDriver.waitUntilFindElement(10)
+            webDriver.implicitlyWait(10)
             _cancelBtn = webDriver.findElement('id','VmDiskPopupView_Cancel',True)
 
             result = PASS
