@@ -2,6 +2,8 @@
 import time
 from __common__.__parameter__ import *
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 ## 변수명 snake_case
@@ -38,8 +40,21 @@ class SuperVM_driver:
     def getDriverName(self):
         return self.BROWSER_NAME
 
-    def waitUntilFindElement(self, sec):
+    def implicitlyWait(self, sec):
+        # driver 객체가 get(url)로 요청한 페이지 내용들이 모두 로딩이 완료될 때까지 int(초) 만큼 암묵적으로 기다리게 하는 것이다.
         self.driver.implicitly_wait(sec)
+
+    def explicitlyWait(self, sec, element_type, element_type_value):
+        # Explicitly wait은 명시적으로 어떤 조건이 성립했을 때까지 기다린다. 조건이 성립하지 않으면 timeout으로 설정된 시간만큼 최대한 기다리고, TimeoutException을 throw한다.
+
+        try:
+            element = WebDriverWait(self.driver, sec).until(
+                EC.presence_of_element_located((element_type, element_type_value))                
+            )
+        except Exception as e:
+            print(str(e))
+
+
 
     def openURL(self, url):
         self.url = url
@@ -72,7 +87,7 @@ class SuperVM_driver:
             raise(e)
             
         if click == True:
-            self.waitUntilFindElement(5)
+            self.implicitlyWait(5)
             self.element.click()
             
         return self.element
@@ -81,7 +96,7 @@ class SuperVM_driver:
         self.element.click()
     
     def sendKey(self, *args):
-        self.waitUntilFindElement(5)
+        self.implicitlyWait(5)
         args = list(args)
         for i in args:
             self.element.send_keys(i)
