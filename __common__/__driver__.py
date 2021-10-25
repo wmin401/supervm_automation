@@ -2,6 +2,7 @@
 import time
 from __common__.__parameter__ import *
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -111,3 +112,25 @@ class SuperVM_driver:
     def quit(self):
         self.driver.close()
         self.driver.quit()
+
+
+    def tableSearch(self, name, click = False): ## 찾을 이름 입력시 해당 table 의 row 를 찾아줌
+        # 반환값은 해당 테이블의 path 또는 selector 찾을 수 있는걸로 
+        time.sleep(1)   
+        self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
+
+        table = self.driver.find_element_by_css_selector('tbody')
+        self.explicitlyWait(30, By.TAG_NAME, 'tr')
+        for tr in table.find_elements_by_tag_name("tr"):            
+            self.explicitlyWait(30, By.TAG_NAME, 'td')
+            td = tr.find_elements_by_tag_name("td")
+            #print(type(td))            
+            print (td[1].text)
+            if name == td[1].text:
+                if click == True:
+                    tr.click()
+                return True
+            #fp.write(s)
+
+        return False
+
