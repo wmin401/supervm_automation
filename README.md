@@ -8,8 +8,8 @@ python -m pip install -r requirements.txt
 ```
 
 ## 명명규칙
-* 함수명 : `_lowerCamelCase`
-* 변수명 : `lowerCamelCase`
+* 함수명 : `lowerCamelCase`
+* 변수명 : `_lowerCamelCase`
 * 전역상수 : `UPPER`
 * 소스코드 폴더명 : `__lower__`
 * 소스코드 파일명 : `__lower__.py`
