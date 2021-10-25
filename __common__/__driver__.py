@@ -52,21 +52,25 @@ class SuperVM_driver:
 
     def findElement(self, element_type, path,  click = None):
         ## elem 초기화
-        if element_type == 'xpath':
-            self.element = self.driver.find_element_by_xpath(path)
-        elif element_type == 'css_selector':
-            self.element = self.driver.find_element_by_css_selector(path)
-        elif element_type == 'name':
-            self.element = self.driver.find_element_by_name(path)
-        elif element_type == 'id':
-            self.element = self.driver.find_element_by_id(path)
-        elif element_type == 'tag_name':
-            self.element = self.driver.find_element_by_tag_name(path)
-        elif element_type == 'class_name':
-            self.element = self.driver.find_element_by_class_name(path)
-        else:
-            print("You can use : xpath, css_selector, name, id, tag_name, class_name")
-
+        try:
+            if element_type == 'xpath':
+                self.element = self.driver.find_element_by_xpath(path)
+            elif element_type == 'css_selector':
+                self.element = self.driver.find_element_by_css_selector(path)
+            elif element_type == 'name':
+                self.element = self.driver.find_element_by_name(path)
+            elif element_type == 'id':
+                self.element = self.driver.find_element_by_id(path)
+            elif element_type == 'tag_name':
+                self.element = self.driver.find_element_by_tag_name(path)
+            elif element_type == 'class_name':
+                self.element = self.driver.find_element_by_class_name(path)
+            else:
+                print("You can use : xpath, css_selector, name, id, tag_name, class_name")
+        except Exception as e:
+            print("can't find element using " + element_type)
+            raise(e)
+            
         if click == True:
             self.waitUntilFindElement(5)
             self.element.click()

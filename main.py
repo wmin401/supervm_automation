@@ -10,30 +10,40 @@ from __vm__.__vm__ import *
 ## 테스트 메인 파일
 ## 여기서 각 파일들을 불러와서 테스트 진행
 
+
 def main():
 
     print('1. 브라우저 열기')
     webDriver = SuperVM_driver()
     webDriver.openURL(SUPERVM_URL)
 
+    # ## supervm version 출력
+    # webDriver.waitUntilFindElement(5)
+    # supervm_version_elem = webDriver.findElement('class_name','pf-l-split__item obrand_welcomePageVersionText')
+    # supervm_version = supervm_version_elem.get_attribute('textContent')
+    # print(supervm_version[supervm_version.find('4'):supervm_version.find('prolinux8')+9])
+    
+
     print('2. 로그인')
-    portal_login(webDriver)
+    portalLogin(webDriver)
     ## 비공개 일 때
     ## 공개 일 때
 
     print("3. 포털접근")
     if PORTAL_TYPE == 'admin':
-        access_admin_portal(webDriver)
+        accessAdminPortal(webDriver)
         
     elif PORTAL_TYPE == 'vm':
-        access_vm_portal(webDriver)
+        accessVmPortal(webDriver)
 
     print("4. 테스트 시작")
 
     if PORTAL_TYPE == 'admin':
-        print("4.1 호스트")
-        test_host = admin_host()
-        test_host.create()
+        if HOST_TEST == 'true':
+            print("4.1 호스트")
+            _host = admin_host()
+            _host.create(webDriver)
+
     elif PORTAL_TYPE == 'vm':
         print("4.1 VM 생성")
         test_vm_vm = vm_vm()

@@ -11,10 +11,15 @@ USER_ID = 'admin'
 USER_PW = 'asdf'
 
 # 접속할 포털
-PORTAL_TYPE = 'vm'
+PORTAL_TYPE = 'admin'
 
 # 결과 저장용
 RESULT_PATH = 'results'
 PASS = 'PASS'
 FAIL = 'FAIL'
 BLOCK = 'BLOCK'
+
+HOST_TEST = 'true'
+CLUSTER_TEST = 'false'
+VM_TEST = 'false'
+POOL_TEST = 'false'

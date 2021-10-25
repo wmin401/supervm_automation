@@ -1,11 +1,11 @@
 from __common__.__parameter__ import *
 
-def access_admin_portal(webDriver):
+def accessAdminPortal(webDriver):
     print("* Portal : Admin Portal")
     webDriver.waitUntilFindElement(10)
-    adminPortal = webDriver.findElement('id','WelcomePage_webadmin',True)
+    _adminPortal = webDriver.findElement('id','WelcomePage_webadmin',True)
 
-def access_vm_portal(webDriver):
+def accessVmPortal(webDriver):
     print("* Portal : VM Portal")
     webDriver.waitUntilFindElement(10)
-    vmPortal = webDriver.findElement('id','WelcomePage_userportal_webui',True)
+    _vmPortal = webDriver.findElement('id','WelcomePage_userportal_webui',True)
