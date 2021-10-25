@@ -11,20 +11,20 @@ class admin_host:
         
         try:
             # 컴퓨팅
-            webDriver.waitUntilFindElement(10)
-            _computeBtn = webDriver.findElement('id','compute',True)
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','compute',True)
 
             # 호스트
-            webDriver.waitUntilFindElement(10)
-            _hostBtn = webDriver.findElement('id','MenuView_hostsAnchor',True)
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','MenuView_hostsAnchor',True)
 
             # 새로 만들기
-            webDriver.waitUntilFindElement(10)
-            _newBtn = webDriver.findElement('id','ActionPanelView_New',True)
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','ActionPanelView_New',True)
             
             # 취소 버튼
-            webDriver.waitUntilFindElement(10)
-            _cancelBtn = webDriver.findElement('id','HostPopupView_Cancel',True)
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','HostPopupView_Cancel',True)
 
             result = PASS
             msg = ''

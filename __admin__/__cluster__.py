@@ -1,4 +1,5 @@
 from __common__.__parameter__ import *
+from selenium.webdriver.common.by import By
 import time
 
 class admin_cluster:
@@ -7,25 +8,40 @@ class admin_cluster:
         self._clusterResult = []
         
     def create(self, webDriver):
-        print('1) 클러스터 생성 취소')
+        print('1) 클러스터 생성')
         
         try:
             # 컴퓨팅
-            webDriver.waitUntilFindElement(10)
-            _computeBtn = webDriver.findElement('id','compute',True)
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','compute',True)
 
             # 호스트
-            webDriver.waitUntilFindElement(10)
-            _clusterBtn = webDriver.findElement('id','MenuView_clustersAnchor',True)
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','MenuView_clustersAnchor',True)
 
             # 새로 만들기
-            time.sleep(1)
-            webDriver.waitUntilFindElement(10)
-            _newBtn = webDriver.findElement('id','ActionPanelView_New',True)
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','ActionPanelView_New',True)
+
+            # 이름 입력
+            #webDriver.implicitlyWait(30)
+            webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
+            webDriver.findElement('id','ClusterPopupView_nameEditor',True)
+            webDriver.sendKey('auto_name')    
             
-            # 취소 버튼
-            webDriver.waitUntilFindElement(10)
-            _cancelBtn = webDriver.findElement('id','ClusterPopupView_Cancel',True)
+            # 설명 입력
+            webDriver.implicitlyWait(40)
+            webDriver.findElement('id','ClusterPopupView_descriptionEditor',True)
+            webDriver.sendKey('auto_descrition')    
+
+            # OK 버튼 클릭
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','ClusterPopupView_OnSave',True)
+            
+            # 나중에 설정 버튼 클릭
+            webDriver.implicitlyWait(10)
+            webDriver.findElement('id','GuidePopupView_Cancel',True)
+            
 
             result = PASS
             msg = ''
@@ -36,4 +52,4 @@ class admin_cluster:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._clusterResult.append(['cluster;create&cancel;' + result + ';' + msg])
+        self._clusterResult.append(['cluster;create;' + result + ';' + msg])
