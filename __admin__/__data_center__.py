@@ -1,22 +1,22 @@
 from __common__.__parameter__ import *
 import time
 
-class admin_disk:
+class admin_data_center:
     def __init__(self):
-        print("* 디스크 추가 테스트 시작")
-        self._diskResult = []
+        print("* 데이터 센터 추가 테스트 시작")
+        self._data_centerResult = []
         
     def create(self, webDriver):
-        print('1) disk 생성 취소')
+        print('1) data_center 생성 취소')
         
         try:
             # 스토리지
             webDriver.implicitlyWait(10)
             _storageBtn = webDriver.findElement('id','MenuView_storageTab',True)
 
-            # 디스크
+            # 데이터 센터
             webDriver.implicitlyWait(10)
-            _diskBtn = webDriver.findElement('id','MenuView_disksAnchor',True)
+            _data_centerBtn = webDriver.findElement('id','MenuView_dataCentersStorageAnchor',True)
 
             # 새로 만들기
             time.sleep(1)
@@ -25,7 +25,7 @@ class admin_disk:
             
             # 취소 버튼
             webDriver.implicitlyWait(10)
-            _cancelBtn = webDriver.findElement('id','VmDiskPopupView_Cancel',True)
+            _cancelBtn = webDriver.findElement('id','DataCenterPopupView_Cancel',True)
 
             result = PASS
             msg = ''
@@ -36,4 +36,4 @@ class admin_disk:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._diskResult.append(['disk;create&cancel;' + result + ';' + msg])
+        self._data_centerResult.append(['data_center;create&cancel;' + result + ';' + msg])
