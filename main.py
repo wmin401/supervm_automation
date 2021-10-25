@@ -1,3 +1,4 @@
+from __admin__.__disk__ import admin_disk
 from __common__.__driver__ import *
 from __common__.__parameter__ import *
 from __common__.__login__ import *
@@ -29,8 +30,9 @@ def main():
     
 
     print('3. 로그인')
-    portalLogin(webDriver)
     ## 비공개 일 때
+    #private(webDriver)
+    portalLogin(webDriver)
     ## 공개 일 때
 
     print("4. 포털접근")
@@ -57,6 +59,14 @@ def main():
             _cluster.create(webDriver)
             
             for i in _cluster._clusterResult:
+                _totalResult.append(i)
+        
+        if DISK_TEST == 'true':
+            print("5.3 disk")
+            _disk = admin_disk()
+            _disk.create(webDriver)
+            
+            for i in _disk._diskResult:
                 _totalResult.append(i)
 
     elif PORTAL_TYPE == 'vm':
