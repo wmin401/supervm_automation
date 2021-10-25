@@ -54,7 +54,11 @@ class SuperVM_driver:
         except Exception as e:
             print(str(e))
 
-
+        '''
+        element_type 종류
+        * By.ID, By.XPATH, By.CLASS_NAME, By.TAG_NAME, By.NAME, By.LINK_TEXT
+        * 참고 : https://velog.io/@kjh03160/Selenium 
+        '''
 
     def openURL(self, url):
         self.url = url
