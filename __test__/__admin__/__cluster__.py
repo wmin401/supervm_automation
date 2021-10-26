@@ -22,18 +22,16 @@ class admin_cluster:
             self.webDriver.findElement('id','MenuView_clustersAnchor',True)
 
             # 새로 만들기
-            self.webDriver.implicitlyWait(10)
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
             self.webDriver.findElement('id','ActionPanelView_New',True)
 
             # 이름 입력
-            #self.webDriver.implicitlyWait(30)
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
             self.webDriver.findElement('id','ClusterPopupView_nameEditor',True)
             self.webDriver.sendKeys(self._clusterName)    
             
             # 설명 입력
-            self.webDriver.implicitlyWait(40)
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ClusterPopupView_descriptionEditor',True)
             self.webDriver.sendKeys('auto_description')    
 
