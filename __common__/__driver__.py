@@ -75,16 +75,28 @@ class SuperVM_driver:
         try:
             if element_type == 'xpath':
                 self.element = self.driver.find_element_by_xpath(path)
+            elif element_type == 'xpath_all':
+                self.element = self.driver.find_elements_by_xpath(path)
             elif element_type == 'css_selector':
                 self.element = self.driver.find_element_by_css_selector(path)
+            elif element_type == 'css_selector_all':
+                self.element = self.driver.find_elements_by_css_selector(path)
             elif element_type == 'name':
                 self.element = self.driver.find_element_by_name(path)
+            elif element_type == 'name_all':
+                self.element = self.driver.find_elements_by_name(path)
             elif element_type == 'id':
                 self.element = self.driver.find_element_by_id(path)
+            elif element_type == 'id_all':
+                self.element = self.driver.find_elements_by_id(path)
             elif element_type == 'tag_name':
                 self.element = self.driver.find_element_by_tag_name(path)
+            elif element_type == 'tag_name_all':
+                self.element = self.driver.find_elements_by_tag_name(path)
             elif element_type == 'class_name':
                 self.element = self.driver.find_element_by_class_name(path)
+            elif element_type == 'class_name_all':
+                self.element = self.driver.find_elements_by_class_name(path)
             else:
                 print("You can use : xpath, css_selector, name, id, tag_name, class_name")
         except Exception as e:
@@ -100,7 +112,7 @@ class SuperVM_driver:
     def click(self):
         self.element.click()
     
-    def sendKey(self, *args):
+    def sendKeys(self, *args):
         self.implicitlyWait(5)
         args = list(args)
         for i in args:
