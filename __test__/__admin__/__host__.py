@@ -1,10 +1,11 @@
 from __common__.__parameter__ import *
+from __common__.__module__ import *
 from selenium.webdriver.common.by import By
 
 
 class admin_host:
     def __init__(self, webDriver):
-        print("* 호스트 테스트 시작")
+        printLog("* 호스트 테스트 시작")
         self._hostResult = []
         self._hostName = 'supervm41.tmax.dom'
         self._hostIP = 'supervm41.tmax.dom'
@@ -12,7 +13,7 @@ class admin_host:
         self.webDriver = webDriver
         
     def create(self):
-        print('1) 호스트 생성 취소')
+        printLog('1) 호스트 생성 취소')
         
         try:
             # 컴퓨팅
@@ -55,7 +56,7 @@ class admin_host:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            print("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)
 
-        print("* RESULT : " + result)
+        printLog("* RESULT : " + result)
         self._hostResult.append(['host;create&cancel;' + result + ';' + msg])

@@ -148,7 +148,7 @@ class SuperVM_driver:
             td = tr.find_elements_by_tag_name("td")
             #print(type(td))            
             if name == td[1].text:                
-                print ('* Find name : ' + str(td[1].text))
+                printLog('* Find name : ' + str(td[1].text))
                 if click == True:
                     tr.click()
                 return True

@@ -1,13 +1,14 @@
 from __common__.__parameter__ import *
+from __common__.__module__ import *
 import time
 
 class admin_data_center:
     def __init__(self):
-        print("* 데이터 센터 추가 테스트 시작")
+        printLog("* 데이터 센터 추가 테스트 시작")
         self._data_centerResult = []
         
     def create(self, webDriver):
-        print('1) data_center 생성 취소')
+        printLog('1) data_center 생성 취소')
         
         try:
             # 스토리지
@@ -34,7 +35,7 @@ class admin_data_center:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            print("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)
 
-        print("* RESULT : " + result)
+        printLog("* RESULT : " + result)
         self._data_centerResult.append(['data_center' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])

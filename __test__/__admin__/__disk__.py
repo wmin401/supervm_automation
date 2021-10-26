@@ -1,13 +1,14 @@
 from __common__.__parameter__ import *
+from __common__.__module__ import *
 import time
 
 class admin_disk:
     def __init__(self):
-        print("* 디스크 추가 테스트 시작")
+        printLog("* 디스크 추가 테스트 시작")
         self._diskResult = []
         
     def create(self, webDriver):
-        print('1) disk 생성 취소')
+        printLog('1) disk 생성 취소')
         
         try:
             # 스토리지
@@ -42,7 +43,7 @@ class admin_disk:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            print("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)
 
-        print("* RESULT : " + result)
+        printLog("* RESULT : " + result)
         self._diskResult.append(['disk' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])

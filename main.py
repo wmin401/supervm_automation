@@ -96,8 +96,8 @@ def main():
         if HOST_TEST == 'true':
             printLine()
             printLog("*** Host Test ***")
-            _host = admin_host()
-            _host.create(webDriver)
+            _host = admin_host(webDriver)
+            _host.create()
             
             _totalResult = saveResult(_host._hostResult, _totalResult)
 
