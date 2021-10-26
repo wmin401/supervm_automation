@@ -24,8 +24,9 @@ git clone http://192.168.105.140/cloudqa/supervm_automation.git
 cd supervm_automation
 python main.py
 ```
+## 코드 작성 주의사항
 
-## 명명규칙
+### 명명규칙
 * 함수명 : `lowerCamelCase`
 * 변수명 : `_lowerCamelCase`
 * 전역상수 : `UPPER`
