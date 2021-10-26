@@ -17,7 +17,7 @@ git config --global user.name "dongill_lee@tmax.co.kr"
 git clone http://192.168.105.140/cloudqa/supervm_automation.git
 ```
 
-4) 해당 폴더 들어가서 파이썬 코드 실행
+4) 해당 폴더 들어가서 파이썬 코드 실행(직접 파이썬 코드 빌드 가능)
 ```
 cd supervm_automation
 python main.py
