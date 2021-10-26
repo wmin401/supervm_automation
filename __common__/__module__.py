@@ -1,6 +1,6 @@
 import os
 
-from __common__.__parameter__ import LOG_FILE
+from __common__.__parameter__ import LOG_FILE, RESULT_PATH
 ## 시작시간과 종료시간을 입력받으면 시, 분, 초로 보여주는 함수
 def secToHms(start, end): # 시작시간, 끝나는 시간
     sec = end - start
@@ -10,8 +10,6 @@ def secToHms(start, end): # 시작시간, 끝나는 시간
 
 def printLog(text):
     print(text)
-    with open(LOG_FILE, 'a', encoding='utf-8') as logFile:
-        logFile.write(text+'\n')
 
 ## 원하는 경로에 폴더를 생성해줌
 ## 하위 경로 입력시, 폴더가 존재하지 않으면 같이 생성
