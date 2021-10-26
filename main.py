@@ -59,26 +59,27 @@ def main():
     print("5. Start Test")
 
     if PORTAL_TYPE == 'admin':        
-        if HOST_TEST == 'true':
-            printLine()
-            print("5.1 host")
-            _host = admin_host()
-            _host.create(webDriver)
-            
-            _totalResult = saveResult(_host._hostResult, _totalResult)
-
         if CLUSTER_TEST == 'true':        
             printLine()
-            print("5.2 cluster")
+            print("*** Cluster Test ***")
             _cluster = admin_cluster(webDriver)
             _cluster.create()
+            _cluster.update()
             _cluster.remove()
             
             _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
-        
+
+        if DATA_CENTER_TEST == 'true':
+            printLine()
+            print("*** Data Center Test ***")
+            _data_center = admin_data_center()
+            _data_center.create(webDriver)
+            
+            _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
+            
         if DISK_TEST == 'true':
             printLine()
-            print("5.3 disk")
+            print("*** Disk Test ***")
             _disk = admin_disk()
             _disk.create(webDriver)
             
@@ -86,19 +87,19 @@ def main():
         
         if DOMAIN_TEST == 'true':
             printLine()
-            print("5.4 domain")
+            print("*** Domain Test ***")
             _domain = admin_domain()
             _domain.create(webDriver)
             
             _totalResult = saveResult(_domain._domainResult, _totalResult)        
 
-        if DATA_CENTER_TEST == 'true':
+        if HOST_TEST == 'true':
             printLine()
-            print("5.5 data_center")
-            _data_center = admin_data_center()
-            _data_center.create(webDriver)
+            print("*** Host Test ***")
+            _host = admin_host()
+            _host.create(webDriver)
             
-            _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
+            _totalResult = saveResult(_host._hostResult, _totalResult)
 
     elif PORTAL_TYPE == 'vm':
         printLine()
