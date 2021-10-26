@@ -41,4 +41,4 @@ class admin_disk:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._diskResult.append(['disk;create&cancel;' + result + ';' + msg])
+        self._diskResult.append(['disk' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])

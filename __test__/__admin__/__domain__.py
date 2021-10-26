@@ -36,4 +36,4 @@ class admin_domain:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._domainResult.append(['domain;create&cancel;' + result + ';' + msg])
+        self._domainResult.append(['domain' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])

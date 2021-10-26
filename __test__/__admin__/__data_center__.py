@@ -36,4 +36,4 @@ class admin_data_center:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._data_centerResult.append(['data_center;create&cancel;' + result + ';' + msg])
+        self._data_centerResult.append(['data_center' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])

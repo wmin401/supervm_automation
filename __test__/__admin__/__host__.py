@@ -35,4 +35,4 @@ class admin_host:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._hostResult.append(['host;create&cancel;' + result + ';' + msg])
+        self._hostResult.append(['host' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])

@@ -33,3 +33,4 @@ TMP_RESULT_FILE = 'tmp_SuperVM_Result_%04d%02d%02d_%02d%02d%02d.csv'%(now.tm_yea
 PASS = 'PASS'
 FAIL = 'FAIL'
 BLOCK = 'BLOCK'
+DELIM = ';'

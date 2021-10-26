@@ -62,7 +62,7 @@ class admin_cluster:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._clusterResult.append(['cluster;create;' + result + ';' + msg])
+        self._clusterResult.append(['cluster' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
     def remove(self):
         try:            
@@ -98,4 +98,4 @@ class admin_cluster:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._clusterResult.append(['cluster;remove;' + result + ';' + msg])
+        self._clusterResult.append(['cluster' + DELIM + 'remove' + DELIM + result + DELIM + msg])
