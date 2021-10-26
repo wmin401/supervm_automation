@@ -16,7 +16,7 @@ class admin_cluster:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','compute',True)
 
-            # 호스트
+            # 클러스터
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','MenuView_clustersAnchor',True)
 
@@ -70,23 +70,42 @@ class admin_cluster:
 
     def update(self):
         print("2) Update Cluster")
-        try:            
+        try:
+            # 컴퓨팅
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','compute',True)
+
+            # 클러스터
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_clustersAnchor',True)     
+
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.tableSearch(self._clusterName, True)
-            time.sleep(1)
             
             # 우측 편집 버튼 클릭
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
 
-            # 설명 수정
-            self.webDriver.implicitlyWait(10)            
-            self.webDriver.findElement('id','ClusterPopupView_descriptionEditor')
+            # 이름 수정
+            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')            
+            self.webDriver.findElement('id','ClusterPopupView_nameEditor')
             self.webDriver.clear() ## 전체 삭제
-            self.webDriver.sendKeys('Description Update')
+            self._clusterName = self._clusterName + '_update'
+            self.webDriver.sendKeys(self._clusterName)
             
+            # OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             
-            time.sleep(10)
+            # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
+            _updateCheck = self.webDriver.tableSearch(self._clusterName)
+            if _updateCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to update cluster's name..."
 
         except Exception as e:
             result = FAIL
@@ -95,11 +114,19 @@ class admin_cluster:
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
-        self._clusterResult.append(['cluster' + DELIM + 'remove' + DELIM + result + DELIM + msg])
+        self._clusterResult.append(['cluster' + DELIM + 'update' + DELIM + result + DELIM + msg])
 
     def remove(self):
         print("3) Remove Cluster")
-        try:            
+        try:                        
+            # 컴퓨팅
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','compute',True)
+
+            # 클러스터
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_clustersAnchor',True)
+
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._clusterName, True)
             time.sleep(1)
