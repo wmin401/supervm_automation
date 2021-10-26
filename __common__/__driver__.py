@@ -1,6 +1,7 @@
 # -*- encoding= utf-8 -*-
 import time
 from __common__.__parameter__ import *
+from __common__.__module__ import *
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -28,13 +29,13 @@ class SuperVM_driver:
             options.add_argument("disable-gpu")
         try:
             if self.BROWSER_NAME == 'firefox':
-                self.driver = webdriver.Chrome('__driver__/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/chromedriver.exe',options=options)
+                self.driver = webdriver.Chrome('driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/chromedriver.exe',options=options)
             elif self.BROWSER_NAME == 'chrome':
-                self.driver = webdriver.Chrome('__driver__/chrome/' + str(self.BROWSER_VERSION) + '/chromedriver.exe',options=options)
-            print("* Your driver is " + self.BROWSER_NAME + ' and version is ' + self.BROWSER_VERSION)
+                self.driver = webdriver.Chrome('driver/chrome/' + str(self.BROWSER_VERSION) + '/chromedriver.exe',options=options)
+            printLog("* Your driver is " + self.BROWSER_NAME + ' and version is ' + self.BROWSER_VERSION)
         except Exception as e:
-            print("No have any driver for " + self.BROWSER_NAME + " !!!")
-            print(e)
+            printLog("No have any driver for " + self.BROWSER_NAME + " !!!")
+            printLog(str(e))
 
     def getDriver(self):
         return self.driver
@@ -54,7 +55,7 @@ class SuperVM_driver:
                 EC.presence_of_element_located((element_type, element_type_value))                
             )
         except Exception as e:
-            print(str(e))
+            printLog(str(e))
 
         '''
         element_type 종류
@@ -99,9 +100,9 @@ class SuperVM_driver:
             elif element_type == 'class_name_all':
                 self.element = self.driver.find_elements_by_class_name(path)
             else:
-                print("You can use : xpath, css_selector, name, id, tag_name, class_name")
+                printLog("You can use : xpath, css_selector, name, id, tag_name, class_name")
         except Exception as e:
-            print("can't find element using " + element_type)
+            printLog("can't find element using " + element_type)
             raise(e)
             
         if click == True:
@@ -136,7 +137,7 @@ class SuperVM_driver:
         # 최상위 테이블에서 검색
         # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
         # click 매개변수의 값이 True일 경우 해당 row 클릭
-        print("* Start to search in first table!")
+        printLog("* Start to search in first table!")
         time.sleep(1)   
         self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
 
