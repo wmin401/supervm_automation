@@ -22,6 +22,11 @@ class admin_disk:
             time.sleep(1)
             webDriver.implicitlyWait(10)
             _newBtn = webDriver.findElement('id','ActionPanelView_New',True)
+
+            # 업로드
+            time.sleep(1)
+            webDriver.implicitlyWait(10)
+            _uploadBtn = webDriver.findElement('id','ActionPanelView____',True)
             
             # 취소 버튼
             webDriver.implicitlyWait(10)
