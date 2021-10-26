@@ -38,6 +38,7 @@ class admin_disk:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
             print("* MESSAGE : " + msg)
 
         print("* RESULT : " + result)
