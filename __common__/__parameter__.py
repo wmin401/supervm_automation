@@ -16,6 +16,7 @@ USER_PW = 'asdf'
 # 접속할 포털
 PORTAL_TYPE = 'admin'
 
+# 테스트 실행여부
 CLUSTER_TEST = 'true'
 DATA_CENTER_TEST = 'true'
 DISK_TEST = 'true'
@@ -30,7 +31,8 @@ now = time.localtime()
 RESULT_PATH = 'results'
 RESULT_FILE = 'SuperVM_Result_%04d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday)
 TMP_RESULT_FILE = 'tmp_SuperVM_Result_%04d%02d%02d_%02d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+LOG_FILE = RESULT_PATH + '/log/SuperVM_Automation_log_%04d%02d%02d_%02d%02d%02d.log'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+DELIM = ';'
 PASS = 'PASS'
 FAIL = 'FAIL'
 BLOCK = 'BLOCK'
-DELIM = ';'
