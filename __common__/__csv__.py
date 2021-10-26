@@ -4,6 +4,7 @@ from __common__.__module__ import *
 def initResult():
     makeFolder(RESULT_PATH)
     makeFolder(RESULT_PATH + '/tmp')
+    makeFolder(RESULT_PATH+'/log')
 
     with open(RESULT_PATH+'/'+RESULT_FILE,'w',encoding='utf-8') as file:
         file.write('Category' + DELIM + 'Test' + DELIM + 'Result' + DELIM + 'Message\n')
