@@ -1,5 +1,7 @@
+import time
+
 # SuperVM 접근 가능한 url
-#SUPERVM_URL = 'https://10.0.0.7/ovirt-engine/'
+# SUPERVM_URL = 'https://10.0.0.7/ovirt-engine/'
 SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
 
 ## 브라우저 정보
@@ -14,17 +16,20 @@ USER_PW = 'asdf'
 # 접속할 포털
 PORTAL_TYPE = 'admin'
 
+CLUSTER_TEST = 'true'
+DATA_CENTER_TEST = 'true'
+DISK_TEST = 'true'
+DOMAIN_TEST = 'true'
+HOST_TEST = 'true'
+POOL_TEST = 'false'
+
+VM_TEST = 'false'
+
 # 결과 저장용
+now = time.localtime()
 RESULT_PATH = 'results'
+RESULT_FILE = 'SuperVM_Result_%04d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday)
+TMP_RESULT_FILE = 'tmp_SuperVM_Result_%04d%02d%02d_%02d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 PASS = 'PASS'
 FAIL = 'FAIL'
 BLOCK = 'BLOCK'
-
-HOST_TEST = 'true'
-CLUSTER_TEST = 'true'
-DISK_TEST = 'true'
-DOMAIN_TEST = 'true'
-DATA_CENTER_TEST = 'true'
-
-VM_TEST = 'false'
-POOL_TEST = 'false'

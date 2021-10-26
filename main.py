@@ -2,6 +2,7 @@ from __common__.__driver__ import *
 from __common__.__parameter__ import *
 from __common__.__login__ import *
 from __common__.__portal__ import *
+from __common__.__csv__ import *
 
 from __admin__.__host__ import *
 from __admin__.__cluster__ import *
@@ -16,6 +17,9 @@ from __vm__.__vm__ import *
 
 
 def main():
+
+    # 테스트 세팅
+    initResult()
 
     _totalResult = []
 
@@ -54,6 +58,7 @@ def main():
             
             for i in _host._hostResult:
                 _totalResult.append(i)
+                saveRealTimeResult(i[0])
 
         if CLUSTER_TEST == 'true':
             print("5.2 cluster")
@@ -63,6 +68,7 @@ def main():
             
             for i in _cluster._clusterResult:
                 _totalResult.append(i)
+                saveRealTimeResult(i[0])
         
         
         if DISK_TEST == 'true':
@@ -72,6 +78,7 @@ def main():
             
             for i in _disk._diskResult:
                 _totalResult.append(i)
+                saveRealTimeResult(i[0])
         
         if DOMAIN_TEST == 'true':
             print("5.4 domain")
@@ -80,6 +87,7 @@ def main():
             
             for i in _domain._domainResult:
                 _totalResult.append(i)
+                saveRealTimeResult(i[0])
 
         if DATA_CENTER_TEST == 'true':
             print("5.5 data_center")
@@ -88,14 +96,14 @@ def main():
             
             for i in _data_center._data_centerResult:
                 _totalResult.append(i)
+                saveRealTimeResult(i[0])
 
     elif PORTAL_TYPE == 'vm':
         print("5.1 VM 생성")
         test_vm_vm = vm_vm()
         test_vm_vm.create()
 
-    for i in _totalResult:
-        print(i)
+    saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
 
     time.sleep(1)
