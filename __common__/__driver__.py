@@ -3,6 +3,7 @@ import time
 from __common__.__parameter__ import *
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -117,6 +118,11 @@ class SuperVM_driver:
         args = list(args)
         for i in args:
             self.element.send_keys(i)
+
+    def clear(self):
+        self.sendKeys(Keys.CONTROL + "a")
+        self.sendKeys(Keys.DELETE)
+
 
     def getAttribute(self, attr):        
         return  self.element.get_attribute(attr)
