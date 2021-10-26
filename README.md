@@ -1,5 +1,3 @@
-SuperVM 자동화 프로젝트
-
 ## 설치
 #### PowerShell 또는 CMD 창에서 아래 명령어 입력
 1) Selenium 설치
