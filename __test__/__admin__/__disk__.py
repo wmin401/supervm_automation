@@ -17,21 +17,24 @@ class admin_disk:
             # 디스크
             webDriver.implicitlyWait(10)
             _diskBtn = webDriver.findElement('id','MenuView_disksAnchor',True)
-
-            # 새로 만들기
+            '''
+            # 새로 만들기                  
             time.sleep(1)
             webDriver.implicitlyWait(10)
             _newBtn = webDriver.findElement('id','ActionPanelView_New',True)
+
+            # 새로 만들기 취소 버튼
+            webDriver.implicitlyWait(10)
+            _cancelBtn = webDriver.findElement('id','VmDiskPopupView_Cancel',True)
+            '''
 
             # 업로드
             time.sleep(1)
             webDriver.implicitlyWait(10)
             _uploadBtn = webDriver.findElement('id','ActionPanelView____',True)
-            
-            # 취소 버튼
-            webDriver.implicitlyWait(10)
-            _cancelBtn = webDriver.findElement('id','VmDiskPopupView_Cancel',True)
-
+            _startBtn = webDriver.findElement('css_selector','#ActionPanelView____ > ul > li:nth-child(1) > a',True)
+            _connetctestBtn = webDriver.findElement('css_selector','body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.GHYIDY4CA4B > button',True)
+            _uploadcancelBtn = webDriver.findElement('id','UploadImagePopupView_Cancel',True)
             result = PASS
             msg = ''
 
