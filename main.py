@@ -1,9 +1,11 @@
+# 공통 파일
 from __common__.__driver__ import *
 from __common__.__parameter__ import *
 from __common__.__login__ import *
 from __common__.__portal__ import *
 from __common__.__csv__ import *
 
+# 테스트 파일
 from __admin__.__host__ import *
 from __admin__.__cluster__ import *
 from __admin__.__data_center__ import *
@@ -11,18 +13,22 @@ from __admin__.__disk__ import *
 from __admin__.__domain__ import *
 from __vm__.__vm__ import *
 
-
 ## 테스트 메인 파일
 ## 여기서 각 파일들을 불러와서 테스트 진행
 
+def saveResult(res, lst):
+    for i in res:
+        lst.append(i)
+        saveRealTimeResult(i[0])
+    return lst
 
 def main():
 
-    # 테스트 세팅
+    # 테스트 초기 세팅
     initResult()
-
     _totalResult = []
 
+    # 테스트 시작
     print('1. 브라우저 열기')
     webDriver = SuperVM_driver(headless=False)
     webDriver.openURL(SUPERVM_URL)
@@ -36,10 +42,7 @@ def main():
     
 
     print('3. 로그인')
-    ## 비공개 일 때
-    #private(webDriver)
     portalLogin(webDriver)
-    ## 공개 일 때
 
     print("4. 포털접근")
     if PORTAL_TYPE == 'admin':
@@ -48,7 +51,7 @@ def main():
     elif PORTAL_TYPE == 'vm':
         accessVmPortal(webDriver)
 
-    print("5. 테스트 시작")
+    print("5. 기능 테스트 시작")
 
     if PORTAL_TYPE == 'admin':
         if HOST_TEST == 'true':
@@ -56,9 +59,7 @@ def main():
             _host = admin_host()
             _host.create(webDriver)
             
-            for i in _host._hostResult:
-                _totalResult.append(i)
-                saveRealTimeResult(i[0])
+            _totalResult = saveResult(_host._hostResult, _totalResult)
 
         if CLUSTER_TEST == 'true':
             print("5.2 cluster")
@@ -66,38 +67,29 @@ def main():
             _cluster.create()
             _cluster.remove()
             
-            for i in _cluster._clusterResult:
-                _totalResult.append(i)
-                saveRealTimeResult(i[0])
-        
+            _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
         
         if DISK_TEST == 'true':
             print("5.3 disk")
             _disk = admin_disk()
             _disk.create(webDriver)
             
-            for i in _disk._diskResult:
-                _totalResult.append(i)
-                saveRealTimeResult(i[0])
+            _totalResult = saveResult(_disk._diskResult, _totalResult)        
         
         if DOMAIN_TEST == 'true':
             print("5.4 domain")
             _domain = admin_domain()
             _domain.create(webDriver)
             
-            for i in _domain._domainResult:
-                _totalResult.append(i)
-                saveRealTimeResult(i[0])
+            _totalResult = saveResult(_domain._domainResult, _totalResult)        
 
         if DATA_CENTER_TEST == 'true':
             print("5.5 data_center")
             _data_center = admin_data_center()
             _data_center.create(webDriver)
             
-            for i in _data_center._data_centerResult:
-                _totalResult.append(i)
-                saveRealTimeResult(i[0])
-
+            _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
+            
     elif PORTAL_TYPE == 'vm':
         print("5.1 VM 생성")
         test_vm_vm = vm_vm()
