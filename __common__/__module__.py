@@ -47,3 +47,7 @@ def makeFolder(path_):
     else:
         print("* " + path_ + ' folder made!')
         os.makedirs(path_)
+
+
+def printLine():
+    print('---------------------------------------------------------')

@@ -4,13 +4,13 @@ import time
 
 class admin_cluster:
     def __init__(self, webDriver):
-        print("* 클러스터 테스트 시작")
+        print("*** Start Cluster Test ***")
         self._clusterResult = []
         self._clusterName = 'auto_name'
         self.webDriver = webDriver
             
     def create(self):
-        print('1) 클러스터 생성')
+        print('1) Create Cluster')
         
         try:
             # 컴퓨팅
@@ -65,6 +65,7 @@ class admin_cluster:
         self._clusterResult.append(['cluster' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
     def remove(self):
+        print("2) Remove Cluster")
         try:            
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._clusterName, True)

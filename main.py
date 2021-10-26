@@ -27,13 +27,15 @@ def main():
     # 테스트 초기 세팅
     initResult()
     _totalResult = []
-
+    
+    printLine()
     # 테스트 시작
-    print('1. 브라우저 열기')
+    print('1. Open Browser')
     webDriver = SuperVM_driver(headless=False)
     webDriver.openURL(SUPERVM_URL)
 
-    print("2. SuperVM 버전 출력")
+    printLine()
+    print("2. Print SuperVM Version")
     ## supervm version 출력
     webDriver.implicitlyWait(5)
     _supervmVersionElem = webDriver.findElement('css_selector','body > main > section > div.pf-l-split > div.pf-l-split__item.obrand_welcomePageVersionText')
@@ -41,27 +43,32 @@ def main():
     print('SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
     
 
-    print('3. 로그인')
+    printLine()
+    print('3. Login')
     portalLogin(webDriver)
 
-    print("4. 포털접근")
+    printLine()
+    print("4. Access Portal")
     if PORTAL_TYPE == 'admin':
         accessAdminPortal(webDriver)
         
     elif PORTAL_TYPE == 'vm':
         accessVmPortal(webDriver)
 
-    print("5. 기능 테스트 시작")
+    printLine()
+    print("5. Start Test")
 
-    if PORTAL_TYPE == 'admin':
+    if PORTAL_TYPE == 'admin':        
         if HOST_TEST == 'true':
+            printLine()
             print("5.1 host")
             _host = admin_host()
             _host.create(webDriver)
             
             _totalResult = saveResult(_host._hostResult, _totalResult)
 
-        if CLUSTER_TEST == 'true':
+        if CLUSTER_TEST == 'true':        
+            printLine()
             print("5.2 cluster")
             _cluster = admin_cluster(webDriver)
             _cluster.create()
@@ -70,6 +77,7 @@ def main():
             _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
         
         if DISK_TEST == 'true':
+            printLine()
             print("5.3 disk")
             _disk = admin_disk()
             _disk.create(webDriver)
@@ -77,6 +85,7 @@ def main():
             _totalResult = saveResult(_disk._diskResult, _totalResult)        
         
         if DOMAIN_TEST == 'true':
+            printLine()
             print("5.4 domain")
             _domain = admin_domain()
             _domain.create(webDriver)
@@ -84,6 +93,7 @@ def main():
             _totalResult = saveResult(_domain._domainResult, _totalResult)        
 
         if DATA_CENTER_TEST == 'true':
+            printLine()
             print("5.5 data_center")
             _data_center = admin_data_center()
             _data_center.create(webDriver)
@@ -91,7 +101,8 @@ def main():
             _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
 
     elif PORTAL_TYPE == 'vm':
-        print("5.1 VM 생성")
+        printLine()
+        print("5.1 VM Create")
         test_vm_vm = vm_vm()
         test_vm_vm.create()
 
