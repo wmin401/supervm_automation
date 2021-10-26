@@ -6,12 +6,12 @@ from __common__.__portal__ import *
 from __common__.__csv__ import *
 
 # 테스트 파일
-from __admin__.__host__ import *
-from __admin__.__cluster__ import *
-from __admin__.__data_center__ import *
-from __admin__.__disk__ import *
-from __admin__.__domain__ import *
-from __vm__.__vm__ import *
+from __test__.__admin__.__host__ import *
+from __test__.__admin__.__cluster__ import *
+from __test__.__admin__.__data_center__ import *
+from __test__.__admin__.__disk__ import *
+from __test__.__admin__.__domain__ import *
+from __test__.__vm__.__vm__ import *
 
 ## 테스트 메인 파일
 ## 여기서 각 파일들을 불러와서 테스트 진행
@@ -89,7 +89,7 @@ def main():
             _data_center.create(webDriver)
             
             _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
-            
+
     elif PORTAL_TYPE == 'vm':
         print("5.1 VM 생성")
         test_vm_vm = vm_vm()
