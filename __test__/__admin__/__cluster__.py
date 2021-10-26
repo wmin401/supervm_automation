@@ -4,7 +4,6 @@ import time
 
 class admin_cluster:
     def __init__(self, webDriver):
-        print("*** Start Cluster Test ***")
         self._clusterResult = []
         self._clusterName = 'auto_name'
         self.webDriver = webDriver
@@ -30,12 +29,17 @@ class admin_cluster:
             #self.webDriver.implicitlyWait(30)
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
             self.webDriver.findElement('id','ClusterPopupView_nameEditor',True)
-            self.webDriver.sendKey(self._clusterName)    
+            self.webDriver.sendKeys(self._clusterName)    
             
             # 설명 입력
             self.webDriver.implicitlyWait(40)
             self.webDriver.findElement('id','ClusterPopupView_descriptionEditor',True)
-            self.webDriver.sendKey('auto_description')    
+            self.webDriver.sendKeys('auto_description')    
+
+            # CPU 아키텍처 x86_64 선택
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','ClusterPopupView_architectureEditor',True)
+            self.webDriver.findElement('css_selector_all','#ClusterPopupView_architectureEditor > div > ul > li')[1].click()
 
             # OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
@@ -64,8 +68,37 @@ class admin_cluster:
         print("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
+    def update(self):
+        print("2) Update Cluster")
+        try:            
+            # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
+            self.webDriver.tableSearch(self._clusterName, True)
+            time.sleep(1)
+            
+            # 우측 편집 버튼 클릭
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('id','ActionPanelView_Edit', True)
+
+            # 설명 수정
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('id','ClusterPopupView_descriptionEditor')
+            self.webDriver.clear() ## 전체 삭제
+            self.webDriver.sendKeys('Description Update')
+            
+            
+            time.sleep(10)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            print("* MESSAGE : " + msg)
+
+        print("* RESULT : " + result)
+        self._clusterResult.append(['cluster' + DELIM + 'remove' + DELIM + result + DELIM + msg])
+
     def remove(self):
-        print("2) Remove Cluster")
+        print("3) Remove Cluster")
         try:            
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._clusterName, True)
