@@ -76,7 +76,7 @@ def main():
             _data_center.create(webDriver)
             
             _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
-            
+
         if DISK_TEST == 'true':
             printLine()
             print("*** Disk Test ***")
