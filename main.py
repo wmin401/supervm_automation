@@ -30,25 +30,25 @@ def main():
     
     printLine()
     # 테스트 시작
-    print('1. Open Browser')
+    printLog('1. Open Browser')
     webDriver = SuperVM_driver(headless=False)
     webDriver.openURL(SUPERVM_URL)
 
     printLine()
-    print("2. Print SuperVM Version")
+    printLog("2. Print SuperVM Version")
     ## supervm version 출력
     webDriver.implicitlyWait(5)
     _supervmVersionElem = webDriver.findElement('css_selector','body > main > section > div.pf-l-split > div.pf-l-split__item.obrand_welcomePageVersionText')
     _supervmVersion = _supervmVersionElem.get_attribute('textContent')
-    print('SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
+    printLog('SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
     
 
     printLine()
-    print('3. Login')
+    printLog('3. Login')
     portalLogin(webDriver)
 
     printLine()
-    print("4. Access Portal")
+    printLog("4. Access Portal")
     if PORTAL_TYPE == 'admin':
         accessAdminPortal(webDriver)
         
@@ -56,12 +56,12 @@ def main():
         accessVmPortal(webDriver)
 
     printLine()
-    print("5. Start Test")
+    printLog("5. Start Test")
 
     if PORTAL_TYPE == 'admin':        
         if CLUSTER_TEST == 'true':        
             printLine()
-            print("*** Cluster Test ***")
+            printLog("*** Cluster Test ***")
             _cluster = admin_cluster(webDriver)
             _cluster.create()
             _cluster.update()
@@ -71,7 +71,7 @@ def main():
 
         if DATA_CENTER_TEST == 'true':
             printLine()
-            print("*** Data Center Test ***")
+            printLog("*** Data Center Test ***")
             _data_center = admin_data_center()
             _data_center.create(webDriver)
             
@@ -79,7 +79,7 @@ def main():
 
         if DISK_TEST == 'true':
             printLine()
-            print("*** Disk Test ***")
+            printLog("*** Disk Test ***")
             _disk = admin_disk()
             _disk.create(webDriver)
             
@@ -87,7 +87,7 @@ def main():
         
         if DOMAIN_TEST == 'true':
             printLine()
-            print("*** Domain Test ***")
+            printLog("*** Domain Test ***")
             _domain = admin_domain()
             _domain.create(webDriver)
             
@@ -95,7 +95,7 @@ def main():
 
         if HOST_TEST == 'true':
             printLine()
-            print("*** Host Test ***")
+            printLog("*** Host Test ***")
             _host = admin_host()
             _host.create(webDriver)
             
@@ -103,7 +103,7 @@ def main():
 
     elif PORTAL_TYPE == 'vm':
         printLine()
-        print("5.1 VM Create")
+        printLog("5.1 VM Create")
         test_vm_vm = vm_vm()
         test_vm_vm.create()
 

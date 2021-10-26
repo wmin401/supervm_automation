@@ -3,11 +3,11 @@ from __common__.__parameter__ import *
 
 class admin_host:
     def __init__(self):
-        print("* 호스트 테스트 시작")
+        printLog("* 호스트 테스트 시작")
         self._hostResult = []
         
     def create(self, webDriver):
-        print('1) 호스트 생성 취소')
+        printLog('1) 호스트 생성 취소')
         
         try:
             # 컴퓨팅
@@ -33,7 +33,7 @@ class admin_host:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            print("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)
 
-        print("* RESULT : " + result)
+        printLog("* RESULT : " + result)
         self._hostResult.append(['host' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])

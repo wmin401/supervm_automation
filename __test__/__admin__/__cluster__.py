@@ -1,4 +1,5 @@
 from __common__.__parameter__ import *
+from __common__.__module__ import *
 from selenium.webdriver.common.by import By
 import time
 
@@ -9,7 +10,7 @@ class admin_cluster:
         self.webDriver = webDriver
             
     def create(self):
-        print('1) Create Cluster')
+        printLog('1) Create Cluster')
         
         try:
             # 컴퓨팅
@@ -63,13 +64,13 @@ class admin_cluster:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            print("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)
 
-        print("* RESULT : " + result)
+        printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
     def update(self):
-        print("2) Update Cluster")
+        printLog("2) Update Cluster")
         try:
             # 컴퓨팅
             self.webDriver.implicitlyWait(10)
@@ -111,13 +112,13 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            print("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)
 
-        print("* RESULT : " + result)
+        printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'update' + DELIM + result + DELIM + msg])
 
     def remove(self):
-        print("3) Remove Cluster")
+        printLog("3) Remove Cluster")
         try:                        
             # 컴퓨팅
             self.webDriver.implicitlyWait(10)
@@ -157,7 +158,7 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            print("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)
 
-        print("* RESULT : " + result)
+        printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'remove' + DELIM + result + DELIM + msg])
