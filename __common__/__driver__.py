@@ -114,8 +114,11 @@ class SuperVM_driver:
         self.driver.quit()
 
 
-    def tableSearch(self, name, click = False): ## 찾을 이름 입력시 해당 table 의 row 를 찾아줌
-        # 반환값은 해당 테이블의 path 또는 selector 찾을 수 있는걸로 
+    def tableSearch(self, name, click = False): 
+        # 최상위 테이블에서 검색
+        # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
+        # click 매개변수의 값이 True일 경우 해당 row 클릭
+        print("* Start to search in first table!")
         time.sleep(1)   
         self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
 
@@ -126,7 +129,7 @@ class SuperVM_driver:
             td = tr.find_elements_by_tag_name("td")
             #print(type(td))            
             if name == td[1].text:                
-                print ('Find name : ' + str(td[1].text))
+                print ('* Find name : ' + str(td[1].text))
                 if click == True:
                     tr.click()
                 return True
