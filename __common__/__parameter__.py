@@ -6,7 +6,7 @@ SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
 
 ## 브라우저 정보
 BROWSER_NAME = 'chrome'
-BROWSER_VERSION = 94
+BROWSER_VERSION = 95
 BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
 ## 로그인 정보
@@ -17,10 +17,10 @@ USER_PW = 'asdf'
 PORTAL_TYPE = 'admin'
 
 # 테스트 실행여부
-CLUSTER_TEST = 'true'
-DATA_CENTER_TEST = 'true'
-DISK_TEST = 'true'
-DOMAIN_TEST = 'true'
+CLUSTER_TEST = 'false'
+DATA_CENTER_TEST = 'false'
+DISK_TEST = 'false'
+DOMAIN_TEST = 'false'
 HOST_TEST = 'true'
 POOL_TEST = 'false'
 
