@@ -36,44 +36,126 @@ class admin_qos:
             msg = str(e).replace("\n",'')
             printLog("* MESSAGE : " + msg)
 
+    def scenario1(self):
+        self.storageCreate()
+        self.storageRemove()
+        self.VMNetwrkCreate()
+        self.VMNetwrkRemove()
+        self.HostNetworkCreate()
+        self.HostNetworkRemove()
+        self.CPUCreate()
+        self.CPURemove()
+
     def storageCreate(self):
         printLog('1) Create QoS Storage')
-        self.newBtns[0].click() # 
-        time.sleep(1)
-        self.webDriver.findElement('id','QosPopupView_Cancel', True)
+        try:        
+            self.newBtns[0].click() # 
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'storage create' + DELIM + result + DELIM + msg])
 
         #QosPopupView_Cancel > button
 
     def storageRemove(self):
         printLog('2) Remove QoS Storage')        
-        self.removeBtns[0].click() # 
+        try:
+            self.removeBtns[0].click() # 
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'storage remove' + DELIM + result + DELIM + msg])
 
     def VMNetwrkCreate(self):
         printLog('3) Create QoS VM Network')
-        self.newBtns[1].click() # 
-        time.sleep(1)
-        self.webDriver.findElement('id','NetworkQoSPopupView_Cancel', True)
+        try:
+            self.newBtns[1].click() #           
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'vm network create' + DELIM + result + DELIM + msg])
 
     def VMNetwrkRemove(self):
         printLog('4) Remove QoS VM Network')
-        self.removeBtns[1].click()
+        try:
+            self.removeBtns[1].click()         
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'vm network remove' + DELIM + result + DELIM + msg])
 
     def HostNetworkCreate(self):
         printLog('5) Create QoS Host Network')
-        self.newBtns[2].click() # 
-        time.sleep(1)
-        self.webDriver.findElement('id','QosPopupView_Cancel', True)
+        try:
+            self.newBtns[2].click() # 
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'host network create' + DELIM + result + DELIM + msg])
 
     def HostNetworkRemove(self):
         printLog('6) Remove QoS Host Network')
-        self.removeBtns[2].click()
+        try:
+            self.removeBtns[2].click()            
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'host network remove' + DELIM + result + DELIM + msg])
 
     def CPUCreate(self):
         printLog('7) Create QoS CPU')        
-        self.newBtns[3].click() # 
-        time.sleep(1)
-        self.webDriver.findElement('id','QosPopupView_Cancel', True)
+        try:
+            self.newBtns[3].click() #             
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'cpu create' + DELIM + result + DELIM + msg])
 
     def CPURemove(self):
         printLog('8) Remove QoS CPU')
-        self.removeBtns[3].click()
+        try:
+            self.removeBtns[3].click()           
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + 'cpu remove' + DELIM + result + DELIM + msg])

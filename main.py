@@ -108,10 +108,7 @@ def main():
             printLog("*** QoS Test ***")
             _qos = admin_qos(webDriver)
             _qos.initialize()
-            _qos.storageCreate()
-            _qos.VMNetwrkCreate()
-            _qos.HostNetworkCreate()
-            _qos.CPUCreate()
+            _qos.scenario1()
             time.sleep(5)
             
             _totalResult = saveResult(_qos._qosResult, _totalResult)
