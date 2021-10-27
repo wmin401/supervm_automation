@@ -23,6 +23,7 @@ DISK_TEST = 'false'
 DOMAIN_TEST = 'false'
 HOST_TEST = 'true'
 POOL_TEST = 'false'
+QOS_TEST = 'false'
 
 VM_TEST = 'false'
 
