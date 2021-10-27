@@ -49,7 +49,7 @@ class admin_cluster:
             self.webDriver.findElement('id','GuidePopupView_Cancel',True)
             
             # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
-            _createCheck = self.webDriver.tableSearch(self._clusterName)
+            _createCheck = self.webDriver.tableSearch(self._clusterName, 1)
             
             if _createCheck == True:
                 result = PASS
@@ -80,7 +80,7 @@ class admin_cluster:
 
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.tableSearch(self._clusterName, True)
+            self.webDriver.tableSearch(self._clusterName, 1, True)
             
             # 우측 편집 버튼 클릭
             self.webDriver.implicitlyWait(10)            
@@ -98,7 +98,7 @@ class admin_cluster:
             self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             
             # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
-            _updateCheck = self.webDriver.tableSearch(self._clusterName)
+            _updateCheck = self.webDriver.tableSearch(self._clusterName, 1)
             if _updateCheck == True:
                 result = PASS
                 msg = ''
@@ -127,7 +127,7 @@ class admin_cluster:
             self.webDriver.findElement('id','MenuView_clustersAnchor',True)
 
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._clusterName, True)
+            self.webDriver.tableSearch(self._clusterName, 1, True)
             time.sleep(1)
 
             # 우측 추가 옵션 버튼 클릭
@@ -143,7 +143,7 @@ class admin_cluster:
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
             
             # table 내부 전부 검색해서 입력한 이름이 있을경우 FAIL
-            _removeCheck = self.webDriver.tableSearch(self._clusterName)
+            _removeCheck = self.webDriver.tableSearch(self._clusterName, 1)
                 
             if _removeCheck == True:
                 result = FAIL

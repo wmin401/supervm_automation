@@ -27,6 +27,7 @@ class admin_host:
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_New')
             self.webDriver.findElement('id','ActionPanelView_New',True)
 
+            time.sleep(1)
             # 이름 입력
             self.webDriver.explicitlyWait(10, By.ID, 'HostPopupView_name')
             self.webDriver.findElement('id','HostPopupView_name',True)
@@ -56,7 +57,7 @@ class admin_host:
             self.webDriver.findElement('id','HostPopupView_Cancel',True)
 
             '''
-            _createCheck = self.webDriver.tableSearch(self._hostName)
+            _createCheck = self.webDriver.tableSearch(self._hostName, 2)
 
             if _createCheck == True:
                 result = PASS
@@ -86,7 +87,7 @@ class admin_host:
             self.webDriver.findElement('id','MenuView_hostsAnchor',True)
 
             # table 내부에 생성한 호스트의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._hostName, True)
+            self.webDriver.tableSearch(self._hostName, 2, True)
             time.sleep(1)
 
             # 관리
@@ -101,6 +102,7 @@ class admin_host:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','HostMaintenanceConfirmationPopupView_OnMaintenance',True)
 
+            time.sleep(1)
             # 삭제 버튼
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ActionPanelView_Remove',True)
@@ -109,7 +111,7 @@ class admin_host:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
 
-            _removeCheck = self.webDriver.tableSearch(self._hostName)
+            _removeCheck = self.webDriver.tableSearch(self._hostName, 2)
 
             if _removeCheck == True:
                 result = FAIL

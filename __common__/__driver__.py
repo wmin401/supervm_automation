@@ -133,7 +133,7 @@ class SuperVM_driver:
         self.driver.quit()
 
 
-    def tableSearch(self, name, click = False): 
+    def tableSearch(self, name, nameIdx, click = False): 
         # 최상위 테이블에서 검색
         # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
         # click 매개변수의 값이 True일 경우 해당 row 클릭
@@ -146,8 +146,7 @@ class SuperVM_driver:
         for tr in table.find_elements_by_tag_name("tr"):            
             self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
-            #print(type(td))            
-            if name == td[2].text:                
+            if name == td[nameIdx].text:                
                 printLog('* Find name : ' + str(td[1].text))
                 if click == True:
                     tr.click()

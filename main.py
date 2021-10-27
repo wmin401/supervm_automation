@@ -98,8 +98,7 @@ def main():
             printLine()
             printLog("*** Host Test ***")
             _host = admin_host(webDriver)
-            #_host.create()
-            #time.sleep(200)
+            _host.create()
             _host.remove()
             
             _totalResult = saveResult(_host._hostResult, _totalResult)
