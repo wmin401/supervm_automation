@@ -147,7 +147,7 @@ class SuperVM_driver:
             self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:                
-                printLog('* Find name : ' + str(td[1].text))
+                printLog('* Find name : ' + str(td[nameIdx].text))
                 if click == True:
                     tr.click()
                 return True
