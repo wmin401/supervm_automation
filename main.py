@@ -11,6 +11,7 @@ from __test__.__admin__.__cluster__ import *
 from __test__.__admin__.__data_center__ import *
 from __test__.__admin__.__disk__ import *
 from __test__.__admin__.__domain__ import *
+from __test__.__admin__.__qos__ import *
 from __test__.__vm__.__vm__ import *
 
 ## 테스트 메인 파일
@@ -102,6 +103,20 @@ def main():
             _host.remove()
             
             _totalResult = saveResult(_host._hostResult, _totalResult)
+            
+        if QOS_TEST == 'true':
+            printLine()
+            printLog("*** QoS Test ***")
+            _qos = admin_qos(webDriver)
+            _qos.initialize()
+            _qos.storageCreate()
+            _qos.VMNetwrkCreate()
+            _qos.HostNetworkCreate()
+            _qos.CPUCreate()
+            time.sleep(5)
+            
+            _totalResult = saveResult(_qos._qosResult, _totalResult)
+
 
     elif PORTAL_TYPE == 'vm':
         printLine()
