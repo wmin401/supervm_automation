@@ -81,8 +81,9 @@ def main():
         if DISK_TEST == 'true':
             printLine()
             printLog("*** Disk Test ***")
-            _disk = admin_disk()
-            _disk.create(webDriver)
+            _disk = admin_disk(webDriver)
+            #_disk.create()
+            _disk.remove()
             
             _totalResult = saveResult(_disk._diskResult, _totalResult)        
         
