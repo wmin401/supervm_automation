@@ -102,7 +102,7 @@ class admin_host:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','HostMaintenanceConfirmationPopupView_OnMaintenance',True)
 
-            time.sleep(1)
+            time.sleep(5)
             # 삭제 버튼
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ActionPanelView_Remove',True)
@@ -110,6 +110,8 @@ class admin_host:
             # 호스트 삭제 OK 버튼
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
+
+            time.sleep(5)
 
             _removeCheck = self.webDriver.tableSearch(self._hostName, 2)
 
