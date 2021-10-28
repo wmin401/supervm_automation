@@ -135,10 +135,11 @@ class SuperVM_driver:
         self.driver.quit()
 
 
-    def tableSearch(self, name, nameIdx, click = False): 
+    def tableSearch(self, name, nameIdx, rowClick = False, nameClick = False): 
         # 최상위 테이블에서 검색
-        # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
-        # click 매개변수의 값이 True일 경우 해당 row 클릭
+        # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False        
+        # rowClick 매개변수의 값이 True일 경우 해당 row 클릭
+        # nameClick True일 경우 이름 클릭
         printLog("* Start to search in first table!")
         time.sleep(1)   
         self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
@@ -150,15 +151,18 @@ class SuperVM_driver:
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:                
                 printLog('* Find name : ' + str(td[nameIdx].text))
-                if click == True:
+                if rowClick == True:
                     tr.click()
+                # if nameClick == True:
+                if nameClick == True:
+                    td[nameIdx].find_element_by_tag_name("a").click()
                 return True
             #fp.write(s)
 
         return False
 
     
-    def tableSearchAll(self, tableIdx, name, nameIdx, click = False): 
+    def tableSearchAll(self, tableIdx, name, nameIdx, rowClick = False): 
         # 최상위 테이블에서 검색
         # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
         # click 매개변수의 값이 True일 경우 해당 row 클릭
@@ -173,7 +177,7 @@ class SuperVM_driver:
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:                
                 printLog('* Find name : ' + str(td[nameIdx].text))
-                if click == True:
+                if rowClick == True:
                     tr.click()
                 return True
         return False
