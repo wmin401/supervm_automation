@@ -17,13 +17,12 @@ USER_PW = 'asdf'
 PORTAL_TYPE = 'admin'
 
 # 테스트 실행여부
-CLUSTER_TEST = 'false'
-DATA_CENTER_TEST = 'false'
-DISK_TEST = 'false'
+CLUSTER_TEST = 'true'
+DATA_CENTER_TEST = 'true'
+DISK_TEST = 'true'
 DOMAIN_TEST = 'false'
-HOST_TEST = 'true'
-POOL_TEST = 'false'
-QOS_TEST = 'false'
+HOST_TEST = 'false'
+QOS_TEST = 'true'
 
 VM_TEST = 'false'
 
