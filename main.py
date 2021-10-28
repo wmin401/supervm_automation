@@ -41,7 +41,7 @@ def main():
     webDriver.implicitlyWait(5)
     _supervmVersionElem = webDriver.findElement('css_selector','body > main > section > div.pf-l-split > div.pf-l-split__item.obrand_welcomePageVersionText')
     _supervmVersion = _supervmVersionElem.get_attribute('textContent')
-    printLog('SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
+    printLog('* SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
     
 
     printLine()
