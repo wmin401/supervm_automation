@@ -9,112 +9,158 @@ class admin_cluster:
         self._clusterName = 'auto_name'
         self.webDriver = webDriver
             
+    def test(self):
+        self.setup()
+        #self.create()
+        #self.CPUProfileCreate()
+        #self.changeVersion()
+        #self.remove()
+
+    def setup(self):
+        # 컴퓨팅 클릭
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','compute',True)
+
+        # 클러스터 클릭
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','MenuView_clustersAnchor',True)
+
     def create(self):
-        printLog('1) Create Cluster')
-        
+        printLog('1) Create Cluster')        
         try:
-            # 컴퓨팅
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
-
-            # 클러스터
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_clustersAnchor',True)
-
             # 새로 만들기
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
             self.webDriver.findElement('id','ActionPanelView_New',True)
-
             # 이름 입력
             time.sleep(0.3)
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
             self.webDriver.findElement('id','ClusterPopupView_nameEditor',True)
-            self.webDriver.sendKeys(self._clusterName)    
-            
+            self.webDriver.sendKeys(self._clusterName)                
             # 설명 입력
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ClusterPopupView_descriptionEditor',True)
-            self.webDriver.sendKeys('auto_description')    
-
-            # CPU 아키텍처 x86_64 선택
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','ClusterPopupView_architectureEditor',True)
-            self.webDriver.findElement('css_selector_all','#ClusterPopupView_architectureEditor > div > ul > li')[1].click()
-
+            self.webDriver.sendKeys('auto_description') 
             # OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
-            
+            self.webDriver.findElement('id','ClusterPopupView_OnSave',True)            
             # 나중에 설정 버튼 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','GuidePopupView_Cancel',True)
-            
+            self.webDriver.findElement('id','GuidePopupView_Cancel',True)            
             # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
-            _createCheck = self.webDriver.tableSearch(self._clusterName, 1)
-            
+            _createCheck = self.webDriver.tableSearch(self._clusterName, 1)            
             if _createCheck == True:
                 result = PASS
                 msg = ''
             else:
                 result = FAIL
                 msg = "Failed to create new cluster..."
-
-
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             printLog("* MESSAGE : " + msg)
-
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'create' + DELIM + result + DELIM + msg])
-
-    def update(self):
-        printLog("2) Update Cluster")
+    
+    def CPUProfileCreate(self):
+        printLog("2) Create CPU Profile")
         try:
-            # 컴퓨팅
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
-
-            # 클러스터
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_clustersAnchor',True)     
-
-            # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.tableSearch(self._clusterName, 1, True)
-            
-            # 우측 편집 버튼 클릭
-            self.webDriver.implicitlyWait(10)            
-            self.webDriver.findElement('id','ActionPanelView_Edit', True)
-
-            # 이름 수정
-            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')            
-            self.webDriver.findElement('id','ClusterPopupView_nameEditor')
-            self.webDriver.clear() ## 전체 삭제
-            self._clusterName = self._clusterName + '_update'
-            self.webDriver.sendKeys(self._clusterName)
-            
+            # 클러스터 이름 클릭            
+            self.webDriver.tableSearch(self._clusterName, 1, False, nameClick = True)
+            # CPU 프로파일 탭 클릭            
+            # menuSearch 기능 추가해서 해야될듯
+            # 새로 만들기 클릭            
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
+            self.webDriver.findElement('id','DetailActionPanelView_New',True)  
+            # 이름 입력
+            self.webDriver.explicitlyWait(10, By.ID, 'CpuProfilePopupView_name')
+            self.webDriver.findElement('id','CpuProfilePopupView_name',True)
+            self.webDriver.sendKeys('auto_profile')          
+            # 설명 입력
+            self.webDriver.findElement('id','CpuProfilePopupView_description',True)
+            self.webDriver.sendKeys('auto_profile_description')          
             # OK 버튼 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
-            
-            # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
-            _updateCheck = self.webDriver.tableSearch(self._clusterName, 1)
-            if _updateCheck == True:
+            self.webDriver.findElement('id','CpuProfilePopupView_OnSave',True)
+            # 생성 확인
+            _createCheck = self.webDriver.tableSearchAll(1, 'auto_profile', 0)
+            if _createCheck == True:
                 result = PASS
                 msg = ''
             else:
                 result = FAIL
-                msg = "Failed to update cluster's name..."
+                msg = "Failed to create cluster's CPU profile..."
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._clusterResult.append(['cluster' + DELIM + 'create cpu profile' + DELIM + result + DELIM + msg])
+
+    def CPUProfileRemove(self):
+        printLog("3) Remove CPU Profile")
+        try:
+            # 생성한 CPU 프로필 선택
+            self.webDriver.tableSearchAll(1, 'auto_profile', 0, True)
+            # 제거 클릭
+            self.webDriver.findElement('id','DetailActionPanelView_Remove',True)
+            # OK 클릭        
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
+            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
+            
+
+            # 생성 확인
+            _removeCheck = self.webDriver.tableSearchAll(1, 'auto_profile', 0)
+            if _removeCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to remove cluster's cpu profile..."
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._clusterResult.append(['cluster' + DELIM + 'remove cpu profile' + DELIM + result + DELIM + msg])
+
+    def changeVersion(self):
+        printLog("4) Change Cluster Compatibility Version")
+        try:
+            # 컴퓨팅
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','compute',True)
+            # 클러스터
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_clustersAnchor',True)     
+            # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._clusterName, 1, True)            
+            # 우측 편집 버튼 클릭
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('id','ActionPanelView_Edit', True)
+            # 호환 버전 클릭 / 4.4 -> 4.5
+            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_versionEditor')
+            self.webDriver.findElement('id','ClusterPopupView_versionEditor',True)
+            self.webDriver.findElement('css_selector_all','#ClusterPopupView_versionEditor > div > ul > li')[1].click()
+            #ClusterPopupView_versionEditor > div > ul > li:nth-child(2)
+            # OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
+            # Confirm OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','DefaultConfirmationPopupView_OnSaveConfirmCpuThreads',True)                   
+            
+            result = PASS
+            msg = ''
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("* MESSAGE : " + msg)
-
         printLog("* RESULT : " + result)
-        self._clusterResult.append(['cluster' + DELIM + 'update' + DELIM + result + DELIM + msg])
+        self._clusterResult.append(['cluster' + DELIM + 'change version' + DELIM + result + DELIM + msg])
 
     def remove(self):
         printLog("3) Remove Cluster")
@@ -122,42 +168,33 @@ class admin_cluster:
             # 컴퓨팅
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','compute',True)
-
             # 클러스터
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','MenuView_clustersAnchor',True)
-
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._clusterName, 1, True)
             time.sleep(1)
-
             # 우측 추가 옵션 버튼 클릭
             self.webDriver.implicitlyWait(10)            
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button', True)
-            
+            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button', True)            
             # 삭제 버튼 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','ActionPanelView_Remove',True)
-            
+            self.webDriver.findElement('id','ActionPanelView_Remove',True)            
             # OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
-            
+            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)            
             # table 내부 전부 검색해서 입력한 이름이 있을경우 FAIL
-            _removeCheck = self.webDriver.tableSearch(self._clusterName, 1)
-                
+            _removeCheck = self.webDriver.tableSearch(self._clusterName, 1)                
             if _removeCheck == True:
                 result = FAIL
                 msg = 'Failed to remove cluster'
             else:
                 result = PASS
                 msg = ''
-
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("* MESSAGE : " + msg)
-
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'remove' + DELIM + result + DELIM + msg])
