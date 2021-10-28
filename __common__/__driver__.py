@@ -154,3 +154,27 @@ class SuperVM_driver:
             #fp.write(s)
 
         return False
+
+    
+    def tableSearchAll(self, tableIdx, name, nameIdx, click = False): 
+        # 최상위 테이블에서 검색
+        # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
+        # click 매개변수의 값이 True일 경우 해당 row 클릭
+        printLog("* Start to search in all table!")
+        time.sleep(1)   
+        #tables = self.driver.find_elements_by_css_selector('table')
+        
+        tables = self.driver.find_elements_by_css_selector('tbody')
+        self.explicitlyWait(30, By.TAG_NAME, 'tr')
+        for tr in tables[tableIdx].find_elements_by_tag_name("tr"):            
+            self.explicitlyWait(30, By.TAG_NAME, 'td')
+            td = tr.find_elements_by_tag_name("td")
+            if name == td[nameIdx].text:                
+                printLog('* Find name : ' + str(td[nameIdx].text))
+                if click == True:
+                    tr.click()
+                return True
+        return False
+
+        
+        
