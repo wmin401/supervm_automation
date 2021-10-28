@@ -14,26 +14,21 @@ class admin_qos:
         try:
             # 컴퓨팅 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
-            
+            self.webDriver.findElement('id','compute',True)            
             # Data Center 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_dataCentersAnchor',True)
-            
+            self.webDriver.findElement('id','MenuView_dataCentersAnchor',True)            
             # Default 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'MainDataCenterView_table_content_col2_row0')
             self.webDriver.findElement('id','MainDataCenterView_table_content_col2_row0', True) # Data Center 가장 위에 것으로 테스트
-
             # QoS 탭 클릭
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(5) > a')
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(5) > a',True)
-            
+            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(5) > a',True)            
             # 새로 만들기 변수에 저장(0~3)
             self.webDriver.implicitlyWait(10)
             self.newBtns = self.webDriver.findElement('id_all','DetailActionPanelView_New') # 새로 만들기 버튼 리스트
             self.editBtns = self.webDriver.findElement('id_all','DetailActionPanelView_Edit') # 편집 버튼 리스트            
-            self.removeBtns = self.webDriver.findElement('id_all','DetailActionPanelView_Remove') # 삭제 버튼 리스트
-            
+            self.removeBtns = self.webDriver.findElement('id_all','DetailActionPanelView_Remove') # 삭제 버튼 리스트            
         except Exception as e:
             msg = str(e).replace("\n",'')
             printLog("* MESSAGE : " + msg)
@@ -43,7 +38,6 @@ class admin_qos:
         # 생성 또는 삭제 확인
         self.webDriver.implicitlyWait(10)
         _DoneCheck = self.webDriver.tableSearchAll(tableIndex, self._QoSName, 0)
-
         # 생성 확인
         if action == 'create':
             if _DoneCheck == True: # 검색하는 내용이 존재하면 생성된 것이니 PASS
@@ -59,8 +53,7 @@ class admin_qos:
                 msg = 'failed to remove '+ menu + ' QoS'
             else:
                 result = PASS
-                msg = ''
-    
+                msg = ''    
         return result, msg
 
     def frame(self, action, tableIndex, menu, testCase): ## 공통된 함수 하나로 합치기
@@ -76,7 +69,6 @@ class admin_qos:
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("* MESSAGE : " + msg)
-
         # 결과 저장
         printLog("* RESULT : " + result)
         self._qosResult.append(['QoS' + DELIM + '%s %s'%(menu, action) + DELIM + result + DELIM + msg])
