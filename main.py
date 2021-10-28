@@ -64,9 +64,7 @@ def main():
             printLine()
             printLog("*** Cluster Test ***")
             _cluster = admin_cluster(webDriver)
-            _cluster.create()
-            _cluster.update()
-            _cluster.remove()
+            _cluster.test()
             
             _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
 
@@ -107,7 +105,6 @@ def main():
             printLine()
             printLog("*** QoS Test ***")
             _qos = admin_qos(webDriver)
-            _qos.setup()
             _qos.test()
             
             _totalResult = saveResult(_qos._qosResult, _totalResult)
