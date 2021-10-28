@@ -9,7 +9,26 @@ class admin_qos:
         self.webDriver = webDriver
         self._QoSName = 'auto_QoS'
         self._QoSDescription = 'automation QoS Test'
-            
+          
+    def test(self):
+        self.setup()
+        # 스토리지 QoS
+        self.frame('create', 0, 'storage', self.storageCreate)
+        time.sleep(0.3)
+        self.frame('remove', 0, 'storage', lambda: self.remove(0))
+        # 가상머신 네트워크 QoS
+        self.frame('create', 1, 'vm network', self.vmNetworkCreate)
+        time.sleep(0.3)
+        self.frame('remove', 1, 'vm network', lambda: self.remove(1))
+        # 호스트 네트워크 QoS
+        self.frame('create', 2, 'host network', self.hostNetworkCreate)
+        time.sleep(0.3)
+        self.frame('remove', 2, 'host network', lambda: self.remove(2))
+        # CPU QoS
+        self.frame('create', 3, 'CPU', self.CPUCreate)
+        time.sleep(0.3)
+        self.frame('remove', 3, 'CPU', lambda: self.remove(3))
+  
     def setup(self):        
         try:
             # 컴퓨팅 클릭
@@ -72,24 +91,6 @@ class admin_qos:
         # 결과 저장
         printLog("* RESULT : " + result)
         self._qosResult.append(['QoS' + DELIM + '%s %s'%(menu, action) + DELIM + result + DELIM + msg])
-
-    def test(self):
-        # 스토리지 QoS
-        self.frame('create', 0, 'storage', self.storageCreate)
-        time.sleep(0.3)
-        self.frame('remove', 0, 'storage', lambda: self.remove(0))
-        # 가상머신 네트워크 QoS
-        self.frame('create', 1, 'vm network', self.vmNetworkCreate)
-        time.sleep(0.3)
-        self.frame('remove', 1, 'vm network', lambda: self.remove(1))
-        # 호스트 네트워크 QoS
-        self.frame('create', 2, 'host network', self.hostNetworkCreate)
-        time.sleep(0.3)
-        self.frame('remove', 2, 'host network', lambda: self.remove(2))
-        # CPU QoS
-        self.frame('create', 3, 'CPU', self.CPUCreate)
-        time.sleep(0.3)
-        self.frame('remove', 3, 'CPU', lambda: self.remove(3))
 
     def storageCreate(self):
         # 새로 만들기 클릭
