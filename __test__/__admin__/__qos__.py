@@ -39,11 +39,13 @@ class admin_qos:
             printLog("* MESSAGE : " + msg)
 
     def ifDone(self, action, tableIndex, menu):
+        # 작업 완료 확인
+        # 생성 또는 삭제 확인
         self.webDriver.implicitlyWait(10)
         _DoneCheck = self.webDriver.tableSearchAll(tableIndex, self._QoSName, 0)
 
         if action == 'create':
-            if _DoneCheck == True:
+            if _DoneCheck == True: # 검색하는 내용이 존재하면 생성된 것이니 PASS
                 result = PASS
                 msg = ''
             else:
@@ -51,224 +53,134 @@ class admin_qos:
                 msg = 'failed to create '+ menu + ' QoS'
 
         elif action == 'remove':
-            if _DoneCheck == True:
+            if _DoneCheck == True: # 검색하는 내용이 존재하면 삭제가 안된것이니 FAIL
                 result = FAIL
-                msg = 'failed to create '+ menu + ' QoS'
+                msg = 'failed to remove '+ menu + ' QoS'
             else:
                 result = PASS
                 msg = ''
     
         return result, msg
 
+    def testTemplate(self, action, tableIndex, menu, testCase): ## 공통된 함수 하나로 합치기
+        printLog('** %s %s QoS'%(action.capitalize(), menu))  # -> 변수로 대체
+        try:
+            testCase()
+            # 작업 확인
+            result, msg = self.ifDone(action, tableIndex, menu)
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+
+        printLog("* RESULT : " + result)
+        self._qosResult.append(['QoS' + DELIM + '%s %s'%(menu, action) + DELIM + result + DELIM + msg]) ## cpu remove -> 변수로 대체
+
     def scenario1(self):
-        self.storageCreate()
+        self.testTemplate('create', 0, 'storage', self.storageCreate)
         time.sleep(0.3)
-        self.storageRemove()
-        self.vmNetworkCreate()
+        self.testTemplate('remove', 0, 'storage', self.storageRemove)
+        self.testTemplate('create', 1, 'vm network', self.vmNetworkCreate)
         time.sleep(0.3)
-        self.vmNetworkRemove()        
-        self.hostNetworkCreate()
+        self.testTemplate('remove', 1, 'vm network', self.vmNetworkRemove)
+        self.testTemplate('create', 2, 'host network', self.hostNetworkCreate)
         time.sleep(0.3)
-        self.hostNetworkRemove()
-        self.CPUCreate()
+        self.testTemplate('remove', 2, 'host network', self.hostNetworkRemove)
+        self.testTemplate('create', 3, 'CPU', self.CPUCreate)
         time.sleep(0.3)
-        self.CPURemove()
+        self.testTemplate('remove', 3, 'CPU', self.CPURemove)
 
     def storageCreate(self):
-        printLog('1) Create Storage QoS')
-        try:        
-            # 새로 만들기 클릭
-            self.newBtns[0].click() # 
-            # QoS 이름 입력
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'QosPopupView_nameEditor')
-            self.webDriver.sendKeys(self._QoSName)
-            # 설명 입력
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'QosPopupView_descriptionEditor')
-            self.webDriver.sendKeys(self._QoSDescription)
-            # OK 버튼
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'QosPopupView_OnSave', True)
-            # 생성 확인
-            result, msg = self.ifDone('create', 0, 'Storage')
-
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-
-        printLog("* RESULT : " + result)
-        self._qosResult.append(['QoS' + DELIM + 'storage create' + DELIM + result + DELIM + msg])
+        # 새로 만들기 클릭
+        self.newBtns[0].click() # 
+        # QoS 이름 입력
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id', 'QosPopupView_nameEditor')
+        self.webDriver.sendKeys(self._QoSName)
+        # 설명 입력
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id', 'QosPopupView_descriptionEditor')
+        self.webDriver.sendKeys(self._QoSDescription)
+        # OK 버튼
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id', 'QosPopupView_OnSave', True)
 
     def storageRemove(self):
-        printLog('2) Remove Storage QoS')        
-        try:          
-            # 생성되어있는 QoS 탐색 및 클릭  
-            self.webDriver.tableSearchAll(0, self._QoSName, 0, True)
-            # 삭제 버튼 클릭
-            self.removeBtns[0].click()
-            # OK 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
-            # 삭제 확인
-            result, msg = self.ifDone('remove', 0, 'Storage')
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-
-        printLog("* RESULT : " + result)
-        self._qosResult.append(['QoS' + DELIM + 'storage remove' + DELIM + result + DELIM + msg])
+        self.webDriver.tableSearchAll(0, self._QoSName, 0, True)
+        # 삭제 버튼 클릭
+        self.removeBtns[0].click()
+        # OK 클릭
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
 
     def vmNetworkCreate(self):
-        printLog('3) Create M Network QoS')
-        try:
-            # 새로 만들기 클릭
-            self.newBtns[1].click() #  
-            # QoS 이름 입력
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'NetworkQoSPopupView_nameEditor')
-            self.webDriver.sendKeys(self._QoSName)
-            # OK 클릭
-            self.webDriver.findElement('id', 'NetworkQoSPopupView_OnSave', True)
-            # 생성 확인            
-            result, msg = self.ifDone('create', 1, 'VM Network')
-            
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-
-        printLog("* RESULT : " + result)
-        self._qosResult.append(['QoS' + DELIM + 'vm network create' + DELIM + result + DELIM + msg])
+        self.newBtns[1].click() #  
+        # QoS 이름 입력
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id', 'NetworkQoSPopupView_nameEditor')
+        self.webDriver.sendKeys(self._QoSName)
+        # OK 클릭
+        self.webDriver.findElement('id', 'NetworkQoSPopupView_OnSave', True)
 
     def vmNetworkRemove(self):
-        printLog('4) Remove VM Network QoS')
-        try:
-            # 생성된 QoS 탐색 및 클릭
-            self.webDriver.tableSearchAll(1, self._QoSName, 0, True)
-            # 삭제 버튼 클릭
-            self.removeBtns[1].click()         
-            # OK 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
-            # 삭제 확인
-            result, msg = self.ifDone('remove', 1, 'VM Network')
-
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-
-        printLog("* RESULT : " + result)
-        self._qosResult.append(['QoS' + DELIM + 'vm network remove' + DELIM + result + DELIM + msg])
+        self.webDriver.tableSearchAll(1, self._QoSName, 0, True)
+        # 삭제 버튼 클릭
+        self.removeBtns[1].click()         
+        # OK 클릭
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
 
     def hostNetworkCreate(self):
-        printLog('5) Create QoS Host Network')
-        try:
-            # 새로 만들기 클릭
-            self.newBtns[2].click() # 
-            # QoS 이름 입력
-            self.webDriver.findElement('id','QosPopupView_nameEditor')
-            self.webDriver.sendKeys(self._QoSName)
-            # 설명 입력
-            self.webDriver.findElement('id','QosPopupView_descriptionEditor')            
-            self.webDriver.sendKeys(self._QoSDescription)
-            # 가중 공유 입력 
-            self.webDriver.findElement('id','HostNetworkQosWidget_outAverageLinkshare')
-            self.webDriver.sendKeys(5)
-            # 속도 제한 입력 
-            self.webDriver.findElement('id','HostNetworkQosWidget_outAverageUpperlimit')
-            self.webDriver.sendKeys(10)
-            # 커밋 속도 입력 
-            self.webDriver.findElement('id','HostNetworkQosWidget_outAverageRealtime')
-            self.webDriver.sendKeys(10)
-            # OK 버튼            
-            self.webDriver.findElement('id', 'QosPopupView_OnSave', True)
-            # 생성 확인
-            result, msg = self.ifDone('create', 2, 'Host Network')
-
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
-
-        self._qosResult.append(['QoS' + DELIM + 'host network create' + DELIM + result + DELIM + msg])
+        # 새로 만들기 클릭
+        self.newBtns[2].click() # 
+        # QoS 이름 입력
+        self.webDriver.findElement('id','QosPopupView_nameEditor')
+        self.webDriver.sendKeys(self._QoSName)
+        # 설명 입력
+        self.webDriver.findElement('id','QosPopupView_descriptionEditor')            
+        self.webDriver.sendKeys(self._QoSDescription)
+        # 가중 공유 입력 
+        self.webDriver.findElement('id','HostNetworkQosWidget_outAverageLinkshare')
+        self.webDriver.sendKeys(5)
+        # 속도 제한 입력 
+        self.webDriver.findElement('id','HostNetworkQosWidget_outAverageUpperlimit')
+        self.webDriver.sendKeys(10)
+        # 커밋 속도 입력 
+        self.webDriver.findElement('id','HostNetworkQosWidget_outAverageRealtime')
+        self.webDriver.sendKeys(10)
+        # OK 버튼            
+        self.webDriver.findElement('id', 'QosPopupView_OnSave', True)
 
     def hostNetworkRemove(self):
-        printLog('6) Remove QoS Host Network')
-        try:
-            # 생성된 QoS 탐색 및 클릭
-            self.webDriver.tableSearchAll(2, self._QoSName, 0, True)
-            # 삭제 버튼 클릭
-            self.removeBtns[2].click()        
-            # OK 클릭
-            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
-            # 삭제 확인
-            result, msg = self.ifDone('remove', 2, 'Host Network')
-
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-
-        printLog("* RESULT : " + result)
-        self._qosResult.append(['QoS' + DELIM + 'host network remove' + DELIM + result + DELIM + msg])
+        # 생성된 QoS 탐색 및 클릭
+        self.webDriver.tableSearchAll(2, self._QoSName, 0, True)
+        # 삭제 버튼 클릭
+        self.removeBtns[2].click()        
+        # OK 클릭
+        self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
 
     def CPUCreate(self):
-        printLog('7) Create QoS CPU')        
-        try:
-            self.newBtns[3].click() #    
-            
-            # QoS 이름 입력
-            self.webDriver.findElement('id','QosPopupView_nameEditor')
-            self.webDriver.sendKeys(self._QoSName)
-            # 설명 입력
-            self.webDriver.findElement('id','QosPopupView_descriptionEditor')            
-            self.webDriver.sendKeys(self._QoSDescription)
-            # 제한 입력
-            self.webDriver.findElement('id','CpuQosWidget_cpuLimitEditor')
-            self.webDriver.sendKeys(10)
-            # OK 버튼
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'QosPopupView_OnSave', True)
-            # 생성 확인
-            result, msg = self.ifDone('create', 3, 'CPU')
+        # 새로 만들기 클릭
+        self.newBtns[3].click() # 
+        # QoS 이름 입력
+        self.webDriver.findElement('id','QosPopupView_nameEditor')
+        self.webDriver.sendKeys(self._QoSName)
+        # 설명 입력
+        self.webDriver.findElement('id','QosPopupView_descriptionEditor')            
+        self.webDriver.sendKeys(self._QoSDescription)
+        # 제한 입력
+        self.webDriver.findElement('id','CpuQosWidget_cpuLimitEditor')
+        self.webDriver.sendKeys(10)
+        # OK 버튼
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id', 'QosPopupView_OnSave', True)
 
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+    def CPURemove(self):        
+        # 생성된 QoS 탐색 및 클릭
+        self.webDriver.tableSearchAll(3, self._QoSName, 0, True)
+        # 삭제 클릭
+        self.removeBtns[3].click()        
+        # OK 클릭
+        self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
 
-        printLog("* RESULT : " + result)
-        self._qosResult.append(['QoS' + DELIM + 'cpu create' + DELIM + result + DELIM + msg])
-
-    def CPURemove(self):
-        printLog('8) Remove QoS CPU')
-        try:
-            # 생성된 QoS 탐색 및 클릭
-            self.webDriver.tableSearchAll(3, self._QoSName, 0, True)
-            # 삭제 클릭
-            self.removeBtns[3].click()        
-            # OK 클릭
-            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_onRemove', True)
-            # 삭제 확인
-            result, msg = self.ifDone('remove', 3, 'CPU')
-
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-
-        printLog("* RESULT : " + result)
-        self._qosResult.append(['QoS' + DELIM + 'cpu remove' + DELIM + result + DELIM + msg])
