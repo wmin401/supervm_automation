@@ -26,6 +26,7 @@ class admin_cluster:
             self.webDriver.findElement('id','ActionPanelView_New',True)
 
             # 이름 입력
+            time.sleep(0.3)
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
             self.webDriver.findElement('id','ClusterPopupView_nameEditor',True)
             self.webDriver.sendKeys(self._clusterName)    
