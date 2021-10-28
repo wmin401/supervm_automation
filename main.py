@@ -89,8 +89,14 @@ def main():
         if DOMAIN_TEST == 'true':
             printLine()
             printLog("*** Domain Test ***")
-            _domain = admin_domain()
-            _domain.create(webDriver)
+            _domain = admin_domain(webDriver)
+            _domain.create()
+            _domain.maintenance()
+            _domain.attach()
+            _domain.detach()
+            _domain.active()
+            _domain.remove()
+            _domain.destroy()
             
             _totalResult = saveResult(_domain._domainResult, _totalResult)        
 
