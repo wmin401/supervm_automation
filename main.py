@@ -32,7 +32,7 @@ def main():
     printLine()
     # 테스트 시작
     printLog('1. Open Browser')
-    webDriver = SuperVM_driver(headless=True)
+    webDriver = SuperVM_driver(headless=False)
     webDriver.openURL(SUPERVM_URL)
 
     printLine()
@@ -107,8 +107,8 @@ def main():
             printLine()
             printLog("*** QoS Test ***")
             _qos = admin_qos(webDriver)
-            _qos.initialize()
-            _qos.scenario1()
+            _qos.setup()
+            _qos.test()
             
             _totalResult = saveResult(_qos._qosResult, _totalResult)
 
