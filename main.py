@@ -109,7 +109,6 @@ def main():
             _qos = admin_qos(webDriver)
             _qos.initialize()
             _qos.scenario1()
-            time.sleep(5)
             
             _totalResult = saveResult(_qos._qosResult, _totalResult)
 
@@ -123,7 +122,7 @@ def main():
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
 
-    time.sleep(1)
+    time.sleep(5)
 
 if __name__ == '__main__':    
     
