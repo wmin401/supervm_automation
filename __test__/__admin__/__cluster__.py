@@ -6,15 +6,16 @@ import time
 class admin_cluster:
     def __init__(self, webDriver):
         self._clusterResult = []
-        self._clusterName = 'auto_name'
+        self._clusterName = 'auto_cluster_name'
         self.webDriver = webDriver
             
     def test(self):
         self.setup()
-        #self.create()
-        #self.CPUProfileCreate()
-        #self.changeVersion()
-        #self.remove()
+        self.create()
+        self.CPUProfileCreate()
+        self.CPUProfileRemove()
+        self.changeVersion()
+        self.remove()
 
     def setup(self):
         # 컴퓨팅 클릭
@@ -67,7 +68,13 @@ class admin_cluster:
             # 클러스터 이름 클릭            
             self.webDriver.tableSearch(self._clusterName, 1, False, nameClick = True)
             # CPU 프로파일 탭 클릭            
-            # menuSearch 기능 추가해서 해야될듯
+            time.sleep(0.3)
+            uls = self.webDriver.getDriver().find_elements_by_tag_name('ul') # 전체 ul 태그 찾기
+            lis = uls[len(uls)-1].find_elements_by_tag_name('li') # 마지막 ul 태그에서 검색
+            for i in range(len(lis)):
+                if lis[i].get_attribute('textContent') == 'CPU 프로파일' or lis[i].get_attribute('textContent') == 'CPU Profiles':
+                   lis[i].click() 
+            
             # 새로 만들기 클릭            
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
             self.webDriver.findElement('id','DetailActionPanelView_New',True)  
@@ -81,13 +88,14 @@ class admin_cluster:
             # OK 버튼 클릭
             self.webDriver.findElement('id','CpuProfilePopupView_OnSave',True)
             # 생성 확인
-            _createCheck = self.webDriver.tableSearchAll(1, 'auto_profile', 0)
+            _createCheck = self.webDriver.tableSearchAll(0, 'auto_profile', 0)
             if _createCheck == True:
                 result = PASS
                 msg = ''
             else:
                 result = FAIL
                 msg = "Failed to create cluster's CPU profile..."
+            
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
@@ -100,22 +108,21 @@ class admin_cluster:
         printLog("3) Remove CPU Profile")
         try:
             # 생성한 CPU 프로필 선택
-            self.webDriver.tableSearchAll(1, 'auto_profile', 0, True)
+            self.webDriver.tableSearchAll(0, 'auto_profile', 0, True)
             # 제거 클릭
             self.webDriver.findElement('id','DetailActionPanelView_Remove',True)
             # OK 클릭        
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
-            
-
             # 생성 확인
-            _removeCheck = self.webDriver.tableSearchAll(1, 'auto_profile', 0)
+            _removeCheck = self.webDriver.tableSearchAll(0, 'auto_profile', 0)
             if _removeCheck == True:
-                result = PASS
-                msg = ''
-            else:
                 result = FAIL
                 msg = "Failed to remove cluster's cpu profile..."
+            else:
+                result = PASS
+                msg = ''
+                
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
@@ -140,7 +147,8 @@ class admin_cluster:
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
             # 호환 버전 클릭 / 4.4 -> 4.5
-            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_versionEditor')
+            time.sleep(0.5)
+            self.webDriver.explicitlyWait(30, By.ID, 'ClusterPopupView_versionEditor')
             self.webDriver.findElement('id','ClusterPopupView_versionEditor',True)
             self.webDriver.findElement('css_selector_all','#ClusterPopupView_versionEditor > div > ul > li')[1].click()
             #ClusterPopupView_versionEditor > div > ul > li:nth-child(2)
@@ -165,15 +173,9 @@ class admin_cluster:
     def remove(self):
         printLog("3) Remove Cluster")
         try:                        
-            # 컴퓨팅
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
-            # 클러스터
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_clustersAnchor',True)
+            time.sleep(0.3)
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._clusterName, 1, True)
-            time.sleep(1)
             # 우측 추가 옵션 버튼 클릭
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button', True)            
