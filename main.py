@@ -71,8 +71,11 @@ def main():
         if DATA_CENTER_TEST == 'true':
             printLine()
             printLog("*** Data Center Test ***")
-            _data_center = admin_data_center()
-            _data_center.create(webDriver)
+            _data_center = admin_data_center(webDriver)
+            _data_center.create()
+            _data_center.remove()
+            _data_center.edit_changeStorageType()
+            _data_center.edit_changeStorageCompatibleVersion()
             
             _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
 
@@ -80,7 +83,7 @@ def main():
             printLine()
             printLog("*** Disk Test ***")
             _disk = admin_disk(webDriver)
-            #_disk.create()
+            _disk.create()
             _disk.remove()
             
             _totalResult = saveResult(_disk._diskResult, _totalResult)        
