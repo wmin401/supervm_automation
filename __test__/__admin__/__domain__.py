@@ -90,12 +90,13 @@ class admin_domain:
             self.webDriver.findElement('id','MenuView_domainsAnchor',True)
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._domainName, 2, True)
+            self.webDriver.tableSearch(self._domainName,2,True,False)
             time.sleep(1)
 
             # 도메인 이름 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            #self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            self.webDriver.tableSearch(self._domainName,2,True,True)
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
@@ -109,7 +110,7 @@ class admin_domain:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnMaintenance',True)
 
-            time.sleep(40)
+            time.sleep(60)
 
         except Exception as e:
             result = FAIL
@@ -132,12 +133,13 @@ class admin_domain:
             self.webDriver.findElement('id','MenuView_domainsAnchor',True)
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._domainName, 2, True)
+            self.webDriver.tableSearch(self._domainName,2,True,False)
             time.sleep(1)
 
             # 도메인 이름 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            #self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            self.webDriver.tableSearch(self._domainName,2,True,True)
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
@@ -175,12 +177,13 @@ class admin_domain:
             self.webDriver.findElement('id','MenuView_domainsAnchor',True)
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._domainName, 2, True)
+            self.webDriver.tableSearch(self._domainName,2,True,False)
             time.sleep(1)
 
             # 도메인 이름 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            #self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            self.webDriver.tableSearch(self._domainName,2,True,True)
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
@@ -218,12 +221,13 @@ class admin_domain:
             self.webDriver.findElement('id','MenuView_domainsAnchor',True)
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._domainName, 2, True)
+            self.webDriver.tableSearch(self._domainName,2,True,False)
             time.sleep(1)
 
             # 도메인 이름 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            #self.webDriver.findElement('css_selector','#MainStorageView_table_content_col2_row1',True)
+            self.webDriver.tableSearch(self._domainName,2,True,True)
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
@@ -257,7 +261,7 @@ class admin_domain:
             self.webDriver.findElement('id','MenuView_domainsAnchor',True)
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._domainName, 2, True)
+            self.webDriver.tableSearch(self._domainName,2,True,False)
             time.sleep(1)
 
             # 삭제 클릭
@@ -309,7 +313,7 @@ class admin_domain:
             self.webDriver.findElement('id','MenuView_domainsAnchor',True)
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._domainName, 2, True)
+            self.webDriver.tableSearch(self._domainName,2,True,False)
             time.sleep(1)
 
             # 더보기 클릭
