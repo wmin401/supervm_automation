@@ -52,12 +52,21 @@ class admin_data_center:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','DataCenterPopupView_Cancel',True)
             '''
+            _createCheck = self.webDriver.tableSearch(self._data_centerName,2)
+            if _createCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to create new Data Center...'
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._data_centerResult.append(['data center' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
     def remove(self):
         printLog('Remove data_center')
@@ -84,11 +93,21 @@ class admin_data_center:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
 
+            _removeCheck = self.webDriver.tableSearch(self._data_centerName,2)
+            if _removeCheck == True:
+                result = FAIL
+                msg = 'Failed to create new Data Center...'
+            else:
+                result = PASS
+                msg = ''
+
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._data_centerResult.append(['data center' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
     def edit_changeStorageType(self):
         printLog('Edit data_center')

@@ -73,9 +73,9 @@ def main():
             printLog("*** Data Center Test ***")
             _data_center = admin_data_center(webDriver)
             _data_center.create()
+            #_data_center.edit_changeStorageType()
+            #_data_center.edit_changeStorageCompatibleVersion()
             _data_center.remove()
-            _data_center.edit_changeStorageType()
-            _data_center.edit_changeStorageCompatibleVersion()
             
             _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
 

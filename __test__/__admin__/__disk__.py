@@ -60,12 +60,20 @@ class admin_disk:
             result = PASS
             msg = ''
             '''
+            _createCheck = self.webDriver.tableSearch(self._diskName, 1)            
+            if _createCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to create new disk..."
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._diskResult.append(['disk' + DELIM + 'create' + DELIM + result + DELIM + msg])
     
     def remove(self):
         printLog('Create Disk')
@@ -90,9 +98,18 @@ class admin_disk:
             # 디스크 삭제 OK 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnRemoveDisk > button',True)
-        
+
+            _removeCheck = self.webDriver.tableSearch(self._diskName, 1)            
+            if _removeCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to create new disk..."
+
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._diskResult.append(['disk' + DELIM + 'remove' + DELIM + result + DELIM + msg])
