@@ -43,6 +43,8 @@ class admin_disk:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector','#VmDiskPopupView_OnSave > button',True)
 
+            time.sleep(20)
+
             '''
             # 새로 만들기 취소 버튼
             webDriver.implicitlyWait(10)
@@ -60,7 +62,7 @@ class admin_disk:
             result = PASS
             msg = ''
             '''
-            _createCheck = self.webDriver.tableSearch(self._diskName, 1)            
+            _createCheck = self.webDriver.tableSearch(self._diskName, 0)            
             if _createCheck == True:
                 result = PASS
                 msg = ''
@@ -89,7 +91,7 @@ class admin_disk:
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._diskName, 0, True)
-            time.sleep(1)
+            time.sleep(5)
 
             # 제거 클릭
             self.webDriver.implicitlyWait(10)
@@ -97,14 +99,16 @@ class admin_disk:
 
             # 디스크 삭제 OK 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnRemoveDisk > button',True)
+            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemoveDisk',True)
 
-            _removeCheck = self.webDriver.tableSearch(self._diskName, 1)            
+            time.sleep(2)
+
+            _removeCheck = self.webDriver.tableSearch(self._diskName, 0)            
             if _removeCheck == True:
-                result = PASS
+                result = FAIL
                 msg = ''
             else:
-                result = FAIL
+                result = PASS
                 msg = "Failed to create new disk..."
 
         except Exception as e:
