@@ -118,6 +118,14 @@ def main():
             _qos.test()
             
             _totalResult = saveResult(_qos._qosResult, _totalResult)
+        
+        if VM_TEST == 'true':
+            printLine()
+            printLog("*** VM Test ***")
+            _vm = vm_vm(webDriver)
+            _vm.create()
+            
+            _totalResult = saveResult(_vm._vmResult, _totalResult)
 
 
     elif PORTAL_TYPE == 'vm':
