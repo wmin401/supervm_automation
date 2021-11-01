@@ -11,10 +11,15 @@ class admin_cluster:
             
     def test(self):
         self.setup()
+        time.sleep(0.3)
         self.create()
+        time.sleep(0.3)
         self.CPUProfileCreate()
+        time.sleep(0.3)
         self.CPUProfileRemove()
+        time.sleep(0.3)
         self.changeVersion()
+        time.sleep(0.3)
         self.remove()
 
     def setup(self):
