@@ -475,9 +475,9 @@ class admin_domain:
 
             time.sleep(5)
                     
-            _createCheck = self.webDriver.tableSearch(self._domainNFSName, 2)
+            _removeCheck = self.webDriver.tableSearch(self._domainNFSName, 2)
 
-            if _createCheck == True:
+            if _removeCheck == True:
                 result = FAIL
                 msg = 'Failed to create new domain...'
             else:

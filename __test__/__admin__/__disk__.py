@@ -82,7 +82,7 @@ class admin_disk:
         self._diskResult.append(['disk' + DELIM + 'create' + DELIM + result + DELIM + msg])
     
     def remove(self):
-        printLog('Create Disk')
+        printLog('remove Disk')
         
         try:
             # 스토리지
