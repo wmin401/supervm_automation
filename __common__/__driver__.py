@@ -28,7 +28,7 @@ class SuperVM_driver:
             #options.add_argument('window-size=1920x1080')
             options.add_argument('--no-sandbox')
             #options.add_argument("disable-gpu")
-            options.add_argument("--disalbe-dev-shm-usage")
+            options.add_argument("--disable-dev-shm-usage")
         try:
             if self.BROWSER_NAME == 'firefox':
                 self.driver = webdriver.Chrome('driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/chromedriver.exe',options=options)
