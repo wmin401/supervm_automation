@@ -1,3 +1,4 @@
+from time import sleep
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
@@ -10,6 +11,10 @@ class admin_host:
         self._hostIP = 'hypervm31.tmax.dom'
         self._hostPW = 'asdf'
         self.webDriver = webDriver
+    
+    def test(self):
+        self.create()
+        self.remove()
         
     def create(self):
         printLog("1) Create Host")
@@ -50,6 +55,8 @@ class admin_host:
             # 전원 관리 설정 OK 버튼
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','DefaultConfirmationPopupView_OnSaveInternalNotFromApprove',True)
+
+            time.sleep(180)
             
             '''
             # 취소 버튼

@@ -10,6 +10,12 @@ class admin_data_center:
         self._data_centerName = 'TEST'
         self.webDriver = webDriver
         
+    def test(self):
+        self.create()
+        self.edit_changeStorageType()
+        self.edit_changeStorageCompatibleVersion()
+        self.remove()
+        
     def create(self):
         printLog('Create data_center')
         
@@ -92,6 +98,8 @@ class admin_data_center:
             # 새로운 데이터 센터 OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)
+
+            time.sleep(1)
 
             _removeCheck = self.webDriver.tableSearch(self._data_centerName,2)
             if _removeCheck == True:

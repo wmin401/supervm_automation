@@ -81,6 +81,8 @@ class vm_vm:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupView_OnSave',True)
 
+            time.sleep(1)
+
             _createCheck = self.webDriver.tableSearch(self._vmName, 2)            
             if _createCheck == True:
                 result = PASS

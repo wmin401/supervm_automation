@@ -10,6 +10,10 @@ class admin_disk:
         self._diskSize = '10'
         self._diskName = 'TEST'
         self.webDriver = webDriver
+
+    def test(self):
+        self.create()
+        self.remove()
         
     def create(self):
         printLog('Create Disk')
