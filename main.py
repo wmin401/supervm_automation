@@ -72,10 +72,7 @@ def main():
             printLine()
             printLog("*** Data Center Test ***")
             _data_center = admin_data_center(webDriver)
-            _data_center.create()
-            _data_center.edit_changeStorageType()
-            _data_center.edit_changeStorageCompatibleVersion()
-            _data_center.remove()
+            _data_center.test()
             
             _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
 
@@ -83,33 +80,25 @@ def main():
             printLine()
             printLog("*** Disk Test ***")
             _disk = admin_disk(webDriver)
-            _disk.create()
-            _disk.remove()
+            _disk.test()
             
-            _totalResult = saveResult(_disk._diskResult, _totalResult)        
-        
-        if DOMAIN_TEST == 'true':
-            printLine()
-            printLog("*** Domain Test ***")
-            _domain = admin_domain(webDriver)
-            _domain.create()
-            _domain.maintenance()
-            _domain.attach()
-            _domain.detach()
-            _domain.active()
-            _domain.remove()
-            _domain.destroy()
-            
-            _totalResult = saveResult(_domain._domainResult, _totalResult)        
+            _totalResult = saveResult(_disk._diskResult, _totalResult)
 
         if HOST_TEST == 'true':
             printLine()
             printLog("*** Host Test ***")
             _host = admin_host(webDriver)
-            #_host.create()
-            _host.remove()
+            _host.test()
             
-            _totalResult = saveResult(_host._hostResult, _totalResult)
+            _totalResult = saveResult(_host._hostResult, _totalResult)            
+        
+        if DOMAIN_TEST == 'true':
+            printLine()
+            printLog("*** Domain Test ***")
+            _domain = admin_domain(webDriver)
+            _domain.test()
+            
+            _totalResult = saveResult(_domain._domainResult, _totalResult)        
             
         if QOS_TEST == 'true':
             printLine()
