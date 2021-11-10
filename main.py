@@ -123,10 +123,12 @@ def main():
         test_vm_vm = vm_vm()
         test_vm_vm.create()
 
+    printLog('6. Save Result')
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
 
     time.sleep(5)
+    printLog('7. Test finished')
 
 if __name__ == '__main__':    
     
