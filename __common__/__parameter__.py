@@ -7,7 +7,7 @@ SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
 ## 브라우저 정보
 BROWSER_NAME = 'firefox'
 BROWSER_VERSION = '0.30.0'
-BROWSER_BIT = 60 ## 32비트 또는 64비트 ## firefox만 사용
+BROWSER_BIT = 64 ## 32비트 또는 64비트 ## firefox만 사용
 
 ## 로그인 정보
 USER_ID = 'admin'
