@@ -18,8 +18,8 @@ PORTAL_TYPE = 'admin'
 
 # 테스트 실행여부
 CLUSTER_TEST = 'false'
-DATA_CENTER_TEST = 'true'
-DISK_TEST = 'true'
+DATA_CENTER_TEST = 'false'
+DISK_TEST = 'false'
 HOST_TEST = 'false'
 DOMAIN_TEST = 'false'
 QOS_TEST = 'false'

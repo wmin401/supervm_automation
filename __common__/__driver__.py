@@ -36,6 +36,7 @@ class SuperVM_driver:
             #     self.driver = webdriver.Firefox(executable_path='driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe')
             if self.BROWSER_NAME == 'chrome':
                 self.driver = webdriver.Chrome('driver/chrome/' + str(self.BROWSER_VERSION) + '/chromedriver.exe',options=options)
+                print('driver/chrome/' + str(self.BROWSER_VERSION) + '/chromedriver.exe')
             printLog("* Your driver is " + self.BROWSER_NAME + ' and version is ' + self.BROWSER_VERSION)
         except Exception as e:
             printLog("No have any driver for " + self.BROWSER_NAME + " !!!")
