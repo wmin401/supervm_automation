@@ -139,6 +139,10 @@ def main():
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
 
+    # 추가 예정
+    # junit builder
+    # 테스트링크 연동(젠킨스)
+
     time.sleep(5)
     printLog('7. Test finished')
 
