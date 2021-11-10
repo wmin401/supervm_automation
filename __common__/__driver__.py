@@ -30,11 +30,11 @@ class SuperVM_driver:
             #options.add_argument("disable-gpu")
             options.add_argument("--disable-dev-shm-usage")
         try:
-            if self.BROWSER_NAME == 'firefox':
-                #print('driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe')
-                #self.driver = webdriver.('driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe',options=options)
-                self.driver = webdriver.Firefox(executable_path='driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe')
-            elif self.BROWSER_NAME == 'chrome':
+            # if self.BROWSER_NAME == 'firefox':
+            #     #print('driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe')
+            #     #self.driver = webdriver.('driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe',options=options)
+            #     self.driver = webdriver.Firefox(executable_path='driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe')
+            if self.BROWSER_NAME == 'chrome':
                 self.driver = webdriver.Chrome('driver/chrome/' + str(self.BROWSER_VERSION) + '/chromedriver.exe',options=options)
             printLog("* Your driver is " + self.BROWSER_NAME + ' and version is ' + self.BROWSER_VERSION)
         except Exception as e:
