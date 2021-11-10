@@ -32,9 +32,21 @@ def main():
     printLine()
     # 테스트 시작
     printLog('1. Open Browser')
-    webDriver = SuperVM_driver(headless=True)
+    webDriver = SuperVM_driver(headless=IF_HEADLESS) ## 젠킨스에서는 헤드리스 모드 사용 금지
     webDriver.openURL(SUPERVM_URL)
 
+    time.sleep(2)
+    # 비공개 -> 안전하지 않음 이동(selenium에서는 보안인증이 처리가 되어있지 않음) 
+    # CA 인증서 등록 안했을 경우 -> jenkins 에서는 CA 인증서 등록을 안했기 때문에 해당 기능 추가
+
+    if SECURE == 'false':
+        webDriver.explicitlyWait(10, By.ID, 'details-button')
+        webDriver.findElement('id', 'details-button', True)
+
+        webDriver.explicitlyWait(10, By.ID, 'proceed-link')
+        webDriver.findElement('id', 'proceed-link', True)
+
+    time.sleep(2)
     printLine()
     printLog("2. Print SuperVM Version")
     # supervm version 출력

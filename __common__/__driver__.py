@@ -14,7 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class SuperVM_driver:
 
-    def __init__(self, headless = False):
+    def __init__(self, headless = 'False'):
         self.BROWSER_NAME = BROWSER_NAME.lower()
         self.BROWSER_VERSION = str(BROWSER_VERSION)
         self.BROWSER_BIT = str(BROWSER_BIT)
@@ -23,7 +23,7 @@ class SuperVM_driver:
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
 
-        if self.headless == True:
+        if self.headless == 'true':
             options.add_argument('--headless')
             #options.add_argument('window-size=1920x1080')
             options.add_argument('--no-sandbox')
@@ -36,7 +36,6 @@ class SuperVM_driver:
             #     self.driver = webdriver.Firefox(executable_path='driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe')
             if self.BROWSER_NAME == 'chrome':
                 self.driver = webdriver.Chrome('driver/chrome/' + str(self.BROWSER_VERSION) + '/chromedriver.exe',options=options)
-                print('driver/chrome/' + str(self.BROWSER_VERSION) + '/chromedriver.exe')
             printLog("* Your driver is " + self.BROWSER_NAME + ' and version is ' + self.BROWSER_VERSION)
         except Exception as e:
             printLog("No have any driver for " + self.BROWSER_NAME + " !!!")
