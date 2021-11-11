@@ -17,7 +17,7 @@ class admin_domain:
         self._domainCEPHPath = '192.168.17.31:6789:/volumes/_nogroup/tim1/e326d8ed-5092-4249-86cb-cdc8ad22394b'
         self._domainCEPHvfsType = 'ceph'
         self._domainCEPHAuth = 'name=admin,secret=AQDHR4JhTcz2CxAAG1TIoppqJclaMWyDYO1v0A=='
-#############
+
     def test(self):
         self.create('nfs')
         self.maintenance('nfs')
