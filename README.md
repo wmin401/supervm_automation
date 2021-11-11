@@ -40,15 +40,16 @@ python main.py
     ```
     self.tl.junitBuilder('{Custom Field 값}', 결과값, 메세지)
     ```
-  3) 빌드시 junit_'{Custom Field 값}''xml 파일이 생성됨
+  3) Jenkins에서 빌드시 junit_'{Custom Field 값}''xml 파일이 생성됨
     ```
     <testsuite>
     <?xml version='1.0' encoding='utf-8'?>
         <testcase classname="{Custom Field 값}" name="{Custom Field 값}" status="passed" />
     </testsuite>
     ```
+  4) 테스트링크 Custom Field와 xml 파일의 classname이 일치하면 결과 업데이트
+  
 ## 코드 작성 주의사항
-
 ### 명명규칙
 * 함수명 : `lowerCamelCase`
 * 변수명 : `_lowerCamelCase`
