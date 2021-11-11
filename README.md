@@ -44,7 +44,7 @@ python main.py
     ```
     <testsuite>
     <?xml version='1.0' encoding='utf-8'?>
-        <testcase classname="{Custom Field 값}" name="{Custom Field 값}" status="passed" />
+        <testcase classname="{Custom Field 값}" name="{Custom Field 값}" status="결과값(소문자+ed)" />
     </testsuite>
     ```
   4) 테스트링크 Custom Field와 xml 파일의 classname이 일치하면 결과 업데이트
