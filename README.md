@@ -56,3 +56,4 @@ python main.py
 * 전역상수 : `UPPER`
 * 소스코드 폴더명 : `__lower__`
 * 소스코드 파일명 : `__lower__.py`
+* Custom Field명 : ``UPPER_TEST_NAME``
