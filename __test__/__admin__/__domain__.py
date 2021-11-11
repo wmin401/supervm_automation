@@ -1,12 +1,14 @@
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
+from __common__.__testlink__ import *
 import time
 
 class admin_domain:
     def __init__(self, webDriver):
         printLog("* 도메인 테스트 시작")
         self.webDriver = webDriver
+        self.tl = testlink()
         self._domainResult = []
         self._domainNFSName = 'NFS-31'
         self._domainNFSPath = '192.168.17.31:/nfs'
@@ -30,17 +32,17 @@ class admin_domain:
         self.maintenance('nfs')
         self.destroy('nfs')
 
-        self.create('ceph')
-        self.maintenance('ceph')
-        self.active('ceph')
-        self.maintenance('ceph')
-        self.detach('ceph')
-        self.attach('ceph')
-        self.maintenance('ceph')
-        self.detach('ceph')
-        self.remove('ceph')
-        self.create('ceph')
-        self.maintenance('ceph')
+        #self.create('ceph')
+        #self.maintenance('ceph')
+        #self.active('ceph')
+        #self.maintenance('ceph')
+        #self.detach('ceph')
+        #self.attach('ceph')
+        #self.maintenance('ceph')
+        #self.detach('ceph')
+        #self.remove('ceph')
+        #self.create('ceph')
+        #self.maintenance('ceph')
         #self.destroy('ceph')
         
     def create(self, storageType):
