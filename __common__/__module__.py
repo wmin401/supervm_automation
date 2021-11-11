@@ -35,5 +35,4 @@ def randomString(num=8):
     string_ = ''
     for i in range(num):
         string_ += str(random.choice(string.ascii_letters))
-
     return string_
