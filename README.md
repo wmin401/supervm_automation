@@ -22,6 +22,9 @@ git clone http://192.168.105.140/cloudqa/supervm_automation.git
 cd supervm_automation
 python main.py
 ```
+5) 테스트링크 연동방법
+  * 테스트링크 접속(http://192.168.105.140:8081/testlink/index.php)
+
 ## 코드 작성 주의사항
 
 ### 명명규칙
