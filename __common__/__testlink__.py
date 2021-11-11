@@ -38,11 +38,11 @@ class testlink:
                 return
 
 
-# junit-커스텀필드명.xml 파일 
-'''
-<?xml version='1.0' encoding='utf-8'?>
-<testsuite><testcase classname="첫번째 매개변수" name="첫번째 매개변수" status="두번째 매개변수" />세번째 매개변수</testsuite>
-'''
-# 테스트링크의 커스텀필드(SupverVM_Automation)와 classname이 일치하여야함)
-# 입력 예시
-# self.tl.junitBuilder('CLUSTER_REMOVE', result, msg) #클래스이름, 결과, 메세지
+### 연동 방법
+## 테스트링크
+# 1) 테스트케이스의 커스텀필드(SuperVM_Automation)에 클래스 이름을 입력
+# 2) 테스트케이스의 Execution type을 Automated로 변경
+## 소스 코드
+# 1) testlink 클래스 생성(self.tl = testlink())
+# 2) junitBuilder 함수에 입력한 클래스 이름을 매개변수로 생성 
+# 생성된 junit파일이 테스트링크로 연결됨(junit 내부의 클래스이름과 테스트링크의 클래스이름이 일치하여야 한다.)
