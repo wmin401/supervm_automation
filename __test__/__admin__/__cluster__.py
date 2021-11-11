@@ -3,11 +3,15 @@ from __common__.__module__ import *
 from selenium.webdriver.common.by import By
 import time
 
+from __common__.__testlink__ import testlink
+
 class admin_cluster:
     def __init__(self, webDriver):
         self._clusterResult = []
         self._clusterName = 'auto_cluster_name'
         self.webDriver = webDriver
+
+        self.tl = testlink()
             
     def test(self):
         self.setup()
@@ -66,6 +70,8 @@ class admin_cluster:
             printLog("* MESSAGE : " + msg)
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'create' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('CLUSTER_CREATE', result, msg)
     
     def CPUProfileCreate(self):
         printLog("2) Create CPU Profile")
@@ -109,6 +115,8 @@ class admin_cluster:
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'create cpu profile' + DELIM + result + DELIM + msg])
 
+        self.tl.junitBuilder('CLUSTER_CREATE_CPU_PROFILE', result, msg)
+
     def CPUProfileRemove(self):
         printLog("3) Remove CPU Profile")
         try:
@@ -135,6 +143,8 @@ class admin_cluster:
             printLog("* MESSAGE : " + msg)
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'remove cpu profile' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('CLUSTER_REMOVE_CPU_PROFILE', result, msg)
 
     def changeVersion(self):
         printLog("4) Change Cluster Compatibility Version")
@@ -174,6 +184,8 @@ class admin_cluster:
             printLog("* MESSAGE : " + msg)
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'change version' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('CLUSTER_CHANGE_VERSION', result, msg)
 
     def remove(self):
         printLog("3) Remove Cluster")
@@ -205,3 +217,5 @@ class admin_cluster:
             printLog("* MESSAGE : " + msg)
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'remove' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('CLUSTER_REMOVE', result, msg)
