@@ -22,9 +22,24 @@ git clone http://192.168.105.140/cloudqa/supervm_automation.git
 cd supervm_automation
 python main.py
 ```
-5) 테스트링크 연동방법
-  * 테스트링크 접속(http://192.168.105.140:8081/testlink/index.php)
-
+## TestLink 연동
+* TestLink
+  1) 테스트링크 접속(http://192.168.105.140:8081/testlink/index.php)
+  2) 자동화 테스트 플랜(automation)에 자동화 테스트케이스 추가
+  3) 추가한 테스트 케이스의 Custom Field(SuperVM_Automation)값 추가
+  4) 추가한 테스트 케이스의 Execution Type을 Manual -> Automated 로 수정
+* 소스코드
+  1) testlink 클래스 생성
+  ```
+  from __common__.__testlink__ import *
+  ...
+  self.tl = testlink()
+  ...
+  ```
+  2) junitBuilder 함수 작성
+  ```
+  self.tl.junitBuilder('Custom Field 값', 결과값, 메세지)
+  ```
 ## 코드 작성 주의사항
 
 ### 명명규칙
