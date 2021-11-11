@@ -1,4 +1,6 @@
 import os
+import string
+import random
 
 from __common__.__parameter__ import *
 
@@ -28,3 +30,8 @@ def makeFolder(path_):
 def printLine():
     print('---------------------------------------------------------')
 
+
+def randomString(num=8):
+    stinrg_ = ''
+    for i in range(num):
+        stinrg_ += str(random.choice(string.ascii_letters))

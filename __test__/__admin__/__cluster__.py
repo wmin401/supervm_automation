@@ -1,3 +1,7 @@
+import time
+import string
+import random
+
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
@@ -8,7 +12,7 @@ from __common__.__testlink__ import testlink
 class admin_cluster:
     def __init__(self, webDriver):
         self._clusterResult = []
-        self._clusterName = 'auto_cluster_name'
+        self._clusterName = 'auto_cluster_name'+randomString()
         self.webDriver = webDriver
 
         self.tl = testlink()

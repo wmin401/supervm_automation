@@ -11,9 +11,7 @@ class admin_qos:
     def __init__(self, webDriver):
         self._qosResult = []
         self.webDriver = webDriver
-        self._QoSName = 'auto_QoS_'
-        for i in range(8):
-            self._QoSName += str(random.choice(string.ascii_letters))
+        self._QoSName = 'auto_QoS_'+randomString()
         self._QoSDescription = 'automation QoS Test'
         self.tl = testlink()
           
