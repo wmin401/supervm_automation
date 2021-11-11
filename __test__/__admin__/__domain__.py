@@ -157,6 +157,8 @@ class admin_domain:
         printLog("* RESULT : " + result)
         self._domainResult.append(['domain' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])
 
+        self.tl.junitBuilder('DOMAIN_CREATE', result, msg)
+
     def maintenance(self,storageType):
         printLog('Domain maintenance mode')
         try:
@@ -431,6 +433,8 @@ class admin_domain:
         printLog("* RESULT : " + result)
         self._domainResult.append(['domain' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])
 
+        self.tl.junitBuilder('DOMAIN_REMOVE', result, msg)
+
 
     def destroy(self, storageType):
         printLog('Destroy Domain')
@@ -494,3 +498,5 @@ class admin_domain:
 
         printLog("* RESULT : " + result)
         self._domainResult.append(['domain' + DELIM + 'create&cancel' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('DOMAIN_DESTROY', result, msg)
