@@ -12,7 +12,7 @@ from __common__.__testlink__ import testlink
 class admin_cluster:
     def __init__(self, webDriver):
         self._clusterResult = []
-        self._clusterName = 'auto_cluster_name'+randomString()
+        self._clusterName = 'auto_cluster_'+randomString()
         self.webDriver = webDriver
 
         self.tl = testlink()
@@ -21,7 +21,7 @@ class admin_cluster:
         self.setup()
         time.sleep(0.3)
         self.create()
-        time.sleep(0.3)
+        time.sleep(1)
         self.CPUProfileCreate()
         time.sleep(0.3)
         self.CPUProfileRemove()
