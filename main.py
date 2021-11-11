@@ -134,7 +134,7 @@ def main():
         printLog("5.1 VM Create")
         test_vm_vm = vm_vm()
         test_vm_vm.create()
-
+        
     printLog('6. Save Result')
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요

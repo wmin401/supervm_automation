@@ -46,7 +46,7 @@ else: # 로컬
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
-    QOS_TEST = 'false'
+    QOS_TEST = 'true'
 
     VM_TEST = 'false'
 
@@ -60,5 +60,7 @@ TMP_RESULT_FILE = 'tmp_SuperVM_Result_%04d%02d%02d_%02d%02d%02d.csv'%(now.tm_yea
 LOG_FILE = RESULT_PATH + '/log/SuperVM_Automation_log_%04d%02d%02d_%02d%02d%02d.log'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 DELIM = ';'
 PASS = 'PASS'
+STOP = 'STOP'
+SKIP = 'SKIP'
 FAIL = 'FAIL'
 BLOCK = 'BLOCK'

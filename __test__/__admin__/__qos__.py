@@ -1,14 +1,21 @@
+import random
+import string
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
+
+from __common__.__testlink__ import *
 
 
 class admin_qos:
     def __init__(self, webDriver):
         self._qosResult = []
         self.webDriver = webDriver
-        self._QoSName = 'auto_QoS'
+        self._QoSName = 'auto_QoS_'
+        for i in range(8):
+            self._QoSName += str(random.choice(string.ascii_letters))
         self._QoSDescription = 'automation QoS Test'
+        self.tl = testlink()
           
     def test(self):
         self.setup()
@@ -17,13 +24,13 @@ class admin_qos:
         time.sleep(0.3)
         self.frame('remove', 0, 'storage', lambda: self.remove(0))
         # 가상머신 네트워크 QoS
-        self.frame('create', 1, 'vm network', self.vmNetworkCreate)
+        self.frame('create', 1, 'vm_network', self.vmNetworkCreate)
         time.sleep(0.3)
-        self.frame('remove', 1, 'vm network', lambda: self.remove(1))
+        self.frame('remove', 1, 'vm_network', lambda: self.remove(1))
         # 호스트 네트워크 QoS
-        self.frame('create', 2, 'host network', self.hostNetworkCreate)
+        self.frame('create', 2, 'host_network', self.hostNetworkCreate)
         time.sleep(0.3)
-        self.frame('remove', 2, 'host network', lambda: self.remove(2))
+        self.frame('remove', 2, 'host_network', lambda: self.remove(2))
         # CPU QoS
         self.frame('create', 3, 'CPU', self.CPUCreate)
         time.sleep(0.3)
@@ -91,6 +98,8 @@ class admin_qos:
         # 결과 저장
         printLog("* RESULT : " + result)
         self._qosResult.append(['QoS' + DELIM + '%s %s'%(menu, action) + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('QOS_%s_%s'%(menu.upper(),action.upper()),result, msg)
 
     def storageCreate(self):
         # 새로 만들기 클릭
