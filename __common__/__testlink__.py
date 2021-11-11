@@ -35,3 +35,13 @@ class testlink:
         except Exception as e:            
             print("*** Junit Build Exception : %s"%(e))
             return
+
+
+# junit-커스텀필드명.xml 파일 
+'''
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite><testcase classname="첫번째 매개변수" name="첫번째 매개변수" status="두번째 매개변수" />세번째 매개변수</testsuite>
+'''
+# 테스트링크의 커스텀필드(SupverVM_Automation)와 classname이 일치하여야함)
+# 입력 예시
+# self.tl.junitBuilder('CLUSTER_REMOVE', result, msg) #클래스이름, 결과, 메세지
