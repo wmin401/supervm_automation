@@ -32,6 +32,8 @@ def printLine():
 
 
 def randomString(num=8):
-    stinrg_ = ''
+    string_ = ''
     for i in range(num):
-        stinrg_ += str(random.choice(string.ascii_letters))
+        string_ += str(random.choice(string.ascii_letters))
+
+    return string_
