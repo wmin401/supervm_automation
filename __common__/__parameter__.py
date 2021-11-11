@@ -42,11 +42,11 @@ else: # 로컬
 
     # 테스트 실행여부
     CLUSTER_TEST = 'false'
-    DATA_CENTER_TEST = 'false'
+    DATA_CENTER_TEST = 'true'
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
-    QOS_TEST = 'true'
+    QOS_TEST = 'false'
 
     VM_TEST = 'false'
 

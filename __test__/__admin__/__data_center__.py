@@ -2,6 +2,7 @@ from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
 import time
+from __common__.__testlink__ import *
 
 class admin_data_center:
     def __init__(self, webDriver):
@@ -9,6 +10,7 @@ class admin_data_center:
         self._data_centerResult = []
         self._data_centerName = 'TEST'
         self.webDriver = webDriver
+        self.tl = testlink()
         
     def test(self):
         self.create()
@@ -74,6 +76,8 @@ class admin_data_center:
         printLog("* RESULT : " + result)
         self._data_centerResult.append(['data center' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
+        self.tl.junitBuilder('DATA_CENTER_CREATE', result, msg)
+
     def remove(self):
         printLog('Remove data_center')
         
@@ -117,8 +121,10 @@ class admin_data_center:
         printLog("* RESULT : " + result)
         self._data_centerResult.append(['data center' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
+        self.tl.junitBuilder('DATA_CENTER_REMOVE', result, msg)
+
     def edit_changeStorageType(self):
-        printLog('Edit data_center')
+        printLog('Edit type data_center')
         
         try:
             # 컴퓨팅
@@ -148,14 +154,26 @@ class admin_data_center:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','DataCenterPopupView_OnSave',True)
 
+            '''
+            _removeCheck = self.webDriver.tableSearch(self._data_centerName,2)
+            if _removeCheck == True:
+                result = FAIL
+                msg = 'Failed to create new Data Center...'
+            else:
+                result = PASS
+                msg = ''
+            '''
+
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("* MESSAGE : " + msg)
 
+        #self.tl.junitBuilder('DATA_CENTER_EDIT_TYPE', result, msg)
+
     def edit_changeStorageCompatibleVersion(self):
-        printLog('Edit data_center')
+        printLog('Edit version data_center')
         
         try:
             # 컴퓨팅
@@ -194,3 +212,5 @@ class admin_data_center:
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("* MESSAGE : " + msg)
+        
+        #self.tl.junitBuilder('DATA_CENTER_EDIT_VERSION', result, msg)
