@@ -12,6 +12,8 @@ class testlink:
         if not os.path.isdir(RESULT_PATH + '/'+ self.junitsFolder):
             os.makedirs(RESULT_PATH + '/'+ self.junitsFolder)
 
+        self.junitBuilder('SAMPLE', PASS, 'Sample xml file for jenkins')
+
     def junitBuilder(self, *args):
         ## 젠킨스 에서만 생성되도록 변경
         if IN_JENKINS == 'true':
@@ -29,7 +31,7 @@ class testlink:
 
             ## block인 경우엔 testNG 파일이 필요한 상태
             tree = ElementTree(testsuite)
-            filePath = RESULT_PATH + '/' + self.junitsFolder+ '/junit-'+str(args[0])+'.xml'
+            filePath = RESULT_PATH + '/' + self.junitsFolder + '/junit-'+str(args[0])+'.xml'
             try:
                 tree.write(filePath,encoding="utf-8", xml_declaration=True)
                 print("* junit file is successfully created!")
