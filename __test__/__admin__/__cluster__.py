@@ -18,8 +18,6 @@ class admin_cluster:
         self.tl = testlink()
             
     def test(self):
-        self.setup()
-        time.sleep(0.3)
         self.create()
         time.sleep(1)
         self.CPUProfileCreate()
@@ -27,6 +25,12 @@ class admin_cluster:
         self.CPUProfileRemove()
         time.sleep(0.3)
         self.changeVersion()
+        time.sleep(0.3)
+        self.scheduling()
+        time.sleep(0.3)
+        self.MoMUpdate()
+        time.sleep(0.3)
+        self.memoryOptimization()
         time.sleep(0.3)
         self.remove()
 
@@ -40,8 +44,10 @@ class admin_cluster:
         self.webDriver.findElement('id','MenuView_clustersAnchor',True)
 
     def create(self):
-        printLog('1) Create Cluster')        
+        printLog('- Create Cluster')        
         try:
+            self.setup() # 컴퓨팅 - 클러스터
+            time.sleep(0.3)
             # 새로 만들기
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
             self.webDriver.findElement('id','ActionPanelView_New',True)
@@ -78,9 +84,12 @@ class admin_cluster:
         self.tl.junitBuilder('CLUSTER_CREATE', result, msg)
     
     def CPUProfileCreate(self):
-        printLog("2) Create CPU Profile")
+        printLog("- Create CPU Profile")
         try:
-            # 클러스터 이름 클릭            
+            self.setup() # 컴퓨팅 - 클러스터
+            time.sleep(0.3)
+            
+            # 클러스터 이름 클릭                  
             self.webDriver.tableSearch(self._clusterName, 1, False, nameClick = True)
             # CPU 프로파일 탭 클릭            
             time.sleep(0.3)
@@ -122,8 +131,10 @@ class admin_cluster:
         self.tl.junitBuilder('CLUSTER_CREATE_CPU_PROFILE', result, msg)
 
     def CPUProfileRemove(self):
-        printLog("3) Remove CPU Profile")
+        printLog("- Remove CPU Profile")
         try:
+            self.setup() # 컴퓨팅 - 클러스터
+            time.sleep(0.3)
             # 생성한 CPU 프로필 선택
             self.webDriver.tableSearchAll(0, 'auto_profile', 0, True)
             # 제거 클릭
@@ -151,14 +162,10 @@ class admin_cluster:
         self.tl.junitBuilder('CLUSTER_REMOVE_CPU_PROFILE', result, msg)
 
     def changeVersion(self):
-        printLog("4) Change Cluster Compatibility Version")
+        printLog("- Change Cluster Compatibility Version")
         try:
-            # 컴퓨팅
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
-            # 클러스터
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_clustersAnchor',True)     
+            self.setup() # 컴퓨팅 - 클러스터
+            time.sleep(0.3)   
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.tableSearch(self._clusterName, 1, True)            
@@ -191,9 +198,113 @@ class admin_cluster:
         
         self.tl.junitBuilder('CLUSTER_CHANGE_VERSION', result, msg)
 
+    def scheduling(self):
+        printLog("- Sheduling Update")
+        try:    
+            self.setup() # 컴퓨팅 - 클러스터
+            time.sleep(0.3)
+            # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._clusterName, 1, True)            
+            # 우측 편집 버튼 클릭
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('id','ActionPanelView_Edit', True)
+            time.sleep(0.5)
+            # 스케줄링 정책 탭 클릭
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('css_selector','body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(4)', True)            
+            # 스케줄링 선택 - power_saving
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('id','ClusterPopupView_clusterPolicyEditor', True)
+            self.webDriver.findElement('css_selector_all','#ClusterPopupView_clusterPolicyEditor > div > ul > li')[0].click()        
+            # OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
+
+            result = PASS
+            msg = ''
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._clusterResult.append(['cluster' + DELIM + 'scheduling' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('CLUSTER_SCHEDULING', result, msg)
+
+    def MoMUpdate(self):
+        printLog("- MoM Update")
+        try:    
+            self.setup() # 컴퓨팅 - 클러스터
+            time.sleep(0.3)   
+            # table 내부에 생성한 클러스터의 이름이 있을 경우 이름 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._clusterName, 1, rowClick=False, nameClick=True)            
+            # 호스트탭 클릭            
+            time.sleep(0.3)
+            uls = self.webDriver.getDriver().find_elements_by_tag_name('ul') # 전체 ul 태그 찾기
+            lis = uls[len(uls)-1].find_elements_by_tag_name('li') # 마지막 ul 태그에서 검색
+            for i in range(len(lis)):
+                if lis[i].get_attribute('textContent') == '호스트' or lis[i].get_attribute('textContent') == 'Hosts':
+                   lis[i].click() 
+            # MoM 정책 동기화 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','DetailActionPanelView_updateMomPolicyCommand',True)  
+
+            result = PASS
+            msg = ''
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._clusterResult.append(['cluster' + DELIM + 'MoM Update' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('CLUSTER_MOM_UPDATE', result, msg)
+
+    def memoryOptimization(self):
+        printLog("- Memory Optimization")
+        try:      
+            self.setup() # 컴퓨팅 - 클러스터
+            time.sleep(0.3)
+            # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._clusterName, 1, True)            
+            # 우측 편집 버튼 클릭
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('id','ActionPanelView_Edit', True)
+            time.sleep(0.5)
+            # 최적화 탭 클릭
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('css_selector','body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
+            # 데스크톱용 로드 클릭
+            self.webDriver.implicitlyWait(10)            
+            self.webDriver.findElement('id','ClusterPopupView_optimizationForDesktopEditor', True)
+            # OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
+            
+            result = PASS
+            msg = ''
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._clusterResult.append(['cluster' + DELIM + 'memory optimize' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('CLUSTER_MEMORY_OPTIMIZATION', result, msg)
+
     def remove(self):
-        printLog("3) Remove Cluster")
-        try:                        
+        printLog("- Remove Cluster")
+        try:               
+            self.setup() # 컴퓨팅 - 클러스터
             time.sleep(0.3)
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._clusterName, 1, True)
