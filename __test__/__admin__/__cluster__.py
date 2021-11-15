@@ -26,12 +26,12 @@ class admin_cluster:
         time.sleep(0.3)
         self.changeVersion()
         time.sleep(0.3)
-        self.scheduling()
-        time.sleep(0.3)
-        self.MoMUpdate()
-        time.sleep(0.3)
-        self.memoryOptimization()
-        time.sleep(0.3)
+        # self.scheduling()
+        # time.sleep(0.3)
+        # self.MoMUpdate()
+        # time.sleep(0.3)
+        # self.memoryOptimization()
+        # time.sleep(0.3)
         self.remove()
 
     def setup(self):
