@@ -192,7 +192,15 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)        
+            # 저장 불가능시
+            time.sleep(0.3)
+            self.webDriver.findElement('css_selector', 'body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
+            # 취소 클릭
+            time.sleep(0.3)
+            self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
+
+
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'change version' + DELIM + result + DELIM + msg])
         
@@ -228,7 +236,13 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)        
+            # 저장 불가능시
+            time.sleep(0.3)
+            self.webDriver.findElement('css_selector', 'body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
+            # 취소 클릭
+            time.sleep(0.3)
+            self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'scheduling' + DELIM + result + DELIM + msg])
 
@@ -260,7 +274,13 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)        
+            # 저장 불가능시
+            time.sleep(0.3)
+            self.webDriver.findElement('css_selector', 'body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
+            # 취소 클릭
+            time.sleep(0.3)
+            self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'MoM Update' + DELIM + result + DELIM + msg])
 
@@ -295,7 +315,13 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+            printLog("* MESSAGE : " + msg)        
+            # 저장 불가능시
+            time.sleep(0.3)
+            self.webDriver.findElement('css_selector', 'body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
+            # 취소 클릭
+            time.sleep(0.3)
+            self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
         printLog("* RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'memory optimize' + DELIM + result + DELIM + msg])
 
