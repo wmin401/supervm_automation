@@ -49,7 +49,7 @@ def main():
     portalLogin(webDriver)
 
     printLine()
-    printLog("4. Access Admin Portal")
+    printLog("4. Access Portal")
     accessAdminPortal(webDriver)
         
     printLine()
