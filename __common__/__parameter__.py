@@ -21,6 +21,8 @@ if IN_JENKINS == 'true':
     QOS_TEST = os.getenv('QOS_TEST')
     VM_TEST = os.getenv('VM_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
+    
+    BUILD_ID = os.getenv('BUILD_ID')
 
 else: # 로컬
     SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
@@ -38,15 +40,16 @@ else: # 로컬
     USER_PW = 'asdf'
 
     # 테스트 실행여부
-    CLUSTER_TEST = 'true'
+    CLUSTER_TEST = 'false'
     DATA_CENTER_TEST = 'false'
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
-    QOS_TEST = 'false'
+    QOS_TEST = 'true'
     VM_TEST = 'false'
-    VM_PORTAL_TEST = 'true'
+    VM_PORTAL_TEST = 'false'
 
+    BUILD_ID = 'local'
 #############################
 
 # 결과 저장용
