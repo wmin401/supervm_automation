@@ -9,4 +9,5 @@ def accessAdminPortal(webDriver):
 def accessVmPortal(webDriver):
     printLog("* Portal : VM Portal")
     webDriver.implicitlyWait(10)
+    time.sleep(1)
     _vmPortal = webDriver.findElement('id','WelcomePage_userportal_webui',True)

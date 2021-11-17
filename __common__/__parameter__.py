@@ -11,7 +11,6 @@ if IN_JENKINS == 'true':
     BROWSER_VERSION = os.getenv('BROWSER_VERSION')
     BROWSER_BIT = os.getenv('BROWSER_BIT')
     IF_HEADLESS = os.getenv('IF_HEADLESS')
-    PORTAL_TYPE = os.getenv('PORTAL_TYPE')
     USER_ID = os.getenv('USER_ID')
     USER_PW = os.getenv('USER_PW')
     CLUSTER_TEST = os.getenv('CLUSTER_TEST')
@@ -21,6 +20,7 @@ if IN_JENKINS == 'true':
     HOST_TEST = os.getenv('HOST_TEST')
     QOS_TEST = os.getenv('QOS_TEST')
     VM_TEST = os.getenv('VM_TEST')
+    VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
 else: # 로컬
     SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
@@ -32,23 +32,20 @@ else: # 로컬
     BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
     IF_HEADLESS = 'false' # 헤드리스 사용 여부(사용 금지)
-
-    # 접속할 포털
-    PORTAL_TYPE = 'admin'
         
     ## 로그인 정보
     USER_ID = 'admin'
     USER_PW = 'asdf'
 
     # 테스트 실행여부
-    CLUSTER_TEST = 'false'
-    DATA_CENTER_TEST = 'true'
+    CLUSTER_TEST = 'true'
+    DATA_CENTER_TEST = 'false'
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
     QOS_TEST = 'false'
-
     VM_TEST = 'false'
+    VM_PORTAL_TEST = 'true'
 
 #############################
 

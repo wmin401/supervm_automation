@@ -49,75 +49,71 @@ def main():
     portalLogin(webDriver)
 
     printLine()
-    printLog("4. Access Portal")
-    if PORTAL_TYPE == 'admin':
-        accessAdminPortal(webDriver)
+    printLog("4. Access Admin Portal")
+    accessAdminPortal(webDriver)
         
-    elif PORTAL_TYPE == 'vm':
-        accessVmPortal(webDriver)
-
     printLine()
     printLog("5. Start Test")
+    
+    if CLUSTER_TEST == 'true':        
+        printLine()
+        printLog("*** Cluster Test ***")
+        _cluster = admin_cluster(webDriver)
+        _cluster.test()      
 
-    if PORTAL_TYPE == 'admin':        
-        if CLUSTER_TEST == 'true':        
-            printLine()
-            printLog("*** Cluster Test ***")
-            _cluster = admin_cluster(webDriver)
-            _cluster.test()
-            
-            _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
-
-        if DATA_CENTER_TEST == 'true':
-            printLine()
-            printLog("*** Data Center Test ***")
-            _data_center = admin_data_center(webDriver)
-            _data_center.test()
-            
-            _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
-
-        if DISK_TEST == 'true':
-            printLine()
-            printLog("*** Disk Test ***")
-            _disk = admin_disk(webDriver)
-            _disk.test()
-            
-            _totalResult = saveResult(_disk._diskResult, _totalResult)
-
-        if HOST_TEST == 'true':
-            printLine()
-            printLog("*** Host Test ***")
-            _host = admin_host(webDriver)
-            _host.test()
-            
-            _totalResult = saveResult(_host._hostResult, _totalResult)            
+        _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
         
-        if DOMAIN_TEST == 'true':
-            printLine()
-            printLog("*** Domain Test ***")
-            _domain = admin_domain(webDriver)
-            _domain.test()
+    if DATA_CENTER_TEST == 'true':
+        printLine()
+        printLog("*** Data Center Test ***")
+        _data_center = admin_data_center(webDriver)
+        _data_center.test()
             
-            _totalResult = saveResult(_domain._domainResult, _totalResult)        
+        _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
+
+    if DISK_TEST == 'true':
+        printLine()
+        printLog("*** Disk Test ***")
+        _disk = admin_disk(webDriver)
+        _disk.test()
             
-        if QOS_TEST == 'true':
-            printLine()
-            printLog("*** QoS Test ***")
-            _qos = admin_qos(webDriver)
-            _qos.test()
+        _totalResult = saveResult(_disk._diskResult, _totalResult)
+    
+    if HOST_TEST == 'true':
+        printLine()
+        printLog("*** Host Test ***")
+        _host = admin_host(webDriver)
+        _host.test()
             
-            _totalResult = saveResult(_qos._qosResult, _totalResult)
+        _totalResult = saveResult(_host._hostResult, _totalResult)            
         
-        if VM_TEST == 'true':
-            printLine()
-            printLog("*** VM Test ***")
-            _vm = vm_vm(webDriver)
-            _vm.create()
+    if DOMAIN_TEST == 'true':
+        printLine()
+        printLog("*** Domain Test ***")
+        _domain = admin_domain(webDriver)
+        _domain.test()
             
-            _totalResult = saveResult(_vm._vmResult, _totalResult)
+        _totalResult = saveResult(_domain._domainResult, _totalResult)        
+            
+    if QOS_TEST == 'true':
+        printLine()
+        printLog("*** QoS Test ***")
+        _qos = admin_qos(webDriver)
+        _qos.test()
+            
+        _totalResult = saveResult(_qos._qosResult, _totalResult)
+        
+    if VM_TEST == 'true':
+        printLine()
+        printLog("*** VM Test ***")
+        _vm = vm_vm(webDriver)
+        _vm.create()
+            
+        _totalResult = saveResult(_vm._vmResult, _totalResult)
 
-
-    elif PORTAL_TYPE == 'vm':
+    if VM_PORTAL_TEST == 'true':
+        webDriver.openURL(SUPERVM_URL)        
+        accessVmPortal(webDriver)
         printLine()
         printLog("*** VM PORTAL Test ***")
         _portal_vm = vm_vm(webDriver)
