@@ -21,6 +21,8 @@ if IN_JENKINS == 'true':
     QOS_TEST = os.getenv('QOS_TEST')
     VM_TEST = os.getenv('VM_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
+
+    TESTLINK_BUILD_NAME = os.getenv('TESTLINK_BUILD_NAME')
     
 else: # 로컬
     SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
@@ -46,6 +48,8 @@ else: # 로컬
     QOS_TEST = 'true'
     VM_TEST = 'false'
     VM_PORTAL_TEST = 'false'
+
+    TESTLINK_BUILD_NAME = 'local'
 
 #############################
 
