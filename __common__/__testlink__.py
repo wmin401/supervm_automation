@@ -8,7 +8,7 @@ from __common__.__parameter__ import *
 class testlink:
     def __init__(self):      
         print("* Start the connection with the Testlink ! ")
-        self.junitsFolder = 'junit_xml/' + TESTLINK_BUILD_NAME
+        self.junitsFolder = 'junit_xml/' + str(TESTLINK_BUILD_NAME)
         if not os.path.isdir(RESULT_PATH + '/'+ self.junitsFolder):
             os.makedirs(RESULT_PATH + '/'+ self.junitsFolder)
 

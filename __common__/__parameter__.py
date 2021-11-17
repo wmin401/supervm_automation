@@ -23,6 +23,7 @@ if IN_JENKINS == 'true':
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
     TESTLINK_BUILD_NAME = os.getenv('TESTLINK_BUILD_NAME')
+    print(TESTLINK_BUILD_NAME)
     
 else: # 로컬
     SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
