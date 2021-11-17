@@ -106,7 +106,7 @@ class SuperVM_driver:
             else:
                 printLog("You can use : xpath, css_selector, name, id, tag_name, class_name")
         except Exception as e:
-            printLog("can't find element using " + element_type)
+            printLog("* can't find element using " + element_type)
             raise(e)
             
         if click == True:
