@@ -8,11 +8,11 @@ from __common__.__parameter__ import *
 class testlink:
     def __init__(self):      
         print("* Start the connection with the Testlink ! ")
-        self.junitsFolder = 'junit_xml/build_' + BUILD_ID
+        self.junitsFolder = 'junit_xml/' + BUILD_ID
         if not os.path.isdir(RESULT_PATH + '/'+ self.junitsFolder):
             os.makedirs(RESULT_PATH + '/'+ self.junitsFolder)
 
-        self.junitBuilder('SAMPLE', PASS, 'Sample xml file for jenkins')
+        self.junitBuilder('SAMPLE', PASS, 'Sample junit xml file for jenkins')
 
     def junitBuilder(self, *args):
         ## 젠킨스 에서만 생성되도록 변경
