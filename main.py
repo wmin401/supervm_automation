@@ -119,9 +119,11 @@ def main():
 
     elif PORTAL_TYPE == 'vm':
         printLine()
-        printLog("5.1 VM Create")
-        test_vm_vm = vm_vm()
-        test_vm_vm.create()
+        printLog("*** VM PORTAL Test ***")
+        _portal_vm = vm_vm(webDriver)
+        _portal_vm.test()
+        
+        _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
         
     printLog('6. Save Result')
     saveTotalResult(_totalResult)
