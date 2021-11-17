@@ -23,18 +23,18 @@ class admin_cluster:
     def test(self):
         self.create()
         time.sleep(1)
-        self.CPUProfileCreate()
-        time.sleep(0.3)
-        self.CPUProfileRemove()
-        time.sleep(0.3)
-        self.changeVersion()
-        time.sleep(0.3)
+        # self.CPUProfileCreate()
+        # time.sleep(0.3)
+        # self.CPUProfileRemove()
+        # time.sleep(0.3)
+        # self.changeVersion()
+        # time.sleep(0.3)
         self.scheduling()
         time.sleep(0.3)
-        self.MoMUpdate()
-        time.sleep(0.3)
-        self.memoryOptimization()
-        time.sleep(0.3)
+        # self.MoMUpdate()
+        # time.sleep(0.3)
+        # self.memoryOptimization()
+        # time.sleep(0.3)
         self.remove()
 
     def setup(self):
@@ -231,13 +231,14 @@ class admin_cluster:
             # 우측 편집 버튼 클릭
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
-            time.sleep(0.5)
+            time.sleep(1)
             # 스케줄링 정책 탭 클릭
             time.sleep(0.5)
             self.webDriver.findElement('css_selector','body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(4)', True)            
             # 스케줄링 선택 - power_saving
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('id','ClusterPopupView_clusterPolicyEditor', True)
+            time.sleep(0.2)
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#ClusterPopupView_clusterPolicyEditor > div > ul > li')            
             self.webDriver.findElement('css_selector_all','#ClusterPopupView_clusterPolicyEditor > div > ul > li')[0].click()        
             # OK 버튼 클릭
