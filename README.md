@@ -49,6 +49,31 @@ python main.py
     ```
   4) 테스트링크 Custom Field와 xml 파일의 classname이 일치하면 결과 업데이트
   
+## SSH 명령어 전달
+1) ssh 클래스 선언
+  * ` ssh_connection ` 클래스 사용
+  * 매개변수로 ` 호스트 IP, 호스트 PORT, 호스트 ID, 호스트 PW ` 입력
+  ```
+  ssh = ssh_connection('192.168.17.161', 22, 'root', 'asdf')
+  ```
+2) ssh 연결 활성화
+  * ` activate ` 함수 사용  
+  ```
+  ssh.activate()
+  ```
+3) 명령어 입력
+  * ` commandExec ` 함수 사용  
+  * 매개변수로 ` 명령어, timeout 시간` 입력
+  ```
+  ssh.commandExec('dnf -y install wget', 15)
+  ```
+4) ssh 연결 비활성화
+  * ` deactivate ` 함수 사용  
+  ```
+  ssh.deactivate()
+  ```
+  
+
 ## 코드 작성 주의사항
 ### 명명규칙
 * 함수명 : `lowerCamelCase`
