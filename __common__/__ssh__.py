@@ -16,19 +16,21 @@ class ssh_connection():
             self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             self.ssh.connect(self.HOST_IP, username=self.HOST_ID, password=self.HOST_PW, port=self.HOST_PORT)
             print("* Successfully connected")
-            print("*****************************")
+            print("**********************************************************")
             print("[CONNECTION INFORMATION]")
-            print("HOST IP = %s\t"%self.HOST_IP)
-            print("HOST PORT = %s\t"%self.HOST_PORT)
-            print("HOST ID = %s\t"%self.HOST_ID)
-            print("HOST PW = %s\t"%self.HOST_PW)
-            print("*****************************")
+            print("HOST IP = %s"%self.HOST_IP)
+            print("HOST PORT = %s"%self.HOST_PORT)
+            print("HOST ID = %s"%self.HOST_ID)
+            print("HOST PW = %s"%self.HOST_PW)
+            print("**********************************************************")
             # stdin, stdout, stderr = self.ssh.exec_command('rpm --query prolinux-release')
         except Exception as e:
-            print("*** SSH Connection Exception : %s"%str(e))
+            print("**********************************************************")
+            print("* SSH Connection Exception : %s"%str(e))
+            print("**********************************************************")
 
     def commandExec(self, e, t=5): # exection, timeout
-        # 기본 timeout 은 5초
+        # default timeout = 5sec
         stdin, stdout, stderr = self.ssh.exec_command(e, timeout=t)        
         try:
             output = makeUpMsg(stdout.readlines())
