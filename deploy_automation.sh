@@ -6,6 +6,9 @@
 LINUX_IP=$1
 MASTER_IP=$2
 
+echo $LINUX_IP
+echo $MASTER_IP
+
 # echo "192.168.17.${LINUX_IP} hypervm${LINUX_IP}.tmax.dom
 # 192.168.17.${MASTER_IP} master${MASTER_IP}.tmax.dom" >> /etc/hosts
 
