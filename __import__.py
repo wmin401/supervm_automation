@@ -5,6 +5,7 @@ from __common__.__login__ import *
 from __common__.__portal__ import *
 from __common__.__csv__ import *
 from __common__.__testlink__ import *
+from __common__.__ssh__ import *
 
 # 테스트 파일
 from __test__.__admin__.__host__ import *
