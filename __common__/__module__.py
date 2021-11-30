@@ -36,3 +36,13 @@ def randomString(num=8):
     for i in range(num):
         string_ += str(random.choice(string.ascii_letters))
     return string_
+
+
+def makeUpMsg(msg_list):
+    ## 입력받은 메시지 리스트에서 \n과 , 삭제
+    returnMsg = []
+    for i in msg_list:
+        i = i.replace('\n','')
+        #i = i.replace(',', ' ')
+        returnMsg.append(i)
+    return returnMsg
