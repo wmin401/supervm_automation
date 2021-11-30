@@ -3,11 +3,11 @@
 # 3) 
 # 실행할때 매개변수로 linux ip 랑 master ip 입력받음
 # 사용 예시 - sh deploy_automation.sh 161 165 # 여기서 이제 진킨스 변수로 다시 입력받음
-LINUX_IP=$1
-MASTER_IP=$2
+ENGINE_NO=$1
+MASTER_NO=$2
 
-echo $LINUX_IP
-echo $MASTER_IP
+echo $ENGINE_NO
+echo $MASTER_NO
 
 # echo "192.168.17.${LINUX_IP} hypervm${LINUX_IP}.tmax.dom
 # 192.168.17.${MASTER_IP} master${MASTER_IP}.tmax.dom" >> /etc/hosts
