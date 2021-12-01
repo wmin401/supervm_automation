@@ -7,15 +7,15 @@ class install():
     def __init__(self):
         self.ENGINE_NUM = ENGINE_IP.split('.')[3] # ***.***.***.***
         self.MASTER_NUM = MASTER_IP.split('.')[3]
-        # engine vm에 ssh연결
-        self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)
 
     def setup(self):
+        # engine vm에 ssh연결
+        self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)
         
         self.ssh.activate() 
 
         # hostname 변경
-        self.ssh.commandExec('hostnamectl set-hostname hypervm%s.tmax.dom'%self.ENGINE_NUM)
+        self.ssh.commandExec('hostnamectl set-hostname hypervm%s.tmax.dom'%(self.ENGINE_NUM))
 
         # hosts에 fqdn 추가
         o, e = self.ssh.commandExec('cat /etc/hosts')
@@ -160,11 +160,9 @@ class install():
             self.ssh.commandExec('firewall-cmd --reload')
             self.ssh.commandExec('firewall-cmd --list-all')
 
-        self.ssh.deactivate()
-
     def deploy(self):
         print("* Start deploy")       
-        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf >> %s'%(DEPLOY_LOG_FILE))
+        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf')
         
         # ssh 연결 해제
         self.ssh.deactivate()
