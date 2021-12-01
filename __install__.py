@@ -7,12 +7,11 @@ class install():
     def __init__(self):
         self.ENGINE_NUM = ENGINE_IP.split('.')[3] # ***.***.***.***
         self.MASTER_NUM = MASTER_IP.split('.')[3]
+        # engine vm에 ssh연결
+        self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)        
+        self.ssh.activate() 
 
     def setup(self):
-        # engine vm에 ssh연결
-        self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)
-        
-        self.ssh.activate() 
 
         # hostname 변경
         self.ssh.commandExec('hostnamectl set-hostname hypervm%s.tmax.dom'%(self.ENGINE_NUM))
