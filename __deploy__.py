@@ -36,7 +36,7 @@ class deploy():
 
         o, e = self.ssh.commandExec('ls /etc/yum.repos.d/supervm.repo')
         repo = True
-        if  o is not [] and 'supervm.repo' in o[0]:
+        if  o != [] and 'supervm.repo' in o[0]:
             print('* supervm.repo is already exists !!!')
             print('* Check supervm.repo file !!!')
             repo = False            
@@ -63,7 +63,7 @@ class deploy():
         self.macAddress = o[0]
 
         o, e = self.ssh.commandExec('ls /root/answers.conf')
-        if o is not [] and 'answers.conf' in o[0]:
+        if o != [] and 'answers.conf' in o[0]:
             print("* answers.conf file is already exists !!!")
         else:
             self.ssh.commandExec('echo "[environment:default]" >> /root/answers.conf')
