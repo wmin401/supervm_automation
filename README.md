@@ -74,6 +74,11 @@ python main.py
   ```
   ssh.deactivate()
   ```
+* 사용 방법
+  1) 코드 상단에 ` from __common__.__ssh__ import * ` 추가
+  2) 원하는 위치에 ` ssh_connection ` 클래스 선언 및 ` activate() 실행 `
+  3) 명령어 입력 후 출력으로 분석
+  4) 테스트 결과 반영 후 ` deactivate `
   
 
 ## 코드 작성 주의사항
