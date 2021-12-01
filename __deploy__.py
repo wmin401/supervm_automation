@@ -10,7 +10,7 @@ stdin, stdout, stderr = ssh.exec_command('dos2unix /root/deploy_automation.sh', 
 output = stdout.readlines()
 for i in output:
     print(i.replace('\n',''))
-stdin, stdout, stderr = ssh.exec_command('sh /root/deploy_automation.sh %s %s'%(sys.argv[5],sys.argv[6]), timeout=10)        
+stdin, stdout, stderr = ssh.exec_command('sh /root/deploy_automation.sh %s %s'%(sys.argv[5],sys.argv[6]))        
 output = stdout.readlines()
 for i in output:
     print(i.replace('\n',''))
