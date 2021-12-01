@@ -171,10 +171,12 @@ class install():
 
 def main():
 
-    a = install()
-    a.setup()
-    a.nfs()
-    a.deploy()
+    if INSTALL_SUPERVM == 'true':
+
+        a = install()
+        a.setup()
+        a.nfs()
+        a.deploy()
 
 if __name__ == "__main__":        
 
