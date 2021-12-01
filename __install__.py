@@ -2,20 +2,15 @@ from __common__.__parameter__ import *
 from __common__.__ssh__ import *
 
 
-class deploy():
+class install():
 
     def __init__(self):
         self.ENGINE_NUM = ENGINE_IP.split('.')[3] # ***.***.***.***
         self.MASTER_NUM = MASTER_IP.split('.')[3]
-
-    def printLog(self, log):
-        for i in log:
-            print(i.replace("\n",''))
-        
-
-    def setup(self):
         # engine vm에 ssh연결
         self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)
+
+    def initialize(self):
         
         self.ssh.activate() 
 
@@ -55,6 +50,7 @@ class deploy():
         o, e = self.ssh.commandExec('sudo dnf module enable pki-deps postgresql:12 parfait -y')
         o, e = self.ssh.commandExec('dnf install -y ovirt-hosted-engine-setup')
 
+    def makeAnswers(self):
         print("* Make answers.conf file")
         o, e = self.ssh.commandExec('ls /etc/sysconfig/network-scripts/ |grep "ifcfg-e"')        
         self.networkName = o[0][6:] 
@@ -69,7 +65,7 @@ class deploy():
         else:
             self.ssh.commandExec('echo "[environment:default]" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_CORE/deployProceed=bool:True" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_CORE/screenProceed=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_CORE/screenProceed=none:True" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_ENGINE/adminPassword=str:asdf" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_ENGINE/clusterName=str:Default" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_ENGINE/datacenterName=str:Default" >> /root/answers.conf')
@@ -133,10 +129,46 @@ class deploy():
             self.ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8/os/x86_64" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
 
-        # ssh 연결 해제
+    def setNFS(self):
+        print("* Set nfs at %s"%(ENGINE_IP))
+        o, e = self.ssh.commandExec('cat /etc/exports')
+        nfs_ = True
+        for i in o:
+            if '/nfs' in i:
+                nfs_ = False
+                break
+        if nfs_ == True:
+            self.ssh.commandExec('dnf install -y nfs-utils')
+            self.ssh.commandExec('systemctl start rpcbind')
+            self.ssh.commandExec('systemctl start nfs-server')
+            self.ssh.commandExec('chkconfig rpcbind on')
+            self.ssh.commandExec('chkconfig nfs-server on')
+            self.ssh.commandExec('mkdir /nfs')
+            self.ssh.commandExec('echo "/nfs *(rw)" >> /etc/exports')
+            self.ssh.commandExec('exportfs -r')
+            self.ssh.commandExec('systemctl restart nfs-server')
+            self.ssh.commandExec('groupadd kvm -g 36')
+            self.ssh.commandExec('useradd vdsm -u 36 -g 36')
+            self.ssh.commandExec('chown -R 36:36 /nfs')
+            self.ssh.commandExec('chmod 777 /nfs')
+            self.ssh.commandExec('firewall-cmd --permanent --add-service=nfs')
+            self.ssh.commandExec('firewall-cmd --permanent --add-service=mountd')
+            self.ssh.commandExec('firewall-cmd --permanent --add-service=rpc-bind')
+            self.ssh.commandExec('firewall-cmd --reload')
+            self.ssh.commandExec('firewall-cmd --list-all')
+
         self.ssh.deactivate()
 
+    def deploy(self):
+        print("* Start deploy")       
+        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf')
+        
+        # ssh 연결 해제
+        #self.ssh.deactivate()
+if __name__ == "__main__":        
+    a = install()
+    a.initialize()
+    a.setNFS()
+    #a.deploy()
 
-a = deploy()
-a.setup()
         
