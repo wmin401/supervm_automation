@@ -175,6 +175,7 @@ def main():
 
         a = install()
         a.setup()
+        a.answers()
         a.nfs()
         a.deploy()
 
