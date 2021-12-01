@@ -9,8 +9,8 @@ MASTER_NO=$2
 echo $ENGINE_NO
 echo $MASTER_NO
 
-echo "192.168.17.${LINUX_IP} hypervm${LINUX_IP}.tmax.dom
-192.168.17.${MASTER_IP} master${MASTER_IP}.tmax.dom" >> /etc/hosts
+echo "192.168.17.${ENGINE_NO} hypervm${ENGINE_NO}.tmax.dom
+192.168.17.${MASTER_NO} master${MASTER_NO}.tmax.dom" >> /etc/hosts
 
 touch /etc/yum.repos.d/supervm.repo
 echo "[supervm]
@@ -43,7 +43,7 @@ OVEHOSTED_ENGINE/enableHcGlusterService=none:None
 OVEHOSTED_ENGINE/insecureSSL=none:None
 OVEHOSTED_NETWORK/bridgeIf=str:${NETWORK_NAME}
 OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt
-OVEHOSTED_NETWORK/fqdn=str:master${MASTER_IP}.tmax.dom
+OVEHOSTED_NETWORK/fqdn=str:master${MASTER_NO}.tmax.dom
 OVEHOSTED_NETWORK/gateway=str:192.168.17.1
 OVEHOSTED_NETWORK/host_name=str:hypervm${ENGINE_NO}.tmax.dom
 OVEHOSTED_NETWORK/network_test=str:ping
