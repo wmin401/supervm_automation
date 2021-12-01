@@ -164,7 +164,7 @@ class install():
 
     def deploy(self):
         print("* Start deploy")       
-        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf >> $s'%(DEPLOY_LOG_FILE))
+        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf >> %s'%(DEPLOY_LOG_FILE))
         
         # ssh 연결 해제
         self.ssh.deactivate()
