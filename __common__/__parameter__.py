@@ -60,8 +60,8 @@ else: # 로컬
 
     ## 설치 자동화 매개변수 ##
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
-    MASTER_IP = '192.168.17.165'
-    ENGINE_IP = '192.168.17.161'
+    MASTER_IP = '192.168.17.164'
+    ENGINE_IP = '192.168.17.163'
     ENGINE_ID = 'root'
     ENGINE_PW = 'asdf'
 
@@ -73,6 +73,7 @@ RESULT_PATH = 'results'
 RESULT_FILE = 'SuperVM_Result_%04d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday)
 TMP_RESULT_FILE = 'tmp_SuperVM_Result_%04d%02d%02d_%02d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 LOG_FILE = RESULT_PATH + '/log/SuperVM_Automation_log_%04d%02d%02d_%02d%02d%02d.log'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+DEPLOY_LOG_FILE = RESULT_PATH + '/log/SuperVM_Automation_deploy_log_%04d%02d%02d_%02d%02d%02d.log'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 DELIM = ';'
 PASS = 'PASS'
 STOP = 'STOP'

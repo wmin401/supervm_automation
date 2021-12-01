@@ -10,9 +10,12 @@ class install():
         # engine vm에 ssh연결
         self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)
 
-    def initialize(self):
+    def setup(self):
         
         self.ssh.activate() 
+
+        # hostname 변경
+        self.ssh.commandExec('hostnamectl set-hostname hypervm%s.tmax.dom'%self.ENGINE_NUM)
 
         # hosts에 fqdn 추가
         o, e = self.ssh.commandExec('cat /etc/hosts')
@@ -50,7 +53,7 @@ class install():
         o, e = self.ssh.commandExec('sudo dnf module enable pki-deps postgresql:12 parfait -y')
         o, e = self.ssh.commandExec('dnf install -y ovirt-hosted-engine-setup')
 
-    def makeAnswers(self):
+    def answers(self):
         print("* Make answers.conf file")
         o, e = self.ssh.commandExec('ls /etc/sysconfig/network-scripts/ |grep "ifcfg-e"')        
         self.networkName = o[0][6:] 
@@ -129,7 +132,7 @@ class install():
             self.ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8/os/x86_64" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
 
-    def setNFS(self):
+    def nfs(self):
         print("* Set nfs at %s"%(ENGINE_IP))
         o, e = self.ssh.commandExec('cat /etc/exports')
         nfs_ = True
@@ -161,14 +164,20 @@ class install():
 
     def deploy(self):
         print("* Start deploy")       
-        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf')
+        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf >> $s'%(DEPLOY_LOG_FILE))
         
         # ssh 연결 해제
-        #self.ssh.deactivate()
-if __name__ == "__main__":        
+        self.ssh.deactivate()
+
+def main():
+
     a = install()
-    a.initialize()
-    a.setNFS()
-    #a.deploy()
+    a.setup()
+    a.nfs()
+    a.deploy()
+
+if __name__ == "__main__":        
+
+    main()
 
         
