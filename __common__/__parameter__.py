@@ -24,6 +24,7 @@ if IN_JENKINS == 'true':
 
     BUILD_ID = os.getenv('BUILD_ID')
 
+    INSTALL_SUPERVM = os.getenv('INSTALL_SUPERVM')
     SUPERVM_REPO_URL = os.getenv('SUPERVM_REPO_URL')
     MASTER_IP = os.getenv('MASTER_IP')
     ENGINE_IP = os.getenv('ENGINE_IP')
@@ -59,6 +60,7 @@ else: # 로컬
     BUILD_ID = 'local'
 
     ## 설치 자동화 매개변수 ##
+    INSTALL_SUPERVM = 'true'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
     MASTER_IP = '192.168.17.164'
     ENGINE_IP = '192.168.17.163'
