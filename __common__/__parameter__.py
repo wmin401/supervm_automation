@@ -23,6 +23,13 @@ if IN_JENKINS == 'true':
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
     BUILD_ID = os.getenv('BUILD_ID')
+
+    SUPERVM_REPO_URL = os.getenv('SUPERVM_REPO_URL')
+    MASTER_IP = os.getenv('MASTER_IP')
+    ENGINE_IP = os.getenv('ENGINE_IP')
+    ENGINE_ID = os.getenv('ENGINE_ID')
+    ENGINE_PW = os.getenv('ENGINE_PW')
+
     
 else: # 로컬
     SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
@@ -50,6 +57,13 @@ else: # 로컬
     VM_PORTAL_TEST = 'false'
     
     BUILD_ID = 'local'
+
+    ## 설치 자동화 매개변수 ##
+    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
+    MASTER_IP = '192.168.17.165'
+    ENGINE_IP = '192.168.17.161'
+    ENGINE_ID = 'root'
+    ENGINE_PW = 'asdf'
 
 #############################
 
