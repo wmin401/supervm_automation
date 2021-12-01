@@ -62,6 +62,7 @@ class deploy():
         o, e = self.ssh.commandExec('python3.6 -c "from ovirt_hosted_engine_setup import util as ohostedutil; print(ohostedutil.randomMAC())"')        
         self.macAddress = o[0]
 
+        # answers.conf 파일 만들기
         o, e = self.ssh.commandExec('ls /root/answers.conf')
         if o != [] and 'answers.conf' in o[0]:
             print("* answers.conf file is already exists !!!")
@@ -132,12 +133,6 @@ class deploy():
             self.ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8/os/x86_64" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
 
-
-
-        
-
-
-        # answers.conf 파일 만들기
         # ssh 연결 해제
         self.ssh.deactivate()
 
