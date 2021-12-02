@@ -29,10 +29,13 @@ class ssh_connection():
             print("* SSH Connection Exception : %s"%str(e))
             print("**********************************************************")
 
-    def commandExec(self, e, t=30): # exection, timeout
+    def commandExec(self, e, t=30, pty = False): # exection, timeout
         # default timeout = 30sec
-        stdin, stdout, stderr = self.ssh.exec_command(e, timeout=t)        
         try:
+            if pty == True:
+                stdin, stdout, stderr = self.ssh.exec_command(e, get_pty = pty, timeout=t)        
+            else:
+                stdin, stdout, stderr = self.ssh.exec_command(e, timeout=t)        
             output = makeUpMsg(stdout.readlines())
         except Exception as e:
             output = [str(e)]
