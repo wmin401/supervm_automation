@@ -33,7 +33,7 @@ if IN_JENKINS == 'true':
 
     
 else: # 로컬
-    SUPERVM_URL = 'https://master165.tmax.com/ovirt-engine/'
+    SUPERVM_URL = 'https://master164.tmax.com/ovirt-engine/'
 
     SECURE = 'false'
     ## 브라우저 정보
