@@ -22,46 +22,48 @@ class install():
         # hosts에 입력한 ip가 있는지 확인 후 없을 때만 추가
         for i in o:
             if ENGINE_IP in i:
-                print('* Engine VM IP is already using !!!')
-                print('* Check /etc/hosts file in engine vm !!!')
+                print('[SETUP] Engine VM IP is already using !!!')
+                print('[SETUP] Check /etc/hosts file in engine vm !!!')
                 hosts = False
                 break
         if hosts == True:
-            print(" Add hosts")
+            print("[SETUP] Add hosts")
             self.ssh.commandExec('echo "%s hypervm%s.tmax.dom" >> /etc/hosts'%(ENGINE_IP, self.ENGINE_NUM))
             self.ssh.commandExec('echo "%s master%s.tmax.dom" >> /etc/hosts'%(MASTER_IP, self.MASTER_NUM))
 
         o, e = self.ssh.commandExec('ls /etc/yum.repos.d/supervm.repo')
         repo = True
         if  o != [] and 'supervm.repo' in o[0]:
-            print('* supervm.repo is already exists !!!')
-            print('* Check supervm.repo file !!!')
+            print('[SETUP] supervm.repo is already exists !!!')
+            print('[SETUP] Check supervm.repo file !!!')
             repo = False            
         if repo == True:
             # supervm repository 생성
-            print("* Make /etc/yum.repos.d/supervm.repo")
+            print("[SETUP] Make /etc/yum.repos.d/supervm.repo")
             self.ssh.commandExec('echo "[supervm]" >> /etc/yum.repos.d/supervm.repo')
             self.ssh.commandExec('echo "name=supervm-repo" >> /etc/yum.repos.d/supervm.repo')
             self.ssh.commandExec('echo "baseurl=%s" >> /etc/yum.repos.d/supervm.repo'%(SUPERVM_REPO_URL))
             self.ssh.commandExec('echo "gpgcheck=0" >> /etc/yum.repos.d/supervm.repo')
+            print("[SETUP] dnf update ")
             self.ssh.commandExec('dnf clean all')
             self.ssh.commandExec('dnf update -y')
 
-        print("* Package install")
-        o, e = self.ssh.commandExec('sudo dnf module disable virt -y')
-        o, e = self.ssh.commandExec('sudo dnf module enable pki-deps postgresql:12 parfait -y')
-        o, e = self.ssh.commandExec('dnf install -y ovirt-hosted-engine-setup')
-        o, e = self.ssh.commandExec('dnf install -y ovirt-engine-appliance')
+        print("[SETUP] Install ovirt-hosted-engine-setup")
+        o, e = self.ssh.commandExec('sudo dnf module disable virt -y', t=21600 )
+        o, e = self.ssh.commandExec('sudo dnf module enable pki-deps postgresql:12 parfait -y', t=21600)
         o, e = self.ssh.commandExec('systemctl enable --now libvirtd cockpit.socket')
+        o, e = self.ssh.commandExec('dnf install -y ovirt-hosted-engine-setup', t=21600)
         
 
     def answers(self):
-        print("* Make answers.conf file")
+        print("[ANSWERS] Make answers.conf file")
         o, e = self.ssh.commandExec('ls /etc/sysconfig/network-scripts/ |grep "ifcfg-e"')        
         self.networkName = o[0][6:] 
+        print("[ANSWERS] NETWORK NAME = %s"%self.networkName)
         
         o, e = self.ssh.commandExec('python3.6 -c "from ovirt_hosted_engine_setup import util as ohostedutil; print(ohostedutil.randomMAC())"')        
         self.macAddress = o[0]
+        print("[ANSWERS] MAC ADDRESS = %s"%self.macAddress)
 
         # answers.conf 파일 만들기
         o, e = self.ssh.commandExec('ls /root/answers.conf')
@@ -70,7 +72,7 @@ class install():
             #print("* answers.conf file is already exists !!!")
         self.ssh.commandExec('echo "[environment:default]" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_CORE/deployProceed=bool:True" >> /root/answers.conf')
-        self.ssh.commandExec('echo "OVEHOSTED_CORE/screenProceed=none:True" >> /root/answers.conf')
+        self.ssh.commandExec('echo "OVEHOSTED_CORE/screenProceed=bool:True" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_ENGINE/adminPassword=str:asdf" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_ENGINE/clusterName=str:Default" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_ENGINE/datacenterName=str:Default" >> /root/answers.conf')
@@ -104,7 +106,7 @@ class install():
         self.ssh.commandExec('echo "OVEHOSTED_STORAGE/metadataImageUUID=none:None" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_STORAGE/metadataVolumeUUID=none:None" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_STORAGE/mntOptions=str:" >> /root/answers.conf')
-        self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=none:None" >> /root/answers.conf')
+        self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=str:auto" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:/nfs" >> /root/answers.conf'%(ENGINE_IP))
         self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainName=str:hosted_storage" >> /root/answers.conf')
         self.ssh.commandExec('echo "OVEHOSTED_STORAGE/vfsType=str:" >> /root/answers.conf')
@@ -135,7 +137,7 @@ class install():
         self.ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
 
     def nfs(self):
-        print("* Set nfs at %s"%(ENGINE_IP))
+        print("[NFS] Set nfs at %s"%(ENGINE_IP))
         o, e = self.ssh.commandExec('cat /etc/exports')
         nfs_ = True
         for i in o:
@@ -163,13 +165,19 @@ class install():
             self.ssh.commandExec('firewall-cmd --list-all')
 
     def deploy(self):
-        print("* Start deploy")       
-        self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf')
+        print("[DEPLOY] Start deploy")   
+        print("[DEPLOY] This task needs a lot of time. So you must need to wait")
+        print("[DEPLOY] If you want to see the progress of installation, see /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log file")   
+        print("[DEPLOY] ex). tail -f /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log")   
+
+        o, e = self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf', t = 216000, pty = True)
         
-        print("* Deploy finished")
-        print("* Check vm condition")
+
+        print("[DEPLOY] Deploy finished")
+        print("[DEPLOY] Check vm condition")
         # ssh 연결 해제
-        self.ssh.deactivate()
+        self.ssh.deactivate()        
+        time.sleep(5)
 
 def main():
 
