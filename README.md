@@ -2,7 +2,7 @@
 #### PowerShell 또는 CMD 창에서 아래 명령어 입력
 1) Selenium 설치
 ```
-python -m pip install -r selenium
+python -m pip install selenium
 ```
 
 2) git 설정 (git 멤버일 경우 본인것으로 작성)
