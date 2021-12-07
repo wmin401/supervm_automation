@@ -222,7 +222,7 @@ class install():
             o, e = self.ssh.commandExec('cat /root/answers.conf')
             print('[ANSWERS] cat /root/answers.conf')
             for i in o:
-                print(i[0])
+                print(i)
             result = PASS
         except Exception as e:            
             result = FAIL
