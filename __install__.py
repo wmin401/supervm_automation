@@ -11,7 +11,7 @@ class install():
     def __init__(self, domainType):
         self.ENGINE_NUM = ENGINE_IP.split('.')[3] # ***.***.***.***
         self.MASTER_NUM = MASTER_IP.split('.')[3]
-        self.HOSTNAME = 'supervm%s'%self.ENGINE_NUM
+        self.HOSTNAME = 'supervm%s.tmax.dom'%self.ENGINE_NUM
         self.FQDN = 'master%s.tmax.dom'%self.MASTER_NUM
         # engine vm에 ssh연결
         self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)        
@@ -19,8 +19,23 @@ class install():
 
         self.DOMAIN_TYPE = domainType
 
+    def ifDeployed(self):    
+        print("[DEPLOY] Check if SuperVM is deployed")
+        print("[DEPLOY] hosted-engine --vm-status")
+        o, e = self.ssh.commandExec('hosted-engine --vm-status')
+        for i in o:
+            print(i)
+        for i in o:
+            if 'good' in i:
+                print('[DEPLOY] SuperVM is already deployed ')
+                print('[DEPLOY] SuperVM installation will be finished')
+                return True
+        
+        return False
+
     def setup(self):
         result = FAIL
+
         print("[SETUP] Initialize engine")
         try:
             # hostname 변경
@@ -195,6 +210,11 @@ class install():
             self.ssh.commandExec('echo "OVEHOSTED_VM/vmVCpus=str:4" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8.2/os/x86_64" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
+
+            o, e = self.ssh.commandExec('cat /root/answers.conf')
+            print('[ANSWERS] cat /root/answers.conf')
+            for i in o:
+                print(i[0])
             result = PASS
         except Exception as e:            
             result = FAIL
@@ -207,7 +227,8 @@ class install():
             o, e = self.ssh.commandExec('cat /etc/exports')
             nfs_ = True
             for i in o:
-                if '/nfs' in i:
+                if self.NFS_FOLDER in i:
+                    print("[NFS] NFS folder already exist")
                     nfs_ = False
                     break
             if nfs_ == True:
@@ -219,14 +240,18 @@ class install():
                 print("[NFS] Set nfs")
                 self.ssh.commandExec('chkconfig rpcbind on')
                 self.ssh.commandExec('chkconfig nfs-server on')
-                self.ssh.commandExec('mkdir /nfs')
-                self.ssh.commandExec('echo "/nfs *(rw)" >> /etc/exports')
+                self.ssh.commandExec('mkdir %s'%self.NFS_FOLDER)
+                self.ssh.commandExec('echo "%s *(rw)" >> /etc/exports'%self.NFS_FOLDER)
                 self.ssh.commandExec('exportfs -r')
                 self.ssh.commandExec('systemctl restart nfs-server')
                 self.ssh.commandExec('groupadd kvm -g 36')
                 self.ssh.commandExec('useradd vdsm -u 36 -g 36')
-                self.ssh.commandExec('chown -R 36:36 /nfs')
-                self.ssh.commandExec('chmod 777 /nfs')
+                self.ssh.commandExec('chown -R 36:36 %s'%self.NFS_FOLDER)
+                self.ssh.commandExec('chmod 777 %s'%self.NFS_FOLDER)
+                o, e = self.ssh.commandExec('ls -al /nfs')
+                print('[NFS] ls -al /nfs')
+                for i in o:
+                    print(i)
                 print("[NFS] Add service to firewall")
                 self.ssh.commandExec('firewall-cmd --permanent --add-service=nfs')
                 self.ssh.commandExec('firewall-cmd --permanent --add-service=mountd')
@@ -306,6 +331,7 @@ class install():
 
             o, e = self.ssh.commandExec('ceph fs subvolume create myfs tim1 --size 322122547200 --uid 36 --gid 36', t=3600)
             o, e = self.ssh.commandExec('ceph fs subvolume info myfs tim1', t=3600)
+            print('[CEPH] ceph fs subvolume info myfs tim1')
             for i in o:
                 print(i)
                 i = i.split(":")
@@ -333,18 +359,16 @@ class install():
         print("[DEPLOY] ex). tail -f /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log")   
 
         try:
-            o, e = self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf', t = 216000, pty = True)
-
-            for i in range(len(o)):
-                if '' in o[len(o)-1]:
-                    result = PASS
-                else:
-                    result = FAIL
+            self.ssh.commandExec('hosted-engine --deploy --config-append=answers.conf', t = 216000, pty = True)
             print("[DEPLOY] Deploy finished")
-            if result == PASS:
+
+            if self.ifDeployed():
+                result = PASS
                 print("[DEPLOY] Successfully finished deploy")    
             else:
+                result = FAIL
                 print("[DEPLOY] Failed to deploy, check log file")
+
         except Exception as e:
             result = FAIL
             print("[DEPLOY] ERROR : %s"%(str(e)))
@@ -358,15 +382,16 @@ def main():
         install_time = time.time()
         try:
             a = install(domainType='posixfs')
-            a.setup()
-            if a.DOMAIN_TYPE == 'nfs':
-                a.nfs()
-            elif a.DOMAIN_TYPE == 'posixfs':
-                a.ceph(initialize=True)
-            a.answers()
-            a.deploy()
-            h, m, s = secToHms(install_time, time.time())
-            print("* DEPLOY TIME : %dh %dm %.2fs"%(h, m, s))
+            if not a.ifDeployed():
+                a.setup()
+                if a.DOMAIN_TYPE == 'nfs':
+                    a.nfs()
+                elif a.DOMAIN_TYPE == 'posixfs':
+                    a.ceph(initialize=True)
+                a.answers()
+                a.deploy()
+                h, m, s = secToHms(install_time, time.time())
+                print("* DEPLOY TIME : %dh %dm %.2fs"%(h, m, s))
         except:
             print('[ERROR] Somthing wrong!')
             return
@@ -374,7 +399,7 @@ def main():
         print("* It didn't execute SuperVM installation")
 
 if __name__ == "__main__":        
-    #test()
+    
     main()
 
         
