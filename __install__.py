@@ -99,135 +99,7 @@ class install():
             result = FAIL
             print("[SETUP] ERROR : %s"%(str(e)))
         
-    def answers(self):
-        result = FAIL
-        print("[ANSWERS] Make answers.conf file")
-        try:
-            o, e = self.ssh.commandExec('dnf -y install ovirt-hosted-engine-setup', t=3600)        
-            o, e = self.ssh.commandExec('ls /etc/sysconfig/network-scripts/ |grep "ifcfg-e"')        
-            self.NETWORK_NAME = o[0][6:] 
-            print("[ANSWERS] NETWORK NAME = %s"%self.NETWORK_NAME)
-            
-            o, e = self.ssh.commandExec('python3.6 -c "from ovirt_hosted_engine_setup import util as ohostedutil; print(ohostedutil.randomMAC())"')        
-            self.MAC_ADDRESS = o[0]
-            print("[ANSWERS] MAC ADDRESS = %s"%self.MAC_ADDRESS)
-
-            # answers.conf 파일 만들기
-            o, e = self.ssh.commandExec('ls /root/answers.conf')
-            if o != [] and 'answers.conf' in o[0]:
-                self.ssh.commandExec('rm -rf /root/answers.conf')
-                #print("* answers.conf file is already exists !!!")
-
-            self.ssh.commandExec('echo "[environment:default]" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_CORE/deployProceed=bool:True" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_CORE/screenProceed=bool:True" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/adminPassword=str:asdf" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/clusterName=str:Default" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/datacenterName=str:Default" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/enableHcGlusterService=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/insecureSSL=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeIf=str:%s" >> /root/answers.conf'%(self.NETWORK_NAME))
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/gateway=str:192.168.17.1" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(HOSTNAME))
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test=str:ping" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_address=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_port=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/destEmail=str:root@localhost" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/smtpPort=str:25" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/smtpServer=str:localhost" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/sourceEmail=str:root@localhost" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/LunID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/discardSupport=bool:False" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIDiscoverUser=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortal=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortalIPAddress=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortalPort=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortalUser=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSITargetName=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/imgSizeGB=str:120" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/imgUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/lockspaceImageUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/lockspaceVolumeUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/metadataImageUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/metadataVolumeUUID=none:None" >> /root/answers.conf')
-
-            # nfs / ceph 설정
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/domainType=str:%s" >> /root/answers.conf'%(DOMAIN_TYPE))
-            if DOMAIN_TYPE == 'nfs':
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=str:auto" >> /root/answers.conf')
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/mntOptions=str:" >> /root/answers.conf')
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:%s" >> /root/answers.conf'%(NFS_IP, NFS_PATH))
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/vfsType=str:" >> /root/answers.conf')           
-                
-            elif DOMAIN_TYPE == 'posixfs':                
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=none:None" >> /root/answers.conf')
-                # secret key 받기
-                o, e = self.ssh.commandExec('ceph auth get-key client.admin')
-                self.SECRET_KEY = o[0]
-                print("[ANSWRES] Secret key = %s"%self.SECRET_KEY)
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/mntOptions=str:name=admin,secret=%s" >> /root/answers.conf'%(self.SECRET_KEY))
-                # get storageDomainConnection path
-                o, e = self.ssh.commandExec('ceph fs subvolume info myfs tim1')
-                cnt = -1
-                for i in o:
-                    cnt += 1
-                    i = i.split(":")
-                    if 'mon_addr' in i[0]:
-                        # 현재 위치에서 다음 인덱스에 값이 있기 때문에 +1
-                        '''
-                        "mon_addrs": [
-                            "192.168.17.163:6789"
-                        '''
-                        idx = cnt + 1
-                        self.STORAGEDOMAIN_URL = o[idx][o[idx].find('"')+1:o[idx].find('"', o[idx].find('"')+1)]
-                        # ex. 192.168.17.163:6789
-                    elif 'path' in i[0]:
-                        # "path": "/volumes/_nogroup/tim1/c21023fe-c818-4559-9489-bcb407cb8072",    "pool_namespace": "",
-                        idx = cnt
-                        self.SUBVOLUME_PATH = i[1][i[1].find('"')+1:i[1].find('"', i[1].find('"')+1)]
-                        # ex. /volumes/_nogroup/tim1/c21023fe-c818-4559-9489-bcb407cb8072
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:%s" >> /root/answers.conf'%(self.STORAGEDOMAIN_URL, self.SUBVOLUME_PATH))
-                print('[ANSWERS] Storage Domain Connection = %s:%s'%(self.STORAGEDOMAIN_URL, self.SUBVOLUME_PATH))     
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/vfsType=str:ceph" >> /root/answers.conf')           
-                
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainName=str:hosted_storage" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/volUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/applyOpenScapProfile=bool:False" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/automateVMShutdown=bool:True" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cdromUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudInitISO=str:generate" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitExecuteEngineSetup=bool:True" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceDomainName=str:tmax.dom" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitRootPwd=str:asdf" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMDNS=str:168.126.63.1" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMETCHOSTS=bool:True" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMStaticCIDR=str:%s/24" >> /root/answers.conf'%(MASTER_IP))
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMTZ=str:Asia/Seoul" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/consoleUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/emulatedMachine=str:pc" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/nicUUID=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/ovfArchive=str:" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/rootSshAccess=str:yes" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/rootSshPubkey=str:" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/vmCDRom=none:None" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/vmMACAddr=str:%s" >> /root/answers.conf'%(self.MAC_ADDRESS))
-            self.ssh.commandExec('echo "OVEHOSTED_VM/vmMemSizeMB=int:6144" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/vmVCpus=str:4" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8.2/os/x86_64" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
-
-            o, e = self.ssh.commandExec('cat /root/answers.conf')
-            print('[ANSWERS] cat /root/answers.conf')
-            for i in o:
-                print(i)
-            result = PASS
-        except Exception as e:            
-            result = FAIL
-            print("[ANSWERS] ERROR : %s"%(str(e)))
-
+    
     def nfs(self):
         result = FAIL
         print("[NFS] Set nfs at %s"%(ENGINE_IP))
@@ -356,6 +228,135 @@ class install():
         except Exception as e:
             result = FAIL
             print("[CEPH] ERROR : %s"%(str(e)))
+
+    def answers(self):
+        result = FAIL
+        print("[ANSWERS] Make answers.conf file")
+        try:
+            o, e = self.ssh.commandExec('dnf -y install ovirt-hosted-engine-setup', t=3600)        
+            o, e = self.ssh.commandExec('ls /etc/sysconfig/network-scripts/ |grep "ifcfg-e"')        
+            self.NETWORK_NAME = o[0][6:] 
+            print("[ANSWERS] NETWORK NAME = %s"%self.NETWORK_NAME)
+            
+            o, e = self.ssh.commandExec('python3.6 -c "from ovirt_hosted_engine_setup import util as ohostedutil; print(ohostedutil.randomMAC())"')        
+            self.MAC_ADDRESS = o[0]
+            print("[ANSWERS] MAC ADDRESS = %s"%self.MAC_ADDRESS)
+
+            # answers.conf 파일 만들기
+            o, e = self.ssh.commandExec('ls /root/answers.conf')
+            if o != [] and 'answers.conf' in o[0]:
+                self.ssh.commandExec('rm -rf /root/answers.conf')
+                #print("* answers.conf file is already exists !!!")
+
+            self.ssh.commandExec('echo "[environment:default]" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_CORE/deployProceed=bool:True" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_CORE/screenProceed=bool:True" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/adminPassword=str:asdf" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/clusterName=str:Default" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/datacenterName=str:Default" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/enableHcGlusterService=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_ENGINE/insecureSSL=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeIf=str:%s" >> /root/answers.conf'%(self.NETWORK_NAME))
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/gateway=str:192.168.17.1" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(HOSTNAME))
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test=str:ping" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_address=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_port=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/destEmail=str:root@localhost" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/smtpPort=str:25" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/smtpServer=str:localhost" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_NOTIF/sourceEmail=str:root@localhost" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/LunID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/discardSupport=bool:False" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIDiscoverUser=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortal=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortalIPAddress=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortalPort=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSIPortalUser=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/iSCSITargetName=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/imgSizeGB=str:120" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/imgUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/lockspaceImageUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/lockspaceVolumeUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/metadataImageUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/metadataVolumeUUID=none:None" >> /root/answers.conf')
+
+            # nfs / ceph 설정
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/domainType=str:%s" >> /root/answers.conf'%(DOMAIN_TYPE))
+            if DOMAIN_TYPE == 'nfs':
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=str:auto" >> /root/answers.conf')
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/mntOptions=str:" >> /root/answers.conf')
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:%s" >> /root/answers.conf'%(NFS_IP, NFS_PATH))
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/vfsType=str:" >> /root/answers.conf')           
+                
+            elif DOMAIN_TYPE == 'posixfs':                
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=none:None" >> /root/answers.conf')
+                # secret key 받기
+                o, e = self.ssh.commandExec('ceph auth get-key client.admin')
+                self.SECRET_KEY = o[0]
+                print("[ANSWRES] Secret key = %s"%self.SECRET_KEY)
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/mntOptions=str:name=admin,secret=%s" >> /root/answers.conf'%(self.SECRET_KEY))
+                # get storageDomainConnection path
+                o, e = self.ssh.commandExec('ceph fs subvolume info myfs tim1')
+                cnt = -1
+                for i in o:
+                    cnt += 1
+                    i = i.split(":")
+                    if 'mon_addr' in i[0]:
+                        # 현재 위치에서 다음 인덱스에 값이 있기 때문에 +1
+                        '''
+                        "mon_addrs": [
+                            "192.168.17.163:6789"
+                        '''
+                        idx = cnt + 1
+                        self.STORAGEDOMAIN_URL = o[idx][o[idx].find('"')+1:o[idx].find('"', o[idx].find('"')+1)]
+                        # ex. 192.168.17.163:6789
+                    elif 'path' in i[0]:
+                        # "path": "/volumes/_nogroup/tim1/c21023fe-c818-4559-9489-bcb407cb8072",    "pool_namespace": "",
+                        idx = cnt
+                        self.SUBVOLUME_PATH = i[1][i[1].find('"')+1:i[1].find('"', i[1].find('"')+1)]
+                        # ex. /volumes/_nogroup/tim1/c21023fe-c818-4559-9489-bcb407cb8072
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:%s" >> /root/answers.conf'%(self.STORAGEDOMAIN_URL, self.SUBVOLUME_PATH))
+                print('[ANSWERS] Storage Domain Connection = %s:%s'%(self.STORAGEDOMAIN_URL, self.SUBVOLUME_PATH))     
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/vfsType=str:ceph" >> /root/answers.conf')           
+                
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainName=str:hosted_storage" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/volUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/applyOpenScapProfile=bool:False" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/automateVMShutdown=bool:True" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cdromUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudInitISO=str:generate" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitExecuteEngineSetup=bool:True" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceDomainName=str:tmax.dom" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitRootPwd=str:asdf" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMDNS=str:168.126.63.1" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMETCHOSTS=bool:True" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMStaticCIDR=str:%s/24" >> /root/answers.conf'%(MASTER_IP))
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMTZ=str:Asia/Seoul" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/consoleUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/emulatedMachine=str:pc" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/nicUUID=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/ovfArchive=str:" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/rootSshAccess=str:yes" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/rootSshPubkey=str:" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/vmCDRom=none:None" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/vmMACAddr=str:%s" >> /root/answers.conf'%(self.MAC_ADDRESS))
+            self.ssh.commandExec('echo "OVEHOSTED_VM/vmMemSizeMB=int:6144" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/vmVCpus=str:4" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8.2/os/x86_64" >> /root/answers.conf')
+            self.ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
+
+            o, e = self.ssh.commandExec('cat /root/answers.conf')
+            print('[ANSWERS] cat /root/answers.conf')
+            for i in o:
+                print(i)
+            result = PASS
+        except Exception as e:            
+            result = FAIL
+            print("[ANSWERS] ERROR : %s"%(str(e)))
 
     def deploy(self):
         result = FAIL
