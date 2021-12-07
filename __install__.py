@@ -1,3 +1,4 @@
+from __common__.__batch__ import *
 from __common__.__module__ import secToHms
 from __common__.__parameter__ import *
 from __common__.__ssh__ import *
@@ -6,18 +7,13 @@ from __common__.__ssh__ import *
 # 사용자의 입력이 필요한 것들은 모두 변수로 입력받을 수 있도록 변경 가능. 현재는 테스트용으로 직접 입력했음
 # 이후 코드가 완성되면 id, pw, ip 등은 모두 입력받을 수 있도록 변경될 예정
 
+# 윈도우 노드 hosts에 내용 추가하는거 필요
+
 class install():
 
-    def __init__(self, domainType):
-        self.ENGINE_NUM = ENGINE_IP.split('.')[3] # ***.***.***.***
-        self.MASTER_NUM = MASTER_IP.split('.')[3]
-        self.HOSTNAME = 'supervm%s.tmax.dom'%self.ENGINE_NUM
-        self.FQDN = 'master%s.tmax.dom'%self.MASTER_NUM
-        # engine vm에 ssh연결
+    def __init__(self):
         self.ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)        
-        self.ssh.activate() 
-
-        self.DOMAIN_TYPE = domainType
+        self.ssh.activate()     
 
     def ifDeployed(self):    
         print("[DEPLOY] Check if SuperVM is deployed")
@@ -33,13 +29,27 @@ class install():
         
         return False
 
+    def setNode(self):        
+        print("[SET NODE] Initialize windows node")
+        # hosts 파일에 host fqdn 추가
+        # 존재할경우 하지 않음
+        o, e = batchCommand('for /f "delims=" %%i in (%s\system32\drivers\etc\hosts) do echo %%i'%(SYSTEM_ROOT))
+        for i in o:
+            if ENGINE_IP in i:
+                print("[SET NODE] Windows hosts file alreday has ENGINE IP")
+                print("[SET NODE] Need to check windows hosts file")
+                return False
+        print("[SET NODE] Add FQDN in %s\system32\drivers\etc\hosts"%(SYSTEM_ROOT))
+        batchCommand('echo. >> %s\system32\drivers\etc\hosts'%(SYSTEM_ROOT))
+        batchCommand('echo %s %s >> %s\system32\drivers\etc\hosts'%(ENGINE_IP, HOSTNAME, SYSTEM_ROOT))
+        batchCommand('echo %s %s >> %s\system32\drivers\etc\hosts'%(MASTER_IP, SUPERVM_URL, SYSTEM_ROOT))
+
     def setup(self):
         result = FAIL
-
         print("[SETUP] Initialize engine")
         try:
             # hostname 변경
-            self.ssh.commandExec('hostnamectl set-hostname %s'%(self.HOSTNAME))
+            self.ssh.commandExec('hostnamectl set-hostname %s'%(HOSTNAME))
 
             # hosts에 fqdn 추가
             o, e = self.ssh.commandExec('cat /etc/hosts')
@@ -53,8 +63,8 @@ class install():
                     break
             if hosts == True:
                 print("[SETUP] Add hosts")
-                self.ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_IP, self.HOSTNAME))
-                self.ssh.commandExec('echo "%s %s" >> /etc/hosts'%(MASTER_IP, self.FQDN))
+                self.ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_IP, HOSTNAME))
+                self.ssh.commandExec('echo "%s %s" >> /etc/hosts'%(MASTER_IP, SUPERVM_URL))
 
             o, e = self.ssh.commandExec('ls /etc/yum.repos.d/supervm.repo')
             repo = True
@@ -118,9 +128,9 @@ class install():
             self.ssh.commandExec('echo "OVEHOSTED_ENGINE/insecureSSL=none:None" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeIf=str:%s" >> /root/answers.conf'%(self.NETWORK_NAME))
             self.ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(self.FQDN))
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
             self.ssh.commandExec('echo "OVEHOSTED_NETWORK/gateway=str:192.168.17.1" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(self.HOSTNAME))
+            self.ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(HOSTNAME))
             self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test=str:ping" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_address=none:None" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_port=none:None" >> /root/answers.conf')
@@ -144,16 +154,14 @@ class install():
             self.ssh.commandExec('echo "OVEHOSTED_STORAGE/metadataVolumeUUID=none:None" >> /root/answers.conf')
 
             # nfs / ceph 설정
-            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/domainType=str:%s" >> /root/answers.conf'%(self.DOMAIN_TYPE))
-            if self.DOMAIN_TYPE == 'nfs':
-                self.NFS_IP = ENGINE_IP
-                self.NFS_FOLDER = '/nfs'
+            self.ssh.commandExec('echo "OVEHOSTED_STORAGE/domainType=str:%s" >> /root/answers.conf'%(DOMAIN_TYPE))
+            if DOMAIN_TYPE == 'nfs':
                 self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=str:auto" >> /root/answers.conf')
                 self.ssh.commandExec('echo "OVEHOSTED_STORAGE/mntOptions=str:" >> /root/answers.conf')
-                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:%s" >> /root/answers.conf'%(self.NFS_IP, self.NFS_FOLDER))
+                self.ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:%s" >> /root/answers.conf'%(NFS_IP, NFS_PATH))
                 self.ssh.commandExec('echo "OVEHOSTED_STORAGE/vfsType=str:" >> /root/answers.conf')           
                 
-            elif self.DOMAIN_TYPE == 'posixfs':                
+            elif DOMAIN_TYPE == 'posixfs':                
                 self.ssh.commandExec('echo "OVEHOSTED_STORAGE/nfsVersion=none:None" >> /root/answers.conf')
                 # secret key 받기
                 o, e = self.ssh.commandExec('ceph auth get-key client.admin')
@@ -192,7 +200,7 @@ class install():
             self.ssh.commandExec('echo "OVEHOSTED_VM/cloudInitISO=str:generate" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitExecuteEngineSetup=bool:True" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceDomainName=str:tmax.dom" >> /root/answers.conf')
-            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(self.FQDN))
+            self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
             self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitRootPwd=str:asdf" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMDNS=str:168.126.63.1" >> /root/answers.conf')
             self.ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMETCHOSTS=bool:True" >> /root/answers.conf')
@@ -227,7 +235,7 @@ class install():
             o, e = self.ssh.commandExec('cat /etc/exports')
             nfs_ = True
             for i in o:
-                if self.NFS_FOLDER in i:
+                if NFS_PATH in i:
                     print("[NFS] NFS folder already exist")
                     nfs_ = False
                     break
@@ -240,14 +248,14 @@ class install():
                 print("[NFS] Set nfs")
                 self.ssh.commandExec('chkconfig rpcbind on')
                 self.ssh.commandExec('chkconfig nfs-server on')
-                self.ssh.commandExec('mkdir %s'%self.NFS_FOLDER)
-                self.ssh.commandExec('echo "%s *(rw)" >> /etc/exports'%self.NFS_FOLDER)
+                self.ssh.commandExec('mkdir %s'%NFS_PATH)
+                self.ssh.commandExec('echo "%s *(rw)" >> /etc/exports'%NFS_PATH)
                 self.ssh.commandExec('exportfs -r')
                 self.ssh.commandExec('systemctl restart nfs-server')
                 self.ssh.commandExec('groupadd kvm -g 36')
                 self.ssh.commandExec('useradd vdsm -u 36 -g 36')
-                self.ssh.commandExec('chown -R 36:36 %s'%self.NFS_FOLDER)
-                self.ssh.commandExec('chmod 777 %s'%self.NFS_FOLDER)
+                self.ssh.commandExec('chown -R 36:36 %s'%NFS_PATH)
+                self.ssh.commandExec('chmod 777 %s'%NFS_PATH)
                 o, e = self.ssh.commandExec('ls -al /nfs')
                 print('[NFS] ls -al /nfs')
                 for i in o:
@@ -278,9 +286,7 @@ class install():
             o, e = self.ssh.commandExec('podman rmi -f 557c 5b72 d324 0881 e5a6', t=3600)
 
         # sdb에다가 해야됨(추가해야됨)
-        self.CEPH_IP = ENGINE_IP
-        self.CEPH_DISK_PATH = '/dev/sdb'
-        print("[CEPH] Set ceph to %s at %s"%(self.CEPH_DISK_PATH, self.CEPH_IP))
+        print("[CEPH] Set ceph to %s at %s"%(CEPH_DISK_PATH, CEPH_IP))
         try:
             print("[CEPH] Install ceph packages")
             o, e = self.ssh.commandExec('dnf -y install podman chrony lvm2 gdisk', t=3600)
@@ -290,30 +296,30 @@ class install():
             o, e = self.ssh.commandExec('dnf install -y ceph-common', t=3600)
 
             print("[CEPH] Set ceph")
-            o, e = self.ssh.commandExec('./cephadm --image docker.io/ceph/ceph:v15.2.10 bootstrap --mon-ip %s --allow-fqdn-hostname'%(self.CEPH_IP), t=3600)
-            o, e = self.ssh.commandExec('sgdisk --zap-all %s'%(self.CEPH_DISK_PATH), t=3600)
-            o, e = self.ssh.commandExec('dd if=/dev/zero of=%s bs=1M count=100 oflag=direct,dsync'%(self.CEPH_DISK_PATH))
-            o, e = self.ssh.commandExec('blkdiscard %s'%(self.CEPH_DISK_PATH), t=3600)
+            o, e = self.ssh.commandExec('./cephadm --image docker.io/ceph/ceph:v15.2.10 bootstrap --mon-ip %s --allow-fqdn-hostname'%(CEPH_IP), t=3600)
+            o, e = self.ssh.commandExec('sgdisk --zap-all %s'%(CEPH_DISK_PATH), t=3600)
+            o, e = self.ssh.commandExec('dd if=/dev/zero of=%s bs=1M count=100 oflag=direct,dsync'%(CEPH_DISK_PATH))
+            o, e = self.ssh.commandExec('blkdiscard %s'%(CEPH_DISK_PATH), t=3600)
 
             o, e = self.ssh.commandExec('ls /dev/mapper/ceph-* | xargs -I% -- dmsetup remove %', t=3600)
             self.ssh.commandExec('rm -rf /dev/ceph-*', t=3600)
 
             o, e = self.ssh.commandExec('ceph orch device ls --refresh', t=3600)
 
-            print("[CEPH] Make /root/osd_%s file"%(self.HOSTNAME))
-            o, e = self.ssh.commandExec('ls /root/osd_%s.yaml'%(self.HOSTNAME))
-            if o != [] and '/root/osd_%s.yaml'%self.HOSTNAME == o[0].replace('\n',''):
-                self.ssh.commandExec('rm -rf /root/osd_%s.yaml'%(self.HOSTNAME))
-            self.ssh.commandExec('touch /root/osd_%s.yaml'%(self.HOSTNAME))
-            self.ssh.commandExec('echo "service_type: osd" >> /root/osd_%s.yaml'%(self.HOSTNAME))
-            self.ssh.commandExec('echo "service_id: osd_%s" >> /root/osd_%s.yaml'%(self.HOSTNAME, self.HOSTNAME))
-            self.ssh.commandExec('echo "placement:" >> /root/osd_%s.yaml'%(self.HOSTNAME))
-            self.ssh.commandExec('echo " hosts:" >> /root/osd_%s.yaml'%(self.HOSTNAME))
-            self.ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(self.HOSTNAME, self.HOSTNAME))
-            self.ssh.commandExec('echo "data_devices:" >> /root/osd_%s.yaml'%(self.HOSTNAME))
-            self.ssh.commandExec('echo " paths:" >> /root/osd_%s.yaml'%(self.HOSTNAME))
-            self.ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(self.CEPH_DISK_PATH,self.HOSTNAME))
-            o, e = self.ssh.commandExec('ceph orch apply osd -i /root/osd_%s.yaml'%self.HOSTNAME, t=3600)
+            print("[CEPH] Make /root/osd_%s file"%(HOSTNAME))
+            o, e = self.ssh.commandExec('ls /root/osd_%s.yaml'%(HOSTNAME))
+            if o != [] and '/root/osd_%s.yaml'%HOSTNAME == o[0].replace('\n',''):
+                self.ssh.commandExec('rm -rf /root/osd_%s.yaml'%(HOSTNAME))
+            self.ssh.commandExec('touch /root/osd_%s.yaml'%(HOSTNAME))
+            self.ssh.commandExec('echo "service_type: osd" >> /root/osd_%s.yaml'%(HOSTNAME))
+            self.ssh.commandExec('echo "service_id: osd_%s" >> /root/osd_%s.yaml'%(HOSTNAME, HOSTNAME))
+            self.ssh.commandExec('echo "placement:" >> /root/osd_%s.yaml'%(HOSTNAME))
+            self.ssh.commandExec('echo " hosts:" >> /root/osd_%s.yaml'%(HOSTNAME))
+            self.ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(HOSTNAME, HOSTNAME))
+            self.ssh.commandExec('echo "data_devices:" >> /root/osd_%s.yaml'%(HOSTNAME))
+            self.ssh.commandExec('echo " paths:" >> /root/osd_%s.yaml'%(HOSTNAME))
+            self.ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(CEPH_DISK_PATH,HOSTNAME))
+            o, e = self.ssh.commandExec('ceph orch apply osd -i /root/osd_%s.yaml'%HOSTNAME, t=3600)
             
             print("[CEPH] Config ceph")
             o, e = self.ssh.commandExec('ceph osd pool set device_health_metrics size 1', t=3600)
@@ -326,7 +332,7 @@ class install():
             o, e = self.ssh.commandExec('ceph osd pool set myfs-metadata size 1', t=3600)
             o, e = self.ssh.commandExec('ceph osd pool set myfs-data0 size 1', t=3600)
 
-            o, e = self.ssh.commandExec('ceph orch apply mds myfs --placement="1 %s"'%self.HOSTNAME, t=3600)
+            o, e = self.ssh.commandExec('ceph orch apply mds myfs --placement="1 %s"'%HOSTNAME, t=3600)
             o, e = self.ssh.commandExec('ceph fs new myfs myfs-metadata myfs-data0', t=3600)
 
             o, e = self.ssh.commandExec('ceph fs subvolume create myfs tim1 --size 322122547200 --uid 36 --gid 36', t=3600)
@@ -381,12 +387,13 @@ def main():
     if INSTALL_SUPERVM == 'true':
         install_time = time.time()
         try:
-            a = install(domainType='posixfs')
+            a = install()
+            # a.setNode() # 현재는 제외
             if not a.ifDeployed():
                 a.setup()
-                if a.DOMAIN_TYPE == 'nfs':
+                if DOMAIN_TYPE == 'nfs':
                     a.nfs()
-                elif a.DOMAIN_TYPE == 'posixfs':
+                elif DOMAIN_TYPE == 'posixfs':
                     a.ceph(initialize=True)
                 a.answers()
                 a.deploy()
@@ -399,7 +406,7 @@ def main():
         print("* It didn't execute SuperVM installation")
 
 if __name__ == "__main__":        
-    
+
     main()
 
         
