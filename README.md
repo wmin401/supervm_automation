@@ -79,6 +79,10 @@ python main.py
   2) 원하는 위치에 ` ssh_connection ` 클래스 선언 및 ` activate() 실행 `
   3) 명령어 입력 후 출력으로 분석
   4) 테스트 결과 반영 후 ` deactivate `
+
+## 설치 자동화
+1) parameter 값 변경 후 ` __install__.py ` 실행
+2) ovirt 설치 -> nfs/ceph 구성 -> answers.conf 파일 생성 -> Deploy
   
 
 ## 코드 작성 주의사항
