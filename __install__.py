@@ -23,8 +23,8 @@ class install():
             print(i)
         for i in o:
             if 'good' in i:
-                print('[DEPLOY] SuperVM is already deployed ')
-                print('[DEPLOY] SuperVM installation will be finished')
+                print(i)
+                print('[DEPLOY] SuperVM is deployed ')
                 return True
         
         print("[DEPLOY] SuperVM didn't deploy")
@@ -351,7 +351,7 @@ class install():
         try:
             self._ssh.commandExec('hosted-engine --deploy --config-append=answers.conf', t = 216000, pty = True)
             print("[DEPLOY] Deploy finished")
-
+            time.sleep(10)
             if self.ifDeployed():
                 _result = PASS
                 print("[DEPLOY] Successfully finished deploy")    

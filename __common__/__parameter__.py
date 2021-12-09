@@ -79,9 +79,9 @@ else: # 로컬
     ENGINE_ID = 'root'
     ENGINE_PW = 'asdf'
 
-    
-    DOMAIN_TYPE = 'posixfs'
-    NFS_FOLDER = '/nfs'
+     
+    DOMAIN_TYPE = 'nfs' #posixfs
+    NFS_PATH = '/nfs'
     NFS_IP = ENGINE_IP #'192.168.17.163'
     CEPH_IP = ENGINE_IP #'192.168.17.163'
     CEPH_DISK_PATH = '/dev/sdb'
