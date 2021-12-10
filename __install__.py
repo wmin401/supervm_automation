@@ -323,7 +323,7 @@ class install():
             self._ssh.commandExec('echo "OVEHOSTED_VM/rootSshAccess=str:yes" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/rootSshPubkey=str:" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmCDRom=none:None" >> /root/answers.conf')                        
-            o, e = self._ssh.commandExec('python3.6 -c "from ovirt_hosted_engine_setup import util as ohostedutil; printLog(ohostedutil.randomMAC())"')        
+            o, e = self._ssh.commandExec('python3.6 -c "from ovirt_hosted_engine_setup import util as ohostedutil; print(ohostedutil.randomMAC())"')        
             _macAddress = o[0]
             printLog("[ANSWERS] MAC ADDRESS = %s"%_macAddress)
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmMACAddr=str:%s" >> /root/answers.conf'%(_macAddress))
