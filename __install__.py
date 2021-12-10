@@ -1,4 +1,5 @@
 from __common__.__batch__ import *
+from __common__.__csv__ import initResult
 from __common__.__module__ import *
 from __common__.__parameter__ import *
 from __common__.__ssh__ import *
@@ -367,6 +368,8 @@ class install():
         time.sleep(5)
 
 def main():
+
+    initResult()
 
     if INSTALL_SUPERVM == 'true':
         install_time = time.time()
