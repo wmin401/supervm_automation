@@ -345,7 +345,7 @@ class install():
         _result = FAIL
         printLog("[DEPLOY] Start deploy")   
         printLog("[DEPLOY] This task needs a lot of time. So you must need to wait")
-        printLog("[DEPLOY] If you want to see the progress of installation, see /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log file")   
+        printLog("[DEPLOY] If you want to see the progress of installation, see /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log file in %s"%ENGINE_IP)   
         printLog("[DEPLOY] ex). tail -f /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log")   
 
         try:
