@@ -382,7 +382,7 @@ def main():
                 if DOMAIN_TYPE == 'nfs':
                     supervm.nfs()
                 elif DOMAIN_TYPE == 'posixfs':
-                    supervm.ceph(initialize=True)
+                    supervm.ceph(initialize=False) ## 아직 기능이 확실하지 않음
                 supervm.answers()
                 supervm.deploy()
                 h, m, s = secToHms(install_time, time.time())
