@@ -7,7 +7,21 @@ IN_JENKINS = os.getenv('IN_JENKINS')
 
 ######## 현재 젠킨스 테스트 중
 if IN_JENKINS == 'true':    
-    SUPERVM_URL = os.getenv('SUPERVM_URL')
+    MASTER_FQDN = os.getenv('MASTER_FQDN')
+    INSTALL_SUPERVM = os.getenv('INSTALL_SUPERVM')
+    HOSTNAME = os.getenv('HOSTNAME')
+    SUPERVM_REPO_URL = os.getenv('SUPERVM_REPO_URL')
+    MASTER_IP = os.getenv('MASTER_IP')
+    ENGINE_IP = os.getenv('ENGINE_IP')
+    ENGINE_ID = os.getenv('ENGINE_ID')
+    ENGINE_PW = os.getenv('ENGINE_PW')
+
+    DOMAIN_TYPE = os.getenv('DOMAIN_TYPE')
+    NFS_PATH = os.getenv('NFS_PATH')
+    NFS_IP = os.getenv('NFS_IP')
+    CEPH_IP = os.getenv('CEPH_IP')
+    CEPH_DISK_PATH = os.getenv('CEPH_DISK_PATH')
+
     SECURE = os.getenv('SECURE')    
     BROWSER_NAME = os.getenv('BROWSER_NAME')
     BROWSER_VERSION = os.getenv('BROWSER_VERSION')
@@ -26,26 +40,27 @@ if IN_JENKINS == 'true':
 
     BUILD_ID = os.getenv('BUILD_ID')
 
-    INSTALL_SUPERVM = os.getenv('INSTALL_SUPERVM')
-    HOSTNAME = os.getenv('HOSTNAME')
-    SUPERVM_REPO_URL = os.getenv('SUPERVM_REPO_URL')
-    MASTER_IP = os.getenv('MASTER_IP')
-    ENGINE_IP = os.getenv('ENGINE_IP')
-    ENGINE_ID = os.getenv('ENGINE_ID')
-    ENGINE_PW = os.getenv('ENGINE_PW')
-
-    DOMAIN_TYPE = os.getenv('DOMAIN_TYPE')
-    NFS_PATH = os.getenv('NFS_PATH')
-    NFS_IP = os.getenv('NFS_IP')
-    CEPH_IP = os.getenv('CEPH_IP')
-    CEPH_DISK_PATH = os.getenv('CEPH_DISK_PATH')
-
-
 
     
 else: # 로컬
-    SUPERVM_URL = 'master164.tmax.dom'
+    MASTER_FQDN = 'master164.tmax.dom'
+    
+    ## 설치 자동화 매개변수 ##
+    INSTALL_SUPERVM = 'true'
+    HOSTNAME = 'supervm163.tmax.dom'
+    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
+    MASTER_IP = '192.168.17.164'
+    ENGINE_IP = '192.168.17.163'
+    ENGINE_ID = 'root'
+    ENGINE_PW = 'asdf'
 
+    DOMAIN_TYPE = 'nfs' #posixfs
+    NFS_PATH = '/nfs'
+    NFS_IP = ENGINE_IP #'192.168.17.163'
+    CEPH_IP = ENGINE_IP #'192.168.17.163'
+    CEPH_DISK_PATH = '/dev/sdb'
+
+    ## 테스트 자동화 매개변수 ##
     SECURE = 'false'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
@@ -70,21 +85,6 @@ else: # 로컬
     
     BUILD_ID = 'local'
 
-    ## 설치 자동화 매개변수 ##
-    INSTALL_SUPERVM = 'true'
-    HOSTNAME = 'supervm163.tmax.dom'
-    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
-    MASTER_IP = '192.168.17.164'
-    ENGINE_IP = '192.168.17.163'
-    ENGINE_ID = 'root'
-    ENGINE_PW = 'asdf'
-
-     
-    DOMAIN_TYPE = 'nfs' #posixfs
-    NFS_PATH = '/nfs'
-    NFS_IP = ENGINE_IP #'192.168.17.163'
-    CEPH_IP = ENGINE_IP #'192.168.17.163'
-    CEPH_DISK_PATH = '/dev/sdb'
 
 #############################
 

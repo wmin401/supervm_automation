@@ -21,7 +21,7 @@ def main():
     # 테스트 시작
     printLog('1. Open Browser')
     webDriver = SuperVM_driver(headless=IF_HEADLESS) ## 젠킨스에서는 헤드리스 모드 사용 금지
-    webDriver.openURL('https://' + SUPERVM_URL + '/ovirt-engine')
+    webDriver.openURL('https://' + MASTER_FQDN + '/ovirt-engine')
 
     time.sleep(2)
     # 비공개 -> 안전하지 않음 이동(selenium에서는 보안인증이 처리가 되어있지 않음) 
@@ -112,7 +112,7 @@ def main():
         _totalResult = saveResult(_vm._vmResult, _totalResult)
 
     if VM_PORTAL_TEST == 'true':
-        webDriver.openURL(SUPERVM_URL)        
+        webDriver.openURL(MASTER_FQDN)        
         accessVmPortal(webDriver)
         printLine()
         printLog("*** VM PORTAL Test ***")

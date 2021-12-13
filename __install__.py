@@ -51,7 +51,7 @@ class install():
             if _hosts == True:
                 printLog("[SETUP] Add hosts")
                 self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_IP, HOSTNAME))
-                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(MASTER_IP, SUPERVM_URL))
+                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(MASTER_IP, MASTER_FQDN))
 
             o, e = self._ssh.commandExec('ls /etc/yum.repos.d/supervm.repo')
             _repo = True
@@ -239,7 +239,7 @@ class install():
             printLog("[ANSWERS] NETWORK NAME = %s"%_networkName)
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeIf=str:%s" >> /root/answers.conf'%(_networkName))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt" >> /root/answers.conf')
-            self._ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
+            self._ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(MASTER_FQDN))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/gateway=str:192.168.17.1" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(HOSTNAME))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test=str:ping" >> /root/answers.conf')
@@ -310,8 +310,9 @@ class install():
             self._ssh.commandExec('echo "OVEHOSTED_VM/cdromUUID=none:None" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudInitISO=str:generate" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitExecuteEngineSetup=bool:True" >> /root/answers.conf')
-            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceDomainName=str:tmax.dom" >> /root/answers.conf')
-            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(SUPERVM_URL))
+            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(MASTER_FQDN))
+            _domainName = MASTER_FQDN.split('.')[1] + '.' + MASTER_FQDN.split('.')[2]
+            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceDomainName=str:%s" >> /root/answers.conf'%(_domainName))
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitRootPwd=str:asdf" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMDNS=str:168.126.63.1" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMETCHOSTS=bool:True" >> /root/answers.conf')
@@ -408,7 +409,7 @@ if __name__ == "__main__":
     #             printLog("[SET NODE] Windows hosts file alreday has ENGINE IP")
     #             printLog("[SET NODE] Need to check windows hosts file")
     #             return False
-    #     printLog("[SET NODE] Add FQDN in %s\system32\drivers\etc\hosts"%(SYSTEM_ROOT))
+    #     printLog("[SET NODE] Add MASTER_FQDN in %s\system32\drivers\etc\hosts"%(SYSTEM_ROOT))
     #     batchCommand('echo. >> %s\system32\drivers\etc\hosts'%(SYSTEM_ROOT))
     #     batchCommand('echo %s %s >> %s\system32\drivers\etc\hosts'%(ENGINE_IP, HOSTNAME, SYSTEM_ROOT))
-    #     batchCommand('echo %s %s >> %s\system32\drivers\etc\hosts'%(MASTER_IP, SUPERVM_URL, SYSTEM_ROOT))
+    #     batchCommand('echo %s %s >> %s\system32\drivers\etc\hosts'%(MASTER_IP, MASTER_FQDN, SYSTEM_ROOT))
