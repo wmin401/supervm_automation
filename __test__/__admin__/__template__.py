@@ -22,6 +22,10 @@ class admin_template:
         time.sleep(0.3)
         self.update()
         time.sleep(0.3)
+        self.addRole()
+        time.sleep(0.3)
+        self.removeRole()
+        time.sleep(0.3)
         self.remove()
 
     def setup(self):
@@ -131,6 +135,89 @@ class admin_template:
 
         self.tl.junitBuilder('TEMPLATE_UPDATE', result, msg)
 
+    # 2-533 : 리소스에 관리자 또는 사용자 역할 할당
+    def addRole(self):
+        printLog('- Add role')        
+        try:
+            result = FAIL
+            msg = ''
+            # 템플릿 탭
+            self.setup()
+            # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
+            self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=True)    
+            time.sleep(0.3)
+            # 권한 탭 클릭
+            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
+            # 추가 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
+            self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
+            # 모두 라디오 버튼 클릭
+            self.webDriver.findElement('id', 'PermissionsPopupView_everyoneRadio', True)
+            # 드롭다운 메뉴 클릭
+            self.webDriver.findElement('id', 'PermissionsPopupView_role', True)
+            # 첫번째 역할 클릭
+            self.webDriver.findElement('css_selector', '#PermissionsPopupView_role > div > ul > li:nth-child(1)')
+            self.role = self.webDriver.getAttribute('textContent')
+            self.webDriver.click()
+            # OK 클릭
+            self.webDriver.findElement('id', 'PermissionsPopupView_OnAdd', True)
+            time.sleep(2)
+            # 생성 확인
+            _addCheck = self.webDriver.tableSearch(self.role, 4)        
+            if _addCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to add new role..."
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._templateResult.append(['template' + DELIM + 'add role' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('TEMPLATE_ADD_ROLE', result, msg)
+
+    # 2-534 : 리소스에서 관리자 또는 사용자 역할 제거
+    def removeRole(self):
+        printLog('- Remove role')        
+        try:
+            result = FAIL
+            msg = ''
+            # 템플릿 탭
+            self.setup()
+            # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
+            self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=True)    
+            time.sleep(0.3)
+            # 권한 탭 클릭
+            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
+            # 생성한 권한 찾아서 클릭
+            self.webDriver.tableSearch(self.role, 4, rowClick=True)
+            # 추가 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Remove')
+            # 제거 클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_Remove', True)
+            # OK 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
+            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+            time.sleep(2)
+            _removeCheck = self.webDriver.tableSearch(self.role, 4)
+            if _removeCheck == False:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to remove new role..."
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._templateResult.append(['template' + DELIM + 'remove role' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('TEMPLATE_REMOVE_ROLE', result, msg)
+
     def remove(self):
         printLog('- Remove Template')        
         try:
@@ -149,7 +236,7 @@ class admin_template:
 
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
-            time.sleep(0.5)
+            time.sleep(2)
             
             # 설명에 추가되면 성공
             _removeCheck = self.webDriver.tableSearch(self._templateName, 1)        
@@ -167,3 +254,4 @@ class admin_template:
         self._templateResult.append(['template' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_REMOVE', result, msg)
+
