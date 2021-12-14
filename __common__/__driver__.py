@@ -78,6 +78,7 @@ class SuperVM_driver:
 
     def findElement(self, element_type, path,  click = None):
         ## elem 초기화
+        self.implicitlyWait(10)
         try:
             if element_type == 'xpath':
                 self.element = self.driver.find_element_by_xpath(path)

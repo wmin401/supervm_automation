@@ -110,6 +110,8 @@ def main():
         _template = admin_template(webDriver)
         _template.test()
         
+        _totalResult = saveResult(_template._templateResult, _totalResult)
+        
     if VM_TEST == 'true':
         printLine()
         printLog("*** VM Test ***")
