@@ -368,6 +368,17 @@ class install():
         self._ssh.deactivate()        
         time.sleep(5)
 
+    def cleanup(self): 
+        # deploy 실패시 자동 실행(1안)
+        # deploy 이전에 실행(2안)
+        printLog("[CLEANUP] Start cleanup using ovirt-hosted-engine-cleanup")   
+        o, e = self._ssh.commandExec('ovirt-hosted-engine-cleanup -q', t=216000) # -q : 사용자 입력없이 실행되는 옵션
+        for i in o:
+            print(i)
+        
+
+
+
 def main():
 
     initResult()
