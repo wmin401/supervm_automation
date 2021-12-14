@@ -1,5 +1,7 @@
 import time
 
+from selenium import webdriver
+
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from __common__.__csv__ import *
@@ -22,6 +24,10 @@ class admin_template:
         time.sleep(0.3)
         self.update()
         time.sleep(0.3)
+        self.createVM(storage='Thin')
+        time.sleep(0.3)
+        self.createVM(storage='Copy')
+        time.sleep(0.3)
         self.addRole()
         time.sleep(0.3)
         self.removeRole()
@@ -34,7 +40,7 @@ class admin_template:
         self.webDriver.findElement('id','compute',True)
 
         # 템플릿 클릭
-        self.webDriver.implicitlyWait(10)
+        self.webDriver.explicitlyWait(10, By.ID, 'MenuView_templatesAnchor')
         self.webDriver.findElement('id','MenuView_templatesAnchor',True)
         
         time.sleep(2)
@@ -115,6 +121,7 @@ class admin_template:
             self.webDriver.findElement('id', 'TemplateEditPopupWidget_description', True)
             des = randomString()
             self.webDriver.sendKeys(des)
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id', 'TemplateEditPopupView_OnSave', True)
             time.sleep(1)
 
@@ -147,19 +154,24 @@ class admin_template:
             self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=True)    
             time.sleep(0.3)
             # 권한 탭 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
             # 추가 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
             self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
             # 모두 라디오 버튼 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id', 'PermissionsPopupView_everyoneRadio', True)
             # 드롭다운 메뉴 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id', 'PermissionsPopupView_role', True)
             # 첫번째 역할 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector', '#PermissionsPopupView_role > div > ul > li:nth-child(1)')
             self.role = self.webDriver.getAttribute('textContent')
             self.webDriver.click()
             # OK 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id', 'PermissionsPopupView_OnAdd', True)
             time.sleep(2)
             # 생성 확인
@@ -191,12 +203,12 @@ class admin_template:
             self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=True)    
             time.sleep(0.3)
             # 권한 탭 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
             # 생성한 권한 찾아서 클릭
             self.webDriver.tableSearch(self.role, 4, rowClick=True)
-            # 추가 클릭
-            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Remove')
             # 제거 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Remove')
             self.webDriver.findElement('id', 'DetailActionPanelView_Remove', True)
             # OK 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
@@ -218,6 +230,77 @@ class admin_template:
 
         self.tl.junitBuilder('TEMPLATE_REMOVE_ROLE', result, msg)
 
+    def createVM(self, storage='Thin'):
+        printLog('- Create vm %s using template'%storage)
+        try:
+            result = FAIL
+            msg = ''
+
+            self.setup()
+
+            # 새 가상머신
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_CreateVM')
+            self.webDriver.tableSearch(self._templateName, 1, rowClick=True)
+            self.webDriver.findElement('id','ActionPanelView_CreateVM',True)
+
+            # 이름 입력
+            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_name')
+            self.webDriver.findElement('id', 'VmPopupWidget_name')
+            self.webDriver.sendKeys(self._templateName + '_vm')
+            
+            # 고급 옵션이 숨겨져 있을 경우 보이게 하기
+            self.webDriver.findElement('id', 'VmPopupView_OnAdvanced')
+            advanced = self.webDriver.getAttribute('textContent')
+            if advanced == '고급 옵션 표시' or advanced == 'Show Advnaced Options':
+                self.webDriver.click()
+                time.sleep(0.3)
+
+            # 리소스 할당 클릭
+            self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(8)', True)
+            time.sleep(0.3)
+            if storage == 'Thin':
+                # 씬 프로비저닝 클릭
+                self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_provisioningThin')
+                self.webDriver.findElement('id', 'VmPopupWidget_provisioningThin', True)
+            elif storage == 'Copy':
+                # 복제 클릭
+                self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_provisioningClone')
+                self.webDriver.findElement('id', 'VmPopupWidget_provisioningClone', True)
+
+        
+            # OK 클릭
+            self.webDriver.findElement('id', 'VmPopupView_OnSaveVm', True)
+            time.sleep(2)
+            
+            # 컴퓨팅 - 가상머신
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','compute',True)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_vmsAnchor',True)
+            time.sleep(2)
+            _createCheck = self.webDriver.tableSearch(self._templateName + '_vm', 2, rowClick=True)        
+            if _createCheck == True:
+                result = PASS
+                msg = ''
+                # 성공 후 삭제 필요
+                printLog("Remove vm")
+                self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right', True)                
+                self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
+                self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
+                self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+                time.sleep(1)                
+            else:
+                result = FAIL
+                msg = "Failed to create vm using template..."
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._templateResult.append(['template' + DELIM + 'create vm %s'%(storage) + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('TEMPLATE_CREATE_VM_%s'%(storage.upper()), result, msg)
+
     def remove(self):
         printLog('- Remove Template')        
         try:
@@ -227,7 +310,7 @@ class admin_template:
             self.setup()
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
-            time.sleep(0.5)
+            time.sleep(1)
             self.webDriver.tableSearch(self._templateName, 1, rowClick=True)    
 
             # 편집 클릭
