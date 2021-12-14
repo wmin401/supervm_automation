@@ -283,7 +283,7 @@ class admin_template:
                 result = PASS
                 msg = ''
                 # 성공 후 삭제 필요
-                printLog("Remove vm")
+                printLog("* Remove vm")
                 self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right', True)                
                 self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
                 self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
