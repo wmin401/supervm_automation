@@ -35,6 +35,7 @@ if IN_JENKINS == 'true':
     DOMAIN_TEST = os.getenv('DOMAIN_TEST')
     HOST_TEST = os.getenv('HOST_TEST')
     QOS_TEST = os.getenv('QOS_TEST')
+    TEMPLATE_TEST = os.getenv('TEMPLATE_TEST')
     VM_TEST = os.getenv('VM_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
@@ -43,10 +44,10 @@ if IN_JENKINS == 'true':
 
     
 else: # 로컬
-    MASTER_FQDN = 'master164.tmax.dom'
+    MASTER_FQDN = 'master165.tmax.com'
     
     ## 설치 자동화 매개변수 ##
-    INSTALL_SUPERVM = 'true'
+    INSTALL_SUPERVM = 'false'
     HOSTNAME = 'supervm163.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
     MASTER_IP = '192.168.17.164'
@@ -79,7 +80,8 @@ else: # 로컬
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
-    QOS_TEST = 'true'
+    QOS_TEST = 'false'
+    TEMPLATE_TEST = 'true'
     VM_TEST = 'false'
     VM_PORTAL_TEST = 'false'
     

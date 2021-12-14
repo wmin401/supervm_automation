@@ -1,5 +1,5 @@
 
-from __import__ import * 
+from __import__ import *
 
 ## 테스트 메인 파일
 ## 여기서 각 파일들을 불러와서 테스트 진행
@@ -51,6 +51,7 @@ def main():
     printLine()
     printLog("4. Access Portal")
     accessAdminPortal(webDriver)
+    time.sleep(3)
         
     printLine()
     printLog("5. Start Test")
@@ -102,6 +103,12 @@ def main():
         _qos.test()
             
         _totalResult = saveResult(_qos._qosResult, _totalResult)
+    
+    if TEMPLATE_TEST == 'true':
+        printLine()
+        printLog("*** Template Test ***")
+        _template = admin_template(webDriver)
+        _template.test()
         
     if VM_TEST == 'true':
         printLine()
