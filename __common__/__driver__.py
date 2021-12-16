@@ -143,7 +143,7 @@ class SuperVM_driver:
         # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False        
         # rowClick 매개변수의 값이 True일 경우 해당 row 클릭
         # nameClick True일 경우 이름 클릭
-        printLog("* Start to search in first table!")
+        printLog("[TABLE SEARCH] Searching table ...")
         time.sleep(1)   
         self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
 
@@ -152,13 +152,13 @@ class SuperVM_driver:
         for tr in table.find_elements_by_tag_name("tr"):            
             self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
-            if returnValueList == True:
-                tdLst = []
-                for i in range(len(td)):
-                    tdLst.append(td[i].text)
-                return tdLst
             if name == td[nameIdx].text:                
-                printLog('* Find name : ' + str(td[nameIdx].text))
+                printLog('[TABLE SEARCH] Find : ' + str(td[nameIdx].text))
+                if returnValueList == True:
+                    tdLst = []
+                    for i in range(len(td)):
+                        tdLst.append(td[i].text)
+                    return tdLst
                 if rowClick == True:
                     tr.click()
                 # if nameClick == True:
@@ -175,7 +175,7 @@ class SuperVM_driver:
         # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
         # click 매개변수의 값이 True일 경우 해당 row 클릭
         time.sleep(1)   
-        printLog("* Start to search in all table!")
+        printLog("* Searching all table ...")
         #tables = self.driver.find_elements_by_css_selector('table')
         
         tables = self.driver.find_elements_by_css_selector('tbody')
