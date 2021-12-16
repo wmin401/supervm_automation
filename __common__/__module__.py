@@ -31,9 +31,9 @@ def printLine():
     print('---------------------------------------------------------')
 
 
-def randomString(num=8):
+def randomString(length=8):
     string_ = ''
-    for i in range(num):
+    for i in range(length):
         string_ += str(random.choice(string.ascii_letters))
     return string_
 

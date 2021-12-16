@@ -1,8 +1,9 @@
 from __common__.__parameter__ import *
+from selenium.webdriver.common.by import By
 
 def portalLogin(webDriver):
 
-    webDriver.implicitlyWait(10)
+    webDriver.explicitlyWait(10, By.ID, 'sso-dropdown-toggle')
     _loginDropdown = webDriver.findElement('id','sso-dropdown-toggle', True)
     
     webDriver.implicitlyWait(10)
