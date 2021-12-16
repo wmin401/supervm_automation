@@ -46,3 +46,9 @@ def makeUpMsg(msg_list):
         #i = i.replace(',', ' ')
         returnMsg.append(i)
     return returnMsg
+
+def printSquare(msg):
+    m = '''=========================================================
+ %s
+========================================================='''%msg
+    return m
