@@ -1,8 +1,6 @@
 import paramiko
 from __common__.__module__ import makeUpMsg
 
-
-
 class ssh_connection():
     def __init__(self, HOST_IP, HOST_PORT, HOST_ID, HOST_PW):
         self.HOST_IP = str(HOST_IP)
@@ -45,7 +43,6 @@ class ssh_connection():
             error = [str(e)]
 
         return output, error
-
 
     def deactivate(self):
         try:
