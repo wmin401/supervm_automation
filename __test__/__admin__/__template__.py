@@ -339,7 +339,7 @@ class admin_template:
             result = FAIL
             msg = ''
             # 컴퓨팅 - 스토리지
-            printLog("[COPY TEMPLATE DISK] Compute - Storage")
+            printLog("[COPY TEMPLATE DISK] Storage - Disks")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','MenuView_storageTab',True)
             time.sleep(0.5)
