@@ -76,7 +76,7 @@ class SuperVM_driver:
         
         #self.driver.maximize_window()
 
-    def findElement(self, element_type, path,  click = None):
+    def findElement(self, element_type, path,  click = False):
         ## elem 초기화
         self.implicitlyWait(10)
         try:
