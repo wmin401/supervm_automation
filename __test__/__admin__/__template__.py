@@ -1,7 +1,5 @@
 import time
 
-from selenium import webdriver
-
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from __common__.__csv__ import *
@@ -22,20 +20,29 @@ class admin_template:
     def test(self):
         self.create()
         time.sleep(0.3)
-        self.update()
+        # self.update()
+        # time.sleep(0.3)
+        self.createVM(storage='Thin')        
         time.sleep(0.3)
-        self.createVM(storage='Thin')
+        self.copyTemplateDisk()
         time.sleep(0.3)
-        self.createVM(storage='Copy')
-        time.sleep(0.3)
-        self.addRole()
-        time.sleep(0.3)
-        self.removeRole()
-        time.sleep(0.3)
-        self.remove()
+        # self.removeVM()
+        # time.sleep(0.3)
+        # self.createVM(storage='Copy')
+        # time.sleep(0.3)
+        # self.removeVM()
+        # time.sleep(0.3)
+        # self.addRole()
+        # time.sleep(0.3)
+        # self.removeRole()
+        # time.sleep(0.3)
+        # self.removeVM()
+        # time.sleep(0.3)
+        # self.remove()
 
     def setup(self):
         # 컴퓨팅 클릭
+        printLog("[SETUP] Compute - Template ")
         self.webDriver.implicitlyWait(10)
         self.webDriver.findElement('id','compute',True)
 
@@ -52,6 +59,7 @@ class admin_template:
             msg = ''
             # 중지된 가상머신이 있어야한다.
             # 컴퓨팅 클릭
+            printLog("[CREATE TEMPLATE] Compute - Virtual Machines ")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','compute',True)
             # 가상머신 클릭
@@ -64,6 +72,7 @@ class admin_template:
             self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button',True)
             
             # 템플릿 생성 클릭
+            printLog("[CREATE TEMPLATE] Create template")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ActionPanelView_NewTemplate',True)
 
@@ -71,6 +80,7 @@ class admin_template:
             self.webDriver.explicitlyWait(10, By.ID, 'VmMakeTemplatePopupWidget_name')
             self.webDriver.findElement('id','VmMakeTemplatePopupWidget_name')
             self.webDriver.sendKeys(self._templateName)
+            printLog("[CREATE TEMPLATE] Template name : %s"%self._templateNam)
 
             # 가상 머신 권한 복사 체크
             self.webDriver.implicitlyWait(10)
@@ -83,19 +93,33 @@ class admin_template:
             # 템플릿 탭
             self.setup()
 
+            printLog("[CREATE TEMPLATE] Check if created")
+            printLog("[CREATE TEMPLATE] Wait until status will be OK")
             # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
-            _createCheck = self.webDriver.tableSearch(self._templateName, 1) # 템플릿 테이블에 숨겨진 열(0)이 하나 있어서 1부터 시작
-            if _createCheck == True:
-                result = PASS
-                msg = ''
-            else:
-                result = FAIL
-                msg = "Failed to create new template..."
+            # _createCheck = self.webDriver.tableSearch(self._templateName, 1) # 템플릿 테이블에 숨겨진 열(0)이 하나 있어서 1부터 시작
+            st = time.time()
+            while True:
+                time.sleep(1)
+                tableValueList = self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=False, returnValueList=True)        
+                if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
+                    printLog("[CREATE VM] Template's status still locked ...")
+                    continue
+                elif 'OK' in tableValueList[5]:
+                    result = PASS
+                    msg = ''
+                    break
+                ed = time.time()
+                if ed-st >= 60:
+                    printLog("[CREATE VM] Failed status changed : Timeout")
+                    result = FAIL
+                    msg = "Failed to create new template..."
+                    break
+
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[CREATE TEMPLATE] MESSAGE : " + msg)
+        printLog("[CREATE TEMPLATE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_CREATE', result, msg)
@@ -113,6 +137,7 @@ class admin_template:
             self.webDriver.tableSearch(self._templateName, 1, rowClick=True)    
 
             # 편집 클릭
+            printLog("[UPDATE TEMPLATE] Update template")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
             
@@ -126,7 +151,8 @@ class admin_template:
             time.sleep(1)
 
             # 설명에 추가되면 성공
-            _updateCheck = self.webDriver.tableSearch(des, 9)        
+            _updateCheck = self.webDriver.tableSearch(des, 9)
+            printLog("[UPDATE TEMPLATE] Check if updated")
             if _updateCheck == True:
                 result = PASS
                 msg = ''
@@ -136,8 +162,8 @@ class admin_template:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[UPDATE TEMPLATE] MESSAGE : " + msg)
+        printLog("[UPDATE TEMPLATE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'update' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_UPDATE', result, msg)
@@ -154,6 +180,7 @@ class admin_template:
             self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=True)    
             time.sleep(0.3)
             # 권한 탭 클릭
+            printLog("[ADD ROLE] Add role")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
             # 추가 클릭
@@ -175,6 +202,7 @@ class admin_template:
             self.webDriver.findElement('id', 'PermissionsPopupView_OnAdd', True)
             time.sleep(2)
             # 생성 확인
+            printLog("[ADD ROLE] Check if added")
             _addCheck = self.webDriver.tableSearch(self.role, 4)        
             if _addCheck == True:
                 result = PASS
@@ -185,8 +213,8 @@ class admin_template:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[ADD ROLE] MESSAGE : " + msg)
+        printLog("[ADD ROLE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'add role' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_ADD_ROLE', result, msg)
@@ -203,6 +231,7 @@ class admin_template:
             self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=True)    
             time.sleep(0.3)
             # 권한 탭 클릭
+            printLog("[REMOVE ROLE] Remove role")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
             # 생성한 권한 찾아서 클릭
@@ -215,6 +244,7 @@ class admin_template:
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
             time.sleep(2)
             _removeCheck = self.webDriver.tableSearch(self.role, 4)
+            printLog("[REMOVE ROLE] Check if removed")
             if _removeCheck == False:
                 result = PASS
                 msg = ''
@@ -224,8 +254,8 @@ class admin_template:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[REMOVE ROLE] MESSAGE : " + msg)
+        printLog("[REMOVE ROLE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'remove role' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_REMOVE_ROLE', result, msg)
@@ -239,67 +269,154 @@ class admin_template:
             self.setup()
 
             # 새 가상머신
+            time.sleep(1)
+            printLog("[CREATE VM] New virtual machine")
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_CreateVM')
             self.webDriver.tableSearch(self._templateName, 1, rowClick=True)
             self.webDriver.findElement('id','ActionPanelView_CreateVM',True)
+            time.sleep(1)
 
             # 이름 입력
             self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_name')
             self.webDriver.findElement('id', 'VmPopupWidget_name')
-            self.webDriver.sendKeys(self._templateName + '_vm')
-            
+            self.webDriver.sendKeys(self._templateName + '_vm_%s'%storage)
+
             # 고급 옵션이 숨겨져 있을 경우 보이게 하기
             self.webDriver.findElement('id', 'VmPopupView_OnAdvanced')
             advanced = self.webDriver.getAttribute('textContent')
             if advanced == '고급 옵션 표시' or advanced == 'Show Advnaced Options':
                 self.webDriver.click()
                 time.sleep(0.3)
-
             # 리소스 할당 클릭
             self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(8)', True)
             time.sleep(0.3)
             if storage == 'Thin':
                 # 씬 프로비저닝 클릭
+                printLog("[CREATE VM] Click thin provisioning")
                 self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_provisioningThin')
                 self.webDriver.findElement('id', 'VmPopupWidget_provisioningThin', True)
             elif storage == 'Copy':
                 # 복제 클릭
+                printLog("[CREATE VM] Click copy")
                 self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_provisioningClone')
                 self.webDriver.findElement('id', 'VmPopupWidget_provisioningClone', True)
+            
+            # 디스크 할당
+            self.webDriver.findElement('id', 'VmPopupWidget_disksAllocation_disk0_diskAlias', True)
+            self.webDriver.clear()
+            self._diskName = self._templateName + '_vm_%s_disk'%storage
+            self.webDriver.sendKeys(self._diskName)
+            time.sleep(0.5)
 
-        
             # OK 클릭
             self.webDriver.findElement('id', 'VmPopupView_OnSaveVm', True)
             time.sleep(2)
             
             # 컴퓨팅 - 가상머신
+            printLog("[CREATE VM] Compute - Virtual Machine")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','compute',True)
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','MenuView_vmsAnchor',True)
             time.sleep(2)
-            _createCheck = self.webDriver.tableSearch(self._templateName + '_vm', 2, rowClick=True)        
+            printLog("[CREATE VM] Check if created")
+            _createCheck = self.webDriver.tableSearch(self._templateName + '_vm_%s'%storage, 2, rowClick=True)        
             if _createCheck == True:
                 result = PASS
                 msg = ''
-                # 성공 후 삭제 필요
-                printLog("* Remove vm")
-                self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right', True)                
-                self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
-                self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
-                self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
-                time.sleep(1)                
             else:
                 result = FAIL
                 msg = "Failed to create vm using template..."
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[CREATE VM] MESSAGE : " + msg)
+        printLog("[CREATE VM] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'create vm %s'%(storage) + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_CREATE_VM_%s'%(storage.upper()), result, msg)
+
+    def copyTemplateDisk(self):        
+        printLog('- Copy template disk')        
+        try:
+            result = FAIL
+            msg = ''
+            # 컴퓨팅 - 스토리지
+            printLog("[COPY TEMPLATE DISK] Compute - Storage")
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_storageTab',True)
+            time.sleep(0.5)
+            self.webDriver.explicitlyWait(10, By.ID, 'MenuView_disksAnchor')
+            self.webDriver.findElement('id','MenuView_disksAnchor',True)
+            time.sleep(1)
+            
+            # 생성된 템플릿 디스크 선택
+            printLog("[COPY TEMPLATE DISK] Wait until disk's status will be OK")
+            # self.webDriver.tableSearch(self._templateName + '_vm_Thin_disk', 0, rowClick=True)    
+            while True:
+                time.sleep(1)
+                tableValueList = self.webDriver.tableSearch(self._templateName + '_vm_Thin_disk', 0, False, False,returnValueList=True)
+                if '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
+                    printLog("[COPY TEMPLATE DISK] Disk's status still locked ...")
+                    continue
+                elif 'OK' in tableValueList[11]:
+                    break
+            
+            # 복사 클릭
+            printLog("[COPY TEMPLATE DISK] Copy template disk")
+            self.webDriver.tableSearch(self._templateName + '_vm_Thin_disk', 0, rowClick=True)
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Copy')
+            self.webDriver.findElement('id', 'ActionPanelView_Copy', True)
+            time.sleep(1)
+
+            # 별칭 변경
+            printLog("[COPY TEMPLATE DISK] Change copy disk's name")
+            self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div.GHYIDY4CMRB > div > div > div:nth-child(2) > div > div > input')            
+            self.webDriver.clear()
+            self.webDriver.sendKeys(self._diskName + '_copy')
+
+            self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > div:nth-child(2) > button', True)
+            time.sleep(1)
+
+            
+            # 디스크가 추가되고 잠금상태에서 OK가 되면 성공
+            printLog("[COPY TEMPLATE DISK] Check if created")
+            printLog("[COPY TEMPLATE DISK] Wait until changed copy disk was created")
+            while True:
+                tableValueList = self.webDriver.tableSearch(self._diskName + '_copy', 0, False, False, returnValueList=True)    
+                if '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
+                    result = FAIL
+                    msg = 'Failed copy template'
+                    printLog("[COPY TEMPLATE DISK] Disk's status still locked ...")
+                    continue
+                if 'OK' in tableValueList[11]:
+                    result = PASS
+                    msg = ''
+                    break
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            printLog("[COPY TEMPLATE DISK] MESSAGE : " + msg)
+        printLog("[COPY TEMPLATE DISK] RESULT : " + result)
+        self._templateResult.append(['template' + DELIM + 'copy disk' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('TEMPLATE_COPY_DISK', result, msg)
+
+    def removeVM(self):
+        # 성공 후 삭제 필요
+        # 다른 테스트에 사용되기 떄문
+        # 컴퓨팅 - 가상머신
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','compute',True)
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','MenuView_vmsAnchor',True)
+        time.sleep(2)
+        printLog("[REMOVE VM] Remove vm")
+        self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right', True)                
+        self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
+        self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
+        self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+        time.sleep(1)                
 
     def remove(self):
         printLog('- Remove Template')        
@@ -321,7 +438,8 @@ class admin_template:
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
             time.sleep(2)
             
-            # 설명에 추가되면 성공
+            
+            printLog("[REMOVE TEMPLATE] Check if removed")
             _removeCheck = self.webDriver.tableSearch(self._templateName, 1)        
             if _removeCheck == False:
                 result = PASS
@@ -332,8 +450,8 @@ class admin_template:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[REMOVE TEMPLATE] MESSAGE : " + msg)
+        printLog("[REMOVE TEMPLATE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_REMOVE', result, msg)
