@@ -65,7 +65,7 @@ else: # 로컬
     SECURE = 'false'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
-    BROWSER_VERSION = 'ver95'
+    BROWSER_VERSION = 'ver96'
     BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
     IF_HEADLESS = 'false' # 헤드리스 사용 여부(사용 금지)

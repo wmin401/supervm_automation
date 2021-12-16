@@ -138,7 +138,7 @@ def main():
     # junit builder
     # 테스트링크 연동(젠킨스)
 
-    time.sleep(5)
+    time.sleep(2)
     printLog('7. Test finished')
 
 if __name__ == '__main__':    

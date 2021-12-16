@@ -145,7 +145,7 @@ class SuperVM_driver:
         # nameClick True일 경우 이름 클릭
         printLog("[TABLE SEARCH] Searching table ...")
         time.sleep(1)   
-        self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
+        # self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
 
         table = self.driver.find_element_by_css_selector('tbody')
         self.explicitlyWait(30, By.TAG_NAME, 'tr')

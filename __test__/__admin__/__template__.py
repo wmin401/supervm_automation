@@ -22,10 +22,10 @@ class admin_template:
         time.sleep(0.3)
         # self.update()
         # time.sleep(0.3)
-        self.createVM(storage='Thin')        
-        time.sleep(0.3)
-        self.copyTemplateDisk()
-        time.sleep(0.3)
+        # self.createVM(storage='Thin')        
+        # time.sleep(0.3)
+        # self.copyTemplateDisk()
+        # time.sleep(0.3)
         # self.removeVM()
         # time.sleep(0.3)
         # self.createVM(storage='Copy')
@@ -36,9 +36,7 @@ class admin_template:
         # time.sleep(0.3)
         # self.removeRole()
         # time.sleep(0.3)
-        # self.removeVM()
-        # time.sleep(0.3)
-        # self.remove()
+        self.remove()
 
     def setup(self):
         # 컴퓨팅 클릭
@@ -80,7 +78,7 @@ class admin_template:
             self.webDriver.explicitlyWait(10, By.ID, 'VmMakeTemplatePopupWidget_name')
             self.webDriver.findElement('id','VmMakeTemplatePopupWidget_name')
             self.webDriver.sendKeys(self._templateName)
-            printLog("[CREATE TEMPLATE] Template name : %s"%self._templateNam)
+            printLog("[CREATE TEMPLATE] Template name : %s"%self._templateName)
 
             # 가상 머신 권한 복사 체크
             self.webDriver.implicitlyWait(10)
@@ -102,7 +100,7 @@ class admin_template:
                 time.sleep(1)
                 tableValueList = self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=False, returnValueList=True)        
                 if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
-                    printLog("[CREATE VM] Template's status still locked ...")
+                    printLog("[CREATE VM] Template's status is still locked ...")
                     continue
                 elif 'OK' in tableValueList[5]:
                     result = PASS
@@ -261,7 +259,8 @@ class admin_template:
         self.tl.junitBuilder('TEMPLATE_REMOVE_ROLE', result, msg)
 
     def createVM(self, storage='Thin'):
-        printLog('- Create vm %s using template'%storage)
+        self.storage=storage
+        printLog('- Create vm %s using template'%self.storage)
         try:
             result = FAIL
             msg = ''
@@ -279,7 +278,7 @@ class admin_template:
             # 이름 입력
             self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_name')
             self.webDriver.findElement('id', 'VmPopupWidget_name')
-            self.webDriver.sendKeys(self._templateName + '_vm_%s'%storage)
+            self.webDriver.sendKeys(self._templateName + '_vm_%s'%self.storage)
 
             # 고급 옵션이 숨겨져 있을 경우 보이게 하기
             self.webDriver.findElement('id', 'VmPopupView_OnAdvanced')
@@ -290,21 +289,19 @@ class admin_template:
             # 리소스 할당 클릭
             self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(8)', True)
             time.sleep(0.3)
-            if storage == 'Thin':
+            if self.storage == 'hin':
                 # 씬 프로비저닝 클릭
-                printLog("[CREATE VM] Click thin provisioning")
                 self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_provisioningThin')
                 self.webDriver.findElement('id', 'VmPopupWidget_provisioningThin', True)
-            elif storage == 'Copy':
+            elif self.storage == 'Copy':
                 # 복제 클릭
-                printLog("[CREATE VM] Click copy")
                 self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_provisioningClone')
                 self.webDriver.findElement('id', 'VmPopupWidget_provisioningClone', True)
             
             # 디스크 할당
             self.webDriver.findElement('id', 'VmPopupWidget_disksAllocation_disk0_diskAlias', True)
             self.webDriver.clear()
-            self._diskName = self._templateName + '_vm_%s_disk'%storage
+            self._diskName = self._templateName + '_vm_%s_disk'%self.storage
             self.webDriver.sendKeys(self._diskName)
             time.sleep(0.5)
 
@@ -320,7 +317,7 @@ class admin_template:
             self.webDriver.findElement('id','MenuView_vmsAnchor',True)
             time.sleep(2)
             printLog("[CREATE VM] Check if created")
-            _createCheck = self.webDriver.tableSearch(self._templateName + '_vm_%s'%storage, 2, rowClick=True)        
+            _createCheck = self.webDriver.tableSearch(self._templateName + '_vm_%s'%self.storage, 2, rowClick=True)        
             if _createCheck == True:
                 result = PASS
                 msg = ''
@@ -332,9 +329,9 @@ class admin_template:
             msg = str(e).replace("\n",'')
             printLog("[CREATE VM] MESSAGE : " + msg)
         printLog("[CREATE VM] RESULT : " + result)
-        self._templateResult.append(['template' + DELIM + 'create vm %s'%(storage) + DELIM + result + DELIM + msg])
+        self._templateResult.append(['template' + DELIM + 'create vm %s'%(self.storage) + DELIM + result + DELIM + msg])
 
-        self.tl.junitBuilder('TEMPLATE_CREATE_VM_%s'%(storage.upper()), result, msg)
+        self.tl.junitBuilder('TEMPLATE_CREATE_VM_%s'%(self.storage.upper()), result, msg)
 
     def copyTemplateDisk(self):        
         printLog('- Copy template disk')        
@@ -357,7 +354,7 @@ class admin_template:
                 time.sleep(1)
                 tableValueList = self.webDriver.tableSearch(self._templateName + '_vm_Thin_disk', 0, False, False,returnValueList=True)
                 if '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
-                    printLog("[COPY TEMPLATE DISK] Disk's status still locked ...")
+                    printLog("[COPY TEMPLATE DISK] Disk's status is still locked ...")
                     continue
                 elif 'OK' in tableValueList[11]:
                     break
@@ -387,7 +384,7 @@ class admin_template:
                 if '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
                     result = FAIL
                     msg = 'Failed copy template'
-                    printLog("[COPY TEMPLATE DISK] Disk's status still locked ...")
+                    printLog("[COPY TEMPLATE DISK] Disk's status is still locked ...")
                     continue
                 if 'OK' in tableValueList[11]:
                     result = PASS
@@ -406,17 +403,45 @@ class admin_template:
         # 성공 후 삭제 필요
         # 다른 테스트에 사용되기 떄문
         # 컴퓨팅 - 가상머신
-        self.webDriver.implicitlyWait(10)
-        self.webDriver.findElement('id','compute',True)
-        self.webDriver.implicitlyWait(10)
-        self.webDriver.findElement('id','MenuView_vmsAnchor',True)
-        time.sleep(2)
-        printLog("[REMOVE VM] Remove vm")
-        self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right', True)                
-        self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
-        self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
-        self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
-        time.sleep(1)                
+        msg = ''
+        try:
+            printLog("[REMOVE VM] Compute - Virtual Machines")
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','compute',True)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_vmsAnchor',True)
+            time.sleep(2)
+            self._templateVMname = self._templateName + '_vm_%s'%self.storage
+            while True:
+                tdLst = []
+                time.sleep(1)
+                print(self._templateVMname)                
+                table = self.webDriver.getDriver().find_element_by_css_selector('tbody')
+                self.webDriver.explicitlyWait(30, By.TAG_NAME, 'tr')
+                for tr in table.find_elements_by_tag_name("tr"):          
+                    td = tr.find_elements_by_tag_name("td")                      
+                    if self._templateVMname == td[2].text:                
+                        printLog('[TABLE SEARCH] Find : ' + str(td[2].text))
+                        for i in range(len(td)):
+                            tdLst.append(td[i].text)
+                if tdLst != [] and ('이미지 잠김' in tdLst[13] or 'Image Locked' in tdLst[13]):
+                    msg = 'Failed remove VM'
+                    printLog("[REMOVE VM] VM's status is still locked ...")
+                    continue
+                if tdLst != [] and 'Down' in tdLst[13]:
+                    printLog("[REMOVE VM] VM's status is down")
+                    break
+
+            printLog("[REMOVE VM] Remove vm")
+            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right', True)                
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
+            self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
+            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+            time.sleep(1)    
+
+        except Exception as e:
+            msg = str(e).replace("\n",'')
+            printLog("[REMOVE VM] MESSAGE : " + msg)       
 
     def remove(self):
         printLog('- Remove Template')        
@@ -440,13 +465,19 @@ class admin_template:
             
             
             printLog("[REMOVE TEMPLATE] Check if removed")
-            _removeCheck = self.webDriver.tableSearch(self._templateName, 1)        
-            if _removeCheck == False:
-                result = PASS
-                msg = ''
-            else:
-                result = FAIL
-                msg = "Failed to remove new template..."
+            while True:
+                try:
+                    tableValueList = self.webDriver.tableSearch(self._templateName, 1, False, False, returnValueList = True)        
+                    if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
+                        printLog("[REMOVE TEMPLATE] Template's status is still locked ...")
+                        result = FAIL
+                        msg = "Failed to remove new template..."
+                except:
+                    printLog("[REMOVE TEMPLATE] Template removed")
+                    result = PASS
+                    msg = ''
+                    break
+
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
@@ -455,4 +486,3 @@ class admin_template:
         self._templateResult.append(['template' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_REMOVE', result, msg)
-
