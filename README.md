@@ -81,12 +81,11 @@ python main.py
   4) 테스트 결과 반영 후 ` deactivate `
 
 ## 설치 자동화
-##### Jenkins에서 설치시 윈도우 노드 hosts에 내용 추가하는 것이 필요(수동)
-### 실행 순서
-1) parameter 값 변경 후 ` __install__.py ` 실행
-2) ovirt 설치 -> nfs/ceph 구성 -> ` answers.conf ` 파일 생성 -> Deploy
+  1) 패키지 설치, hostname설정(windows의 hosts에도 추가)
+  2) nfs 또는 ceph 설치 및 설정(빌드시 선택 : nfs/posixfs)
+  3) answers.conf 파일 생성
+  4) deploy
 
-  
 
 ## 코드 작성 주의사항
 ### 명명규칙
