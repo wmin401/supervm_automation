@@ -20,22 +20,22 @@ class admin_template:
     def test(self):
         self.create()
         time.sleep(0.3)
-        # self.update()
-        # time.sleep(0.3)
-        # self.createVM(storage='Thin')        
-        # time.sleep(0.3)
-        # self.copyTemplateDisk()
-        # time.sleep(0.3)
-        # self.removeVM()
-        # time.sleep(0.3)
-        # self.createVM(storage='Copy')
-        # time.sleep(0.3)
-        # self.removeVM()
-        # time.sleep(0.3)
-        # self.addRole()
-        # time.sleep(0.3)
-        # self.removeRole()
-        # time.sleep(0.3)
+        self.update()
+        time.sleep(0.3)
+        self.createVM(storage='Thin')        
+        time.sleep(0.3)
+        self.copyTemplateDisk()
+        time.sleep(0.3)
+        self.removeVM()
+        time.sleep(0.3)
+        self.createVM(storage='Copy')
+        time.sleep(0.3)
+        self.removeVM()
+        time.sleep(0.3)
+        self.addRole()
+        time.sleep(0.3)
+        self.removeRole()
+        time.sleep(0.3)
         self.remove()
 
     def setup(self):
@@ -51,7 +51,7 @@ class admin_template:
         time.sleep(2)
 
     def create(self):
-        printLog('- Create Template')        
+        printLog(printSquare('Create Template'))
         try:
             result = FAIL
             msg = ''
@@ -123,7 +123,7 @@ class admin_template:
         self.tl.junitBuilder('TEMPLATE_CREATE', result, msg)
 
     def update(self):
-        printLog('- Update Template')        
+        printLog(printSquare('Update Template'))
         try:
             result = FAIL
             msg = ''
@@ -168,7 +168,7 @@ class admin_template:
 
     # 2-533 : 리소스에 관리자 또는 사용자 역할 할당
     def addRole(self):
-        printLog('- Add role')        
+        printLog(printSquare('Add role'))
         try:
             result = FAIL
             msg = ''
@@ -219,7 +219,7 @@ class admin_template:
 
     # 2-534 : 리소스에서 관리자 또는 사용자 역할 제거
     def removeRole(self):
-        printLog('- Remove role')        
+        printLog(printSquare('Remove role'))
         try:
             result = FAIL
             msg = ''
@@ -260,7 +260,7 @@ class admin_template:
 
     def createVM(self, storage='Thin'):
         self.storage=storage
-        printLog('- Create vm %s using template'%self.storage)
+        printLog(printSquare('Create vm %s using template'%self.storage))
         try:
             result = FAIL
             msg = ''
@@ -334,7 +334,7 @@ class admin_template:
         self.tl.junitBuilder('TEMPLATE_CREATE_VM_%s'%(self.storage.upper()), result, msg)
 
     def copyTemplateDisk(self):        
-        printLog('- Copy template disk')        
+        printLog(printSquare('Copy template disk'))
         try:
             result = FAIL
             msg = ''
@@ -444,7 +444,7 @@ class admin_template:
             printLog("[REMOVE VM] MESSAGE : " + msg)       
 
     def remove(self):
-        printLog('- Remove Template')        
+        printLog(printSquare('Remove Template'))
         try:
             result = FAIL
             msg = ''
