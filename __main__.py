@@ -115,8 +115,8 @@ def main():
     if VM_TEST == 'true':
         printLine()
         printLog("*** VM Test ***")
-        _vm = vm_vm(webDriver)
-        _vm.create()
+        _vm = admin_vm(webDriver)
+        _vm.test()
             
         _totalResult = saveResult(_vm._vmResult, _totalResult)
 
