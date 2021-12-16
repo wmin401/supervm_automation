@@ -8,12 +8,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-
 ## 변수명 snake_case
 ## 함수명 camelCase
 
 class SuperVM_driver:
-
     def __init__(self, headless = 'False'):
         self.BROWSER_NAME = BROWSER_NAME.lower()
         self.BROWSER_VERSION = str(BROWSER_VERSION)
@@ -52,7 +50,8 @@ class SuperVM_driver:
         self.driver.implicitly_wait(sec)
 
     def explicitlyWait(self, sec, element_type, element_type_value):
-        # Explicitly wait은 명시적으로 어떤 조건이 성립했을 때까지 기다린다. 조건이 성립하지 않으면 timeout으로 설정된 시간만큼 최대한 기다리고, TimeoutException을 throw한다.
+        # Explicitly wait은 명시적으로 어떤 조건이 성립했을 때까지 기다린다. 
+        # 조건이 성립하지 않으면 timeout으로 설정된 시간만큼 최대한 기다리고, TimeoutException을 throw한다.
 
         try:
             element = WebDriverWait(self.driver, sec).until(
@@ -129,7 +128,6 @@ class SuperVM_driver:
         self.sendKeys(Keys.CONTROL + "a")
         self.sendKeys(Keys.DELETE)
 
-
     def getAttribute(self, attr):        
         return  self.element.get_attribute(attr)
 
@@ -137,15 +135,14 @@ class SuperVM_driver:
         self.driver.close()
         self.driver.quit()
 
-
     def tableSearch(self, name, nameIdx, rowClick = False, nameClick = False, returnValueList = False): 
         # 최상위 테이블에서 검색
         # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False        
-        # rowClick 매개변수의 값이 True일 경우 해당 row 클릭
-        # nameClick True일 경우 이름 클릭
+        # rowClick : True일 경우 해당 row 클릭
+        # nameClick : True일 경우 이름 클릭
+        # returnValueList : True일 경우 해당하는 행을 리스트로 반환해줌
         printLog("[TABLE SEARCH] Searching table ...")
         time.sleep(1)   
-        # self.explicitlyWait(30, By.CSS_SELECTOR, 'tbody')
 
         table = self.driver.find_element_by_css_selector('tbody')
         self.explicitlyWait(30, By.TAG_NAME, 'tr')
@@ -161,14 +158,11 @@ class SuperVM_driver:
                     return tdLst
                 if rowClick == True:
                     tr.click()
-                # if nameClick == True:
                 if nameClick == True:
                     td[nameIdx].find_element_by_tag_name("a").click()
                 return True
-            #fp.write(s)
 
         return False
-
     
     def tableSearchAll(self, tableIdx, name, nameIdx, rowClick = False): 
         # 최상위 테이블에서 검색

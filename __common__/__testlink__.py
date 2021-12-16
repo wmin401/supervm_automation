@@ -39,7 +39,6 @@ class testlink:
                 print("*** Junit Build Exception : %s"%(e))
                 return
 
-
 ### 연동 방법
 ## 테스트링크
 # 1) 테스트케이스의 커스텀필드(SuperVM_Automation)에 클래스 이름을 입력
