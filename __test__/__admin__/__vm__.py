@@ -133,20 +133,26 @@ class admin_vm:
 
             st = time.time()
             while True:
-                tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
-                if 'OK' in tableValueList[11]:
-                    printLog("[TABLE SEARCH] Disk's status is OK")
-                    break
-                elif '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
-                    ed = time.time()
-                    printLog("[TABLE SEARCH] Disk's status is still locked...%ds"%(int(ed-st)))                    
-                    if ed - st > 120:
-                        result = FAIL
-                        msg = 'Disk is locked(timeout)...'
-                        printLog("[TABLE SEARC] RESULT : " + result)
-                        printLog("[TABLE SEARC] " + msg)
-                        self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
-                        return
+                try:
+                    tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
+                    if 'OK' in tableValueList[11]:
+                        printLog("[TABLE SEARCH] Disk's status is OK")
+                        break
+                    elif '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
+                        ed = time.time()
+                        printLog("[TABLE SEARCH] Disk's status is still locked...%ds"%(int(ed-st)))                    
+                        if ed - st > 120:
+                            result = FAIL
+                            msg = 'Disk is locked(timeout)...'
+                            printLog("[TABLE SEARCH] RESULT : " + result)
+                            printLog("[TABLE SEARCH] " + msg)
+                            self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
+                            return
+                except Exception as e:
+                    msg = str(e).replace("\n",'')
+                    msg = msg[:msg.find('Element <')]
+                    printLog("[TABLE SEARCH] " + msg)
+                    continue
 
             self.setup()
 
@@ -270,9 +276,12 @@ class admin_vm:
                     cnt += 1
                     time.sleep(0.5)
                     self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
-                    printLog("[REMOVE EXCEPTION] Remove fail. try again ... %dtimes"%cnt)
+                    printLog("[REMOVE EXCEPTION] Remove fail. try again ... %d times"%cnt)
                     continue
-                except:
+                except Exception as e:
+                    msg = str(e).replace("\n",'')
+                    msg = msg[:msg.find('Element <')]
+                    printLog("[TABLE SEARCH] " + msg)
                     break
             
             time.sleep(2)
@@ -304,6 +313,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
+            printLog("[VM REMOVE]] " + msg)
         printLog("[VM REMOVE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'remove' + DELIM + result + DELIM + msg])
         
