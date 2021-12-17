@@ -42,7 +42,6 @@ def main():
     _supervmVersionElem = webDriver.findElement('css_selector','body > main > section > div.pf-l-split > div.pf-l-split__item.obrand_welcomePageVersionText')
     _supervmVersion = _supervmVersionElem.get_attribute('textContent')
     printLog('* SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
-    
 
     printLine()
     printLog('3. Login')
@@ -133,10 +132,6 @@ def main():
     printLog('6. Save Result')
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
-
-    # 추가 예정
-    # junit builder
-    # 테스트링크 연동(젠킨스)
 
     time.sleep(2)
     printLog('7. Test finished')

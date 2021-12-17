@@ -40,8 +40,6 @@ if IN_JENKINS == 'true':
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
     BUILD_ID = os.getenv('BUILD_ID')
-
-
     
 else: # 로컬
     MASTER_FQDN = 'master165.tmax.com'
@@ -81,12 +79,11 @@ else: # 로컬
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
     QOS_TEST = 'false'
-    TEMPLATE_TEST = 'true'
-    VM_TEST = 'false'
+    TEMPLATE_TEST = 'false'
+    VM_TEST = 'true'
     VM_PORTAL_TEST = 'false'
     
     BUILD_ID = 'local'
-
 
 #############################
 
