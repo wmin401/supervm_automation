@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from __common__.__testlink__ import testlink
 class admin_vm:
     def __init__(self, webDriver):
-        printLog('VM 1 TEST includes create, update, run, copy, run, shutdown, remove')
+        printLog('VM 1 TEST includes create, update, copy, run, shutdown, remove')
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
         self._diskName = '%s_Disk1'%self._vmName
