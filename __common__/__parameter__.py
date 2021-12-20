@@ -37,6 +37,7 @@ if IN_JENKINS == 'true':
     QOS_TEST = os.getenv('QOS_TEST')
     TEMPLATE_TEST = os.getenv('TEMPLATE_TEST')
     VM_TEST = os.getenv('VM_TEST')
+    VM2_TEST = os.getenv('VM2_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
     BUILD_ID = os.getenv('BUILD_ID')
@@ -80,7 +81,8 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'true'
+    VM_TEST = 'false'
+    VM2_TEST = 'true'
     VM_PORTAL_TEST = 'false'
     
     BUILD_ID = 'local'
