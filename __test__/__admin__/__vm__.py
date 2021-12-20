@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from __common__.__testlink__ import testlink
 class admin_vm:
     def __init__(self, webDriver):
-        printLog('VM 1 TEST includes create, update, disk copy, remove')
+        printLog('VM 1 TEST includes create, update, run, copy, run, shutdown, remove')
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
         self._diskName = '%s_Disk1'%self._vmName
@@ -15,11 +15,50 @@ class admin_vm:
 
         self.tl = testlink()
 
+    def diskStatus(self):
+        status = False
+
+        # 디스크 잠겼는지 확인 필요
+        time.sleep(1)
+        printLog("[DISK STATUS] Storage - Disks")
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','MenuView_storageTab',True)
+        time.sleep(0.5)
+        self.webDriver.explicitlyWait(10, By.ID, 'MenuView_disksAnchor')
+        self.webDriver.findElement('id','MenuView_disksAnchor',True)
+        time.sleep(1)
+
+        st = time.time()
+        while True:
+            try:
+                tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
+                if 'OK' in tableValueList[11]:
+                    printLog("[DISK STATUS] Disk's status is OK")
+                    status = True
+                    break
+                elif '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:                    
+                    status = False
+                    ed = time.time()
+                    printLog("[DISK STATUS] Disk's status is still locked...%ds"%(int(ed-st)))                    
+                    if ed - st > 120:
+                        printLog("[DISK STATUS] Disk is locked(timeout)...")
+                        status = False
+                        break
+            except Exception as e:
+                status = False
+                msg = str(e).replace("\n",'')
+                msg = msg[:msg.find('Element <')]
+                printLog("[DISK STATUS] " + msg)
+                continue
+        return status
+
     def test(self):
         self.create()
-        self.update()
-        self.diskCopy()
-        self.remove()
+        # self.update()
+        # self.copy()
+        self.run()
+        self.shutdown()
+        #self.remove()
 
     def setup(self):
         # 컴퓨팅
@@ -166,45 +205,18 @@ class admin_vm:
         
         self.tl.junitBuilder('VM_UPDATE',result, msg) # 모두 대문자
 
-    def diskCopy(self):
+    def copy(self):
         printLog(printSquare('Copy VM'))
         result = FAIL
         msg = ''
 
         try:            
-
-            # 디스크 잠겼는지 확인 필요
-            time.sleep(1)
-            printLog("[VM COPY] Storage - Disks")
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_storageTab',True)
-            time.sleep(0.5)
-            self.webDriver.explicitlyWait(10, By.ID, 'MenuView_disksAnchor')
-            self.webDriver.findElement('id','MenuView_disksAnchor',True)
-            time.sleep(1)
-
-            st = time.time()
-            while True:
-                try:
-                    tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
-                    if 'OK' in tableValueList[11]:
-                        printLog("[TABLE SEARCH] Disk's status is OK")
-                        break
-                    elif '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
-                        ed = time.time()
-                        printLog("[TABLE SEARCH] Disk's status is still locked...%ds"%(int(ed-st)))                    
-                        if ed - st > 120:
-                            result = FAIL
-                            msg = 'Disk is locked(timeout)...'
-                            printLog("[TABLE SEARCH] RESULT : " + result)
-                            printLog("[TABLE SEARCH] " + msg)
-                            self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
-                            return
-                except Exception as e:
-                    msg = str(e).replace("\n",'')
-                    msg = msg[:msg.find('Element <')]
-                    printLog("[TABLE SEARCH] " + msg)
-                    continue
+            # 디스크 상태 확인
+            if not self.diskStatus():
+                result = FAIL
+                msg = 'Disk is locked(timeout)...'
+                self.tl.junitBuilder('VM_DISK_COPY',result, msg) # 모두 대문자
+                return
 
             self.setup()
 
@@ -222,7 +234,6 @@ class admin_vm:
 
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
 
-            
             st = time.time()
             while True:
                 time.sleep(1)
@@ -231,25 +242,24 @@ class admin_vm:
                     if _createCheck == True:
                         result = PASS
                         try:
-                            printLog("[TABLE SEARCH] VM is copied")
+                            printLog("[VM COPY] VM is copied")
                             self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div.modal-header.ui-draggable-handle > button', True)
                             break
                         except:
                             pass
                     else:                 
-                        printLog("[TABLE SEARCH] VM copy does not exist ...")
+                        printLog("[VM COPY] VM copy does not exist ...")
                         result = FAIL
                     if time.time() - st > 360: #최대 5분      
                         result = FAIL
                         msg = "Failed to copy vm..."
-                        printLog("[TABLE SEARCH] " + msg)                  
+                        printLog("[VM COPY] " + msg)                  
                         break
                 except Exception as e:
                     result = FAIL
                     msg = str(e).replace("\n",'')
                     msg = msg[:msg.find('Element <')]
-                    printLog("[TABLE SEARCH] " + msg)
-
+                    printLog("[VM COPY] " + msg)
 
         except Exception as e:
             result = FAIL
@@ -260,44 +270,148 @@ class admin_vm:
         
         self.tl.junitBuilder('VM_COPY',result, msg) # 모두 대문자
 
+    def run(self):
+        printLog(printSquare('Run VM'))
+        result = FAIL
+        msg = ''
+
+        try:        
+            if not self.diskStatus():
+                result = FAIL
+                msg = 'Disk is locked(timeout)...'
+                self.tl.junitBuilder('VM_RUN',result, msg) # 모두 대문자
+                return
+
+            self.setup()
+
+            # 생성한 vm 클릭
+            self.webDriver.tableSearch(self._vmName, 2, True)
+
+            # Run 클릭
+            self.webDriver.findElement('id','ActionPanelView_Run',True)
+            
+            st=time.time()
+            while True:
+                try:
+                    time.sleep(1)
+                    row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+
+                    if 'Up' in row[13] or '실행 중' in row[13]: # 실행완료
+                        printLog("[VM RUN] Succefully run vm")
+                        result = PASS
+                        msg = ''
+                        break
+                        
+                    elif 'Powering Up' in row[13] or '전원을 켜는 중' in row[13]: #
+                        printLog("[VM RUN] Status : " + row[13])
+                        result = FAIL
+                        msg = 'VM is still Running ...'
+                        printLog("[VM RUN] Message : " + msg)
+                        continue
+                    ed = time.time()
+                    if ed - st > 120:
+                        result = FAIL
+                        msg = 'Failed to run vm ...'
+                        printLog("[VM SHUTDOWN] Message : " + msg)
+                        break
+
+                except Exception as e:
+                    result = FAIL
+                    msg = str(e).replace("\n",'')
+                    msg = msg[:msg.find('Element <')]
+                    printLog("[VM RUN] Message : " + msg)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+        printLog("[VM RUN] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'run' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_RUN',result, msg) # 모두 대문자
+
+    def shutdown(self):
+        printLog(printSquare('Shutdown VM'))
+        result = FAIL
+        msg = ''
+
+        try:        
+            self.setup()
+
+            # 생성한 vm 클릭
+            isRun = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            if 'Down' in isRun[13]: # 실행중이지 않을 경우 종료
+                result = FAIL
+                msg = 'VM is not running ...'
+                printLog("[VM SHUTDOWN] RESULT : " + result)
+                self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])        
+                self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
+                return
+                
+            # 종료 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
+            self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
+
+            # OK 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
+            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
+            
+            st = time.time()
+            while True:
+                try:
+                    time.sleep(1)
+                    row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+
+                    if 'Down' in row[13]: # 
+                        result = PASS
+                        msg = ''
+                        break
+                        
+                    elif 'Powering Down' in row[13] or '전원을 끄는 중' in row[13]: #
+                        printLog("[VM SHHTDOWN] Status : " + row[13])
+                        result = FAIL
+                        msg = 'VM is still shutting down ...'
+                        printLog("[VM SHUTDOWN] Message : " + msg)
+                        continue
+                    ed = time.time()
+                    if ed - st > 120:
+                        result = FAIL
+                        msg = 'Failed to shutdown vm ...'
+                        printLog("[VM SHUTDOWN] Message : " + msg)
+                        break
+
+                except Exception as e:
+                    result = FAIL
+                    msg = str(e).replace("\n",'')
+                    msg = msg[:msg.find('Element <')]
+                    printLog("[VM SHUTDOWN] Message : " + msg)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+        printLog("[VM SHUTDOWN] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
+
     def remove(self):
         printLog(printSquare('Remove VM'))
         result = FAIL
         msg = ''
 
-        try:          
-            # 디스크 잠겼는지 확인 필요
-            time.sleep(2)
-            printLog("[VM REMOVE] Storage - Disks")
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_storageTab',True)
-            time.sleep(0.5)
-            self.webDriver.explicitlyWait(10, By.ID, 'MenuView_disksAnchor')
-            self.webDriver.findElement('id','MenuView_disksAnchor',True)
-            time.sleep(1)
-
-            st = time.time()
-            while True:
-                tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
-                if 'OK' in tableValueList[11]:
-                    printLog("[TABLE SEARCH] Disk's status is OK")
-                    break
-                elif '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
-                    ed = time.time()
-                    printLog("[TABLE SEARCH] Disk's status is still locked...%ds"%(int(ed-st)))     
-                    if ed - st > 120:
-                        result = FAIL
-                        msg = 'Disk is locked...'
-                        printLog("[REMOVE VM] RESULT : " + result)
-                        printLog("[REMOVE VM] " + msg)
-                        self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
-                        return
+        try:       
+            if not self.diskStatus():
+                result = FAIL
+                msg = 'Disk is locked...'
+                printLog("[REMOVE VM] RESULT : " + result)
+                printLog("[REMOVE VM] " + msg)
+                self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
+                return
 
             self.setup()
 
-
-            ## 삭제시 발생하는 예외처리 필요(디스크잠기는 상태)
-
+            # 이미지 잠긴 상태
             st = time.time()
             while True:
                 tableValueList = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
