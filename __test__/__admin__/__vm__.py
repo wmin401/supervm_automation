@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from __common__.__testlink__ import testlink
 class admin_vm:
     def __init__(self, webDriver):
-        printLog("* 관리자 포털 vm 테스트 시작")
+        printLog('VM 1 TEST includes create, copy, remove')
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
         self._diskName = '%s_Disk1'%self._vmName
@@ -31,7 +31,6 @@ class admin_vm:
         self.webDriver.implicitlyWait(10)
         self.webDriver.findElement('id','MenuView_vmsAnchor',True)
         time.sleep(2)
-
 
     def create(self):
         printLog(printSquare('Create VM'))
