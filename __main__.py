@@ -113,11 +113,17 @@ def main():
         
     if VM_TEST == 'true':
         printLine()
-        printLog("*** VM Test ***")
+        printLog("*** VM 1 Test ***")
         _vm = admin_vm(webDriver)
         _vm.test()
+
+    if VM2_TEST == 'true':
+        printLine()
+        printLog("*** VM 2 Test ***")
+        _vm2 = admin_vm2(webDriver)
+        _vm2.test()
             
-        _totalResult = saveResult(_vm._vmResult, _totalResult)
+        _totalResult = saveResult(_vm2._vm2Result, _totalResult)
 
     if VM_PORTAL_TEST == 'true':
         webDriver.openURL(MASTER_FQDN)        
