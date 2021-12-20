@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from __common__.__testlink__ import testlink
 class admin_vm:
     def __init__(self, webDriver):
-        printLog('VM 1 TEST includes create, copy, remove')
+        printLog('VM 1 TEST includes create, update, disk copy, remove')
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
         self._diskName = '%s_Disk1'%self._vmName
@@ -17,7 +17,8 @@ class admin_vm:
 
     def test(self):
         self.create()
-        self.copy()
+        self.update()
+        self.diskCopy()
         self.remove()
 
     def setup(self):
@@ -113,7 +114,59 @@ class admin_vm:
         
         self.tl.junitBuilder('VM_CREATE',result, msg) # 모두 대문자
 
-    def copy(self):
+    def update(self):
+        printLog(printSquare('Update VM'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            self.setup()
+
+            # 생성한 vm 클릭
+            self.webDriver.tableSearch(self._vmName, 2, True)
+
+            # 편집 클릭
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+
+            # 시스템 탭 클릭
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
+            self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
+
+            # 메모리 사이즈 변경
+            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_memSize')
+            self.webDriver.findElement('id', 'VmPopupWidget_memSize')
+            self.webDriver.clear()
+            self._updateSize = '2048'
+            self.webDriver.sendKeys(self._updateSize)
+
+            # OK 클릭
+            self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
+            time.sleep(2)
+
+            # VM 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+
+            self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
+            self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
+            _updated = self.webDriver.getAttribute('textContent')
+
+            if self._updateSize in _updated:
+                result = PASS
+            else:
+                result = FAIL
+                msg = 'Failed to update memory size'
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM UPDATE] " + msg)
+        printLog("[VM UPDATE] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'update' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_UPDATE',result, msg) # 모두 대문자
+
+    def diskCopy(self):
         printLog(printSquare('Copy VM'))
         result = FAIL
         msg = ''
@@ -312,7 +365,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM REMOVE]] " + msg)
+            printLog("[VM REMOVE] " + msg)
         printLog("[VM REMOVE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'remove' + DELIM + result + DELIM + msg])
         

@@ -81,8 +81,8 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'false'
-    VM2_TEST = 'true'
+    VM_TEST = 'true'
+    VM2_TEST = 'false'
     VM_PORTAL_TEST = 'false'
     
     BUILD_ID = 'local'
