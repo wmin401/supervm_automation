@@ -14,7 +14,9 @@ class admin_vm2(admin_vm): # 상속
         printLog('VM 2 TEST includes affinity groups, affinity labels')
         
         self._vm2Result = []
-        self._vmName = 'HostedEngine' # 개별 테스트를 위해서 이렇게 값을 변경
+        if VM_TEST == 'false':
+            self._vmName = 'HostedEngine' # 개별 테스트를 위해서 이렇게 값을 overriding
+        self._clusterName = 'Default' # Default 로 고정 
     
     def check(self, exist, value, idx):
         _check = self.webDriver.tableSearch(value, idx)
@@ -31,9 +33,9 @@ class admin_vm2(admin_vm): # 상속
 
     def test(self):
         # 선호도 그룹
-        # self.affinityGroupCreate()
-        # self.affinityGroupUpdate()
-        # self.affinityGroupRemove()
+        self.affinityGroupCreate()
+        self.affinityGroupUpdate()
+        self.affinityGroupRemove()
         
         # 선호도 레이블
         self.affinityLabelCreate()
@@ -67,7 +69,7 @@ class admin_vm2(admin_vm): # 상속
 
             # OK 클릭
             self.webDriver.findElement('id', 'AffinityGroupPopupView_OnSave', True)
-            time.sleep(0.5)
+            time.sleep(2)
 
             # 생성 확인
             result, msg = self.check(exist=True, value=self._affinityGroupName, idx=1)
@@ -111,7 +113,7 @@ class admin_vm2(admin_vm): # 상속
             printLog("[VM AFFINITY GROUP UPDATE] Description : Update_affinity_group")
             # OK 클릭
             self.webDriver.findElement('id', 'AffinityGroupPopupView_OnSave', True)
-            time.sleep(0.5)
+            time.sleep(2)
             # 변경 확인
             result, msg = self.check(exist=True, value='Update_affinity_group', idx=2)
 
@@ -152,6 +154,7 @@ class admin_vm2(admin_vm): # 상속
             # OK 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+            time.sleep(2)
 
             result, msg = self.check(exist=False, value=self._affinityGroupName, idx=1)
 
@@ -272,8 +275,8 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.findElement('id','MenuView_clustersAnchor',True)
             time.sleep(2)
 
-            # Default 클릭
-            self.webDriver.tableSearch('Default', 1, False, True)
+            # 클러스터 이름 클릭
+            self.webDriver.tableSearch(self._clusterName, 1, False, True)
 
             # Affinity Labels 클릭
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(8)')
