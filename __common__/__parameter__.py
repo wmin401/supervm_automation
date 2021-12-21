@@ -7,14 +7,14 @@ IN_JENKINS = os.getenv('IN_JENKINS')
 
 ######## 현재 젠킨스 테스트 중
 if IN_JENKINS == 'true':    
-    MASTER_FQDN = os.getenv('MASTER_FQDN')
     INSTALL_SUPERVM = os.getenv('INSTALL_SUPERVM')
     HOSTNAME = os.getenv('HOSTNAME')
     SUPERVM_REPO_URL = os.getenv('SUPERVM_REPO_URL')
-    MASTER_IP = os.getenv('MASTER_IP')
-    ENGINE_IP = os.getenv('ENGINE_IP')
-    ENGINE_ID = os.getenv('ENGINE_ID')
-    ENGINE_PW = os.getenv('ENGINE_PW')
+    ENGINE_VM_FQDN = os.getenv('ENGINE_VM_FQDN')
+    ENGINE_VM_IP = os.getenv('ENGINE_VM_IP')
+    ADMIN_HOST_IP = os.getenv('ADMIN_HOST_IP')
+    ADMIN_HOST_ID = os.getenv('ADMIN_HOST_ID')
+    ADMIN_HOST_PW = os.getenv('ADMIN_HOST_PW')
 
     DOMAIN_TYPE = os.getenv('DOMAIN_TYPE')
     NFS_PATH = os.getenv('NFS_PATH')
@@ -45,21 +45,21 @@ if IN_JENKINS == 'true':
     BUILD_ID = os.getenv('BUILD_ID')
     
 else: # 로컬
-    MASTER_FQDN = 'master165.tmax.com'
+    ENGINE_VM_FQDN = 'master165.tmax.com'
     
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
     HOSTNAME = 'supervm163.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
-    MASTER_IP = '192.168.17.164'
-    ENGINE_IP = '192.168.17.163'
-    ENGINE_ID = 'root'
-    ENGINE_PW = 'asdf'
+    ENGINE_VM_IP = '192.168.17.164'
+    ADMIN_HOST_IP = '192.168.17.163'
+    ADMIN_HOST_ID = 'root'
+    ADMIN_HOST_PW = 'asdf'
 
     DOMAIN_TYPE = 'nfs' #posixfs
     NFS_PATH = '/nfs'
-    NFS_IP = ENGINE_IP #'192.168.17.163'
-    CEPH_IP = ENGINE_IP #'192.168.17.163'
+    NFS_IP = ADMIN_HOST_IP #'192.168.17.163'
+    CEPH_IP = ADMIN_HOST_IP #'192.168.17.163'
     CEPH_DISK_PATH = '/dev/sdb'
 
     ## 테스트 자동화 매개변수 ##

@@ -13,7 +13,7 @@ from __common__.__ssh__ import *
 class install():
 
     def __init__(self):
-        self._ssh = ssh_connection(ENGINE_IP, 22, ENGINE_ID, ENGINE_PW)        
+        self._ssh = ssh_connection(ADMIN_HOST_IP, 22, ADMIN_HOST_ID, ADMIN_HOST_PW)        
         self._ssh.activate()     
 
     def ifDeployed(self):    
@@ -43,15 +43,15 @@ class install():
             _hosts = True
             # hosts에 입력한 ip가 있는지 확인 후 없을 때만 추가
             for i in o:
-                if ENGINE_IP in i:
+                if ADMIN_HOST_IP in i:
                     printLog('[SETUP] Engine VM IP is already using !!!')
                     printLog('[SETUP] Check /etc/hosts file in engine vm !!!')
                     _hosts = False
                     break
             if _hosts == True:
                 printLog("[SETUP] Add hosts")
-                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_IP, HOSTNAME))
-                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(MASTER_IP, MASTER_FQDN))
+                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ADMIN_HOST_IP, HOSTNAME))
+                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_VM_IP, ENGINE_VM_FQDN))
 
             o, e = self._ssh.commandExec('ls /etc/yum.repos.d/supervm.repo')
             _repo = True
@@ -88,7 +88,7 @@ class install():
            
     def nfs(self):
         _result = FAIL
-        printLog("[NFS] Set nfs at %s"%(ENGINE_IP))
+        printLog("[NFS] Set nfs at %s"%(ADMIN_HOST_IP))
         try:
             o, e = self._ssh.commandExec('cat /etc/exports')
             _nfs = True
@@ -239,7 +239,7 @@ class install():
             printLog("[ANSWERS] NETWORK NAME = %s"%_networkName)
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeIf=str:%s" >> /root/answers.conf'%(_networkName))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt" >> /root/answers.conf')
-            self._ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(MASTER_FQDN))
+            self._ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(ENGINE_VM_FQDN))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/gateway=str:192.168.17.1" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(HOSTNAME))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test=str:ping" >> /root/answers.conf')
@@ -310,13 +310,13 @@ class install():
             self._ssh.commandExec('echo "OVEHOSTED_VM/cdromUUID=none:None" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudInitISO=str:generate" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitExecuteEngineSetup=bool:True" >> /root/answers.conf')
-            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(MASTER_FQDN))
-            _domainName = MASTER_FQDN.split('.')[1] + '.' + MASTER_FQDN.split('.')[2]
+            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceHostName=str:%s" >> /root/answers.conf'%(ENGINE_VM_FQDN))
+            _domainName = ENGINE_VM_FQDN.split('.')[1] + '.' + ENGINE_VM_FQDN.split('.')[2]
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitInstanceDomainName=str:%s" >> /root/answers.conf'%(_domainName))
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitRootPwd=str:asdf" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMDNS=str:168.126.63.1" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMETCHOSTS=bool:True" >> /root/answers.conf')
-            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMStaticCIDR=str:%s/24" >> /root/answers.conf'%(MASTER_IP))
+            self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMStaticCIDR=str:%s/24" >> /root/answers.conf'%(ENGINE_VM_IP))
             self._ssh.commandExec('echo "OVEHOSTED_VM/cloudinitVMTZ=str:Asia/Seoul" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/consoleUUID=none:None" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/emulatedMachine=str:pc" >> /root/answers.conf')
@@ -347,7 +347,7 @@ class install():
         _result = FAIL
         printLog("[DEPLOY] Start deploy")   
         printLog("[DEPLOY] This task needs a lot of time. So you must need to wait")
-        printLog("[DEPLOY] If you want to see the progress of installation, see /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log file in %s"%ENGINE_IP)   
+        printLog("[DEPLOY] If you want to see the progress of installation, see /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log file in %s"%ADMIN_HOST_IP)   
         printLog("[DEPLOY] ex). tail -f /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log")   
 
         try:
@@ -407,20 +407,3 @@ def main():
 if __name__ == "__main__":        
 
     main()
-
-        
-
-    # def setNode(self):        
-    #     printLog("[SET NODE] Initialize windows node")
-    #     # hosts 파일에 host fqdn 추가
-    #     # 존재할경우 하지 않음
-    #     o, e = batchCommand('for /f "delims=" %%i in (%s\system32\drivers\etc\hosts) do echo %%i'%(SYSTEM_ROOT))
-    #     for i in o:
-    #         if ENGINE_IP in i:
-    #             printLog("[SET NODE] Windows hosts file alreday has ENGINE IP")
-    #             printLog("[SET NODE] Need to check windows hosts file")
-    #             return False
-    #     printLog("[SET NODE] Add MASTER_FQDN in %s\system32\drivers\etc\hosts"%(SYSTEM_ROOT))
-    #     batchCommand('echo. >> %s\system32\drivers\etc\hosts'%(SYSTEM_ROOT))
-    #     batchCommand('echo %s %s >> %s\system32\drivers\etc\hosts'%(ENGINE_IP, HOSTNAME, SYSTEM_ROOT))
-    #     batchCommand('echo %s %s >> %s\system32\drivers\etc\hosts'%(MASTER_IP, MASTER_FQDN, SYSTEM_ROOT))
