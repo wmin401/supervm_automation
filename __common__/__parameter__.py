@@ -40,6 +40,8 @@ if IN_JENKINS == 'true':
     VM2_TEST = os.getenv('VM2_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
+    # entry point para1
+
     BUILD_ID = os.getenv('BUILD_ID')
     
 else: # 로컬
@@ -84,6 +86,8 @@ else: # 로컬
     VM_TEST = 'true'
     VM2_TEST = 'false'
     VM_PORTAL_TEST = 'false'
+    
+    # entry point para2
     
     BUILD_ID = 'local'
 

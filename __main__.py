@@ -125,6 +125,8 @@ def main():
             
         _totalResult = saveResult(_vm2._vm2Result, _totalResult)
 
+    # entry point main   
+
     if VM_PORTAL_TEST == 'true':
         webDriver.openURL(MASTER_FQDN)        
         accessVmPortal(webDriver)
@@ -134,7 +136,7 @@ def main():
         _portal_vm.test()
         
         _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
-        
+
     printLog('6. Save Result')
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
