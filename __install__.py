@@ -36,7 +36,7 @@ class install():
         printLog("[SETUP] Initialize engine")
         try:
             # hostname 변경
-            self._ssh.commandExec('hostnamectl set-hostname %s'%(HOSTNAME))
+            self._ssh.commandExec('hostnamectl set-hostname %s'%(ADMIN_HOSTNAME))
 
             # hosts에 fqdn 추가
             o, e = self._ssh.commandExec('cat /etc/hosts')
@@ -50,7 +50,7 @@ class install():
                     break
             if _hosts == True:
                 printLog("[SETUP] Add hosts")
-                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ADMIN_HOST_IP, HOSTNAME))
+                self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ADMIN_HOST_IP, ADMIN_HOSTNAME))
                 self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_VM_IP, ENGINE_VM_FQDN))
 
             o, e = self._ssh.commandExec('ls /etc/yum.repos.d/supervm.repo')
@@ -164,20 +164,20 @@ class install():
 
             o, e = self._ssh.commandExec('ceph orch device ls --refresh', t=3600)
 
-            printLog("[CEPH] Make /root/osd_%s file"%(HOSTNAME))
-            o, e = self._ssh.commandExec('ls /root/osd_%s.yaml'%(HOSTNAME))
-            if o != [] and '/root/osd_%s.yaml'%HOSTNAME == o[0].replace('\n',''):
-                self._ssh.commandExec('rm -rf /root/osd_%s.yaml'%(HOSTNAME))
-            self._ssh.commandExec('touch /root/osd_%s.yaml'%(HOSTNAME))
-            self._ssh.commandExec('echo "service_type: osd" >> /root/osd_%s.yaml'%(HOSTNAME))
-            self._ssh.commandExec('echo "service_id: osd_%s" >> /root/osd_%s.yaml'%(HOSTNAME, HOSTNAME))
-            self._ssh.commandExec('echo "placement:" >> /root/osd_%s.yaml'%(HOSTNAME))
-            self._ssh.commandExec('echo " hosts:" >> /root/osd_%s.yaml'%(HOSTNAME))
-            self._ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(HOSTNAME, HOSTNAME))
-            self._ssh.commandExec('echo "data_devices:" >> /root/osd_%s.yaml'%(HOSTNAME))
-            self._ssh.commandExec('echo " paths:" >> /root/osd_%s.yaml'%(HOSTNAME))
-            self._ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(CEPH_DISK_PATH,HOSTNAME))
-            o, e = self._ssh.commandExec('ceph orch apply osd -i /root/osd_%s.yaml'%HOSTNAME, t=3600)
+            printLog("[CEPH] Make /root/osd_%s file"%(ADMIN_HOSTNAME))
+            o, e = self._ssh.commandExec('ls /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            if o != [] and '/root/osd_%s.yaml'%ADMIN_HOSTNAME == o[0].replace('\n',''):
+                self._ssh.commandExec('rm -rf /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            self._ssh.commandExec('touch /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo "service_type: osd" >> /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo "service_id: osd_%s" >> /root/osd_%s.yaml'%(ADMIN_HOSTNAME, ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo "placement:" >> /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo " hosts:" >> /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(ADMIN_HOSTNAME, ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo "data_devices:" >> /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo " paths:" >> /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
+            self._ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(CEPH_DISK_PATH,ADMIN_HOSTNAME))
+            o, e = self._ssh.commandExec('ceph orch apply osd -i /root/osd_%s.yaml'%ADMIN_HOSTNAME, t=3600)
             
             printLog("[CEPH] Config ceph")
             o, e = self._ssh.commandExec('ceph osd pool set device_health_metrics size 1', t=3600)
@@ -190,7 +190,7 @@ class install():
             o, e = self._ssh.commandExec('ceph osd pool set myfs-metadata size 1', t=3600)
             o, e = self._ssh.commandExec('ceph osd pool set myfs-data0 size 1', t=3600)
 
-            o, e = self._ssh.commandExec('ceph orch apply mds myfs --placement="1 %s"'%HOSTNAME, t=3600)
+            o, e = self._ssh.commandExec('ceph orch apply mds myfs --placement="1 %s"'%ADMIN_HOSTNAME, t=3600)
             o, e = self._ssh.commandExec('ceph fs new myfs myfs-metadata myfs-data0', t=3600)
 
             o, e = self._ssh.commandExec('ceph fs subvolume create myfs tim1 --size 322122547200 --uid 36 --gid 36', t=3600)
@@ -241,7 +241,7 @@ class install():
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(ENGINE_VM_FQDN))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/gateway=str:192.168.17.1" >> /root/answers.conf')
-            self._ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(HOSTNAME))
+            self._ssh.commandExec('echo "OVEHOSTED_NETWORK/host_name=str:%s" >> /root/answers.conf'%(ADMIN_HOSTNAME))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test=str:ping" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_address=none:None" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/network_test_tcp_port=none:None" >> /root/answers.conf')
