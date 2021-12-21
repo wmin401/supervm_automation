@@ -86,6 +86,12 @@ python main.py
   3) answers.conf 파일 생성
   4) deploy
 
+## Page Maker
+  1) 테스트파일 추가시 사용
+  2) 입력한 파일이름으로 ` __test__/__admin__/__이름__.py ` 파일 생성됨
+  3) ` __import__.py ` 에 import문 추가됨
+  4) ` __common__/__parameter__.py ` 파일에 변수 추가됨
+  5) ` __main.py__ ` 에 분기문 추가됨
 
 ## 코드 작성 주의사항
 ### 명명규칙
