@@ -1,4 +1,6 @@
 ## Test Case Maker ##
+# Selenium IDE를 사용하여 녹화된 테스트 케이스를 현재 SuperVM 자동화 코드에 맞게 변환 시켜주는 코드
+# side -> python
 
 '''
 1. Selenium IDE 프로젝트 생성
@@ -17,7 +19,6 @@
 
 import re, os
 class TCMaker:
-
     def readSide(self,sideFile):
         def arrangeStr(_str):
             _str = _str.replace('\n','')
