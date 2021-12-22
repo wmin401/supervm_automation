@@ -8,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 ## 변수명 snake_case
 ## 함수명 camelCase
 
@@ -103,6 +104,10 @@ class SuperVM_driver:
                 self.element = self.driver.find_element_by_class_name(path)
             elif element_type == 'class_name_all':
                 self.element = self.driver.find_elements_by_class_name(path)
+            elif element_type == 'link_text':
+                self.element = self.driver.find_element_by_link_text(path)
+            elif element_type == 'link_text_all':
+                self.element = self.driver.find_elements_by_link_text(path)
             else:
                 printLog("You can use : xpath, css_selector, name, id, tag_name, class_name")
         except Exception as e:
