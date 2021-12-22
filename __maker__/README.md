@@ -1,5 +1,5 @@
 ## Test Case Maker ##
-# Selenium IDE를 사용하여 녹화된 테스트 케이스를 현재 SuperVM 자동화 코드에 맞게 변환 시켜주는 코드
+#### Selenium IDE를 사용하여 녹화된 테스트 케이스를 현재 SuperVM 자동화 코드에 맞게 변환 시켜주는 코드
 
 1. Selenium IDE 프로젝트 생성
  * 파일명 규칙 : camelCase, 테스트+테스트이름 ex. vmCreate, qosCreate
