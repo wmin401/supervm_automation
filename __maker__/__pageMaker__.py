@@ -49,12 +49,12 @@ class admin_%s:
 
         self.tl.junitBuilder('%s_TEST',result, msg)'''%(testName.lower(), testName.lower(), testName.lower(), testName.lower(), testName.upper(), testName.upper(), testName.lower(), testName.capitalize(), testName.upper())
 
-    with open('__test__/__admin__/__%s__.py'%testName.lower(),'w', encoding='utf-8') as f:
+    with open('../__test__/__admin__/__%s__.py'%testName.lower(),'w', encoding='utf-8') as f:
         f.write(s)
-    print("[PAGE MAKER] __test__/__admin__/__%s__.py file was created")
+    print("[PAGE MAKER] ../__test__/__admin__/__%s__.py file was created")
 
     # import 추가    
-    fp = open('__import__.py','r', encoding='utf-8')
+    fp = open('../__import__.py','r', encoding='utf-8')
     fl = []
     for i in fp:
         fl.append(i.replace('\n',''))
@@ -62,14 +62,14 @@ class admin_%s:
         if 'entry point import' in fl[i]:
             importCode = 'from __test__.__admin__.__%s__ import *'%(testName.lower())
             fl.insert(i+1, importCode)
-    fp = open('__import__.py','w', encoding='utf-8')
+    fp = open('../__import__.py','w', encoding='utf-8')
     for i in fl:
         fp.write(i+'\n')
     fp.close()
     print("[PAGE MAKER] Import code was Added in __import__.py")
 
     # 변수 추가
-    fp = open('__common__/__parameter__.py','r', encoding='utf-8')
+    fp = open('../__common__/__parameter__.py','r', encoding='utf-8')
     fl = []
     for i in fp:
         fl.append(i.replace('\n',''))
@@ -78,16 +78,16 @@ class admin_%s:
             fl.insert(i+1, "    %s_TEST = os.getenv('%s_TEST')"%(testName.upper(),testName.upper()))
         elif 'entry point para2' in fl[i]:
             fl.insert(i+1, "    %s_TEST = 'true'"%(testName.upper()))
-    fp = open('__common__/__parameter__.py','w', encoding='utf-8')
+    fp = open('../__common__/__parameter__.py','w', encoding='utf-8')
     for i in fl:
         fp.write(i+'\n')
     fp.close()
-    print("[PAGE MAKER] Variable was Added in __common__/__parameter__.py")
+    print("[PAGE MAKER] Variable was Added in ../__common__/__parameter__.py")
     print("[PAGE MAKER] You have to add variable in jenkins")
     print("[PAGE MAKER] http://192.168.105.140:8088/view/ProLinux/job/supervm_automation/configure")
     
     # main 추가    
-    fp = open('__main__.py','r', encoding='utf-8')
+    fp = open('../__main__.py','r', encoding='utf-8')
     fl = []
     for i in fp:
         fl.append(i.replace('\n',''))
@@ -102,7 +102,7 @@ class admin_%s:
         _totalResult = saveResult(_%s._%sResult, _totalResult)
 '''%(testName.upper(), testName.capitalize(), testName.lower(), testName.lower(), testName.lower(), testName.lower(), testName.lower())
             fl.insert(i+1, mainCode)
-    fp = open('__main__.py','w', encoding='utf-8')
+    fp = open('../__main__.py','w', encoding='utf-8')
     for i in fl:
         fp.write(i+'\n')
     fp.close()
