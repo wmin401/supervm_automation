@@ -66,40 +66,40 @@ class TCMaker:
 
     def convert(self,fileName):
 
-        sideObjects = self.readSide('side/%s.side'%fileName)
+        try:
+            sideObjects = self.readSide('side/%s.side'%fileName)
+            fileNameSnakeCase = self.snake_case(fileName)
+            fileNameSnakeList = fileNameSnakeCase.split('_')
+            
 
-        # 필요한 액션
-        # 클릭, 입력 2개면 되나?
-
-        fileNameSnakeCase = self.snake_case(fileName)
+            pyCode = '''
+### Copy below function to your class ###
 
 
-        pyCode = '''    def %s(self):    
+    def %s(self):    
         printLog(printSquare('%s'))
         result = FAIL
         msg = ''
 
-        try:%s'''%(fileName, fileNameSnakeCase.split('_')[0].capitalize() + ' ' + fileNameSnakeCase.split('_')[1].capitalize(),'\n')
+        try:%s'''%(fileName,\
+                   " ".join(str(i).capitalize() for i in fileNameSnakeList),\
+                   '\n')
 
-        for i in sideObjects:    
-            if i[0] == 'click':
-                _type, target = i[1].split('=')            
-                _type = self.changeFullName(_type)
-                pyCode += self.wait(_type, target)
-                pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, target)
-                #print(c)
-            elif i[0] == 'type':
-                _type, target = i[1].split('=')       
-                _type = self.changeFullName(_type)
-                pyCode += self.wait(_type, target)
-                pyCode += "            self.webDriver.findElement('%s', '%s', False)\n"%(_type, target)
-                pyCode += "            self.webDriver.sendKeys('%s') # You have to change this you want to write\n"%('')
-            elif i[0] == 'linkText':
-                _type, target = i[1].split('=')       
-                _type = self.changeFullName(_type)
-                pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, target)
+            for i in sideObjects:    
+                if i[0] == 'click' or i[0] == 'linkText':
+                    _type, target = i[1].split('=')            
+                    _type = self.changeFullName(_type)
+                    pyCode += self.wait(_type, target)
+                    pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, target)
+                    #print(c)
+                elif i[0] == 'type':
+                    _type, target = i[1].split('=')       
+                    _type = self.changeFullName(_type)
+                    pyCode += self.wait(_type, target)
+                    pyCode += "            self.webDriver.findElement('%s', '%s', False)\n"%(_type, target)
+                    pyCode += "            self.webDriver.sendKeys('%s') # You have to change this you want to write\n"%('')
 
-        pyCode += '''   
+            pyCode += '''   
         except Exception as e:   
             result = FAIL
             msg = str(e).replace("\\n",'')
@@ -108,21 +108,28 @@ class TCMaker:
             printLog("[%s] RESULT : " + result)
 
         self._%sResult.append(['%s' + DELIM + '%s' + DELIM + result + DELIM + msg])        
-        self.tl.junitBuilder('%s',result, msg)'''%(fileNameSnakeCase.split('_')[0].upper() + ' ' + fileNameSnakeCase.split('_')[1].upper(),\
-                                                fileNameSnakeCase.split('_')[0].upper() + ' ' + fileNameSnakeCase.split('_')[1].upper(),\
-                                                fileNameSnakeCase.split('_')[0].lower(),\
-                                                fileNameSnakeCase.split('_')[0].lower(),\
-                                                fileNameSnakeCase.split('_')[1].lower(), fileNameSnakeCase.upper())
-        print(pyCode)
+        self.tl.junitBuilder('%s',result, msg)'''%(" ".join(str(i).upper() for i in fileNameSnakeList),\
+                                                   " ".join(str(i).upper() for i in fileNameSnakeList),\
+                                                   fileNameSnakeList[0].lower(),\
+                                                   fileNameSnakeList[0].lower(),\
+                                                   " ".join(str(fileNameSnakeList[i]).lower() for i in range(1,len(fileNameSnakeList))),\
+                                                   fileNameSnakeCase.upper())
+        
 
-        # 파일 만들기
-        if not os.path.isdir('side/code'):
-            os.makedirs('side/code')
+            # 파일 만들기
+            if not os.path.isdir('side/code'):
+                os.makedirs('side/code')
 
-        pyFile = open('side/code/%s.py'%fileName, 'w', encoding='utf-8')
-        pyFile.write(pyCode)
-        pyFile.close()
+            pyFile = open('side/code/%s.py'%fileName, 'w', encoding='utf-8')
+            pyFile.write(pyCode)
+            pyFile.close()
 
+            if os.path.isfile('side/code/%s.py'%fileName):
+                print("Succesfully side/code/%s.py was created !!!"%fileName)
+            else:
+                print("Failed to create side/code/%s.py file :("%fileName)
+        except Exception as e:
+            print("Exception occured : %s"%(str(e)))
 aaa = TCMaker()
  
 path_dir = r'./side'
