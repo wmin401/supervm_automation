@@ -12,6 +12,7 @@
   * 시간이 오래걸리면 time.sleep를 넣어줌
   * sendKeys는 직접 입력해줘야함
   * 필요없는 코드는 삭제
+8. 필요한 코드는 직접 추가
 '''
 
 import re, os
@@ -114,6 +115,10 @@ class TCMaker:
 
         # 파일 만들기
         
+
+        if not os.path.isdir('side/code'):
+            os.makedirs('side/code')
+
         pyFile = open('side/code/%s.py'%fileName, 'w', encoding='utf-8')
         pyFile.write(pyCode)
         pyFile.close()
