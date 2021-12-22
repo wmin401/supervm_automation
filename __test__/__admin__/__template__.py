@@ -18,6 +18,9 @@ class admin_template:
         self.tl = testlink()
             
     def test(self):
+
+        self.setup()
+        
         self.create()
         time.sleep(0.3)
         self.update()
