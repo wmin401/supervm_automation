@@ -1,18 +1,20 @@
+## Test Case Maker ##
+
+'''
+1. Selenium IDE 프로젝트 생성
+ * 파일명 규칙 : camelCase, 테스트+테스트이름 ex. vmCreate, qosCreate
+2. 녹화 시작
+3. *.side 파일을 __maker__/side에 저장
+4. 이 파일 빌드
+5. side파일명.py 로 code 폴더에 생성됨
+6. 기존 테스트 코드에 복사/붙여넣기
+7. 변환된 코드를 수정(각 테스트에 맞게)
+  * 시간이 오래걸리면 time.sleep를 넣어줌
+  * sendKeys는 직접 입력해줘야함
+  * 필요없는 코드는 삭제
+'''
+
 import re, os
-
-## SeleniumConverter ##
-'''
-1. Selenium IDE를 사용해서 TC 녹화
-2. 저장 후 side 파일을 현재 내 코드에 맞도록 변환
-3. side파일명이 함수명
-
-# 세부 사항
-1. 각 object의 target 내용을 읽어옴
-ex) "target": "id=asdasdasd",
-2. 처음부분이 findElement에서 첫번째 매개변수로, 두번째 부분이 path로 사용될듯
-'''
-# 가져온 문자열 정리
-
 class TCMaker:
 
     def readSide(self,sideFile):

@@ -47,13 +47,6 @@
             self.webDriver.findElement('id', 'QosPopupView_nameEditor', False)
             self.webDriver.sendKeys('') # You have to change this you want to write
 
-            self.webDriver.explicitlyWait(10, By.ID, 'QosPopupView_descriptionEditor')
-            self.webDriver.findElement('id', 'QosPopupView_descriptionEditor', True)
-
-            self.webDriver.explicitlyWait(10, By.ID, 'QosPopupView_descriptionEditor')
-            self.webDriver.findElement('id', 'QosPopupView_descriptionEditor', False)
-            self.webDriver.sendKeys('') # You have to change this you want to write
-
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
             self.webDriver.findElement('css_selector', '.btn-primary', True)
    
