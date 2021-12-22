@@ -66,7 +66,7 @@ class TCMaker:
 
     def convert(self,fileName):
 
-        sideAction = self.readSide('side/%s.side'%fileName)
+        sideObjects = self.readSide('side/%s.side'%fileName)
 
         # 필요한 액션
         # 클릭, 입력 2개면 되나?
@@ -81,23 +81,24 @@ class TCMaker:
 
         try:%s'''%(fileName, fileNameSnakeCase.split('_')[0].capitalize() + ' ' + fileNameSnakeCase.split('_')[1].capitalize(),'\n')
 
-        for i in sideAction:    
+        for i in sideObjects:    
             if i[0] == 'click':
-                _type, path = i[1].split('=')            
+                _type, target = i[1].split('=')            
                 _type = self.changeFullName(_type)
-                pyCode += self.wait(_type, path)
-                pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, path)
+                pyCode += self.wait(_type, target)
+                pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, target)
                 #print(c)
             elif i[0] == 'type':
-                _type, path = i[1].split('=')       
+                _type, target = i[1].split('=')       
                 _type = self.changeFullName(_type)
-                pyCode += self.wait(_type, path)
-                pyCode += "            self.webDriver.findElement('%s', '%s', False)\n"%(_type, path)
+                pyCode += self.wait(_type, target)
+                pyCode += "            self.webDriver.findElement('%s', '%s', False)\n"%(_type, target)
                 pyCode += "            self.webDriver.sendKeys('%s') # You have to change this you want to write\n"%('')
             elif i[0] == 'linkText':
-                _type, path = i[1].split('=')       
+                _type, target = i[1].split('=')       
                 _type = self.changeFullName(_type)
-                pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, path)
+                pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, target)
+
         pyCode += '''   
         except Exception as e:   
             result = FAIL
@@ -115,8 +116,6 @@ class TCMaker:
         print(pyCode)
 
         # 파일 만들기
-        
-
         if not os.path.isdir('side/code'):
             os.makedirs('side/code')
 
