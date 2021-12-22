@@ -55,7 +55,7 @@ class admin_qos:
             self.removeBtns = self.webDriver.findElement('id_all','DetailActionPanelView_Remove') # 삭제 버튼 리스트            
         except Exception as e:
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
+            printLog("[QOS SETUP] MESSAGE : " + msg)
 
     def done(self, action, tableIndex, menu):
         # 작업 완료 확인
@@ -81,7 +81,7 @@ class admin_qos:
         return result, msg
 
     def frame(self, action, tableIndex, menu, testCase): ## 공통된 함수 하나로 합치기
-        printLog('** %s %s QoS'%(action.capitalize(), menu))  
+        printLog(printSquare('%s %s QoS'%(action.capitalize(), menu)))  
         try:
             # 테스트 실행
             testCase()
@@ -92,9 +92,9 @@ class admin_qos:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
+            printLog("[QOS %s %s] MESSAGE : "%(action.upper(), menu.upper()) + msg)
         # 결과 저장
-        printLog("* RESULT : " + result)
+        printLog("[QOS %s %s] RESULT : "%(action.upper(), menu.upper()) + result)
         self._qosResult.append(['QoS' + DELIM + '%s %s'%(menu, action) + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('QOS_%s_%s'%(menu.upper(),action.upper()),result, msg)
