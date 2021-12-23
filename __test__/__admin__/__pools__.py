@@ -7,7 +7,7 @@ from __common__.__testlink__ import *
 
 from selenium.webdriver.common.by import By
 
-from __test__.__admin__.__template__ import *
+from __test__.__admin__.__template__ import admin_template
 
 '''
     작성자 : CQA2 김정현
@@ -33,8 +33,8 @@ class admin_pools:
         self._admin_template = admin_template(webDriver)
 
     def test(self):
-        self._admin_template.setup()
-        self._admin_template.create()
+        setup()
+        create()
         time.sleep(0.3)
         # time.sleep(0.3)
         # self.update()
