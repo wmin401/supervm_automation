@@ -30,7 +30,7 @@ class admin_%s:
     def __init__(self, webDriver):
         self._%sResult = [] # lowerCamelCase 로
         self.webDriver = webDriver
-        # self._%sName = 'auto_%s_'+randomString() # 필요할 경우 사용
+        self._%sName = 'auto_%s_'+randomString() # 랜덤 이름
         self.tl = testlink()
           
     def test(self):
