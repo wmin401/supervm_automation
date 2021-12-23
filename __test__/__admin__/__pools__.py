@@ -7,6 +7,8 @@ from __common__.__testlink__ import *
 
 from selenium.webdriver.common.by import By
 
+from __test__.__admin__.__template__ import *
+
 '''
     작성자 : CQA2 김정현
 '''
