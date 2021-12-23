@@ -33,7 +33,9 @@ class admin_pools:
 
 
     def test(self):
-        self.template_setup()
+        setup()
+        create()
+        time.sleep(0.3)
         # time.sleep(0.3)
         # self.update()
         # time.sleep(0.3)
