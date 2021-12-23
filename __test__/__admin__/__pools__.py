@@ -34,8 +34,4 @@ class admin_pools: # 모두 소문자
             msg = msg[:msg.find('Element <')]
             printLog("[SAMPLE TEST] MESSAGE : " + msg)
 
-        # 결과 저장
-        printLog("[SAMPLE TEST] RESULT : " + result)
-        self._sampleResult.append(['Sample' + DELIM + 'test case 1' + DELIM + result + DELIM + msg]) # 대소문자 상관없음
 
-        self.tl.junitBuilder('SAMPLE_TEST_CASE_1',result, msg) # 모두 대문자
