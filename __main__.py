@@ -16,7 +16,7 @@ def main():
     initResult()
     _totalResult = []
     tl = testlink() # 젠킨스 오류 방지용 샘플파일 생성하기 위해
-    
+
     printLine()
     # 테스트 시작
     printLog(printSquare('1. Open Browser'))
@@ -24,7 +24,7 @@ def main():
     webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
 
     time.sleep(2)
-    # 비공개 -> 안전하지 않음 이동(selenium에서는 보안인증이 처리가 되어있지 않음) 
+    # 비공개 -> 안전하지 않음 이동(selenium에서는 보안인증이 처리가 되어있지 않음)
     # CA 인증서 등록 안했을 경우 -> jenkins 에서는 CA 인증서 등록을 안했기 때문에 해당 기능 추가
 
     if SECURE == 'false':
@@ -51,66 +51,66 @@ def main():
     printLog(printSquare("4. Access Portal"))
     accessAdminPortal(webDriver)
     time.sleep(3)
-        
+
     printLine()
     printLog(printSquare("5. Start Test"))
-    
-    if CLUSTER_TEST == 'true':        
+
+    if CLUSTER_TEST == 'true':
         printLine()
         printLog(printSquare("*** Cluster Test ***"))
         _cluster = admin_cluster(webDriver)
-        _cluster.test()      
+        _cluster.test()
 
-        _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
-        
+        _totalResult = saveResult(_cluster._clusterResult, _totalResult)
+
     if DATA_CENTER_TEST == 'true':
         printLine()
         printLog(printSquare("*** Data Center Test ***"))
         _data_center = admin_data_center(webDriver)
         _data_center.test()
-            
-        _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
+
+        _totalResult = saveResult(_data_center._data_centerResult, _totalResult)
 
     if DISK_TEST == 'true':
         printLine()
         printLog(printSquare("*** Disk Test ***"))
         _disk = admin_disk(webDriver)
         _disk.test()
-            
+
         _totalResult = saveResult(_disk._diskResult, _totalResult)
-    
+
     if HOST_TEST == 'true':
         printLine()
         printLog(printSquare("*** Host Test ***"))
         _host = admin_host(webDriver)
         _host.test()
-            
-        _totalResult = saveResult(_host._hostResult, _totalResult)            
-        
+
+        _totalResult = saveResult(_host._hostResult, _totalResult)
+
     if DOMAIN_TEST == 'true':
         printLine()
         printLog(printSquare("*** Domain Test ***"))
         _domain = admin_domain(webDriver)
         _domain.test()
-            
-        _totalResult = saveResult(_domain._domainResult, _totalResult)        
-            
+
+        _totalResult = saveResult(_domain._domainResult, _totalResult)
+
     if QOS_TEST == 'true':
         printLine()
         printLog(printSquare("*** QoS Test ***"))
         _qos = admin_qos(webDriver)
         _qos.test()
-            
+
         _totalResult = saveResult(_qos._qosResult, _totalResult)
-    
+
     if TEMPLATE_TEST == 'true':
         printLine()
         printLog(printSquare("*** Template Test ***"))
         _template = admin_template(webDriver)
         _template.test()
-        
+
         _totalResult = saveResult(_template._templateResult, _totalResult)
-        
+
     if VM_TEST == 'true':
         printLine()
         printLog(printSquare("*** VM 1 Test ***"))
@@ -122,19 +122,27 @@ def main():
         printLog(printSquare("*** VM 2 Test ***"))
         _vm2 = admin_vm2(webDriver)
         _vm2.test()
-            
+
         _totalResult = saveResult(_vm2._vm2Result, _totalResult)
 
-    # entry point main   
+    if POOLS_TEST == 'true':
+        printLine()
+        printLog("*** POOLS Test ***")
+        _pools = admin_pools(webDriver)
+        _pools.test()
+
+        _totalResult = saveResult(_pools._poolsResult, _totalResult)
+
+    # entry point main
 
     if VM_PORTAL_TEST == 'true':
-        webDriver.openURL(ENGINE_VM_FQDN)        
+        webDriver.openURL(ENGINE_VM_FQDN)
         accessVmPortal(webDriver)
         printLine()
         printLog(printSquare("*** VM PORTAL Test ***"))
         _portal_vm = vm_vm(webDriver)
         _portal_vm.test()
-        
+
         _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
 
     printLog(printSquare('6. Save Result'))
@@ -144,6 +152,6 @@ def main():
     time.sleep(2)
     printLog(printSquare('7. Test finished'))
 
-if __name__ == '__main__':    
-    
+if __name__ == '__main__':
+
     main()
