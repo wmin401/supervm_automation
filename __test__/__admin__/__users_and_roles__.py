@@ -12,17 +12,17 @@ from __common__.__testlink__ import *
     출력은 본인이 원하는 곳에 추가하여 사용(보통은 디버그용)
     코드 작성은 작성자가 원하는대로 가능(함수를 나눠도 되고 하나로 해도 되고)
 
-    
+
     작성자 : CQA2 이동일
 '''
 
-class admin_sample: # 모두 소문자
+class admin_users_and_roles: # 모두 소문자
     def __init__(self, webDriver):
         self._sampleResult = [] # lowerCamelCase 로
         self.webDriver = webDriver
         # self._sampleName = 'auto_sample_'+randomString() # 필요할 경우 사용
         self.tl = testlink()
-          
+
     def sample_test_case1(self):
 
         try:
@@ -39,4 +39,3 @@ class admin_sample: # 모두 소문자
         self._sampleResult.append(['Sample' + DELIM + 'test case 1' + DELIM + result + DELIM + msg]) # 대소문자 상관없음
 
         self.tl.junitBuilder('SAMPLE_TEST_CASE_1',result, msg) # 모두 대문자
-

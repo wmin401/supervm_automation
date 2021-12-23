@@ -16,7 +16,7 @@ from __common__.__testlink__ import *
     작성자 : CQA2 이동일
 '''
 
-class admin_local_network: # 모두 소문자
+class admin_logical_network: # 모두 소문자
     def __init__(self, webDriver):
         self._sampleResult = [] # lowerCamelCase 로
         self.webDriver = webDriver
