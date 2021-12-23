@@ -120,6 +120,14 @@ def main():
             
         _totalResult = saveResult(_vm2._vm2Result, _totalResult)
 
+    if POOLS_TEST == 'true':
+        printLine()
+        printLog("*** POOLS Test ***")
+        _pools = admin_pools(webDriver)
+        _pools.test()
+
+        _totalResult = saveResult(_pools._poolsResult, _totalResult)
+
     # entry point main   
 
     if VM_PORTAL_TEST == 'true':

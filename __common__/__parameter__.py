@@ -39,6 +39,7 @@ if IN_JENKINS == 'true':
     TEMPLATE_TEST = os.getenv('TEMPLATE_TEST')
     VM_TEST = os.getenv('VM_TEST')
     VM2_TEST = os.getenv('VM2_TEST')
+    POOLS_TEST = os.getenv('POOLS_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
     # entry point para1
@@ -87,7 +88,9 @@ else: # 로컬
     TEMPLATE_TEST = 'false'
     VM_TEST = 'false'
     VM2_TEST = 'false'
+    POOLS_TEST = 'false'
     VM_PORTAL_TEST = 'false'
+    
     
     # entry point para2
     
