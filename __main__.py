@@ -19,7 +19,7 @@ def main():
     
     printLine()
     # 테스트 시작
-    printLog('1. Open Browser')
+    printLog(printSquare('1. Open Browser'))
     webDriver = SuperVM_driver(headless=IF_HEADLESS) ## 젠킨스에서는 헤드리스 모드 사용 금지
     webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
 
@@ -36,7 +36,7 @@ def main():
 
     time.sleep(2)
     printLine()
-    printLog("2. Print SuperVM Version")
+    printLog(printSquare("2. Print SuperVM Version"))
     # supervm version 출력
     webDriver.implicitlyWait(5)
     _supervmVersionElem = webDriver.findElement('css_selector','body > main > section > div.pf-l-split > div.pf-l-split__item.obrand_welcomePageVersionText')
@@ -44,20 +44,20 @@ def main():
     printLog('* SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
 
     printLine()
-    printLog('3. Login')
+    printLog(printSquare('3. Login'))
     portalLogin(webDriver)
 
     printLine()
-    printLog("4. Access Portal")
+    printLog(printSquare("4. Access Portal"))
     accessAdminPortal(webDriver)
     time.sleep(3)
         
     printLine()
-    printLog("5. Start Test")
+    printLog(printSquare("5. Start Test"))
     
     if CLUSTER_TEST == 'true':        
         printLine()
-        printLog("*** Cluster Test ***")
+        printLog(printSquare("*** Cluster Test ***"))
         _cluster = admin_cluster(webDriver)
         _cluster.test()      
 
@@ -65,7 +65,7 @@ def main():
         
     if DATA_CENTER_TEST == 'true':
         printLine()
-        printLog("*** Data Center Test ***")
+        printLog(printSquare("*** Data Center Test ***"))
         _data_center = admin_data_center(webDriver)
         _data_center.test()
             
@@ -73,7 +73,7 @@ def main():
 
     if DISK_TEST == 'true':
         printLine()
-        printLog("*** Disk Test ***")
+        printLog(printSquare("*** Disk Test ***"))
         _disk = admin_disk(webDriver)
         _disk.test()
             
@@ -81,7 +81,7 @@ def main():
     
     if HOST_TEST == 'true':
         printLine()
-        printLog("*** Host Test ***")
+        printLog(printSquare("*** Host Test ***"))
         _host = admin_host(webDriver)
         _host.test()
             
@@ -89,7 +89,7 @@ def main():
         
     if DOMAIN_TEST == 'true':
         printLine()
-        printLog("*** Domain Test ***")
+        printLog(printSquare("*** Domain Test ***"))
         _domain = admin_domain(webDriver)
         _domain.test()
             
@@ -97,7 +97,7 @@ def main():
             
     if QOS_TEST == 'true':
         printLine()
-        printLog("*** QoS Test ***")
+        printLog(printSquare("*** QoS Test ***"))
         _qos = admin_qos(webDriver)
         _qos.test()
             
@@ -105,7 +105,7 @@ def main():
     
     if TEMPLATE_TEST == 'true':
         printLine()
-        printLog("*** Template Test ***")
+        printLog(printSquare("*** Template Test ***"))
         _template = admin_template(webDriver)
         _template.test()
         
@@ -113,13 +113,13 @@ def main():
         
     if VM_TEST == 'true':
         printLine()
-        printLog("*** VM 1 Test ***")
+        printLog(printSquare("*** VM 1 Test ***"))
         _vm = admin_vm(webDriver)
         _vm.test()
 
     if VM2_TEST == 'true':
         printLine()
-        printLog("*** VM 2 Test ***")
+        printLog(printSquare("*** VM 2 Test ***"))
         _vm2 = admin_vm2(webDriver)
         _vm2.test()
             
@@ -131,18 +131,18 @@ def main():
         webDriver.openURL(ENGINE_VM_FQDN)        
         accessVmPortal(webDriver)
         printLine()
-        printLog("*** VM PORTAL Test ***")
+        printLog(printSquare("*** VM PORTAL Test ***"))
         _portal_vm = vm_vm(webDriver)
         _portal_vm.test()
         
         _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
 
-    printLog('6. Save Result')
+    printLog(printSquare('6. Save Result'))
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
 
     time.sleep(2)
-    printLog('7. Test finished')
+    printLog(printSquare('7. Test finished'))
 
 if __name__ == '__main__':    
     

@@ -99,7 +99,7 @@ class admin_%s:
         if 'entry point main' in fl[i]:
             mainCode = '''    if %s_TEST == 'true':
         printLine()
-        printLog("*** %s Test ***")
+        printLog(printSqure("*** %s Test ***"))
         _%s = admin_%s(webDriver)
         _%s.test()
             
