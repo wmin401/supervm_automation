@@ -19,7 +19,6 @@ class admin_pools:
         self.webDriver = webDriver
         # self._templateName = 'auto_sample_'+ randomString()
         self.tl = testlink()
-
     def sample_test_case1(self):
 
         try:
@@ -31,11 +30,11 @@ class admin_pools:
             msg = msg[:msg.find('Element <')]
             printLog("[SAMPLE TEST] MESSAGE : " + msg)
 
-        self.admin_template = admin_template(webDriver)
+        self._admin_template = admin_template(webDriver)
 
     def test(self):
-        self.admin_template.setup()
-        self.admin_template.create()
+        self._admin_template.setup()
+        self._admin_template.create()
         time.sleep(0.3)
         # time.sleep(0.3)
         # self.update()
