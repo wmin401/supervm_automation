@@ -89,12 +89,14 @@ class TCMaker:
                 if i[0] == 'click' or i[0] == 'linkText':
                     _type, target = i[1].split('=')            
                     _type = self.changeFullName(_type)
+                    pyCode += '\n            #  %s'%i[0]
                     pyCode += self.wait(_type, target)
                     pyCode += "            self.webDriver.findElement('%s', '%s', True)\n"%(_type, target)
                     #print(c)
                 elif i[0] == 'type':
                     _type, target = i[1].split('=')       
                     _type = self.changeFullName(_type)
+                    pyCode += '\n            # %s'%i[0]
                     pyCode += self.wait(_type, target)
                     pyCode += "            self.webDriver.findElement('%s', '%s', False)\n"%(_type, target)
                     pyCode += "            self.webDriver.sendKeys('%s') # You have to change this you want to write\n"%('')
