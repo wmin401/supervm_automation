@@ -6,7 +6,7 @@ SYSTEM_ROOT = os.getenv('SystemRoot')
 IN_JENKINS = os.getenv('IN_JENKINS')
 
 ######## 현재 젠킨스 테스트 중
-if IN_JENKINS == 'true':    
+if IN_JENKINS == 'true':
     INSTALL_SUPERVM = os.getenv('INSTALL_SUPERVM')
     ADMIN_HOSTNAME = os.getenv('ADMIN_HOSTNAME')
     SUPERVM_REPO_URL = os.getenv('SUPERVM_REPO_URL')
@@ -22,7 +22,7 @@ if IN_JENKINS == 'true':
     CEPH_IP = os.getenv('CEPH_IP')
     CEPH_DISK_PATH = os.getenv('CEPH_DISK_PATH')
 
-    SECURE = os.getenv('SECURE')    
+    SECURE = os.getenv('SECURE')
     BROWSER_NAME = os.getenv('BROWSER_NAME')
     BROWSER_VERSION = os.getenv('BROWSER_VERSION')
     BROWSER_BIT = os.getenv('BROWSER_BIT')
@@ -39,14 +39,15 @@ if IN_JENKINS == 'true':
     VM_TEST = os.getenv('VM_TEST')
     VM2_TEST = os.getenv('VM2_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
+    POOLS_TEST = os.getenv('POOLS_TEST')
 
     # entry point para1
 
     BUILD_ID = os.getenv('BUILD_ID')
-    
+
 else: # 로컬
     ENGINE_VM_FQDN = 'master165.tmax.com'
-    
+
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
     ADMIN_HOSTNAME = 'supervm163.tmax.dom'
@@ -70,7 +71,7 @@ else: # 로컬
     BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
     IF_HEADLESS = 'false' # 헤드리스 사용 여부(사용 금지)
-        
+
     ## 로그인 정보
     USER_ID = 'admin'
     USER_PW = 'asdf'
@@ -86,9 +87,9 @@ else: # 로컬
     VM_TEST = 'false'
     VM2_TEST = 'false'
     VM_PORTAL_TEST = 'false'
-    
+
     # entry point para2
-    
+
     BUILD_ID = 'local'
 
 #############################
