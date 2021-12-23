@@ -16,7 +16,7 @@ class install():
         self._ssh = ssh_connection(ADMIN_HOST_IP, 22, ADMIN_HOST_ID, ADMIN_HOST_PW)        
         self._ssh.activate()     
 
-    def ifDeployed(self):    
+    def isDeployed(self):    
         printLog("[DEPLOY] Check if SuperVM is deployed")
         printLog("[DEPLOY] hosted-engine --vm-status")
         o, e = self._ssh.commandExec('hosted-engine --vm-status')
@@ -354,7 +354,7 @@ class install():
             self._ssh.commandExec('hosted-engine --deploy --config-append=answers.conf', t = 216000, pty = True)
             printLog("[DEPLOY] Deploy finished")
             time.sleep(10)
-            if self.ifDeployed():
+            if self.isDeployed():
                 _result = PASS
                 printLog("[DEPLOY] Successfully finished deploy")    
             else:
@@ -388,7 +388,7 @@ def main():
         try:
             supervm = install()
             # a.setNode() # 현재는 제외
-            if not supervm.ifDeployed():
+            if not supervm.isDeployed():
                 supervm.setup()
                 if DOMAIN_TYPE == 'nfs':
                     supervm.nfs()
