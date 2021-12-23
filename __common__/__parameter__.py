@@ -15,6 +15,7 @@ if IN_JENKINS == 'true':
     ADMIN_HOST_IP = os.getenv('ADMIN_HOST_IP')
     ADMIN_HOST_ID = os.getenv('ADMIN_HOST_ID')
     ADMIN_HOST_PW = os.getenv('ADMIN_HOST_PW')
+    ENGINE_VM_MEMORY = os.getenv('ENGINE_VM_MEMORY')
 
     DOMAIN_TYPE = os.getenv('DOMAIN_TYPE')
     NFS_PATH = os.getenv('NFS_PATH')
@@ -45,16 +46,17 @@ if IN_JENKINS == 'true':
     BUILD_ID = os.getenv('BUILD_ID')
     
 else: # 로컬
-    ENGINE_VM_FQDN = 'master165.tmax.com'
+    ENGINE_VM_FQDN = 'master164.tmax.com'
     
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
-    ADMIN_HOSTNAME = 'supervm163.tmax.dom'
+    ADMIN_HOSTNAME = 'supervm40.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
     ENGINE_VM_IP = '192.168.17.164'
-    ADMIN_HOST_IP = '192.168.17.163'
+    ADMIN_HOST_IP = '192.168.17.40'
     ADMIN_HOST_ID = 'root'
     ADMIN_HOST_PW = 'asdf'
+    ENGINE_VM_MEMORY = '4096'
 
     DOMAIN_TYPE = 'nfs' #posixfs
     NFS_PATH = '/nfs'
@@ -81,7 +83,7 @@ else: # 로컬
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
-    QOS_TEST = 'true'
+    QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
     VM_TEST = 'false'
     VM2_TEST = 'false'

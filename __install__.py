@@ -329,7 +329,7 @@ class install():
             _macAddress = o[0]
             printLog("[ANSWERS] MAC ADDRESS = %s"%_macAddress)
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmMACAddr=str:%s" >> /root/answers.conf'%(_macAddress))
-            self._ssh.commandExec('echo "OVEHOSTED_VM/vmMemSizeMB=int:6144" >> /root/answers.conf')
+            self._ssh.commandExec('echo "OVEHOSTED_VM/vmMemSizeMB=int:%s" >> /root/answers.conf'%ENGINE_VM_MEMORY)
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmVCpus=str:4" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8.2/os/x86_64" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
