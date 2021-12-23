@@ -22,6 +22,9 @@ class admin_sample: # 모두 소문자
         self.webDriver = webDriver
         # self._sampleName = 'auto_sample_'+randomString() # 필요할 경우 사용
         self.tl = testlink()
+
+    def test(self):
+        self.sample_test_case1()
           
     def sample_test_case1(self):
 
