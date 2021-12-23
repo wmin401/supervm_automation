@@ -34,6 +34,10 @@ class admin_%s:
         self.tl = testlink()
           
     def test(self):
+        self.case1()
+
+
+    def case1(self):
         try:
             result = PASS
             msg = ''
