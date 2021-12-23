@@ -18,24 +18,49 @@ from __common__.__testlink__ import *
 
 class admin_pools: # 모두 소문자
     def __init__(self, webDriver):
-        self._sampleResult = [] # lowerCamelCase 로
+        self._poolsResult = [] # lowerCamelCase 로
         self.webDriver = webDriver
         # self._sampleName = 'auto_sample_'+randomString() # 필요할 경우 사용
         self.tl = testlink()
+    def test(self):
+        self.template_setup()
+        # self.create()
+        # time.sleep(0.3)
+        # self.update()
+        # time.sleep(0.3)
+        # self.createVM(storage='Thin')
+        # time.sleep(0.3)
+    def template_setup(self):
+        # 템플릿 생성
+        printLog("[TEMPLATE_CREATE] Compute - Template ")
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','compute',True)
 
-    def sample_test_case1(self):
+        # 템플릿 클릭
+        self.webDriver.explicitlyWait(10, By.ID, 'MenuView_templatesAnchor')
+        self.webDriver.findElement('id','MenuView_templatesAnchor',True)
 
-        try:
-            result = PASS
-            msg = ''
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("[SAMPLE TEST] MESSAGE : " + msg)
+        time.sleep(2)
 
         # 결과 저장
         printLog("[SAMPLE TEST] RESULT : " + result)
         self._sampleResult.append(['Sample' + DELIM + 'test case 1' + DELIM + result + DELIM + msg]) # 대소문자 상관없음
 
         self.tl.junitBuilder('SAMPLE_TEST_CASE_1',result, msg) # 모두 대문자
+
+    # def sample_test_case1(self):
+    #
+    #     try:
+    #         result = PASS
+    #         msg = ''
+    #     except Exception as e:
+    #         result = FAIL
+    #         msg = str(e).replace("\n",'')
+    #         msg = msg[:msg.find('Element <')]
+    #         printLog("[SAMPLE TEST] MESSAGE : " + msg)
+    #
+    #     # 결과 저장
+    #     printLog("[SAMPLE TEST] RESULT : " + result)
+    #     self._sampleResult.append(['Sample' + DELIM + 'test case 1' + DELIM + result + DELIM + msg]) # 대소문자 상관없음
+    #
+    #     self.tl.junitBuilder('SAMPLE_TEST_CASE_1',result, msg) # 모두 대문자
