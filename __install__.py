@@ -24,7 +24,7 @@ class install():
             printLog(i)
         for i in o:
             if 'good' in i:
-                printLog(i)
+                printLog('[DEPLOY] ' + i)
                 printLog('[DEPLOY] SuperVM is deployed ')
                 return True
         
