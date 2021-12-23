@@ -31,10 +31,11 @@ class admin_pools:
             msg = msg[:msg.find('Element <')]
             printLog("[SAMPLE TEST] MESSAGE : " + msg)
 
+        self.admin_template = admin_template(webDriver)
 
     def test(self):
-        admin_template.setup()
-        admin_template.create()
+        self.admin_template.setup()
+        self.admin_template.create()
         time.sleep(0.3)
         # time.sleep(0.3)
         # self.update()
