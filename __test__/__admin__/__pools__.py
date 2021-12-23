@@ -13,11 +13,11 @@ from __test__.__admin__.__template__ import *
     작성자 : CQA2 김정현
 '''
 
-class admin_pools: # 모두 소문자
+class admin_pools:
     def __init__(self, webDriver):
-        self._poolsResult = [] # lowerCamelCase 로
+        self._poolsResult = []
         self.webDriver = webDriver
-        # self._sampleName = 'auto_sample_'+randomString() # 필요할 경우 사용
+        # self._templateName = 'auto_sample_'+ randomString()
         self.tl = testlink()
 
     def sample_test_case1(self):
