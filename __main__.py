@@ -17,7 +17,6 @@ def main():
     _totalResult = []
     tl = testlink() # 젠킨스 오류 방지용 샘플파일 생성하기 위해
     
-    printLine()
     # 테스트 시작
     printLog(printSquare('1. Open Browser'))
     webDriver = SuperVM_driver(headless=IF_HEADLESS) ## 젠킨스에서는 헤드리스 모드 사용 금지
@@ -35,7 +34,6 @@ def main():
         webDriver.findElement('id', 'proceed-link', True)
 
     time.sleep(2)
-    printLine()
     printLog(printSquare("2. Print SuperVM Version"))
     # supervm version 출력
     webDriver.implicitlyWait(5)
@@ -43,16 +41,13 @@ def main():
     _supervmVersion = _supervmVersionElem.get_attribute('textContent')
     printLog('* SuperVM Ver : ' + _supervmVersion[_supervmVersion.find('4'):_supervmVersion.find('prolinux8')+9])
 
-    printLine()
     printLog(printSquare('3. Login'))
     portalLogin(webDriver)
 
-    printLine()
     printLog(printSquare("4. Access Portal"))
     accessAdminPortal(webDriver)
     time.sleep(3)
         
-    printLine()
     printLog(printSquare("5. Start Test"))
     
     if CLUSTER_TEST == 'true':        
