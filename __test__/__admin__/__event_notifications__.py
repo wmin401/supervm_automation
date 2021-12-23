@@ -1,4 +1,4 @@
--from __common__.__parameter__ import *
+from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
 
