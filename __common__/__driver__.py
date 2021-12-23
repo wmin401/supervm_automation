@@ -162,7 +162,11 @@ class SuperVM_driver:
                         tdLst.append(td[i].text)
                     return tdLst
                 if rowClick == True:
-                    tr.click()
+                    # tr.click()
+                    # 211223 jeonghyeon_kim 수정
+                    # 가상머신 쪽 tr을 클릭 시 상태 부분을 누르지 않고
+                    # 데이터 센터 부분을 눌러 오류 발생 아래와 같이 코드 수정
+                    td[nameIdx].click()
                 if nameClick == True:
                     td[nameIdx].find_element_by_tag_name("a").click()
                 return True
