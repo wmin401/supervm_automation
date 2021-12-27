@@ -42,7 +42,7 @@ class SuperVM_driver:
 
     def getDriver(self):
         return self.driver
-    
+
     def getDriverName(self):
         return self.BROWSER_NAME
 
@@ -51,12 +51,12 @@ class SuperVM_driver:
         self.driver.implicitly_wait(sec)
 
     def explicitlyWait(self, sec, element_type, element_type_value):
-        # Explicitly wait은 명시적으로 어떤 조건이 성립했을 때까지 기다린다. 
+        # Explicitly wait은 명시적으로 어떤 조건이 성립했을 때까지 기다린다.
         # 조건이 성립하지 않으면 timeout으로 설정된 시간만큼 최대한 기다리고, TimeoutException을 throw한다.
 
         try:
             element = WebDriverWait(self.driver, sec).until(
-                EC.presence_of_element_located((element_type, element_type_value))                
+                EC.presence_of_element_located((element_type, element_type_value))
             )
         except Exception as e:
             printLog(str(e))
@@ -64,7 +64,7 @@ class SuperVM_driver:
         '''
         element_type 종류
         * By.ID, By.XPATH, By.CLASS_NAME, By.TAG_NAME, By.NAME, By.LINK_TEXT
-        * 참고 : https://velog.io/@kjh03160/Selenium 
+        * 참고 : https://velog.io/@kjh03160/Selenium
         '''
 
     def openURL(self, url):
@@ -73,7 +73,7 @@ class SuperVM_driver:
             self.driver.get(url)
         except AttributeError as e:
             raise(e)
-        
+
         #self.driver.maximize_window()
 
     def findElement(self, element_type, path,  click = False):
@@ -113,16 +113,16 @@ class SuperVM_driver:
         except Exception as e:
             printLog("* can't find element using " + element_type)
             raise(e)
-            
+
         if click == True:
             self.implicitlyWait(5)
             self.element.click()
-            
+
         return self.element
 
     def click(self):
         self.element.click()
-    
+
     def sendKeys(self, *args):
         self.implicitlyWait(5)
         args = list(args)
@@ -133,28 +133,28 @@ class SuperVM_driver:
         self.sendKeys(Keys.CONTROL + "a")
         self.sendKeys(Keys.DELETE)
 
-    def getAttribute(self, attr):        
+    def getAttribute(self, attr):
         return  self.element.get_attribute(attr)
 
     def quit(self):
         self.driver.close()
         self.driver.quit()
 
-    def tableSearch(self, name, nameIdx, rowClick = False, nameClick = False, returnValueList = False): 
+    def tableSearch(self, name, nameIdx, rowClick = False, nameClick = False, returnValueList = False):
         # 최상위 테이블에서 검색
-        # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False        
+        # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
         # rowClick : True일 경우 해당 row 클릭
         # nameClick : True일 경우 이름 클릭
         # returnValueList : True일 경우 해당하는 행을 리스트로 반환해줌
         printLog("[TABLE SEARCH] Searching table ...")
-        time.sleep(1)   
+        time.sleep(1)
 
         table = self.driver.find_element_by_css_selector('tbody')
         self.explicitlyWait(30, By.TAG_NAME, 'tr')
-        for tr in table.find_elements_by_tag_name("tr"):            
+        for tr in table.find_elements_by_tag_name("tr"):
             self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
-            if name == td[nameIdx].text:                
+            if name == td[nameIdx].text:
                 printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))
                 if returnValueList == True:
                     tdLst = []
@@ -162,27 +162,31 @@ class SuperVM_driver:
                         tdLst.append(td[i].text)
                     return tdLst
                 if rowClick == True:
-                    tr.click()
+                    # tr.click()
+                    # 211223 jeonghyeon_kim 수정
+                    # 가상머신 쪽 tr을 클릭 시 상태 부분을 누르지 않고
+                    # 데이터 센터 부분을 눌러 오류 발생 아래와 같이 코드 수정
+                    td[nameIdx].click()
                 if nameClick == True:
                     td[nameIdx].find_element_by_tag_name("a").click()
                 return True
 
         return False
-    
-    def tableSearchAll(self, tableIdx, name, nameIdx, rowClick = False): 
+
+    def tableSearchAll(self, tableIdx, name, nameIdx, rowClick = False):
         # 최상위 테이블에서 검색
         # 테이블에 입력한 이름이 있을 경우 True / 없을 경우 False
         # click 매개변수의 값이 True일 경우 해당 row 클릭
-        time.sleep(1)   
+        time.sleep(1)
         printLog("[TABLE SEARCH ALL] Searching all table ...")
         #tables = self.driver.find_elements_by_css_selector('table')
-        
+
         tables = self.driver.find_elements_by_css_selector('tbody')
         self.explicitlyWait(30, By.TAG_NAME, 'tr')
-        for tr in tables[tableIdx].find_elements_by_tag_name("tr"):            
+        for tr in tables[tableIdx].find_elements_by_tag_name("tr"):
             self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
-            if name == td[nameIdx].text:                
+            if name == td[nameIdx].text:
                 printLog('[TABLE SEARCH ALL] : ' + str(td[nameIdx].text))
                 if rowClick == True:
                     tr.click()
