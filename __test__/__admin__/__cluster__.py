@@ -47,12 +47,12 @@ class admin_cluster:
         self.webDriver.findElement('id','MenuView_clustersAnchor',True)
 
     def create(self):
-        printLog('- Create Cluster')        
+        printLog(printSquare('Create Cluster'))   
         try:
             self.setup() # 컴퓨팅 - 클러스터
             time.sleep(0.3)
             # 새로 만들기
-            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_nameEditor')
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_New')
             self.webDriver.findElement('id','ActionPanelView_New',True)
             # 이름 입력
             time.sleep(0.3)
@@ -80,14 +80,14 @@ class admin_cluster:
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[CLUSTER CREATE] MESSAGE : " + msg)
+        printLog("[CLUSTER CREATE] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'create' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('CLUSTER_CREATE', result, msg)
     
     def CPUProfileCreate(self):
-        printLog("- Create CPU Profile")
+        printLog(printSquare("Create CPU Profile"))
         try:
             self.setup() # 컴퓨팅 - 클러스터
             time.sleep(0.3)
@@ -127,14 +127,14 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[CLUSTER CPU PROFILE CREATE] MESSAGE : " + msg)
+        printLog("[CLUSTER CPU PROFILE CREATE] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'create cpu profile' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('CLUSTER_CREATE_CPU_PROFILE', result, msg)
 
     def CPUProfileRemove(self):
-        printLog("- Remove CPU Profile")
+        printLog(printSquare("Remove CPU Profile"))
         try:
             self.setup() # 컴퓨팅 - 클러스터
             # 클러스터 이름 클릭                  
@@ -167,25 +167,25 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[CLUSTER CPU PROFILE REMOVE] MESSAGE : " + msg)
+        printLog("[CLUSTER CPU PROFILE REMOVE] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'remove cpu profile' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('CLUSTER_REMOVE_CPU_PROFILE', result, msg)
 
     def changeVersion(self):
-        printLog("- Change Cluster Compatibility Version")
+        printLog(printSquare("Change Cluster Compatibility Version"))
         try:
             self.setup() # 컴퓨팅 - 클러스터
             time.sleep(0.3)   
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.tableSearch(self._clusterName, 1, True)            
+            self.webDriver.tableSearch(self._clusterName, 1, True, False)            
             # 우측 편집 버튼 클릭
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
             # 호환 버전 클릭 / 4.4 -> 4.5
-            time.sleep(0.5)
+            time.sleep(1)
             self.webDriver.explicitlyWait(30, By.ID, 'ClusterPopupView_versionEditor')
             self.webDriver.findElement('id','ClusterPopupView_versionEditor',True)
             self.webDriver.findElement('css_selector_all','#ClusterPopupView_versionEditor > div > ul > li')[1].click()
@@ -194,6 +194,7 @@ class admin_cluster:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             # Confirm OK 버튼 클릭
+            time.sleep(0.5)
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','DefaultConfirmationPopupView_OnSaveConfirmCpuThreads',True)                   
             
@@ -204,7 +205,7 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)        
+            printLog("[CLUSTER CHANGE VERSION] MESSAGE : " + msg)        
             # 저장 불가능시
             time.sleep(0.3)
             self.webDriver.findElement('css_selector', 'body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
@@ -213,13 +214,13 @@ class admin_cluster:
             self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
 
 
-        printLog("* RESULT : " + result)
+        printLog("[CLUSTER CHANGE VERSION] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'change version' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('CLUSTER_CHANGE_VERSION', result, msg)
 
     def scheduling(self):
-        printLog("- Sheduling Update")
+        printLog(printSquare("Sheduling Update"))
         try:    
             msg = ''
 
@@ -229,6 +230,7 @@ class admin_cluster:
             self.webDriver.implicitlyWait(10)
             self.webDriver.tableSearch(self._clusterName, 1, True)            
             # 우측 편집 버튼 클릭
+            time.sleep(1)
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
             time.sleep(1)
@@ -250,7 +252,7 @@ class admin_cluster:
             self.webDriver.findElement('css_selector','body > div:nth-child(10) > div > div > div > div:nth-child(2) > div > div > div > div')
             msg = self.webDriver.getAttribute('textContent')
             if '오류' in msg or 'Error' in msg:
-                printLog("* Save failed")
+                printLog("[CLUSTER SCHEDULING] Save failed")
                 self.webDriver.findElement('css_selector','body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
                 # 취소 클릭
                 time.sleep(0.3)
@@ -262,14 +264,14 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)      
-        printLog("* RESULT : " + result)
+            printLog("[CLUSTER SCHEDULING] MESSAGE : " + msg)      
+        printLog("[CLUSTER SCHEDULING] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'scheduling' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('CLUSTER_SCHEDULING', result, msg)
 
     def MoMUpdate(self):
-        printLog("- MoM Update")
+        printLog(printSquare("MoM Update"))
         try:    
             self.setup() # 컴퓨팅 - 클러스터
             time.sleep(0.3)   
@@ -294,14 +296,14 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)   
-        printLog("* RESULT : " + result)
+            printLog("[CLUSTER MOM UPDATE] MESSAGE : " + msg)   
+        printLog("[CLUSTER MOM UPDATE] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'MoM Update' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('CLUSTER_MOM_UPDATE', result, msg)
 
     def memoryOptimization(self):
-        printLog("- Memory Optimization")
+        printLog(printSquare("Memory Optimization"))
         try:      
             msg = ''
             self.setup() # 컴퓨팅 - 클러스터
@@ -310,6 +312,7 @@ class admin_cluster:
             self.webDriver.implicitlyWait(10)
             self.webDriver.tableSearch(self._clusterName, 1, True)            
             # 우측 편집 버튼 클릭
+            time.sleep(1)
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
             time.sleep(0.5)
@@ -324,30 +327,33 @@ class admin_cluster:
             self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             
             # 저장 불가능일 경우
-            self.webDriver.explicitlyWait(10,By.CSS_SELECTOR,'body > div:nth-child(10) > div > div > div > div:nth-child(2) > div > div > div > div')
-            self.webDriver.findElement('css_selector','body > div:nth-child(10) > div > div > div > div:nth-child(2) > div > div > div > div')
-            msg = self.webDriver.getAttribute('textContent')
-            if '오류' in msg or 'Error' in msg:
-                printLog("* Save failed")
-                self.webDriver.findElement('css_selector','body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
-                # 취소 클릭
-                time.sleep(0.3)
-                self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
-                        
+            time.sleep(0.5)
+            try:
+                self.webDriver.explicitlyWait(10,By.CSS_SELECTOR,'body > div:nth-child(10) > div > div > div > div:nth-child(2) > div > div > div > div')
+                self.webDriver.findElement('css_selector','body > div:nth-child(10) > div > div > div > div:nth-child(2) > div > div > div > div')
+                msg = self.webDriver.getAttribute('textContent')
+                if '오류' in msg or 'Error' in msg:
+                    printLog("[CLUSTER MEMORY OPTIMIZATION] Save failed")
+                    self.webDriver.findElement('css_selector','body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
+                    # 취소 클릭
+                    time.sleep(0.3)
+                    self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
+            except:
+                pass            
             result = PASS
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)   
-        printLog("* RESULT : " + result)
+            printLog("[CLUSTER MEMORY OPTIMIZATION] MESSAGE : " + msg)   
+        printLog("[CLUSTER MEMORY OPTIMIZATION] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'memory optimize' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('CLUSTER_MEMORY_OPTIMIZATION', result, msg)
 
     def remove(self):
-        printLog("- Remove Cluster")
+        printLog(printSquare("Remove Cluster"))
         try:               
             self.setup() # 컴퓨팅 - 클러스터
             time.sleep(0.5)
@@ -374,8 +380,8 @@ class admin_cluster:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-        printLog("* RESULT : " + result)
+            printLog("[CLUSTER REMOVE] MESSAGE : " + msg)
+        printLog("[CLUSTER REMOVE] RESULT : " + result)
         self._clusterResult.append(['cluster' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('CLUSTER_REMOVE', result, msg)
