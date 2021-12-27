@@ -17,7 +17,7 @@ class admin_pools:
     def __init__(self, webDriver):
         self._poolsResult = []
         self.webDriver = webDriver
-        self._templateName = 'auto_sample_'+ randomString()
+        self._templateName = 'auto_template_'+ randomString()
         self.tl = testlink()
         # class import 부분이 안되고 있음
         # _admin_template_instance = admin_template(webDriver)
@@ -33,7 +33,7 @@ class admin_pools:
         # 템플릿 메뉴 접근
 
         # 컴퓨팅 클릭
-        printLog("[TEMPLATE_CREATE] Compute - Template ")
+        printLog("[POOL TEMPLATE_CREATE] Compute - Template ")
         self.webDriver.implicitlyWait(10)
         self.webDriver.findElement('id','compute',True)
 
@@ -50,7 +50,7 @@ class admin_pools:
             msg = ''
             # 중지된 가상머신이 있어야한다.
             # 컴퓨팅 클릭
-            printLog("[CREATE TEMPLATE] Compute - Virtual Machines ")
+            printLog("[POOL CREATE TEMPLATE] Compute - Virtual Machines ")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','compute',True)
 
@@ -65,7 +65,7 @@ class admin_pools:
             self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button',True)
 
             # 템플릿 생성 클릭
-            printLog("[CREATE TEMPLATE] Create template")
+            printLog("[POOL CREATE TEMPLATE] Create template")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ActionPanelView_NewTemplate',True)
 
@@ -73,7 +73,7 @@ class admin_pools:
             self.webDriver.explicitlyWait(10, By.ID, 'VmMakeTemplatePopupWidget_name')
             self.webDriver.findElement('id','VmMakeTemplatePopupWidget_name')
             self.webDriver.sendKeys(self._templateName)
-            printLog("[CREATE TEMPLATE] Template name : %s"%self._templateName)
+            printLog("[POOL CREATE TEMPLATE] Template name : %s"%self._templateName)
 
             # 가상 머신 권한 복사 체크
             self.webDriver.implicitlyWait(10)
@@ -86,33 +86,35 @@ class admin_pools:
             # 템플릿 탭
             self.template_setup()
 
-            printLog("[CREATE TEMPLATE] Check if created")
-            printLog("[CREATE TEMPLATE] Wait until status will be OK")
+            printLog("[POOL CREATE TEMPLATE] Check if created")
+            printLog("[POOL CREATE TEMPLATE] Wait until status will be OK")
             # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
             # _createCheck = self.webDriver.tableSearch(self._templateName, 1) # 템플릿 테이블에 숨겨진 열(0)이 하나 있어서 1부터 시작
             st = time.time()
             while True:
                 time.sleep(1)
-                tableValueList = self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=False, returnValueList=True)
-                if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
-                    printLog("[CREATE VM] Template's status is still locked ...")
+                try:
+                    tableValueList = self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=False, returnValueList=True)        
+                    if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
+                        printLog("[CREATE VM] Template's status is still locked ...")
+                        continue
+                    elif 'OK' in tableValueList[5]:
+                        result = PASS
+                        msg = ''
+                        break
+                    ed = time.time()
+                    if ed-st >= 60:
+                        printLog("[CREATE VM] Failed status changed : Timeout")
+                        result = FAIL
+                        msg = "Failed to create new template..."
+                        break
+                except:
                     continue
-                elif 'OK' in tableValueList[5]:
-                    result = PASS
-                    msg = ''
-                    break
-                ed = time.time()
-                if ed-st >= 60:
-                    printLog("[CREATE VM] Failed status changed : Timeout")
-                    result = FAIL
-                    msg = "Failed to create new template..."
-                    break
-
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
-            printLog("[CREATE TEMPLATE] MESSAGE : " + msg)
-        printLog("[CREATE TEMPLATE] RESULT : " + result)
-        self._poolsResult.append(['template' + DELIM + 'create' + DELIM + result + DELIM + msg])
+            printLog("[POOL CREATE TEMPLATE] MESSAGE : " + msg)
+        printLog("[POOL CREATE TEMPLATE] RESULT : " + result)
+        self._poolsResult.append(['pool template' + DELIM + 'template create' + DELIM + result + DELIM + msg])
 
-        self.tl.junitBuilder('TEMPLATE_CREATE', result, msg)
+        self.tl.junitBuilder('POOL_TEMPLATE_CREATE', result, msg)
