@@ -23,7 +23,7 @@ class admin_template:
         
         self.create()
         time.sleep(0.3)
-        # self.update()
+        self.update()
         time.sleep(0.3)
         self.createVM(storage='Thin')        
         time.sleep(0.3)
@@ -109,20 +109,23 @@ class admin_template:
             st = time.time()
             while True:
                 time.sleep(1)
-                tableValueList = self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=False, returnValueList=True)        
-                if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
-                    printLog("[CREATE VM] Template's status is still locked ...")
+                try:
+                    tableValueList = self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=False, returnValueList=True)        
+                    if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
+                        printLog("[CREATE VM] Template's status is still locked ...")
+                        continue
+                    elif 'OK' in tableValueList[5]:
+                        result = PASS
+                        msg = ''
+                        break
+                    ed = time.time()
+                    if ed-st >= 60:
+                        printLog("[CREATE VM] Failed status changed : Timeout")
+                        result = FAIL
+                        msg = "Failed to create new template..."
+                        break
+                except:
                     continue
-                elif 'OK' in tableValueList[5]:
-                    result = PASS
-                    msg = ''
-                    break
-                ed = time.time()
-                if ed-st >= 60:
-                    printLog("[CREATE VM] Failed status changed : Timeout")
-                    result = FAIL
-                    msg = "Failed to create new template..."
-                    break
 
         except Exception as e:
             result = FAIL
