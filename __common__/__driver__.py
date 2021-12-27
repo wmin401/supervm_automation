@@ -170,7 +170,7 @@ class SuperVM_driver:
                     # 동일
                     # 이 부분을 바꾸면 다른 모든 코드를 수정해야됨
                     # td클릭시 이름을 클릭하게됨
-                    
+                    # 우선 원복
                     # td[nameIdx].click()
                 if nameClick == True:
                     td[nameIdx].find_element_by_tag_name("a").click()
