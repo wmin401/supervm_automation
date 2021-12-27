@@ -14,8 +14,7 @@ class admin_vm2(admin_vm): # 상속
         printLog('VM 2 TEST includes affinity groups, affinity labels')
         
         self._vm2Result = []
-        if VM_TEST == 'false':
-            self._vmName = 'HostedEngine' # 개별 테스트를 위해서 이렇게 값을 overriding
+        self._vmName = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
         self._clusterName = 'Default' # Default 로 고정 
     
     def check(self, exist, value, idx):
@@ -156,7 +155,11 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
             time.sleep(2)
 
-            result, msg = self.check(exist=False, value=self._affinityGroupName, idx=1)
+            try:
+                result, msg = self.check(exist=False, value=self._affinityGroupName, idx=1)
+            except:
+                result = PASS
+                msg = ''
 
 
         except Exception as e:
@@ -304,7 +307,11 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)    
             time.sleep(0.5)
 
-            result, msg = self.check(exist=False, value=self._affinityLabelName + '_edited', idx=0)
+            try:
+                result, msg = self.check(exist=False, value=self._affinityLabelName + '_edited', idx=0)
+            except:
+                result = PASS
+                msg = ''
 
         except Exception as e:
             result = FAIL

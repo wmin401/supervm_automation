@@ -7,8 +7,7 @@ class vm_vm:
     def __init__(self, webDriver):
         self.webDriver = webDriver
         self._vmPortalResult = []
-        self.rs = randomString()
-        self._vmName = 'auto_vm_' + self.rs
+        self._vmName = 'auto_vm_%s'%randomString()
         self._vmCPUs = 2
 
         self.tl = testlink()
@@ -76,6 +75,8 @@ class vm_vm:
             self.webDriver.explicitlyWait(10, By.ID, 'create-vm-wizard-review-review-progress-success')            
             self.webDriver.findElement('id','create-vm-wizard-review-review-progress-success')
             #print(self.webDriver.getAttribute('textContent'))
+
+            time.sleep(2)
             if 'SUCCESS' in self.webDriver.getAttribute('textContent') or '성공' in self.webDriver.getAttribute('textContent'):
                 result = PASS
                 msg = self.webDriver.getAttribute('textContent')

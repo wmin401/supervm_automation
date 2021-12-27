@@ -290,7 +290,7 @@ class admin_template:
             printLog("[COPY TEMPLATE DISK] Change copy disk's name")
             self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div.GHYIDY4CMRB > div > div > div:nth-child(2) > div > div > input')            
             self.webDriver.clear()
-            self.webDriver.sendKeys(self._templateName + '_vm_%s_Disk1_copy'%self.storage)
+            self.webDriver.sendKeys('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage)
 
             self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > div:nth-child(2) > button', True)
             time.sleep(1)
@@ -302,7 +302,7 @@ class admin_template:
             st = time.time()
             while True:
                 try:
-                    tableValueList = self.webDriver.tableSearch(self._templateName + '_vm_%s_Disk1_copy'%self.storage, 0, False, False, returnValueList=True)    
+                    tableValueList = self.webDriver.tableSearch('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, False, False, returnValueList=True)    
                     if '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
                         result = FAIL
                         msg = 'Failed copy template'

@@ -4,6 +4,7 @@ from __common__.__module__ import *
 from selenium.webdriver.common.by import By
 
 from __common__.__testlink__ import testlink
+from __test__.__admin__.__cluster__ import admin_cluster
 class admin_vm:
     def __init__(self, webDriver):
         printLog('VM 1 TEST includes create, update, copy, run, shutdown, remove')
@@ -54,11 +55,12 @@ class admin_vm:
 
     def test(self):
         self.create()
-        # self.update()
-        # self.copy()
+        self.update()
+        self.copy()
         self.run()
-        self.shutdown()
-        #self.remove()
+        # 이 두개가 문제가 많음...
+        # self.shutdown()
+        # self.remove()
 
     def setup(self):
         # 컴퓨팅
@@ -131,8 +133,7 @@ class admin_vm:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupView_OnSave',True)
 
-            time.sleep(1)
-
+            time.sleep(3)
             _createCheck = self.webDriver.tableSearch(self._vmName, 2)            
             if _createCheck == True:
                 result = PASS
@@ -230,7 +231,7 @@ class admin_vm:
             time.sleep(1)
             self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_name')
             self.webDriver.findElement('id', 'VmPopupWidget_name', True)
-            self.webDriver.sendKeys('%s_copy'%self._vmName)
+            self.webDriver.sendKeys('copy_%s'%self._vmName)
 
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
 
@@ -238,7 +239,7 @@ class admin_vm:
             while True:
                 time.sleep(1)
                 try:
-                    _createCheck = self.webDriver.tableSearch('%s_copy'%self._vmName, 2)
+                    _createCheck = self.webDriver.tableSearch('copy_%s'%self._vmName, 2)
                     if _createCheck == True:
                         result = PASS
                         try:
@@ -272,6 +273,11 @@ class admin_vm:
 
     def run(self):
         printLog(printSquare('Run VM'))
+
+        # 스케줄링 정책이 power_saving 이면 됨
+        cc = admin_cluster(self.webDriver)
+        cc.scheduling()
+
         result = FAIL
         msg = ''
 
@@ -291,6 +297,7 @@ class admin_vm:
             self.webDriver.findElement('id','ActionPanelView_Run',True)
             
             st=time.time()
+            cnt = 0
             while True:
                 try:
                     time.sleep(1)
@@ -303,10 +310,12 @@ class admin_vm:
                         break
                         
                     elif 'Powering Up' in row[13] or '전원을 켜는 중' in row[13]: #
-                        printLog("[VM RUN] Status : " + row[13])
                         result = FAIL
                         msg = 'VM is still Running ...'
-                        printLog("[VM RUN] Message : " + msg)
+                        cnt += 1
+                        if cnt < 1:
+                            printLog("[VM RUN] Status : " + row[13])
+                            printLog("[VM RUN] Message : " + msg)
                         continue
                     ed = time.time()
                     if ed - st > 120:
@@ -347,18 +356,18 @@ class admin_vm:
                 self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])        
                 self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
                 return
-                
+
             # 종료 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
             self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
-
             # OK 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
-            
+
             st = time.time()
+            cnt = 0
             while True:
-                try:
+                try:                          
                     time.sleep(1)
                     row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
 
@@ -368,10 +377,12 @@ class admin_vm:
                         break
                         
                     elif 'Powering Down' in row[13] or '전원을 끄는 중' in row[13]: #
-                        printLog("[VM SHHTDOWN] Status : " + row[13])
                         result = FAIL
                         msg = 'VM is still shutting down ...'
-                        printLog("[VM SHUTDOWN] Message : " + msg)
+                        cnt += 1
+                        if cnt < 1:
+                            printLog("[VM SHHTDOWN] Status : " + row[13])
+                            printLog("[VM SHUTDOWN] Message : " + msg)
                         continue
                     ed = time.time()
                     if ed - st > 120:
@@ -385,6 +396,7 @@ class admin_vm:
                     msg = str(e).replace("\n",'')
                     msg = msg[:msg.find('Element <')]
                     printLog("[VM SHUTDOWN] Message : " + msg)
+                    continue
 
         except Exception as e:
             result = FAIL

@@ -86,12 +86,11 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'false'
+    VM_TEST = 'true'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
     VM_PORTAL_TEST = 'false'
-    
-    
+        
     # entry point para2
     
     BUILD_ID = 'local'

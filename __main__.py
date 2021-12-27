@@ -112,6 +112,8 @@ def main():
         _vm = admin_vm(webDriver)
         _vm.test()
 
+        _totalResult = saveResult(_vm._vmResult, _totalResult)
+
     if VM2_TEST == 'true':
         printLine()
         printLog(printSquare("*** VM 2 Test ***"))
@@ -131,7 +133,7 @@ def main():
     # entry point main   
 
     if VM_PORTAL_TEST == 'true':
-        webDriver.openURL(ENGINE_VM_FQDN)        
+        webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
         accessVmPortal(webDriver)
         printLine()
         printLog(printSquare("*** VM PORTAL Test ***"))
