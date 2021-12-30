@@ -19,6 +19,7 @@ class admin_pools:
         self.webDriver = webDriver
         self._poolsName = 'auto_pools_'+ randomString()
         self._poolsDescription = randomString()
+        self._prestartVmsCountInPool = '1'
         self.tl = testlink()
         self._template_instance = admin_template(webDriver) # template class 사용
 
@@ -29,6 +30,8 @@ class admin_pools:
         self.create()
         time.sleep(10) # 풀 내 가상 머신 생성 시간 대기 필요
         self.edit()
+        time.sleep(0.3)
+        self.prestartVmsInPools()
         time.sleep(0.3)
         self.delete()
         time.sleep(0.3)
@@ -144,6 +147,63 @@ class admin_pools:
         self._poolsResult.append(['pools' + DELIM + 'edit' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('EDIT_POOLS', result, msg)
+
+    def prestartVmsInPools(self):
+        printLog(printSquare('Prestart Vms In Pools'))
+        try:
+            result = FAIL
+            msg = ''
+
+            # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
+            time.sleep(0.5)
+            self.webDriver.tableSearch(self._poolsName, 0, rowClick=True)
+
+            # 편집 클릭
+            printLog("[PRESTART VMS IN POOLS] Edit pools")
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
+
+            # 사전 시작할 가상 머신 갯수에 대한 문자열 입력 후 저장
+            self.webDriver.explicitlyWait(10, By.ID, 'PoolEditPopupWidget_editPrestartedVms')
+            time.sleep(3) # element 뜰 때까지 대기 필요
+            self.webDriver.findElement('id', 'PoolEditPopupWidget_editPrestartedVms', True)
+
+            self.webDriver.sendKeys(self._prestartVmsCountInPool)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id', 'PoolEditPopupView_OnSave', True)
+            time.sleep(3)
+
+            # 실행중인 가상머신에 0 -> self._prestartVmsCountInPool되면 성공
+            printLog("[PRESTART VMS IN POOLS] Check if edited")
+            _startTime = time.time()
+            while True:
+                time.sleep(1)
+                try:
+                    tableValueList = self.webDriver.tableSearch(self._poolsName, 0, rowClick=False, nameClick=False, returnValueList=True)
+                    if self._prestartVmsCountInPool in tableValueList[3]:
+                        result = PASS
+                        msg = ''
+                        break
+                    elif self._prestartVmsCountInPool not in tableValueList[3]:
+                        printLog("[PRESTART VMS IN POOLS] Prestart vms in pools status is still created ...")
+                        _endTime = time.time()
+                        if _endTime - _startTime >= 60:
+                            printLog("[PRESTART VMS IN POOLS] Failed status changed : Timeout")
+                            result = FAIL
+                            msg = "Failed to prestart vms in new pools..."
+                            break
+                        else:
+                            continue
+                except:
+                    continue
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            printLog("[PRESTART VMS IN POOLS] MESSAGE : " + msg)
+        printLog("[PRESTART VMS IN POOLS] RESULT : " + result)
+        self._poolsResult.append(['prestart' + DELIM + 'vms' + DELIM + 'in' + DELIM + 'pools' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('PRESTART_VMS_IN_POOLS', result, msg)
 
     def delete(self):
         printLog(printSquare('Delete Pools'))
