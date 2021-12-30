@@ -166,14 +166,29 @@ class admin_pools:
             time.sleep(3) # 테이블 업데이트까지 대기 필요
 
             # 삭제되면 성공
-            _deleteCheck = self.webDriver.tableSearch(self._poolsName, 0)
+
             printLog("[DELETE POOLS] Check if deleted")
-            if _deleteCheck == False:
-                result = PASS
-                msg = ''
-            else:
-                result = FAIL
-                msg = "Failed to delete new pools..."
+            _startTime = time.time()
+            while True:
+                time.sleep(1)
+                try:
+                    _deleteCheck = self.webDriver.tableSearch(self._poolsName, 0)
+                    if _deleteCheck == False:
+                        result = PASS
+                        msg = ''
+                        break
+                    else:
+                        printLog("[DELETE POOL] Pools status is still deleted ...")
+                        _endTime = time.time()
+                        if _endTime - _startTime >= 60:
+                            printLog("[DELETE POOL] Failed status changed : Timeout")
+                            result = FAIL
+                            msg = "Failed to delete new pools..."
+                            break
+                        else:
+                            continue
+                except:
+                    continue
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
