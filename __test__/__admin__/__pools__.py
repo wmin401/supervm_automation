@@ -36,6 +36,8 @@ class admin_pools:
         time.sleep(0.3)
         self.addVmsInPools()
         time.sleep(10) # 풀 내 가상 머신 생성 시간 대기 필요
+        self.detachVmsInPools()
+        time.sleep(10) # 풀 내 가상 머신 생성 시간 대기 필요
         self.delete()
         time.sleep(0.3)
 
@@ -271,6 +273,74 @@ class admin_pools:
         self._poolsResult.append(['add' + DELIM + 'vms' + DELIM + 'in' + DELIM + 'pools' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('[ADD_VMS_IN_POOLS', result, msg)
+
+    def detachVmsInPools(self):
+        printLog(printSquare('Detach Vms In Pools'))
+        try:
+            result = FAIL
+            msg = ''
+
+            # table 내부 전부 검색해서 입력한 이름이 있을 경우 이름 클릭
+            time.sleep(0.5)
+            # self.webDriver.tableSearch(self._poolsName, 0, nameClick=True)
+            self.webDriver.tableSearch('auto_pools_mMIgyhmj', 0, nameClick=True)
+
+            # 가상머신 탭 클릭
+            self.webDriver.implicitlyWait(10)
+            time.sleep(3) # element 뜰 때까지 대기 필요
+            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2)',True)
+
+            # Down 상태인 가상 머신 클릭
+            time.sleep(0.5)
+            _poolInfo = self.webDriver.tableSearch('Down', 6, rowClick=True, returnValueList=True)
+
+            # 분리 버튼 클릭
+            printLog("[DETACH VMS IN POOLS] Detach vms")
+            self.webDriver.explicitlyWait(10, By.ID, ' DetailActionPanelView_Detach')
+            self.webDriver.findElement('id',  'DetailActionPanelView_Detach', True)
+
+            # OK 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnDetach')
+            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnDetach', True)
+
+            printLog("[DETACH VMS IN POOLS]] Check if detached")
+
+            # 가상머신 메뉴 접근
+            self.setup()
+
+            # PASS / FAIL 체크 구현 필요 (이미지 툴팁으로 상태 비저장 서버 / 서버(풀) 내용이 보이는데 어떻게 가져올지?)
+            # _startTime = time.time()
+            # while True:
+            #     time.sleep(1)
+            #     try:
+            #         tableValueList = self.webDriver.tableSearch(self._poolsName, 0, rowClick=False, nameClick=False, returnValueList=True)
+            #         _afterAssignedVms = int(tableValueList[2])
+            #         _addCount = int(self._addVmsCountInPool)
+            #         if _presentAssignedVms + _addCount == _afterAssignedVms:
+            #             result = PASS
+            #             msg = ''
+            #             break
+            #         else:
+            #             printLog("[ADD VMS IN POOLS] Add vms In pools status is still added ...")
+            #             _endTime = time.time()
+            #             if _endTime - _startTime >= 60:
+            #                 printLog("[ADD VMS IN POOLS] Failed status changed : Timeout")
+            #                 result = FAIL
+            #                 msg = "Failed to add vms in new pools..."
+            #                 break
+            #             else:
+            #                 continue
+            #     except:
+            #         continue
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            printLog("[[DETACH VMS IN POOLS] MESSAGE : " + msg)
+        printLog("[[DETACH VMS IN POOLS] RESULT : " + result)
+        self._poolsResult.append(['detach' + DELIM + 'vms' + DELIM + 'in' + DELIM + 'pools' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('[DETACH VMS IN POOLS', result, msg)
+
 
     def delete(self):
         printLog(printSquare('Delete Pools'))
