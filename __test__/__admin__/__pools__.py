@@ -133,12 +133,12 @@ class admin_pools:
             self.webDriver.sendKeys(self._poolsDescription)
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id', 'PoolEditPopupView_OnSave', True)
-            time.sleep(1)
+            time.sleep(3) # element 뜰 때까지 대기 필요
 
             # 설명에 추가되면 성공
-            _updateCheck = self.webDriver.tableSearch(self._poolsDescription, 5)
+            _editCheck = self.webDriver.tableSearch(self._poolsDescription, 5)
             printLog("[EDIT POOLS] Check if edited")
-            if _updateCheck == True:
+            if _editCheck == True:
                 result = PASS
                 msg = ''
             else:
