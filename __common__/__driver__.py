@@ -150,9 +150,9 @@ class SuperVM_driver:
         time.sleep(1)
 
         table = self.driver.find_element_by_css_selector('tbody')
-        self.explicitlyWait(30, By.TAG_NAME, 'tr')
+        # self.explicitlyWait(30, By.TAG_NAME, 'tr')
         for tr in table.find_elements_by_tag_name("tr"):
-            self.explicitlyWait(30, By.TAG_NAME, 'td')
+            # self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:
                 printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))
@@ -161,7 +161,19 @@ class SuperVM_driver:
                     for i in range(len(td)):
                         tdLst.append(td[i].text)
                     return tdLst
-                if rowClick == True:
+                if rowClick == True:                    
+                    # 함수 스택 확인 하는 코드
+                    # 잠시 보류
+                    # import traceback
+                    # callStack = traceback.format_stack()
+                    
+                    # cnt = 0
+                    # for i in callStack:
+                    #     callStack[cnt] = i.split(',')
+                    #     for j in callStack[cnt]:
+                    #         if 'tableSearch' in callStack[cnt][j]:
+                    #             print(callStack[cnt])
+                    #     cnt += 1
                     tr.click()
                     # 211223 jeonghyeon_kim 수정
                     # 가상머신 쪽 tr을 클릭 시 상태 부분을 누르지 않고                    
