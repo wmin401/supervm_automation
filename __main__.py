@@ -130,6 +130,14 @@ def main():
 
         _totalResult = saveResult(_pools._poolsResult, _totalResult)
 
+    if EXTERNAL_PROVIDER_TEST == 'true':
+        printLine()
+        printLog("*** External Provider Test ***")
+        _externalProvider = admin_external_provider(webDriver)
+        _externalProvider.test()
+
+        _totalResult = saveResult(_externalProvider._externalProviderResult, _totalResult)
+
     # entry point main   
 
     if VM_PORTAL_TEST == 'true':

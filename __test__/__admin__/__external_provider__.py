@@ -1,27 +1,49 @@
+import time
 from __common__.__parameter__ import *
 from __common__.__module__ import *
-from selenium.webdriver.common.by import By
-
+from __common__.__csv__ import *
 from __common__.__testlink__ import *
 
+from selenium.webdriver.common.by import By
+
 '''
-    샘플파일
-    아래 코드는 필수로 사용되어야함
-    주석은 삭제해도됨(# 로 입력된 부분이나, 이 주석)
-    모든 sample 로 입력 되어있는 부분을 변경하여아함(대소문자 구분하여)
-    출력은 본인이 원하는 곳에 추가하여 사용(보통은 디버그용)
-    코드 작성은 작성자가 원하는대로 가능(함수를 나눠도 되고 하나로 해도 되고)
-
-
-    작성자 : CQA2 이동일
+    작성자 : CQA2 김정현
 '''
 
 class admin_external_provider: # 모두 소문자
     def __init__(self, webDriver):
-        self._sampleResult = [] # lowerCamelCase 로
+        self._externalProviderResult = [] # lowerCamelCase 로
         self.webDriver = webDriver
         # self._sampleName = 'auto_sample_'+randomString() # 필요할 경우 사용
         self.tl = testlink()
+
+    def test(self):
+        self.setup()
+
+    def setup(self):
+        # 외부 공급자 메뉴 접근
+
+        # 관리 클릭
+        printLog("[SETUP] Administration - Provider")
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('xpath','/html/body/div[3]/div[3]/div/ul/li[5]/a/span[2]',True)
+
+        # time.sleep(3) # element 뜰 때까지 대기 필요
+        # self.webDriver.explicitlyWait(10, By.LINK_TEXT, '관리')
+        # _driver = self.webDriver.getDriver()
+
+        # _element = _driver.find_element_by_xpath('')
+        # _driver.execute_script("arguments[0].click();", _element)
+        time.sleep(2)
+
+        # _element = _driver.find_element_by_css_selector('body > div.GHYIDY4CHUB > div:nth-child(3) > div > ul > li.list-group-item.secondary-nav-item-pf.active > a')    
+        # self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div:nth-child(3) > div > ul > li.list-group-item.secondary-nav-item-pf.active',True)
+
+        # 공급자 클릭
+        self.webDriver.explicitlyWait(10, By.ID, 'MenuView_providersAnchor')
+        self.webDriver.findElement('id','MenuView_providersAnchor',True)
+
+        time.sleep(2)
 
     def sample_test_case1(self):
 
