@@ -89,6 +89,7 @@ else: # 로컬
     VM_TEST = 'true'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
+    EXTERNAL_PROVIDER_TEST = 'true'
     VM_PORTAL_TEST = 'false'
         
     # entry point para2

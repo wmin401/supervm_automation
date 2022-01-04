@@ -25,8 +25,8 @@ class admin_pools:
         self._template_instance = admin_template(webDriver) # template class 사용
 
     def test(self):
-        # self._template_instance.create() # 템플릿 생성
-        # time.sleep(0.3)
+        self._template_instance.create() # 템플릿 생성
+        time.sleep(0.3)
         self.setup()
         self.create()
         time.sleep(10) # 풀 내 가상 머신 생성 시간 대기 필요
