@@ -6,7 +6,7 @@
 1. Selenium IDE 프로젝트 생성
    * 파일명 규칙 : camelCase, 테스트+테스트이름 ex. vmCreate, qosCreate
 2. 녹화 시작
-3. *.side 파일을 __maker__/side에 저장
+3. *.side 파일을 __tools__/side에 저장
 4. 이 파일 빌드
 5. side파일명.py 로 code 폴더에 생성됨
 6. 기존 테스트 코드에 복사/붙여넣기
