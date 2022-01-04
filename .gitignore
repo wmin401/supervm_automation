@@ -1,5 +1,6 @@
 __pycache__/
 __tools__/side/
 __common__/__pycache__/
+__common__/__parameter__.py
 results/
 geckodriver.log
