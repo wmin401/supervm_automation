@@ -72,7 +72,7 @@ class admin_template:
             time.sleep(0.3)
             # 추가 옵션 버튼 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('xpath','/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button',True)
+            self.webDriver.findElement('css_selector','.btn-group:nth-child(11) > .btn',True)
             
             # 템플릿 생성 클릭
             printLog("[CREATE TEMPLATE] Create template")
