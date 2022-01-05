@@ -40,6 +40,7 @@ if IN_JENKINS == 'true':
     VM_TEST = os.getenv('VM_TEST')
     VM2_TEST = os.getenv('VM2_TEST')
     POOLS_TEST = os.getenv('POOLS_TEST')
+    EXTERNAL_PROVIDER_TEST = os.getenv('EXTERNAL_PROVIDER_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
     # entry point para1
