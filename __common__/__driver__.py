@@ -209,3 +209,6 @@ class SuperVM_driver:
                     tr.click()
                 return True
         return False
+
+    def executeScript(self, script):
+        self.driver.execute_script(script)
