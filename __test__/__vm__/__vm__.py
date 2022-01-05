@@ -13,7 +13,7 @@ class vm_vm:
         self.tl = testlink()
 
     def test(self):
-        self.create()
+        # self.create() # 가상머신 생성 코드 문제로 인해 보류
         self.detail()
         self.update()
         self.remove()
@@ -31,18 +31,16 @@ class vm_vm:
             self.webDriver.explicitlyWait(10, By.ID, 'route-add-vm-button')
             self.webDriver.findElement('id','route-add-vm-button', True)
             # 이름 입력            
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','create-vm-wizard-basic-name-edit')
             self.webDriver.sendKeys(self._vmName)
-            time.sleep(1)
             # 클러스터 클릭 및 Default 선택
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','create-vm-wizard-basic-cluster-edit-button-toggle', True)
-            self.webDriver.explicitlyWait(3, By.ID, 'create-vm-wizard-basic-cluster-edit-item-Default (Default)')
-            self.webDriver.findElement('id','create-vm-wizard-basic-cluster-edit-item-Default (Default)', True)
+            self.webDriver.findElement('css_selector','#create-vm-wizard-basic-cluster-edit > div > ul > li:nth-child(1)')
+            a = self.webDriver.getAttribute('textContent')
+            
+            
 
             # 프로비저닝 소스 클릭 및 템플릿 선택
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','create-vm-wizard-basic-provision-edit-button-toggle', True)
             try:
                 # 한글일 경우
@@ -53,12 +51,12 @@ class vm_vm:
                 self.webDriver.explicitlyWait(10, By.ID, 'create-vm-wizard-basic-provision-edit-item-Template')
                 self.webDriver.findElement('id','create-vm-wizard-basic-provision-edit-item-Template', True)                
             # 템플릿 클릭 및 Blank 선택
-            self.webDriver.explicitlyWait(10, By.ID, 'create-vm-wizard-basic-template-edit-button-toggle')
-            self.webDriver.findElement('id','create-vm-wizard-basic-template-edit-button-toggle', True)
+            self.webDriver.explicitlyWait(10, By.ID, 'create-vm-wizard-basic-template-edit-button-text')
+            self.webDriver.findElement('id','create-vm-wizard-basic-template-edit-button-text', True)
             self.webDriver.explicitlyWait(10, By.ID, 'create-vm-wizard-basic-template-edit-item-Blank')
             self.webDriver.findElement('id','create-vm-wizard-basic-template-edit-item-Blank', True)
             # 다음 클릭
-            self.webDriver.findElement('css_selector', 'body > div:nth-child(3) > div.fade.in.modal > div > div > div > div.wizard-pf-footer.modal-footer > button.btn.btn-primary', True)
+            self.webDriver.findElement('css_selector', '.btn:nth-child(3)', True)
             # NIC 생성
             self.webDriver.findElement('css_selector', '#create-vm-wizards-net > div > div.blank-slate-pf-main-action > button', True)
             self.webDriver.findElement('css_selector', '#create-vm-wizards-net > div._2w_sbU1I-QKEdNDpIvRpri > div > button.btn.btn-primary', True)

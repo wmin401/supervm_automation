@@ -47,14 +47,14 @@ if IN_JENKINS == 'true':
     BUILD_ID = os.getenv('BUILD_ID')
     
 else: # 로컬
-    ENGINE_VM_FQDN = 'master164.tmax.com'
+    ENGINE_VM_FQDN = 'master165.tmax.com'
     
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
-    ADMIN_HOSTNAME = 'supervm40.tmax.dom'
+    ADMIN_HOSTNAME = 'hypervm41.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
-    ENGINE_VM_IP = '192.168.17.164'
-    ADMIN_HOST_IP = '192.168.17.40'
+    ENGINE_VM_IP = '192.168.17.165'
+    ADMIN_HOST_IP = '192.168.17.41'
     ADMIN_HOST_ID = 'root'
     ADMIN_HOST_PW = 'asdf'
     ENGINE_VM_MEMORY = '4096'
@@ -86,11 +86,11 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'true'
+    VM_TEST = 'false'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
-    EXTERNAL_PROVIDER_TEST = 'true'
-    VM_PORTAL_TEST = 'false'
+    EXTERNAL_PROVIDER_TEST = 'false'
+    VM_PORTAL_TEST = 'true'
         
     # entry point para2
     

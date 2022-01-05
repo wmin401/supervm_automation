@@ -46,8 +46,8 @@ class admin_qos:
             self.webDriver.explicitlyWait(10, By.ID, 'MainDataCenterView_table_content_col2_row0')
             self.webDriver.findElement('id','MainDataCenterView_table_content_col2_row0', True) # Data Center 가장 위에 것으로 테스트
             # QoS 탭 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(5) > a')
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(5) > a',True)            
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, 'QoS')
+            self.webDriver.findElement('link_text','QoS',True)            
             # 새로 만들기 변수에 저장(0~3)
             self.webDriver.implicitlyWait(10)
             self.newBtns = self.webDriver.findElement('id_all','DetailActionPanelView_New') # 새로 만들기 버튼 리스트
