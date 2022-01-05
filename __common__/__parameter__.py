@@ -42,6 +42,7 @@ if IN_JENKINS == 'true':
     POOLS_TEST = os.getenv('POOLS_TEST')
     EXTERNAL_PROVIDER_TEST = os.getenv('EXTERNAL_PROVIDER_TEST')
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
+    QUOTA_TEST = os.getenv('QUOTA_TEST')
 
     # entry point para1
 
@@ -92,6 +93,7 @@ else: # 로컬
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
     VM_PORTAL_TEST = 'true'
+    QUOTA_TEST = 'false'
         
     # entry point para2
     
