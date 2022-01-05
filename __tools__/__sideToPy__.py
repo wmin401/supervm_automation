@@ -107,8 +107,9 @@ class sideToPy:
             msg = str(e).replace("\\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[%s] " + msg)
-        printLog("[%s] RESULT : " + result)
 
+        # 결과 출력
+        printLog("[%s] RESULT : " + result)
         self._%sResult.append(['%s' + DELIM + '%s' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('%s',result, msg)'''%(" ".join(str(i).upper() for i in fileNameSnakeList),\
                                                    " ".join(str(i).upper() for i in fileNameSnakeList),\
