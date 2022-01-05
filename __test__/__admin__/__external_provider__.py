@@ -19,17 +19,22 @@ class admin_external_provider:
         self.webDriver = webDriver
         self._externalProviderName = 'auto_external_provider_'+randomString()
         self._externalProviderDescription = 'auto_external_provider_'+randomString()
+        self._type = '' # 환경에 따라 수정 필요
+        self._superVmDatacenter = '' # 환경에 따라 수정 필요
         self._vCenterIp = '' # 환경에 따라 수정 필요
         self._esxiIp = '' # 환경에 따라 수정 필요
         self._externalProviderDatacenter = '' # 환경에 따라 수정 필요
         self._proxyHost = '' # 환경에 따라 수정 필요
         self._userName = '' # 환경에 따라 수정 필요
         self._userPassword = '' # 환경에 따라 수정 필요
+        self._editedExternalProviderDescription = 'auto_external_provider_edited_'+randomString()
         self.tl = testlink()
 
     def test(self):
         self.setup()
         self.create()
+        time.sleep(3) # 생성 대기 필요
+        self.edit()
 
     def setup(self):
         # 외부 공급자 메뉴 접근
@@ -136,5 +141,50 @@ class admin_external_provider:
 
         self._externalProviderResult.append(['external' + DELIM + 'provider' + DELIM + 'create' + DELIM + result + DELIM + msg])
         self.tl.junitBuilder('CREATE_EXTERNAL_PROVIDER',result, msg)
+
+    def edit(self):
+        printLog(printSquare('Edit External Provider'))
+        result = FAIL
+        msg = ''
+
+        try:
+            # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
+            time.sleep(0.5)
+            self.webDriver.tableSearch(self._externalProviderName, 0, rowClick=True)
+
+            # 편집 버튼 클릭
+            time.sleep(1)
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
+            self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
+
+            # 설명 수정
+            self.webDriver.explicitlyWait(10, By.ID, 'ProviderPopupView_descriptionEditor')
+            self.webDriver.findElement('id', 'ProviderPopupView_descriptionEditor', False)
+            self.webDriver.clear()
+            self.webDriver.sendKeys(self._editedExternalProviderDescription)
+
+            # OK 버튼 클릭
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
+            self.webDriver.findElement('css_selector', '.btn-primary', True)
+
+            # 설명으로 검색했을 때 확인되면 성공
+            _editCheck = self.webDriver.tableSearch(self._editedExternalProviderDescription, 2)
+            printLog("[EDIT EXTERNAL PROVIDER] Check if edited")
+            if _editCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to edit new external provider..."
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[EDIT EXTERNAL PROVIDER] " + msg)
+        printLog("[EDIT EXTERNAL PROVIDER] RESULT : " + result)
+
+        self._externalProviderResult.append(['edit' + DELIM + 'external' + DELIM + 'provider' + DELIM + result + DELIM + msg])
+        self.tl.junitBuilder('EDIT_EXTERNAL_PROVIDER',result, msg)
 
 
