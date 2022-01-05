@@ -1,4 +1,3 @@
-
 from __import__ import *
 
 ## 테스트 메인 파일
@@ -138,7 +137,14 @@ def main():
 
         _totalResult = saveResult(_externalProvider._externalProviderResult, _totalResult)
 
-    # entry point main   
+    # entry point main
+    if QUOTA_TEST == 'true':
+        printLine()
+        printLog(printSquare("*** Quota Test ***"))
+        _quota = admin_quota(webDriver)
+        _quota.test()
+            
+        _totalResult = saveResult(_quota._quotaResult, _totalResult)
 
     if VM_PORTAL_TEST == 'true':
         webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
