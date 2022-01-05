@@ -63,11 +63,10 @@ class admin_template:
             # 중지된 가상머신이 있어야한다.
             # 컴퓨팅 클릭
             printLog("[CREATE TEMPLATE] Compute - Virtual Machines ")
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','compute',True)
+            time.sleep(0.3)
             # 가상머신 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_vmsAnchor',True)
+            self.webDriver.findElement('id','MenuView_vmsAnchor', True)
             self.webDriver.tableSearch('for_automation', 2, rowClick=True)
             time.sleep(0.3)
             # 추가 옵션 버튼 클릭
@@ -159,7 +158,7 @@ class admin_template:
             des = randomString()
             self.webDriver.sendKeys(des)
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'TemplateEditPopupView_OnSave', True)
+            self.webDriver.findElement('id', 'TemplateEditPopupView_OnSaveConfirm', True)
             time.sleep(1)
 
             # 설명에 추가되면 성공
@@ -273,10 +272,10 @@ class admin_template:
             while True:
                 time.sleep(1)
                 tableValueList = self.webDriver.tableSearch(self._templateName + '_vm_%s_Disk1'%self.storage, 0, False, False,returnValueList=True)
-                if '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
+                if '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:
                     printLog("[COPY TEMPLATE DISK] Disk's status is still locked ...")
                     continue
-                elif 'OK' in tableValueList[11]:
+                elif 'OK' in tableValueList[10]:
                     break
             
             # 복사 클릭
@@ -288,14 +287,14 @@ class admin_template:
 
             # 별칭 변경
             printLog("[COPY TEMPLATE DISK] Change copy disk's name")
-            self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > div.GHYIDY4CMRB > div > div > div:nth-child(2) > div > div > input')            
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div/div/div[3]/div/div/div[2]/div[1]/div/input')
             self.webDriver.clear()
             self.webDriver.sendKeys('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage)
 
-            self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > div:nth-child(2) > button', True)
-            time.sleep(1)
-
-            
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/div[2]/button', True)
+            printLog("[COPY TEMPLATE DISK] Wait 30 seconds until disk is OK")
+            time.sleep(30)
+           
             # 디스크가 추가되고 잠금상태에서 OK가 되면 성공
             printLog("[COPY TEMPLATE DISK] Check if created")
             printLog("[COPY TEMPLATE DISK] Wait until changed copy disk was created")
@@ -303,12 +302,12 @@ class admin_template:
             while True:
                 try:
                     tableValueList = self.webDriver.tableSearch('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, False, False, returnValueList=True)    
-                    if '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:
+                    if '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:
                         result = FAIL
                         msg = 'Failed copy template'
                         printLog("[COPY TEMPLATE DISK] Disk's status is still locked ...")
                         continue
-                    if 'OK' in tableValueList[11]:
+                    if 'OK' in tableValueList[10]:
                         result = PASS
                         msg = ''
                         break
@@ -369,7 +368,7 @@ class admin_template:
                     continue
 
             printLog("[REMOVE VM] Remove vm")
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right', True)                
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
             self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
@@ -393,7 +392,10 @@ class admin_template:
             # 권한 탭 클릭
             printLog("[ADD ROLE] Add role")
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
+            try:
+                self.webDriver.findElement('link_text', '권한', True)
+            except:
+                self.webDriver.findElement('link_text', 'role', True)
             # 추가 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
             self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
@@ -444,7 +446,10 @@ class admin_template:
             # 권한 탭 클릭
             printLog("[REMOVE ROLE] Remove role")
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(6)', True)
+            try:
+                self.webDriver.findElement('link_text', '권한', True)
+            except:
+                self.webDriver.findElement('link_text', 'role', True)
             # 생성한 권한 찾아서 클릭
             self.webDriver.tableSearch(self.role, 4, rowClick=True)
             # 제거 클릭
@@ -491,20 +496,8 @@ class admin_template:
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
             time.sleep(2)
             
-            
-            printLog("[REMOVE TEMPLATE] Check if removed")
-            while True:
-                try:
-                    tableValueList = self.webDriver.tableSearch(self._templateName, 1, False, False, returnValueList = True)        
-                    if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
-                        printLog("[REMOVE TEMPLATE] Template's status is still locked ...")
-                        result = FAIL
-                        msg = "Failed to remove new template..."
-                except:
-                    printLog("[REMOVE TEMPLATE] Template removed")
-                    result = PASS
-                    msg = ''
-                    break
+            result = PASS
+            msg = ''
 
         except Exception as e:
             result = FAIL
