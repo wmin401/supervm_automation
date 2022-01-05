@@ -35,6 +35,8 @@ class admin_external_provider:
         self.create()
         time.sleep(3) # 생성 대기 필요
         self.edit()
+        time.sleep(3) # 수정 대기 필요
+        self.delete()
 
     def setup(self):
         # 외부 공급자 메뉴 접근
@@ -187,4 +189,62 @@ class admin_external_provider:
         self._externalProviderResult.append(['edit' + DELIM + 'external' + DELIM + 'provider' + DELIM + result + DELIM + msg])
         self.tl.junitBuilder('EDIT_EXTERNAL_PROVIDER',result, msg)
 
+    def delete(self):
+        printLog(printSquare('Delete External Provider'))
+        result = FAIL
+        msg = ''
 
+        try:
+            # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
+            time.sleep(0.5)
+            self.webDriver.tableSearch(self._externalProviderName, 0, rowClick=True)
+
+            # 삭제 버튼 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
+            self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
+
+            # OK 버튼 클릭
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
+            self.webDriver.findElement('css_selector', '.btn-primary', True)
+
+            # 설명으로 검색했을 때 없으면 성공
+            # _deleteCheck = self.webDriver.tableSearch(self._externalProviderName, 0)
+            # printLog("[DELETE EXTERNAL PROVIDER] Check if deleted")
+            # if _deleteCheck == False:
+            #     result = PASS
+            #     msg = ''
+            # else:
+            #     result = FAIL
+            #     msg = "Failed to delete new external provider..."
+
+            printLog("[DELETE EXTERNAL PROVIDER] Check if deleted")
+            _startTime = time.time()
+            while True:
+                time.sleep(1)
+                try:
+                    _deleteCheck = self.webDriver.tableSearch(self._externalProviderName, 0)
+                    if _deleteCheck == False:
+                        result = PASS
+                        msg = ''
+                        break
+                    else:
+                        printLog("[DELETE EXTERNAL PROVIDER] Pools status is still deleted ...")
+                        _endTime = time.time()
+                        if _endTime - _startTime >= 60:
+                            printLog("[DELETE EXTERNAL PROVIDER] Failed status changed : Timeout")
+                            result = FAIL
+                            msg = "Failed to new external provider..."
+                            break
+                        else:
+                            continue
+                except:
+                    continue
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[DELETE EXTERNAL PROVIDER] " + msg)
+        printLog("[DELETE EXTERNAL PROVIDER] RESULT : " + result)
+
+        self._externalProviderResult.append(['delete' + DELIM + 'external' + DELIM + 'provider' + DELIM + result + DELIM + msg])
+        self.tl.junitBuilder('DELETE_EXTERNAL_PROVIDER',result, msg)
