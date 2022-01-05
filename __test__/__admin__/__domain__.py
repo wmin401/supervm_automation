@@ -10,8 +10,8 @@ class admin_domain:
         self.webDriver = webDriver
         self.tl = testlink()
         self._domainResult = []
-        self._domainNFSName = 'NFS-31'
-        self._domainNFSPath = '192.168.17.31:/nfs'
+        self._domainNFSName = 'NFS-4'
+        self._domainNFSPath = '10.0.0.4:/nfs'
 
         self._domainCEPHName = 'posix-31'
         self._domainCEPHPath = '192.168.17.31:6789:/volumes/_nogroup/tim1/e326d8ed-5092-4249-86cb-cdc8ad22394b'
@@ -19,17 +19,17 @@ class admin_domain:
         self._domainCEPHAuth = 'name=admin,secret=AQDHR4JhTcz2CxAAG1TIoppqJclaMWyDYO1v0A=='
 
     def test(self):
-        self.create('nfs')
-        self.maintenance('nfs')
-        self.active('nfs')
-        self.maintenance('nfs')
-        self.detach('nfs')
-        self.attach('nfs')
-        self.maintenance('nfs')
-        self.detach('nfs')
-        self.remove('nfs')
-        self.create('nfs')
-        self.maintenance('nfs')
+        #self.create('nfs')
+        #self.maintenance('nfs')
+        #self.active('nfs')
+        #self.maintenance('nfs')
+        #self.detach('nfs')
+        #self.attach('nfs')
+        #self.maintenance('nfs')
+        #self.detach('nfs')
+        #self.remove('nfs')
+        #self.create('nfs')
+        #self.maintenance('nfs')
         self.destroy('nfs')
 
         #self.create('ceph')
@@ -197,7 +197,7 @@ class admin_domain:
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
+            self.webDriver.findElement('css_selector','body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
 
             # 유지보수 클릭
             self.webDriver.implicitlyWait(10)
@@ -249,7 +249,7 @@ class admin_domain:
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
+            self.webDriver.findElement('css_selector','body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
 
             # 연결 클릭
             self.webDriver.implicitlyWait(10)
@@ -306,7 +306,7 @@ class admin_domain:
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
+            self.webDriver.findElement('css_selector','body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
 
             # 분리 클릭
             time.sleep(3)
@@ -360,7 +360,7 @@ class admin_domain:
 
             # 도메인 이름 클릭 후 데이터 센터 탭으로 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
+            self.webDriver.findElement('css_selector','body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2) > a',True)
 
             # 활성 클릭
             self.webDriver.implicitlyWait(10)
@@ -465,7 +465,7 @@ class admin_domain:
 
             # 더보기 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button',True)
+            self.webDriver.findElement('css_selector','body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button',True)
 
             # 파괴 클릭
             self.webDriver.implicitlyWait(10)

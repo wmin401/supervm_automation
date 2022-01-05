@@ -16,6 +16,7 @@ class admin_data_center:
         self.create()
         self.edit_changeStorageType()
         self.edit_changeStorageCompatibleVersion()
+        time.sleep(2)
         self.remove()
         
     def create(self):
@@ -93,6 +94,7 @@ class admin_data_center:
 
             # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
             self.webDriver.tableSearch(self._data_centerName, 2, True)
+            
             time.sleep(1)
 
             # 삭제 클릭
