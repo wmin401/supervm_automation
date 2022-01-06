@@ -30,6 +30,7 @@ if IN_JENKINS == 'true':
     IF_HEADLESS = os.getenv('IF_HEADLESS')
     USER_ID = os.getenv('USER_ID')
     USER_PW = os.getenv('USER_PW')
+
     CLUSTER_TEST = os.getenv('CLUSTER_TEST')
     DATA_CENTER_TEST = os.getenv('DATA_CENTER_TEST')
     DISK_TEST = os.getenv('DISK_TEST')
@@ -41,8 +42,9 @@ if IN_JENKINS == 'true':
     VM2_TEST = os.getenv('VM2_TEST')
     POOLS_TEST = os.getenv('POOLS_TEST')
     EXTERNAL_PROVIDER_TEST = os.getenv('EXTERNAL_PROVIDER_TEST')
-    VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
     QUOTA_TEST = os.getenv('QUOTA_TEST')
+
+    VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
     # entry point para1
 
@@ -92,8 +94,9 @@ else: # 로컬
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
-    VM_PORTAL_TEST = 'true'
     QUOTA_TEST = 'false'
+    
+    VM_PORTAL_TEST = 'true'
         
     # entry point para2
     
