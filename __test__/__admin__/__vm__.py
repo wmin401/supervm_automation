@@ -11,7 +11,8 @@ class admin_vm:
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
         self._diskName = '%s_Disk1'%self._vmName
-        self._diskSize = '10'
+        # self._diskName = 'auto_vm_HnpZbEOS_Disk1'
+        self._diskSize = '5'
         self.webDriver = webDriver
 
         self.tl = testlink()
@@ -33,11 +34,11 @@ class admin_vm:
         while True:
             try:
                 tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
-                if 'OK' in tableValueList[11]:
+                if 'OK' in tableValueList[10]:
                     printLog("[DISK STATUS] Disk's status is OK")
                     status = True
                     break
-                elif '잠김' in tableValueList[11] or 'Locked' in tableValueList[11]:                    
+                elif '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:                    
                     status = False
                     ed = time.time()
                     printLog("[DISK STATUS] Disk's status is still locked...%ds"%(int(ed-st)))                    
@@ -58,9 +59,8 @@ class admin_vm:
         self.update()
         self.copy()
         self.run()
-        # 이 두개가 문제가 많음...
-        # self.shutdown()
-        # self.remove()
+        self.shutdown()
+        self.remove()
 
     def setup(self):
         # 컴퓨팅
@@ -133,7 +133,7 @@ class admin_vm:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupView_OnSave',True)
 
-            time.sleep(3)
+            time.sleep(5)
             _createCheck = self.webDriver.tableSearch(self._vmName, 2)            
             if _createCheck == True:
                 result = PASS
@@ -224,7 +224,8 @@ class admin_vm:
             printLog("[VM COPY] VM Copy")
 
             self.webDriver.tableSearch(self._vmName, 2, True)            
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button', True)
+            
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(0.3)
             self.webDriver.findElement('id', 'ActionPanelView_CloneVm', True)
         
@@ -244,7 +245,6 @@ class admin_vm:
                         result = PASS
                         try:
                             printLog("[VM COPY] VM is copied")
-                            self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div.modal-header.ui-draggable-handle > button', True)
                             break
                         except:
                             pass
@@ -275,8 +275,8 @@ class admin_vm:
         printLog(printSquare('Run VM'))
 
         # 스케줄링 정책이 power_saving 이면 됨
-        cc = admin_cluster(self.webDriver)
-        cc.scheduling()
+        # cc = admin_cluster(self.webDriver)
+        # cc.scheduling()
 
         result = FAIL
         msg = ''
@@ -311,11 +311,11 @@ class admin_vm:
                         
                     elif 'Powering Up' in row[13] or '전원을 켜는 중' in row[13]: #
                         result = FAIL
-                        msg = 'VM is still Running ...'
-                        cnt += 1
+                        msg = 'VM is still powering up ...'
                         if cnt < 1:
                             printLog("[VM RUN] Status : " + row[13])
                             printLog("[VM RUN] Message : " + msg)
+                            cnt += 1
                         continue
                     ed = time.time()
                     if ed - st > 120:
@@ -349,14 +349,19 @@ class admin_vm:
 
             # 생성한 vm 클릭
             isRun = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            # isRun = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
             if 'Down' in isRun[13]: # 실행중이지 않을 경우 종료
                 result = FAIL
                 msg = 'VM is not running ...'
+                printLog("[VM SHUTDOWN] MESSAGE : " + msg)
                 printLog("[VM SHUTDOWN] RESULT : " + result)
                 self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])        
                 self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
                 return
 
+            # 선택
+            # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)
+            self.webDriver.tableSearch(self._vmName, 2, True)
             # 종료 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
             self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
@@ -364,12 +369,14 @@ class admin_vm:
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
 
+
             st = time.time()
             cnt = 0
             while True:
                 try:                          
                     time.sleep(1)
                     row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+                    # row = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
 
                     if 'Down' in row[13]: # 
                         result = PASS
@@ -385,7 +392,19 @@ class admin_vm:
                             printLog("[VM SHUTDOWN] Message : " + msg)
                         continue
                     ed = time.time()
-                    if ed - st > 120:
+                    more = 0
+                    # 30초마다 종료버튼 클릭
+                    if int(ed - st)%30 == 0 and more == 0: 
+                        more = 1
+                        self.webDriver.tableSearch(self._vmName, 2, True)
+                        # 종료 클릭
+                        self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
+                        self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
+                        # OK 클릭
+                        self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
+                        self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
+
+                    elif ed - st > 120:
                         result = FAIL
                         msg = 'Failed to shutdown vm ...'
                         printLog("[VM SHUTDOWN] Message : " + msg)
@@ -427,6 +446,8 @@ class admin_vm:
             st = time.time()
             while True:
                 tableValueList = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+                # tableValueList = self.webDriver.tableSearch('auto_vm_HnpZbEOS_Disk1', 2, False, False, True)
+                
                 if 'Down' in tableValueList[13]:
                     break
                 elif '이미지 잠김' in tableValueList[13] or 'Image Locked' in tableValueList[13]:
@@ -443,7 +464,8 @@ class admin_vm:
             while True:
                 time.sleep(1)
                 self.webDriver.tableSearch(self._vmName, 2, True)            
-                self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button', True)
+                # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)            
+                self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
                 time.sleep(0.3)
                 self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
 
@@ -453,7 +475,7 @@ class admin_vm:
                 try:
                     cnt += 1
                     time.sleep(0.5)
-                    self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
+                    self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/button', True)
                     printLog("[REMOVE EXCEPTION] Remove fail. try again ... %d times"%cnt)
                     continue
                 except Exception as e:
