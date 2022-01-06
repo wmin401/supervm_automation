@@ -53,8 +53,8 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 선호도 그룹 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(9)')
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(9)', True)
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
+            self.webDriver.findElement('link_text', '선호도 그룹', True)
 
             # New 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
@@ -95,8 +95,8 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 선호도 그룹 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(9)')
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(9)', True)
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
+            self.webDriver.findElement('link_text', '선호도 그룹', True)
 
             # 생성한 그룹 클릭
             self.webDriver.tableSearch(self._affinityGroupName, 1, True)
@@ -139,8 +139,8 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 선호도 그룹 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(9)')
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(9)', True)
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
+            self.webDriver.findElement('link_text', '선호도 그룹', True)
 
             # 생성한 그룹 클릭
             self.webDriver.tableSearch(self._affinityGroupName, 1, True)
@@ -184,8 +184,8 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 선호도 레이블 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(10)')
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(10)', True)
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 레이블')
+            self.webDriver.findElement('link_text', '선호도 레이블', True)
 
             # New 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
@@ -227,8 +227,8 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 선호도 레이블 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(10)')
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(10)', True)
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 레이블')
+            self.webDriver.findElement('link_text', '선호도 레이블', True)
 
             # 생성한 레이블 클릭
             self.webDriver.tableSearch(self._affinityLabelName, 0, True)
@@ -282,24 +282,25 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._clusterName, 1, False, True)
 
             # Affinity Labels 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(8)')
-            self.webDriver.findElement('css_selector', 'body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(8)', True)
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 레이블')
+            self.webDriver.findElement('link_text', '선호도 레이블', True)
 
-            # 생성한 label 선택
+            # 생성한 label의 이름 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Remove')
             self.webDriver.tableSearch(self._affinityLabelName + '_edited', 0, True)
-
-            # Edit 에서 VM 제거 필요
-            self.webDriver.findElement('id','DetailActionPanelView_Edit',True)
-            # 팝업에서 VM - 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(4) > div:nth-child(1) > div > div > div > button:nth-child(2)')
-            self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(4) > div:nth-child(1) > div > div > div > button:nth-child(2)', True)
             
+            # 편집 버튼 클릭
+            self.webDriver.findElement('id','DetailActionPanelView_Edit',True)
+            
+            # 팝업에서 VM - 클릭
+            self.webDriver.explicitlyWait(10, By.XPATH, '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[1]')
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[1]', True)
+
             # OK 클릭
             self.webDriver.findElement('id','AffinityLabelPopupView_OnSave',True)
             time.sleep(0.5)
 
-            # Delete 클릭
+            # 삭제 클릭
             self.webDriver.findElement('id','DetailActionPanelView_Remove',True)
 
             # OK 클릭
