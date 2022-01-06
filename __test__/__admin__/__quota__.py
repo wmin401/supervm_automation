@@ -627,7 +627,7 @@ class admin_quota:
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
             self.webDriver.findElement('css_selector', '.btn-primary', True)
 
-            time.sleep(2)
+            time.sleep(10)
    
         except Exception as e:   
             result = FAIL
