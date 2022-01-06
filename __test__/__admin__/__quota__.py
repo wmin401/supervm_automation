@@ -520,29 +520,9 @@ class admin_quota:
         msg = ''
 
         try:
-            # click
-            self.webDriver.explicitlyWait(10, By.ID, 'compute')
-            self.webDriver.findElement('id', 'compute', True)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#MenuView_vmsAnchor > .list-group-item-value')
-            self.webDriver.findElement('css_selector', '#MenuView_vmsAnchor > .list-group-item-value', True)
-
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.tableSearch(self._vmName,2,True,False)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button')
-            self.webDriver.findElement('css_selector', 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button', True)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '삭제')
-            self.webDriver.findElement('link_text', '삭제', True)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
-            self.webDriver.findElement('css_selector', '.btn-primary', True)
-
+            self.vmRemove()
+            time.sleep(5)
+            
             # click
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '관리')
             self.webDriver.findElement('link_text', '관리', True)
@@ -635,3 +615,42 @@ class admin_quota:
             msg = msg[:msg.find('Element <')]
             printLog("[VM CREATE] " + msg)
             printLog("[VM CREATE] RESULT : " + result)
+
+
+    def vmRemove(self):    
+        printLog(printSquare('Vm Remove'))
+        result = FAIL
+        msg = ''
+
+        try:
+            # click
+            self.webDriver.explicitlyWait(10, By.ID, 'compute')
+            self.webDriver.findElement('id', 'compute', True)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#MenuView_vmsAnchor > .list-group-item-value')
+            self.webDriver.findElement('css_selector', '#MenuView_vmsAnchor > .list-group-item-value', True)
+
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._vmName,2,True,False)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button')
+            self.webDriver.findElement('css_selector', 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div.btn-group.dropdown-kebab-pf.dropdown.pull-right > button', True)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '삭제')
+            self.webDriver.findElement('link_text', '삭제', True)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
+            self.webDriver.findElement('css_selector', '.btn-primary', True)
+           
+            time.sleep(10)
+   
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM REMOVE] " + msg)
+            printLog("[VM REMOVE] RESULT : " + result)
