@@ -13,11 +13,12 @@ class admin_data_center:
         self.tl = testlink()
         
     def test(self):
-        self.create()
-        self.edit_changeStorageType()
-        self.edit_changeStorageCompatibleVersion()
+        #self.create()
+        #self.edit_changeStorageType()
+        #self.edit_changeStorageCompatibleVersion()
         time.sleep(2)
-        self.remove()
+        self.datacenterForceRemove()
+        #self.remove()
         
     def create(self):
         printLog('Create data_center')
@@ -42,12 +43,13 @@ class admin_data_center:
             self.webDriver.explicitlyWait(10, By.ID, 'DataCenterPopupView_nameEditor')
             self.webDriver.findElement('id','DataCenterPopupView_nameEditor',True)
             self.webDriver.sendKeys(self._data_centerName)
-
+            
+            '''
             # 호환 버전 4.4로 변경
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','DataCenterPopupView_versionEditor',True)
             self.webDriver.findElement('css_selector','#DataCenterPopupView_versionEditor > div > ul > li:nth-child(3)',True)
-
+            '''
             # 새로운 데이터 센터 OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','DataCenterPopupView_OnSave',True)
@@ -216,3 +218,49 @@ class admin_data_center:
             printLog("* MESSAGE : " + msg)
         
         #self.tl.junitBuilder('DATA_CENTER_EDIT_VERSION', result, msg)
+
+    def datacenterForceRemove(self):    
+        printLog(printSquare('Datacenter Force Remove'))
+        result = FAIL
+        msg = ''
+
+        try:
+            # click
+            self.webDriver.explicitlyWait(10, By.ID, 'compute')
+            self.webDriver.findElement('id', 'compute', True)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#MenuView_dataCentersAnchor > .list-group-item-value')
+            self.webDriver.findElement('css_selector', '#MenuView_dataCentersAnchor > .list-group-item-value', True)
+
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._data_centerName,2,True,False)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button')
+            self.webDriver.findElement('css_selector', 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button', True)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '강제 제거')
+            self.webDriver.findElement('link_text', '강제 제거', True)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.ID, 'ForceRemoveConfirmationPopupView_latch')
+            self.webDriver.findElement('id', 'ForceRemoveConfirmationPopupView_latch', True)
+
+            time.sleep(3)
+
+            # click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
+            self.webDriver.findElement('css_selector', '.btn-primary', True)
+   
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+        printLog("[DATACENTER FORCE REMOVE] " + msg)
+
+        # 결과 출력
+        printLog("[DATACENTER FORCE REMOVE] RESULT : " + result)
+        self._data_centerResult.append(['datacenter' + DELIM + 'force remove' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('DATACENTER_FORCE_REMOVE',result, msg)
