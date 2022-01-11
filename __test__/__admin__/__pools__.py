@@ -282,8 +282,7 @@ class admin_pools:
 
             # table 내부 전부 검색해서 입력한 이름이 있을 경우 이름 클릭
             time.sleep(0.5)
-            # self.webDriver.tableSearch(self._poolsName, 0, nameClick=True)
-            self.webDriver.tableSearch('auto_pools_mMIgyhmj', 0, nameClick=True)
+            self.webDriver.tableSearch(self._poolsName, 0, nameClick=True)
 
             # 가상머신 탭 클릭
             self.webDriver.implicitlyWait(10)
@@ -291,13 +290,34 @@ class admin_pools:
             self.webDriver.findElement('link_text', '가상머신', True) # css_selector 변경
 
             # Down 상태인 가상 머신 클릭
-            time.sleep(0.5)
-            _poolInfo = self.webDriver.tableSearch('Down', 6, rowClick=True, returnValueList=True)
+            _startTime = time.time()
+            while True:
+                time.sleep(1)
+                try:
+                    _downCheck = self.webDriver.tableSearch('Down', 6, rowClick=True)
+                    if _downCheck == False: # 아직 Down이 되지 않았을 경우, 1분간 시도
+                        printLog("[DETACH VMS IN POOLS] Down vms in pools status is still prepared ...")
+                        _endTime = time.time()
+                        if _endTime - _startTime >= 60:
+                            printLog("[DETACH VMS IN POOLS] Failed status changed : Timeout")
+                            result = FAIL
+                            msg = "Failed to click down vms in new pools..."
+                            break
+                        else:
+                            continue
+                    else :
+                        break
+                except:
+                    continue
+
+            # 분리할 가상머신 클릭
+            # self.webDriver.tableSearch('Down', 6, rowClick=True) 
+            # tableValueList = self.webDriver.tableSearch(self._poolsName + '-1', 0, rowClick=False, nameClick=False, returnValueList=True)
 
             # 분리 버튼 클릭
             printLog("[DETACH VMS IN POOLS] Detach vms")
             self.webDriver.explicitlyWait(10, By.ID, ' DetailActionPanelView_Detach')
-            self.webDriver.findElement('id',  'DetailActionPanelView_Detach', True)
+            self.webDriver.findElement('id', 'DetailActionPanelView_Detach', True)
 
             # OK 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnDetach')
@@ -305,33 +325,28 @@ class admin_pools:
 
             printLog("[DETACH VMS IN POOLS]] Check if detached")
 
-            # 가상머신 메뉴 접근
-            self.setup()
-
-            # PASS / FAIL 체크 구현 필요 (이미지 툴팁으로 상태 비저장 서버 / 서버(풀) 내용이 보이는데 어떻게 가져올지?)
-            # _startTime = time.time()
-            # while True:
-            #     time.sleep(1)
-            #     try:
-            #         tableValueList = self.webDriver.tableSearch(self._poolsName, 0, rowClick=False, nameClick=False, returnValueList=True)
-            #         _afterAssignedVms = int(tableValueList[2])
-            #         _addCount = int(self._addVmsCountInPool)
-            #         if _presentAssignedVms + _addCount == _afterAssignedVms:
-            #             result = PASS
-            #             msg = ''
-            #             break
-            #         else:
-            #             printLog("[ADD VMS IN POOLS] Add vms In pools status is still added ...")
-            #             _endTime = time.time()
-            #             if _endTime - _startTime >= 60:
-            #                 printLog("[ADD VMS IN POOLS] Failed status changed : Timeout")
-            #                 result = FAIL
-            #                 msg = "Failed to add vms in new pools..."
-            #                 break
-            #             else:
-            #                 continue
-            #     except:
-            #         continue
+            # 가상머신 탭 내에서 VM이 사라진 것으로 체크
+            _startTime = time.time()
+            while True:
+                time.sleep(1)
+                try:
+                    _deleteCheck = self.webDriver.tableSearch(self._poolsName + '-1', 0) # 가상머신 이름으로 검색
+                    if _deleteCheck == False:
+                        result = PASS
+                        msg = ''
+                        break
+                    else:
+                        printLog("[DETACH VMS IN POOLS] Detach vms in pools status is still deleted ...")
+                        _endTime = time.time()
+                        if _endTime - _startTime >= 60:
+                            printLog("[DETACH VMS IN POOLS] Failed status changed : Timeout")
+                            result = FAIL
+                            msg = "Failed to detach vms in new pools..."
+                            break
+                        else:
+                            continue
+                except:
+                    continue
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
