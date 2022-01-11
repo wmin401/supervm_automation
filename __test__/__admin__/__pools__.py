@@ -288,7 +288,7 @@ class admin_pools:
             # 가상머신 탭 클릭
             self.webDriver.implicitlyWait(10)
             time.sleep(3) # element 뜰 때까지 대기 필요
-            self.webDriver.findElement('css_selector','body > div.GHYIDY4CHUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(2) > div > div:nth-child(1) > ul > li:nth-child(2)',True)
+            self.webDriver.findElement('link_text', '가상머신', True) # css_selector 변경
 
             # Down 상태인 가상 머신 클릭
             time.sleep(0.5)
