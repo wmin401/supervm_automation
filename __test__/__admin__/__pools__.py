@@ -359,6 +359,10 @@ class admin_pools:
 
     def delete(self):
         printLog(printSquare('Delete Pools'))
+        
+        # 풀 메뉴 재진입
+        self.setup()
+
         try:
             result = FAIL
             msg = ''
