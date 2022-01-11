@@ -136,6 +136,10 @@ class SuperVM_driver:
     def getAttribute(self, attr):
         return  self.element.get_attribute(attr)
 
+    def executeScript(self, script):
+        self.driver.execute_script(script)
+    
+
     def quit(self):
         self.driver.close()
         self.driver.quit()
@@ -210,5 +214,26 @@ class SuperVM_driver:
                 return True
         return False
 
-    def executeScript(self, script):
-        self.driver.execute_script(script)
+    
+    def isChangedStatus(self, name, nameIdx, statusIdx, failLst, passLst, t=60):
+        # 1초마다 상태 변경이 되었는지 확인하는 함수
+        st = time.time()
+        while True:
+            time.sleep(1)
+            try:
+                tableValueList = self.tableSearch(name, nameIdx, rowClick=False, nameClick=False, returnValueList=True)        
+
+                for failStr in failLst:
+                    if failStr in tableValueList[statusIdx]:
+                        printLog("[%s STATUS] %s..."%(name.upper(), tableValueList[statusIdx]))
+
+                for passStr in passLst:
+                    if passStr in tableValueList[statusIdx]:
+                        return PASS, ''
+
+                ed = time.time()
+                if ed-st >= t:
+                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%t)
+                    return FAIL, 'Timeout'
+            except:
+                continue

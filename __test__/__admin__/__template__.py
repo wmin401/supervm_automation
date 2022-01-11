@@ -55,6 +55,7 @@ class admin_template:
 
     def create(self):        
         # 디스크가 있는 가상머신만 가능
+        # 가상머신 생성하는 코드를 추가해야하나?
 
         printLog(printSquare('Create Template'))
         try:
@@ -103,28 +104,8 @@ class admin_template:
 
             printLog("[CREATE TEMPLATE] Check if created")
             printLog("[CREATE TEMPLATE] Wait until status will be OK")
-            # table 내부 전부 검색해서 입력한 이름이 있을경우 PASS
-            # _createCheck = self.webDriver.tableSearch(self._templateName, 1) # 템플릿 테이블에 숨겨진 열(0)이 하나 있어서 1부터 시작
-            st = time.time()
-            while True:
-                time.sleep(1)
-                try:
-                    tableValueList = self.webDriver.tableSearch(self._templateName, 1, rowClick=False, nameClick=False, returnValueList=True)        
-                    if '잠김' in tableValueList[5] or 'Locked' in tableValueList[5]:
-                        printLog("[CREATE VM] Template's status is still locked ...")
-                        continue
-                    elif 'OK' in tableValueList[5]:
-                        result = PASS
-                        msg = ''
-                        break
-                    ed = time.time()
-                    if ed-st >= 60:
-                        printLog("[CREATE VM] Failed status changed : Timeout")
-                        result = FAIL
-                        msg = "Failed to create new template..."
-                        break
-                except:
-                    continue
+       
+            result, msg = self.webDriver.isChangedStatus(self._templateName, 1, 5, ['잠김', 'Locked'], ['OK'], 60)
 
         except Exception as e:
             result = FAIL
