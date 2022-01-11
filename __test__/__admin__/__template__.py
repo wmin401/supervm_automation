@@ -279,24 +279,8 @@ class admin_template:
             # 디스크가 추가되고 잠금상태에서 OK가 되면 성공
             printLog("[COPY TEMPLATE DISK] Check if created")
             printLog("[COPY TEMPLATE DISK] Wait until changed copy disk was created")
-            st = time.time()
-            while True:
-                try:
-                    tableValueList = self.webDriver.tableSearch('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, False, False, returnValueList=True)    
-                    if '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:
-                        result = FAIL
-                        msg = 'Failed copy template'
-                        printLog("[COPY TEMPLATE DISK] Disk's status is still locked ...")
-                        continue
-                    if 'OK' in tableValueList[10]:
-                        result = PASS
-                        msg = ''
-                        break
-                    if time.time() - st > 60:
-                        printLog("[COPY TEMPLATE DISK] Timeout ...")
-                        break
-                except:
-                    continue
+
+            result = msg, self.webDriver.isChangedStatus('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, 10, ['잠김', 'Locked'], ['OK'], 60)
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
