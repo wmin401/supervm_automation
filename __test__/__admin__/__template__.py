@@ -7,6 +7,8 @@ from __common__.__testlink__ import testlink
 
 from selenium.webdriver.common.by import By
 
+from __test__.__admin__.__vm__ import *
+
 
 class admin_template:
     def __init__(self, webDriver):
@@ -16,8 +18,19 @@ class admin_template:
         self.webDriver = webDriver
 
         self.tl = testlink()
+        
+        # 가상머신 생성 필요
+
+        self.vm = admin_vm(self.webDriver)
+        self.vm.create()
+        
+        # 디스크 상태 확인
+        self.vm.diskStatus()
+
+
             
     def test(self):
+
 
         self.setup()
         
@@ -68,7 +81,7 @@ class admin_template:
             time.sleep(0.3)
             # 가상머신 클릭
             self.webDriver.findElement('id','MenuView_vmsAnchor', True)
-            self.webDriver.tableSearch('for_automation', 2, rowClick=True)
+            self.webDriver.tableSearch(self.vm._vmName, 2, rowClick=True)
             time.sleep(0.3)
             # 추가 옵션 버튼 클릭
             self.webDriver.implicitlyWait(10)
@@ -78,6 +91,8 @@ class admin_template:
             printLog("[CREATE TEMPLATE] Create template")
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ActionPanelView_NewTemplate',True)
+
+            time.sleep(1)
 
             # 템플릿 이름 입력
             self.webDriver.explicitlyWait(10, By.ID, 'VmMakeTemplatePopupWidget_name')
@@ -280,7 +295,7 @@ class admin_template:
             printLog("[COPY TEMPLATE DISK] Check if created")
             printLog("[COPY TEMPLATE DISK] Wait until changed copy disk was created")
 
-            result = msg, self.webDriver.isChangedStatus('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, 10, ['잠김', 'Locked'], ['OK'], 60)
+            result, msg = self.webDriver.isChangedStatus('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, 10, ['잠김', 'Locked'], ['OK'], 60)
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
