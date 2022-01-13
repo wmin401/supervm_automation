@@ -26,11 +26,8 @@ class admin_template:
         
         # 디스크 상태 확인
         self.vm.diskStatus()
-
-
-            
+           
     def test(self):
-
 
         self.setup()
         
