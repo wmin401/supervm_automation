@@ -13,6 +13,7 @@ if IN_JENKINS == 'true':
     ENGINE_VM_FQDN = os.getenv('ENGINE_VM_FQDN')
     ENGINE_VM_IP = os.getenv('ENGINE_VM_IP')
     ADMIN_HOST_IP = os.getenv('ADMIN_HOST_IP')
+    ADMIN_GATEWAY = os.getenv('ADMIN_GATEWAY')
     ADMIN_HOST_ID = os.getenv('ADMIN_HOST_ID')
     ADMIN_HOST_PW = os.getenv('ADMIN_HOST_PW')
     ENGINE_VM_MEMORY = os.getenv('ENGINE_VM_MEMORY')
@@ -51,22 +52,23 @@ if IN_JENKINS == 'true':
     BUILD_ID = os.getenv('BUILD_ID')
     
 else: # 로컬
-    ENGINE_VM_FQDN = 'master165.tmax.com'
+    ENGINE_VM_FQDN = 'master161.tmax.com'
     
     ## 설치 자동화 매개변수 ##
-    INSTALL_SUPERVM = 'false'
-    ADMIN_HOSTNAME = 'hypervm41.tmax.dom'
+    INSTALL_SUPERVM = 'true'
+    ADMIN_HOSTNAME = 'node1.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc/prolinux/8/arch/x86_64/'
-    ENGINE_VM_IP = '192.168.17.165'
-    ADMIN_HOST_IP = '192.168.17.41'
+    ENGINE_VM_IP = '192.168.214.161'
+    ADMIN_HOST_IP = '192.168.214.157'
+    ADMIN_GATEWAY = '192.168.214.1'
     ADMIN_HOST_ID = 'root'
     ADMIN_HOST_PW = 'asdf'
     ENGINE_VM_MEMORY = '4096'
 
     DOMAIN_TYPE = 'nfs' #posixfs
     NFS_PATH = '/nfs'
-    NFS_IP = ADMIN_HOST_IP #'192.168.17.163'
-    CEPH_IP = ADMIN_HOST_IP #'192.168.17.163'
+    NFS_IP = ADMIN_HOST_IP
+    CEPH_IP = ADMIN_HOST_IP
     CEPH_DISK_PATH = '/dev/sdb'
 
     ## 테스트 자동화 매개변수 ##
@@ -83,20 +85,20 @@ else: # 로컬
     USER_PW = 'asdf'
 
     # 테스트 실행여부
-    CLUSTER_TEST = 'false'
+    CLUSTER_TEST = 'true'
     DATA_CENTER_TEST = 'false'
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
-    QOS_TEST = 'false'
-    TEMPLATE_TEST = 'false'
-    VM_TEST = 'false'
-    VM2_TEST = 'false'
+    QOS_TEST = 'true'
+    TEMPLATE_TEST = 'true'
+    VM_TEST = 'true'
+    VM2_TEST = 'true'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
     QUOTA_TEST = 'false'
     
-    VM_PORTAL_TEST = 'false'
+    VM_PORTAL_TEST = 'true'
         
     # entry point para2
     
