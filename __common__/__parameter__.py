@@ -56,7 +56,7 @@ else: # 로컬
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
     ADMIN_HOSTNAME = 'hypervm41.tmax.dom'
-    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/21.0.0/prolinux/8/arch/x86_64/'
+    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc/prolinux/8/arch/x86_64/'
     ENGINE_VM_IP = '192.168.17.165'
     ADMIN_HOST_IP = '192.168.17.41'
     ADMIN_HOST_ID = 'root'
@@ -73,7 +73,7 @@ else: # 로컬
     SECURE = 'false'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
-    BROWSER_VERSION = 'ver96'
+    BROWSER_VERSION = 'ver97'
     BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
     IF_HEADLESS = 'false' # 헤드리스 사용 여부(사용 금지)
@@ -96,7 +96,7 @@ else: # 로컬
     EXTERNAL_PROVIDER_TEST = 'false'
     QUOTA_TEST = 'false'
     
-    VM_PORTAL_TEST = 'true'
+    VM_PORTAL_TEST = 'false'
         
     # entry point para2
     
