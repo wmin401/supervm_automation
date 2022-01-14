@@ -53,19 +53,19 @@ class install():
                 self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ADMIN_HOST_IP, ADMIN_HOSTNAME))
                 self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_VM_IP, ENGINE_VM_FQDN))
 
-            o, e = self._ssh.commandExec('ls /etc/yum.repos.d/supervm.repo')
+            o, e = self._ssh.commandExec('ls /etc/yum.repos.d/hypervm.repo')
             _repo = True
-            if  o != [] and 'supervm.repo' in o[0]:
-                printLog('[SETUP] supervm.repo is already exists !!!')
-                printLog('[SETUP] Check supervm.repo file !!!')
+            if  o != [] and 'hypervm.repo' in o[0]:
+                printLog('[SETUP] hypervm.repo is already exists !!!')
+                printLog('[SETUP] Check hypervm.repo file !!!')
                 _repo = False            
             if _repo == True:
-                # supervm repository 생성
-                printLog("[SETUP] Make /etc/yum.repos.d/supervm.repo")
-                self._ssh.commandExec('echo "[supervm]" >> /etc/yum.repos.d/supervm.repo')
-                self._ssh.commandExec('echo "name=supervm-repo" >> /etc/yum.repos.d/supervm.repo')
-                self._ssh.commandExec('echo "baseurl=%s" >> /etc/yum.repos.d/supervm.repo'%(SUPERVM_REPO_URL))
-                self._ssh.commandExec('echo "gpgcheck=0" >> /etc/yum.repos.d/supervm.repo')
+                # hypervm repository 생성
+                printLog("[SETUP] Make /etc/yum.repos.d/hypervm.repo")
+                self._ssh.commandExec('echo "[hypervm]" >> /etc/yum.repos.d/hypervm.repo')
+                self._ssh.commandExec('echo "name=hypervm-repo" >> /etc/yum.repos.d/hypervm.repo')
+                self._ssh.commandExec('echo "baseurl=%s" >> /etc/yum.repos.d/hypervm.repo'%(SUPERVM_REPO_URL))
+                self._ssh.commandExec('echo "gpgcheck=0" >> /etc/yum.repos.d/hypervm.repo')
                 printLog("[SETUP] dnf update ")
                 self._ssh.commandExec('dnf clean all')
                 self._ssh.commandExec('dnf update -y')
@@ -234,7 +234,7 @@ class install():
             self._ssh.commandExec('echo "OVEHOSTED_ENGINE/datacenterName=str:Default" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_ENGINE/enableHcGlusterService=none:None" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_ENGINE/insecureSSL=none:None" >> /root/answers.conf')
-            
+
             o, e = self._ssh.commandExec('dnf -y install ovirt-hosted-engine-setup', t=3600)        
             o, e = self._ssh.commandExec('ls /etc/sysconfig/network-scripts/ |grep "ifcfg-e"')        
             _networkName = o[0][6:] 
@@ -393,16 +393,16 @@ def main():
     if INSTALL_SUPERVM == 'true':
         install_time = time.time()
         try:
-            supervm = install()
+            hypervm = install()
             # a.setNode() # 현재는 제외
-            if not supervm.isDeployed():
-                supervm.setup()
+            if not hypervm.isDeployed():
+                hypervm.setup()
                 if DOMAIN_TYPE == 'nfs':
-                    supervm.nfs()
+                    hypervm.nfs()
                 elif DOMAIN_TYPE == 'posixfs':
-                    supervm.ceph(initialize=False) ## 아직 기능이 확실하지 않음
-                supervm.answers()
-                supervm.deploy()
+                    hypervm.ceph(initialize=False) ## 아직 기능이 확실하지 않음
+                hypervm.answers()
+                hypervm.deploy()
                 h, m, s = secToHms(install_time, time.time())
                 printLog("* DEPLOY TIME : %dh %dm %.2fs"%(h, m, s))
         except:
