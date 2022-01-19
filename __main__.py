@@ -46,6 +46,8 @@ def main():
     printLog(printSquare("4. Access Portal"))
     accessAdminPortal(webDriver)
     time.sleep(3)
+
+    webDriver.trunOffAlert()
         
     printLog(printSquare("5. Start Test"))
     
