@@ -52,15 +52,15 @@ if IN_JENKINS == 'true':
     BUILD_ID = os.getenv('BUILD_ID')
     
 else: # 로컬
-    ENGINE_VM_FQDN = 'master161.tmax.com'
+    ENGINE_VM_FQDN = 'master165.tmax.com'
     
     ## 설치 자동화 매개변수 ##
-    INSTALL_SUPERVM = 'true'
+    INSTALL_SUPERVM = 'false'
     ADMIN_HOSTNAME = 'node1.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc/prolinux/8/arch/x86_64/'
-    ENGINE_VM_IP = '192.168.214.161'
-    ADMIN_HOST_IP = '192.168.214.157'
-    ADMIN_GATEWAY = '192.168.214.1'
+    ENGINE_VM_IP = '192.168.17.165'
+    ADMIN_HOST_IP = '192.168.17.41'
+    ADMIN_GATEWAY = '192.168.17.1'
     ADMIN_HOST_ID = 'root'
     ADMIN_HOST_PW = 'asdf'
     ENGINE_VM_MEMORY = '4096'
@@ -72,7 +72,7 @@ else: # 로컬
     CEPH_DISK_PATH = '/dev/sdb'
 
     ## 테스트 자동화 매개변수 ##
-    SECURE = 'false'
+    SECURE = 'true'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
     BROWSER_VERSION = 'ver97'
@@ -85,20 +85,20 @@ else: # 로컬
     USER_PW = 'asdf'
 
     # 테스트 실행여부
-    CLUSTER_TEST = 'true'
+    CLUSTER_TEST = 'false'
     DATA_CENTER_TEST = 'false'
     DISK_TEST = 'false'
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
-    QOS_TEST = 'true'
-    TEMPLATE_TEST = 'true'
-    VM_TEST = 'true'
-    VM2_TEST = 'true'
+    QOS_TEST = 'false'
+    TEMPLATE_TEST = 'false'
+    VM_TEST = 'false'
+    VM2_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
     QUOTA_TEST = 'false'
     
-    VM_PORTAL_TEST = 'true'
+    VM_PORTAL_TEST = 'false'
         
     # entry point para2
     
