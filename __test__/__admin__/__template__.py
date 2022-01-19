@@ -137,7 +137,7 @@ class admin_template:
             self.setup()
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
-            time.sleep(0.5)
+            time.sleep(1)
             self.webDriver.tableSearch(self._templateName, 1, rowClick=True)    
 
             # 편집 클릭
@@ -150,9 +150,8 @@ class admin_template:
             self.webDriver.findElement('id', 'TemplateEditPopupWidget_description', True)
             des = randomString()
             self.webDriver.sendKeys(des)
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id', 'TemplateEditPopupView_OnSaveConfirm', True)
-            time.sleep(1)
+            time.sleep(2)
 
             # 설명에 추가되면 성공
             _updateCheck = self.webDriver.tableSearch(des, 9)
