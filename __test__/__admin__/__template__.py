@@ -217,7 +217,7 @@ class admin_template:
             self.webDriver.sendKeys(self._templateName + '_vm_%s_Disk1'%self.storage)
             
             # OK 클릭
-            self.webDriver.findElement('id', 'VmPopupView_OnSaveVm', True)
+            self.webDriver.findElement('css_selector', '#VmPopupView_OnSaveVm > button', True)
             time.sleep(5)
             
             # 컴퓨팅 - 가상머신
