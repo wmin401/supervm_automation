@@ -34,6 +34,7 @@ class admin_vm:
         while True:
             try:
                 tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
+                print(tableValueList)
                 if 'OK' in tableValueList[10]:
                     printLog("[DISK STATUS] Disk's status is OK")
                     status = True
@@ -41,8 +42,6 @@ class admin_vm:
                 elif '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:                    
                     printLog("[DISK STATUS] Disk's status is still locked...")                    
                     status = False
-                else:                    
-                    printLog("[DISK STATUS] Something wrong")
                     
                 ed = time.time()
                 if ed - st > 120:
