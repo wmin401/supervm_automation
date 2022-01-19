@@ -39,7 +39,7 @@ class admin_vm:
                     status = True
                     break
                 elif '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:                    
-                    printLog("[DISK STATUS] Disk's status is still locked...%ds"%(int(ed-st)))                    
+                    printLog("[DISK STATUS] Disk's status is still locked...")                    
                     status = False
                 else:                    
                     printLog("[DISK STATUS] Something wrong")
