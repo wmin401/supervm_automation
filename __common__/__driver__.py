@@ -24,10 +24,11 @@ class SuperVM_driver:
 
         if self.headless == 'true':
             options.add_argument('--headless')
-            #options.add_argument('window-size=1920x1080')
-            options.add_argument('--no-sandbox')
-            #options.add_argument("disable-gpu")
-            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument('window-size=1920,1080')
+            # options.add_argument('--no-sandbox')
+            options.add_argument("disable-gpu")
+            # options.add_argument("--disable-dev-shm-usage")
+            options.add_argument('ignore-certificate-errors')
         try:
             # if self.BROWSER_NAME == 'firefox':
             #     #print('driver/firefox/' + str(self.BROWSER_VERSION) + '/' + self.BROWSER_BIT + 'bit/geckodriver.exe')
@@ -233,7 +234,7 @@ class SuperVM_driver:
 
                 ed = time.time()
                 if ed-st >= t:
-                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%t)
+                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%(name.upper(),t))
                     return FAIL, 'Timeout'
             except:
                 continue
