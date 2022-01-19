@@ -435,7 +435,7 @@ class admin_template:
             self.webDriver.findElement('id', 'DetailActionPanelView_Remove', True)
             # OK 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
-            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+            self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
             time.sleep(2)
             _removeCheck = self.webDriver.tableSearch(self.role, 4)
             printLog("[REMOVE ROLE] Check if removed")
@@ -471,7 +471,7 @@ class admin_template:
             self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
 
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
-            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+            self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
             time.sleep(2)
             
             result = PASS
