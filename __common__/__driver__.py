@@ -1,5 +1,6 @@
 # -*- encoding= utf-8 -*-
 import time
+from tkinter import CURRENT
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium import webdriver
@@ -239,10 +240,13 @@ class SuperVM_driver:
             except:
                 continue
 
-    def trunOffAlert(self, msg):
-        if 'notif_doNotDisturbButton' in msg:
-            self.findElement('xpath', '/html/body/div[3]/div[2]/div/div[1]/div[2]/a', True) 
-            time.sleep(0.3)
-            self.findElement('xpath','/html/body/div[3]/div[2]/div/div[1]/div[2]/ul/li[3]/a', True)
+    def trunOffAlert(self, log):
+        if 'notif_doNotDisturbButton' in log:
+            try:
+                self.findElement('xpath', '/html/body/div[3]/div[2]/div/div[1]/div[2]/a', True) 
+                time.sleep(0.3)
+                self.findElement('xpath','/html/body/div[3]/div[2]/div/div[1]/div[2]/ul/li[3]/a', True)
+            except:
+                pass
 
             
