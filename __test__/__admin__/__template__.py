@@ -241,7 +241,7 @@ class admin_template:
             result = FAIL
             msg = str(e).replace("\n",'')
             printLog("[CREATE VM] MESSAGE : " + msg)
-            self.webDrive.trunOffAlert(msg)
+            self.webDriver.trunOffAlert(msg)
         printLog("[CREATE VM] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'create vm %s'%(self.storage) + DELIM + result + DELIM + msg])
 
@@ -299,7 +299,7 @@ class admin_template:
             result = FAIL
             msg = str(e).replace("\n",'')
             printLog("[COPY TEMPLATE DISK] MESSAGE : " + msg)
-            self.webDrive.trunOffAlert(msg)
+            self.webDriver.trunOffAlert(msg)
         printLog("[COPY TEMPLATE DISK] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'copy disk' + DELIM + result + DELIM + msg])
 
@@ -357,7 +357,7 @@ class admin_template:
         except Exception as e:
             msg = str(e).replace("\n",'')
             printLog("[REMOVE VM] MESSAGE : " + msg)       
-            self.webDrive.trunOffAlert(msg)
+            self.webDriver.trunOffAlert(msg)
 
     # 2-533 : 리소스에 관리자 또는 사용자 역할 할당
     def addRole(self):
@@ -408,7 +408,7 @@ class admin_template:
             result = FAIL
             msg = str(e).replace("\n",'')
             printLog("[ADD ROLE] MESSAGE : " + msg)
-            self.webDrive.trunOffAlert(msg)
+            self.webDriver.trunOffAlert(msg)
         printLog("[ADD ROLE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'add role' + DELIM + result + DELIM + msg])
 
@@ -453,7 +453,7 @@ class admin_template:
             result = FAIL
             msg = str(e).replace("\n",'')
             printLog("[REMOVE ROLE] MESSAGE : " + msg)
-            self.webDrive.trunOffAlert(msg)
+            self.webDriver.trunOffAlert(msg)
         printLog("[REMOVE ROLE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'remove role' + DELIM + result + DELIM + msg])
 
@@ -486,7 +486,7 @@ class admin_template:
             result = FAIL
             msg = str(e).replace("\n",'')
             printLog("[REMOVE TEMPLATE] MESSAGE : " + msg)
-            self.webDrive.trunOffAlert(msg)
+            self.webDriver.trunOffAlert(msg)
         printLog("[REMOVE TEMPLATE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
