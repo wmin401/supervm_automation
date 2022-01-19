@@ -78,7 +78,7 @@ else: # 로컬
     BROWSER_VERSION = 'ver97'
     BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
-    IF_HEADLESS = 'true' # 헤드리스 사용 여부(사용 금지)
+    IF_HEADLESS = 'false' # 헤드리스 사용 여부(사용 금지)
         
     ## 로그인 정보
     USER_ID = 'admin'
