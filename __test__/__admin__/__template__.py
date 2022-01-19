@@ -390,7 +390,7 @@ class admin_template:
             self.webDriver.click()
             # OK 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id', 'PermissionsPopupView_OnAdd', True)
+            self.webDriver.findElement('css_selector', '#PermissionsPopupView_OnAdd > button', True)
             time.sleep(2)
             # 생성 확인
             printLog("[ADD ROLE] Check if added")
