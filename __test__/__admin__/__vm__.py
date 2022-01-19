@@ -46,6 +46,8 @@ class admin_vm:
                         printLog("[DISK STATUS] Disk is locked(timeout)...")
                         status = False
                         break
+                else:                    
+                    printLog("[DISK STATUS] Something wrong")
             except Exception as e:
                 status = False
                 msg = str(e).replace("\n",'')
