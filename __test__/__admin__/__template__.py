@@ -51,6 +51,8 @@ class admin_template:
         time.sleep(0.3)
         self.remove()
 
+        self.vm.remove()
+
     def setup(self):
         # 컴퓨팅 클릭
         printLog("[SETUP] Compute - Template ")
@@ -150,7 +152,7 @@ class admin_template:
             self.webDriver.findElement('id', 'TemplateEditPopupWidget_description', True)
             des = randomString()
             self.webDriver.sendKeys(des)
-            self.webDriver.findElement('id', 'TemplateEditPopupView_OnSaveConfirm', True)
+            self.webDriver.findElement('css_selector', '#TemplateEditPopupView_OnSaveConfirm > button', True)
             time.sleep(2)
 
             # 설명에 추가되면 성공
