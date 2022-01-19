@@ -39,15 +39,16 @@ class admin_vm:
                     status = True
                     break
                 elif '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:                    
-                    status = False
-                    ed = time.time()
                     printLog("[DISK STATUS] Disk's status is still locked...%ds"%(int(ed-st)))                    
-                    if ed - st > 120:
-                        printLog("[DISK STATUS] Disk is locked(timeout)...")
-                        status = False
-                        break
+                    status = False
                 else:                    
                     printLog("[DISK STATUS] Something wrong")
+                    
+                ed = time.time()
+                if ed - st > 120:
+                    printLog("[DISK STATUS] Disk is locked(timeout)...")
+                    status = False
+                    break
             except Exception as e:
                 status = False
                 msg = str(e).replace("\n",'')
