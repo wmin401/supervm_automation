@@ -239,9 +239,10 @@ class SuperVM_driver:
             except:
                 continue
 
-    def trunOffAlert(self):
-        self.findElement('/html/body/div[3]/div[2]/div/div[1]/div[2]/a', True) 
-        time.sleep(0.3)
-        self.findElement('/html/body/div[3]/div[2]/div/div[1]/div[2]/ul/li[3]/a', True)
+    def trunOffAlert(self, msg):
+        if 'notif_doNotDisturbButton' in msg:
+            self.findElement('/html/body/div[3]/div[2]/div/div[1]/div[2]/a', True) 
+            time.sleep(0.3)
+            self.findElement('/html/body/div[3]/div[2]/div/div[1]/div[2]/ul/li[3]/a', True)
 
             

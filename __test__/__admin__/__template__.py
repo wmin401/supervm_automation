@@ -168,6 +168,7 @@ class admin_template:
             result = FAIL
             msg = str(e).replace("\n",'')
             printLog("[UPDATE TEMPLATE] MESSAGE : " + msg)
+            self.webDriver.trunOffAlert(msg)
         printLog("[UPDATE TEMPLATE] RESULT : " + result)
         self._templateResult.append(['template' + DELIM + 'update' + DELIM + result + DELIM + msg])
 
