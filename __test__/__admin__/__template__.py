@@ -109,7 +109,7 @@ class admin_template:
 
             # OK 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','VmMakeTemplatePopupView_OnNewTemplate', True)
+            self.webDriver.findElement('css_selector','#VmMakeTemplatePopupView_OnNewTemplate > button', True)
             time.sleep(3)
             # 템플릿 탭
             self.setup()
