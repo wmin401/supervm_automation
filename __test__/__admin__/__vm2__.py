@@ -300,10 +300,10 @@ class admin_vm2(admin_vm): # 상속
             
             # 편집 버튼 클릭
             self.webDriver.findElement('id','DetailActionPanelView_Edit',True)
+            time.sleep(1)
             
             # 팝업에서 VM - 클릭
-            self.webDriver.explicitlyWait(10, By.XPATH, '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[2]')
-            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[2]', True)            
+            self.webDriver.findElement('css_selector', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div:nth-child(4) > div:nth-child(1) > div > div > div > button:nth-child(2)', True)
 
             # OK 클릭
             self.webDriver.findElement('id','AffinityLabelPopupView_OnSave',True)
