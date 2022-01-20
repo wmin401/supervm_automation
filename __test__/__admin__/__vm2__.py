@@ -517,7 +517,7 @@ class admin_vm2(admin_vm): # 상속
             # 컴퓨팅 - 가상머신
             self.setup()
             # 가상머신 목록 확인
-            result, msg = self.webDriver.isChangedStatus('VM_for_%s'%self._snapshotName, 2, 13, ['이미지 잠김', 'Image locked', "Image Locked"], ['Down'])
+            result, msg = self.webDriver.isChangedStatus('VM_for_%s'%self._snapshotName, 2, 13, ['이미지 잠김', 'Image locked', "Image Locked"], ['Down'], 300)
 
         except Exception as e:   
             result = FAIL
