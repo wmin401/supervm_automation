@@ -372,11 +372,11 @@ class admin_cluster:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)            
             # table 내부 전부 검색해서 입력한 이름이 있을경우 FAIL
-            _removeCheck = self.webDriver.tableSearch(self._clusterName, 1)                
-            if _removeCheck == True:
+            try:
+                self.webDriver.tableSearch(self._clusterName, 1)                
                 result = FAIL
                 msg = 'Failed to remove cluster'
-            else:
+            except:
                 result = PASS
                 msg = ''
         except Exception as e:
