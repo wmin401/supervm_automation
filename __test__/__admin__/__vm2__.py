@@ -35,14 +35,14 @@ class admin_vm2(admin_vm): # 상속
 
     def test(self):
         # 선호도 그룹
-        # self.affinityGroupCreate()
-        # self.affinityGroupUpdate()
-        # self.affinityGroupRemove()
+        self.affinityGroupCreate()
+        self.affinityGroupUpdate()
+        self.affinityGroupRemove()
         
-        # # 선호도 레이블
-        # self.affinityLabelCreate()
-        # self.affinityLabelUpdate()
-        # self.affinityLabelRemove()
+        # 선호도 레이블
+        self.affinityLabelCreate()
+        self.affinityLabelUpdate()
+        self.affinityLabelRemove()
 
         # 스냅샷
         self.snapshotCreate()

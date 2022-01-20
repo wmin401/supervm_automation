@@ -241,6 +241,7 @@ class SuperVM_driver:
                 continue
 
     def trunOffAlert(self):
+        printLog("[TURN OFF NOTIFICATION] Turn off notification")
 
         # notification 팝업을 보여지게 한다.
         self.executeScript("notiPanel = document.getElementsByClassName('notif_notificationsPanel')")
