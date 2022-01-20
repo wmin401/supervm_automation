@@ -241,16 +241,18 @@ class SuperVM_driver:
                 continue
 
     def trunOffAlert(self):
+
+        # notification 팝업을 보여지게 한다.
         self.executeScript("notiPanel = document.getElementsByClassName('notif_notificationsPanel')")
         self.executeScript("notiPanel[0].style.display = 'inline-block'")
         self.executeScript("notiContainer = document.getElementsByClassName('notif_buttonContainer')")
         self.executeScript("notiContainer[0].style.display = 'inline-block'")
 
-        
-
+        # 알림 해제
         self.findElement('xpath','/html/body/div[3]/div[2]/div/div[1]/div[2]/a', True)
         time.sleep(0.5)
         self.findElement('xpath','/html/body/div[3]/div[2]/div/div[1]/div[2]/ul/li[3]/a', True)
-        
+
+        # noti 팝업 다시 안보여지게 수정        
         self.executeScript("notiPanel[0].style.display = 'none'")
         self.executeScript("notiContainer[0].style.display = 'none'")
