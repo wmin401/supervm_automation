@@ -302,8 +302,8 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.findElement('id','DetailActionPanelView_Edit',True)
             
             # 팝업에서 VM - 클릭
-            self.webDriver.explicitlyWait(10, By.XPATH, '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[1]')
-            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[1]', True)
+            self.webDriver.explicitlyWait(10, By.XPATH, '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[2]')
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div[1]/div/div/div/button[2]', True)            
 
             # OK 클릭
             self.webDriver.findElement('id','AffinityLabelPopupView_OnSave',True)
