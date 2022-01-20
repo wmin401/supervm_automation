@@ -240,13 +240,17 @@ class SuperVM_driver:
             except:
                 continue
 
-    def trunOffAlert(self, log):
-        if 'notif_doNotDisturbButton' in log:
-            try:
-                self.findElement('xpath', '/html/body/div[3]/div[2]/div/div[1]/div[2]/a', True) 
-                time.sleep(0.3)
-                self.findElement('xpath','/html/body/div[3]/div[2]/div/div[1]/div[2]/ul/li[3]/a', True)
-            except:
-                pass
+    def trunOffAlert(self):
+        self.executeScript("notiPanel = document.getElementsByClassName('notif_notificationsPanel')")
+        self.executeScript("notiPanel[0].style.display = 'inline-block'")
+        self.executeScript("notiContainer = document.getElementsByClassName('notif_buttonContainer')")
+        self.executeScript("notiContainer[0].style.display = 'inline-block'")
 
-            
+        
+
+        self.findElement('xpath','/html/body/div[3]/div[2]/div/div[1]/div[2]/a', True)
+        time.sleep(0.5)
+        self.findElement('xpath','/html/body/div[3]/div[2]/div/div[1]/div[2]/ul/li[3]/a', True)
+        
+        self.executeScript("notiPanel[0].style.display = 'none'")
+        self.executeScript("notiContainer[0].style.display = 'none'")

@@ -48,6 +48,8 @@ def main():
     time.sleep(3)
         
     printLog(printSquare("5. Start Test"))
+
+    webDriver.trunOffAlert()
     
     if CLUSTER_TEST == 'true':        
         printLine()
