@@ -20,6 +20,7 @@ def main():
     printLog(printSquare('1. Open Browser'))
     webDriver = SuperVM_driver(headless=IF_HEADLESS) ## 젠킨스에서는 헤드리스 모드 사용 금지
     webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
+    tl.junitBuilder('URL_OPEN', PASS, '')
 
     time.sleep(2)
     # 비공개 -> 안전하지 않음 이동(selenium에서는 보안인증이 처리가 되어있지 않음) 
@@ -42,6 +43,8 @@ def main():
 
     printLog(printSquare('3. Login'))
     portalLogin(webDriver)
+    
+    tl.junitBuilder('LOGIN', PASS, '')
 
     printLog(printSquare("4. Access Portal"))
     accessAdminPortal(webDriver)
