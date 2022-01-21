@@ -10,6 +10,7 @@ class admin_vm:
         printLog('VM 1 TEST includes create, update, copy, run, shutdown, remove')
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
+        # self._vmName = 'for_automation'
         self._diskName = '%s_Disk1'%self._vmName
         # self._diskName = 'auto_vm_HnpZbEOS_Disk1'
         self._diskSize = '5'
@@ -132,11 +133,11 @@ class admin_vm:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupWidget_cdAttached',True)
 
-            # CD/DVD 연결 체크
+            # OK 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupView_OnSave',True)
 
-            time.sleep(5)
+            time.sleep(7)
             _createCheck = self.webDriver.tableSearch(self._vmName, 2)            
             if _createCheck == True:
                 result = PASS
@@ -274,7 +275,12 @@ class admin_vm:
         
         self.tl.junitBuilder('VM_COPY',result, msg) # 모두 대문자
 
+        printLog("[VM COPY] Wait until vm's status will be ok")
+
+        time.sleep(120)
+
     def run(self):
+
         printLog(printSquare('Run VM'))
 
         # 스케줄링 정책이 power_saving 이면 됨
@@ -295,9 +301,9 @@ class admin_vm:
 
             # 생성한 vm 클릭
             self.webDriver.tableSearch(self._vmName, 2, True)
+            
+            self.webDriver.findElement('id','ActionPanelView_Run',True)   
 
-            # Run 클릭
-            self.webDriver.findElement('id','ActionPanelView_Run',True)
             
             st=time.time()
             cnt = 0
@@ -305,6 +311,7 @@ class admin_vm:
                 try:
                     time.sleep(1)
                     row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+
 
                     if 'Up' in row[13] or '실행 중' in row[13]: # 실행완료
                         printLog("[VM RUN] Succefully run vm")
@@ -321,7 +328,7 @@ class admin_vm:
                             cnt += 1
                         continue
                     ed = time.time()
-                    if ed - st > 120:
+                    if ed - st > 300:
                         result = FAIL
                         msg = 'Failed to run vm ...'
                         printLog("[VM SHUTDOWN] Message : " + msg)
@@ -365,60 +372,73 @@ class admin_vm:
             # 선택
             # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)
             self.webDriver.tableSearch(self._vmName, 2, True)
-            # 종료 클릭
-            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
-            self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
-            # OK 클릭
-            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
-            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
-
-
-            st = time.time()
-            cnt = 0
-            while True:
-                try:                          
-                    time.sleep(1)
-                    row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-                    # row = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
-
-                    if 'Down' in row[13]: # 
-                        result = PASS
-                        msg = ''
-                        break
-                        
-                    elif 'Powering Down' in row[13] or '전원을 끄는 중' in row[13]: #
-                        result = FAIL
-                        msg = 'VM is still shutting down ...'
-                        cnt += 1
-                        if cnt < 1:
-                            printLog("[VM SHHTDOWN] Status : " + row[13])
-                            printLog("[VM SHUTDOWN] Message : " + msg)
-                        continue
-                    ed = time.time()
-                    more = 0
-                    # 30초마다 종료버튼 클릭
-                    if int(ed - st)%30 == 0 and more == 0: 
-                        more = 1
-                        self.webDriver.tableSearch(self._vmName, 2, True)
-                        # 종료 클릭
-                        self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
-                        self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
-                        # OK 클릭
-                        self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
-                        self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
-
-                    elif ed - st > 120:
-                        result = FAIL
-                        msg = 'Failed to shutdown vm ...'
-                        printLog("[VM SHUTDOWN] Message : " + msg)
-                        break
-
-                except Exception as e:
-                    result = FAIL
-                    msg = str(e).replace("\n",'')
-                    msg = msg[:msg.find('Element <')]
-                    printLog("[VM SHUTDOWN] Message : " + msg)
+            for i in range(3):
+                # 종료 클릭
+                self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
+                self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
+                time.sleep(0.5)
+                # OK 클릭
+                try:
+                    self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
+                except:
                     continue
+                time.sleep(2)
+                
+                row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+                # row = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
+
+                if 'Down' in row[13]: # 
+                    result = PASS
+                    msg = ''
+                    break
+
+
+            # st = time.time()
+            # cnt = 0
+            # while True:
+            #     try:                          
+            #         time.sleep(1)
+            #         row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            #         # row = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
+
+            #         if 'Down' in row[13]: # 
+            #             result = PASS
+            #             msg = ''
+            #             break
+                        
+            #         elif 'Powering Down' in row[13] or '전원을 끄는 중' in row[13]: #
+            #             result = FAIL
+            #             msg = 'VM is still shutting down ...'
+            #             cnt += 1
+            #             if cnt < 1:
+            #                 printLog("[VM SHHTDOWN] Status : " + row[13])
+            #                 printLog("[VM SHUTDOWN] Message : " + msg)
+            #             continue
+            #         ed = time.time()
+            #         more = 0
+            #         # 30초마다 종료버튼 클릭
+            #         if int(ed - st)%30 == 0 and more == 0: 
+            #             more = 1
+            #             self.webDriver.tableSearch(self._vmName, 2, True)
+            #             # 종료 클릭
+            #             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
+            #             self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
+            #             # OK 클릭
+            #             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
+            #             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
+
+            #         elif ed - st > 120:
+            #             result = FAIL
+            #             msg = 'Failed to shutdown vm ...'
+            #             printLog("[VM SHUTDOWN] Message : " + msg)
+            #             break
+
+            #     except Exception as e:
+            #         result = FAIL
+            #         msg = str(e).replace("\n",'')
+            #         msg = msg[:msg.find('Element <')]
+            #         printLog("[VM SHUTDOWN] Message : " + msg)
+            #         continue
 
         except Exception as e:
             result = FAIL
