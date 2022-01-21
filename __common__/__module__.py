@@ -14,8 +14,23 @@ def secToHms(start, end): # 시작시간, 끝나는 시간
 def printLog(text):
     print(text)
 
+    tt = str(type(text))
+
+    if 'list' in tt:
+        t = '['
+        cc = 0
+        for i in text:
+            if cc == 0:
+                t += "'" + i + "'"
+            else:
+                t += ", '" + i + "'"
+            cc += 1
+        t += ']'
+    else:
+        t = text
+
     with open(LOG_FILE, 'a', encoding='utf-8') as logFile:
-        logFile.write(text+'\n')
+        logFile.write(t+'\n')
 
 ## 원하는 경로에 폴더를 생성해줌
 ## 하위 경로 입력시, 폴더가 존재하지 않으면 같이 생성
