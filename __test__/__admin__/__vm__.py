@@ -13,7 +13,9 @@ class admin_vm:
         # self._vmName = 'for_automation'
         self._diskName = '%s_Disk1'%self._vmName
         # self._diskName = 'auto_vm_HnpZbEOS_Disk1'
-        self._diskSize = '5'
+        self._diskSize = '5'        
+        self._networkInterfaceName = 'auto_nic_%s'%randomString()
+
         self.webDriver = webDriver
 
         self.tl = testlink()
@@ -62,9 +64,16 @@ class admin_vm:
         self.create()
         self.update()
         self.copy()
+
+        self.addNetworkInterface()
+        self.updateNetworkInterface()
+        self.networkInterfaceHotPlugging()
+        self.deleteNetworkInterface()
+
         self.run()
         self.shutdown()
         self.remove()
+
 
     def setup(self):
         # 컴퓨팅
@@ -541,3 +550,214 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'remove' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
+
+    def addNetworkInterface(self):
+
+        printLog(printSquare('Add Network Interface'))
+        result = FAIL
+        msg = ''
+
+
+        try:       
+            self.setup()
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 네트워크 인터페이스 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '네트워크 인터페이스', True)
+            except:
+                self.webDriver.findElement('link_text', 'Network Interfaces', True)
+            time.sleep(0.5)
+
+            self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
+            time.sleep(2)
+
+            self.webDriver.findElement('id', 'NetworkInterfacePopupWidget_name', True)
+            self.webDriver.clear()
+            self.webDriver.sendKeys(self._networkInterfaceName)
+
+            self.webDriver.findElement('css_selector', '#VmInterfacePopupView_OnSave > button', True)
+            time.sleep(2)
+
+            ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
+            for li in ul.find_elements_by_tag_name('li'):
+                nidList = li.find_element_by_css_selector('div.list-view-pf-main-info > div.list-view-pf-body > div:nth-child(1) > div.list-group-item-heading')
+                if self._networkInterfaceName in nidList.text:
+                    result = PASS
+                    msg = ''
+                    break
+                else:
+                    result = FAIL
+                    msg = 'Failed to add network interface'
+            
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM ADD NETWORK INTERFACE] " + msg)
+        printLog("[VM ADD NETWORK INTERFACE] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'add network interface' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_ADD_NETWORK_INTERFACE',result, msg) # 모두 대문자
+
+    def updateNetworkInterface(self):
+
+        printLog(printSquare('Update Network Interface'))
+        result = FAIL
+        msg = ''
+
+        try:       
+            self.setup()
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 네트워크 인터페이스 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '네트워크 인터페이스', True)
+            except:
+                self.webDriver.findElement('link_text', 'Network Interfaces', True)
+            time.sleep(0.5)
+
+            self.webDriver.findElement('id', 'DetailActionPanelView_Edit', True)
+            time.sleep(0.5)
+            
+            # 이름 변경
+            self.webDriver.findElement('id', 'NetworkInterfacePopupWidget_name', True)
+            self.webDriver.clear()
+            self.webDriver.sendKeys('updated_' + self._networkInterfaceName)
+
+            # OK 클릭
+            self.webDriver.findElement('css_selector', '#VmInterfacePopupView_OnSave > button', True)
+            time.sleep(2)
+
+            ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
+            for li in ul.find_elements_by_tag_name('li'):
+                nidList = li.find_element_by_css_selector('div.list-view-pf-main-info > div.list-view-pf-body > div:nth-child(1) > div.list-group-item-heading')
+                if 'updated_' + self._networkInterfaceName in nidList.text:
+                    result = PASS
+                    msg = ''
+                    break
+                else:
+                    result = FAIL
+                    msg = 'Failed to add network interface'
+            
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM UPDATE NETWORK INTERFACE] " + msg)
+        printLog("[VM UPDATE NETWORK INTERFACE] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'update network interface' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_UPDATE_NETWORK_INTERFACE',result, msg) # 모두 대문자
+
+    def networkInterfaceHotPlugging(self):
+
+        printLog(printSquare('Network Interface Hot plugging'))
+        result = FAIL
+        msg = ''
+
+        try:       
+            self.setup()
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 네트워크 인터페이스 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '네트워크 인터페이스', True)
+            except:
+                self.webDriver.findElement('link_text', 'Network Interfaces', True)
+            time.sleep(0.5)
+
+            self.webDriver.findElement('id', 'DetailActionPanelView_Edit', True)
+            time.sleep(0.5)
+
+            # Down 클릭
+            # 분리 클릭
+            linkState = self.webDriver.findElement('name_all', 'linkState')
+            linkState[1].click()
+            cardStatus = self.webDriver.findElement('name_all', 'cardStatus')
+            cardStatus[1].click()
+
+            # OK 클릭
+            self.webDriver.findElement('css_selector', '#VmInterfacePopupView_OnSave > button', True)
+            time.sleep(1)
+            
+            # OK 클릭
+            self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_ON_APPROVE > button', True)
+            time.sleep(1)
+
+            # 상태 확인
+            # 왼쪽 화살표 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul/li/div[1]/div/span[1]', True)
+            time.sleep(0.5)
+            networkStatus = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul/li/div[4]/div/div[1]/dl')
+            nicStatus = networkStatus.get_attribute('textContent')
+            if ('분리' in nicStatus and '정지' in nicStatus) or ('Unplugged' in nicStatus and 'Down' in nicStatus):
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed hot plugging...'
+            
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM NETWORK INTERFACE HOT PLUGGING] " + msg)
+        printLog("[VM NETWORK INTERFACE HOT PLUGGING] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'network interface hot plugging' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_NETWORK_INTERFACE_HOT_PLUGGING',result, msg) # 모두 대문자
+
+    def deleteNetworkInterface(self):
+
+        printLog(printSquare('Delete network interface'))
+        result = FAIL
+        msg = ''
+
+        try:       
+            self.setup()
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 네트워크 인터페이스 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '네트워크 인터페이스', True)
+            except:
+                self.webDriver.findElement('link_text', 'Network Interfaces', True)
+            time.sleep(0.5)
+
+            # 제거 클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_Remove', True)
+            time.sleep(0.5)
+
+            self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
+
+            ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
+            for li in ul.find_elements_by_tag_name('li'):
+                try:
+                    nidList = li.find_element_by_css_selector('div.list-view-pf-main-info > div.list-view-pf-body > div:nth-child(1) > div.list-group-item-heading')
+                    if self._networkInterfaceName in nidList.text:
+                        result = FAIL
+                        msg = 'Failed to delete network interface'
+                        break
+                    else:
+                        result = PASS
+                        msg = ''
+                except:                    
+                    result = PASS
+                    msg = ''
+                    break
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM DELETE NETWORK INTERFACE] " + msg)
+        printLog("[VM DELETE NETWORK INTERFACE] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'delete network interface' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_DELETE_NETWORK_INTERFACE',result, msg) # 모두 대문자
+

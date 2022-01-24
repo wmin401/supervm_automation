@@ -2,6 +2,7 @@ import time
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
+from __common__.__ssh__ import ssh_connection
 from __test__.__admin__.__vm__ import *
 
 # vm - 선호도 그룹, 선호도 레이블
@@ -12,7 +13,7 @@ class admin_vm2(admin_vm): # 상속
         self._affinityGroupName = 'auto_affinity_group_%s'%randomString()
         self._affinityLabelName = 'auto_affinity_label_%s'%randomString()
         self._snapshotName = 'auto_snapshot_%s'%randomString()
-        printLog('VM 2 TEST includes affinity groups, affinity labels, snapshot')
+        printLog('VM 2 TEST includes affinity groups, affinity labels, snapshot, export')
         
         self._vm2Result = []
         self._vmName = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
@@ -49,6 +50,9 @@ class admin_vm2(admin_vm): # 상속
         self.restoreVMUsingSnapshot()
         self.vmCreateInSnapshot()
         self.snapshotRemove()
+
+        # 내보내기
+        self.exportToDomain()
 
     def affinityGroupCreate(self):
         printLog(printSquare('Create Affinity Group'))
@@ -610,4 +614,59 @@ class admin_vm2(admin_vm): # 상속
         printLog("[VM SNAPSHOT REMOVE] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'snapshot remove' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('VM_SNAPSHOT_REMOVE',result, msg)
+        
+    def exportToDomain(self):
+        # - 2-511 : 가상 머신을 데이터 도메인으로 내보내기 
+          
+        printLog(printSquare('Export vm to data domain'))
+        result = FAIL
+        msg = ''
+
+        self._exportedVMName = self._vmName + '_exported'
+
+        try:
+            self.setup()
+
+            # 생성한 VM 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, True)
+
+            # 내보내기 클릭
+            self.webDriver.findElement('id', 'ActionPanelView_VmExport', True)
+            time.sleep(2)
+
+            self.webDriver.findElement('id', 'export-vm-name', True)
+            self.webDriver.clear()
+            self.webDriver.sendKeys(self._exportedVMName)
+
+            # 내보내기 버튼 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[4]/div/div/div/footer/button[1]', True)
+
+            # 생성될 때 까지 대기
+            st = time.time()
+            while True:
+                time.sleep(5)
+                try:
+                    if time.time() - st > 180:
+                        result = FAIL
+                        msg = 'Failed to data export(Timeout)'
+                        break
+
+                    a = self.webDriver.tableSearch(self._exportedVMName, 2, False, False, True)
+                    if a is not False:
+                        result = PASS
+                        msg = ''
+                        break
+                except:
+                    continue
+
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM EXPORT TO DATA DOMAIN] " + msg)
+
+        # 결과 출력
+        printLog("[VM EXPORT TO DATA DOMAIN] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'export to data domain' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('VM_EXPORT_TO_DATA_DOMAIN',result, msg)
         
