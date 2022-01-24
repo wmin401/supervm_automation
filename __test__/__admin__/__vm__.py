@@ -62,17 +62,22 @@ class admin_vm:
 
     def test(self):
         self.create()
-        self.update()
-        self.copy()
 
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # self.addVirtualDisk()
+        self.attachDisk()
 
-        self.run()
-        self.shutdown()
-        self.remove()
+        # self.addNetworkInterface()
+        # self.updateNetworkInterface()
+        # self.networkInterfaceHotPlugging()
+        # self.deleteNetworkInterface()
+
+        # self.update()
+        # self.copy()
+
+
+        # self.run()
+        # self.shutdown()
+        # self.remove()
 
 
     def setup(self):
@@ -760,4 +765,116 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'delete network interface' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_DELETE_NETWORK_INTERFACE',result, msg) # 모두 대문자
+
+    def addVirtualDisk(self):
+        
+        printLog(printSquare('Add Virtual Disk'))
+        result = FAIL
+        msg = ''
+
+        try:       
+            self.setup()
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 디스크탭 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '디스크', True)
+            except:
+                self.webDriver.findElement('link_text', 'Disks', True)
+            time.sleep(0.5)
+
+            # 새로 만들기클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
+            time.sleep(1)
+
+            self.webDriver.findElement('id', 'VmDiskPopupWidget_size')
+            self.webDriver.sendKeys('5')
+
+            self.webDriver.findElement('id', 'VmDiskPopupWidget_alias')
+            self.webDriver.clear()
+            self.webDriver.sendKeys(self._diskName + '_added')
+
+            self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
+
+            result, msg = self.webDriver.isChangedStatus(self._diskName + '_added', 1, 18, ['잠김', 'locked', 'Locked'], ['OK'], 300)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM ADD VIRTUAL DISKS] " + msg)
+        printLog("[VM ADD VIRTUAL DISKS] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'add virtual disks' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_ADD_VIRTUAL_DISKS',result, msg) # 모두 대문자
+
+    def attachDisk(self):
+        # 가상 머신에 기존 디스크 연결
+        
+        printLog(printSquare('Attach Virtual Disk to VM'))
+        result = FAIL
+        msg = ''
+
+        self.unAttachedDiskName = 'unAttached_disk_' + randomString()
+
+        try:       
+            # 스토리지 - 디스크
+            printLog("[VM SETUP] Storage - Disks")
+            self.webDriver.findElement('id','MenuView_storageTab', True)
+            time.sleep(0.5)
+            self.webDriver.findElement('id','MenuView_disksAnchor',True)
+            time.sleep(1)
+            # 새로 만들기 클릭
+            self.webDriver.findElement('id','ActionPanelView_New',True)
+
+            self.webDriver.findElement('id','VmDiskPopupWidget_size')
+            self.webDriver.sendKeys('5')
+            self.webDriver.findElement('id','VmDiskPopupWidget_alias')
+            self.webDriver.sendKeys(self.unAttachedDiskName)
+
+            self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
+            time.sleep(5)
+
+
+            self.webDriver.isChangedStatus(self.unAttachedDiskName, 0, 10, ['잠김', 'Locked', 'locked'], ['OK'], 300)            
+
+            self.setup()
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 디스크탭 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '디스크', True)
+            except:
+                self.webDriver.findElement('link_text', 'Disks', True)
+            time.sleep(0.5)
+
+            # 연결 클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_Attach', True)
+            time.sleep(3)
+        
+            table = self.webDriver.findElement('css_selector_all', 'tbody')
+            for tr in table[1].find_elements_by_tag_name("tr"):
+                td = tr.find_elements_by_tag_name("td")
+                if self.unAttachedDiskName == td[1].text:
+                    printLog('[TABLE SEARCH] Search : ' + str(td[1].text))
+                    td[0].find_element_by_css_selector('div > input').click()
+                    break
+
+            # OK 클릭
+            self.webDriver.findElement('css_selector', '#VmDiskAttachPopupView_OnSave > button', True)
+            time.sleep(1)
+
+            result, msg = self.webDriver.isChangedStatus(self.unAttachedDiskName, 1, 18, ['잠김', 'Locked', 'locked'], ['OK'])
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM ATTACH VIRTUAL DISKS] " + msg)
+        printLog("[VM ATTACH VIRTUAL DISKS] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'attach virtual disks' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_ATTACH_VIRTUAL_DISKS',result, msg) # 모두 대문자
 
