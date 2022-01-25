@@ -81,7 +81,6 @@ class admin_vm:
         self.shutdown()
         self.remove()
 
-
     def setup(self):
         # 컴퓨팅
         time.sleep(2)
@@ -121,7 +120,7 @@ class admin_vm:
             
             # OK 버튼 클릭
             self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
-            time.sleep(1)
+            time.sleep(2)
 
             # 고급 옵션 표시 클릭
             self.webDriver.findElement('id','VmPopupView_OnAdvanced',True)

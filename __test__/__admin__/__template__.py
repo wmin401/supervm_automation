@@ -473,7 +473,7 @@ class admin_template:
 
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
             self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
-            time.sleep(2)
+            time.sleep(7)
             
             result = PASS
             msg = ''
