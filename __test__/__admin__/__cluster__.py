@@ -365,17 +365,23 @@ class admin_cluster:
             # 우측 추가 옵션 버튼 클릭
             self.webDriver.implicitlyWait(10)            
             self.webDriver.findElement('css_selector','.btn-group:nth-child(4) .fa', True)
+            time.sleep(0.3)
             # 삭제 버튼 클릭
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','ActionPanelView_Remove',True)            
+            time.sleep(0.5)
             # OK 버튼 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)            
+            self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)     
+            time.sleep(2)       
             # table 내부 전부 검색해서 입력한 이름이 있을경우 FAIL
             try:
-                self.webDriver.tableSearch(self._clusterName, 1)                
-                result = FAIL
-                msg = 'Failed to remove cluster'
+                removeCheck = self.webDriver.tableSearch(self._clusterName, 1, False, False, True)
+                if removeCheck == False:
+                    result = PASS
+                    msg = ''
+                else:
+                    result = FAIL
+                    msg = 'Failed to remove cluster'
+                    printLog("[CLUSTER REMOVE] MESSAGE : " + msg)
             except:
                 result = PASS
                 msg = ''
