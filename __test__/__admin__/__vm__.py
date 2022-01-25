@@ -104,38 +104,30 @@ class admin_vm:
             self.setup()
 
             # 새로 만들기
-            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_NewVm')
             self.webDriver.findElement('id','ActionPanelView_NewVm',True)
-
-            time.sleep(1)
+            time.sleep(2)
 
             # 이름 입력
-            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_name')
             self.webDriver.findElement('id','VmPopupWidget_name',True)
             self.webDriver.sendKeys(self._vmName)
 
             # 디스크 생성 클릭
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupWidget_instanceImages__createEdit',True)
-
             time.sleep(1)
 
             # 크기 입력
-            self.webDriver.explicitlyWait(10, By.ID, 'VmDiskPopupWidget_size')
             self.webDriver.findElement('id','VmDiskPopupWidget_size',True)
             self.webDriver.sendKeys(self._diskSize)
             
             # OK 버튼 클릭
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
-            time.sleep(0.5)
+            time.sleep(1)
 
             # 고급 옵션 표시 클릭
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupView_OnAdvanced',True)
+            time.sleep(1)
 
             # 부트 옵션 클릭
-            self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[1]/ul/li[9]/a',True)
 
             # 첫 번째 장치 클릭
@@ -153,18 +145,19 @@ class admin_vm:
             # OK 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupView_OnSave',True)
+            time.sleep(10)
 
-            time.sleep(7)
-            _createCheck = self.webDriver.tableSearch(self._vmName, 2)            
-            if _createCheck == True:
+            _createCheck = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            if _createCheck == False:
+                result = FAIL
+                msg = "Failed to create new vm..."
+                printLog("[VM CREATE] " + msg)
+
+            else:
                 result = PASS
                 printLog("VM NAME : %s"%self._vmName)
                 printLog("VM DISK NAME : %s_disk"%self._vmName)
                 printLog("VM DISK SIZE : %s GiB"%self._diskSize)
-            else:
-                result = FAIL
-                msg = "Failed to create new vm..."
-                printLog("[VM CREATE] " + msg)
 
         except Exception as e:
             result = FAIL
@@ -796,11 +789,11 @@ class admin_vm:
 
             self.webDriver.findElement('id', 'VmDiskPopupWidget_alias')
             self.webDriver.clear()
-            self.webDriver.sendKeys('_added' + self._diskName)
+            self.webDriver.sendKeys('added_' + self._diskName)
 
             self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
 
-            result, msg = self.webDriver.isChangedStatus('_added' + self._diskName, 1, 18, ['잠김', 'locked', 'Locked'], ['OK'], 300)
+            result, msg = self.webDriver.isChangedStatus('added_' + self._diskName, 1, 18, ['잠김', 'locked', 'Locked'], ['OK'], 300)
 
         except Exception as e:
             result = FAIL
