@@ -63,21 +63,23 @@ class admin_vm:
     def test(self):
         self.create()
 
-        # self.addVirtualDisk()
+        # 가상 디스크
+        self.addVirtualDisk()
         self.attachDisk()
+        # self.virtualDiskHotPlugging()
+        self.removeVirtualDisk()
 
-        # self.addNetworkInterface()
-        # self.updateNetworkInterface()
-        # self.networkInterfaceHotPlugging()
-        # self.deleteNetworkInterface()
+        # 네트워크 인터페이스
+        self.addNetworkInterface()
+        self.updateNetworkInterface()
+        self.networkInterfaceHotPlugging()
+        self.deleteNetworkInterface()
 
-        # self.update()
-        # self.copy()
-
-
-        # self.run()
-        # self.shutdown()
-        # self.remove()
+        self.update()
+        self.copy()
+        self.run()
+        self.shutdown()
+        self.remove()
 
 
     def setup(self):
@@ -86,6 +88,7 @@ class admin_vm:
         printLog("[VM SETUP] Compute - Virtual Machines")
         self.webDriver.implicitlyWait(10)
         self.webDriver.findElement('id','compute', True)
+        time.sleep(0.5)
 
         # 가상머신
         self.webDriver.implicitlyWait(10)
@@ -793,11 +796,11 @@ class admin_vm:
 
             self.webDriver.findElement('id', 'VmDiskPopupWidget_alias')
             self.webDriver.clear()
-            self.webDriver.sendKeys(self._diskName + '_added')
+            self.webDriver.sendKeys('_added' + self._diskName)
 
             self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
 
-            result, msg = self.webDriver.isChangedStatus(self._diskName + '_added', 1, 18, ['잠김', 'locked', 'Locked'], ['OK'], 300)
+            result, msg = self.webDriver.isChangedStatus('_added' + self._diskName, 1, 18, ['잠김', 'locked', 'Locked'], ['OK'], 300)
 
         except Exception as e:
             result = FAIL
@@ -816,7 +819,7 @@ class admin_vm:
         result = FAIL
         msg = ''
 
-        self.unAttachedDiskName = 'unAttached_disk_' + randomString()
+        self._unAttachedDiskName = 'unAttached_disk_' + randomString()
 
         try:       
             # 스토리지 - 디스크
@@ -831,13 +834,13 @@ class admin_vm:
             self.webDriver.findElement('id','VmDiskPopupWidget_size')
             self.webDriver.sendKeys('5')
             self.webDriver.findElement('id','VmDiskPopupWidget_alias')
-            self.webDriver.sendKeys(self.unAttachedDiskName)
+            self.webDriver.sendKeys(self._unAttachedDiskName)
 
             self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
             time.sleep(5)
 
 
-            self.webDriver.isChangedStatus(self.unAttachedDiskName, 0, 10, ['잠김', 'Locked', 'locked'], ['OK'], 300)            
+            self.webDriver.isChangedStatus(self._unAttachedDiskName, 0, 10, ['잠김', 'Locked', 'locked'], ['OK'], 300)            
 
             self.setup()
             # 가상머신 이름 클릭
@@ -857,7 +860,7 @@ class admin_vm:
             table = self.webDriver.findElement('css_selector_all', 'tbody')
             for tr in table[1].find_elements_by_tag_name("tr"):
                 td = tr.find_elements_by_tag_name("td")
-                if self.unAttachedDiskName == td[1].text:
+                if self._unAttachedDiskName == td[1].text:
                     printLog('[TABLE SEARCH] Search : ' + str(td[1].text))
                     td[0].find_element_by_css_selector('div > input').click()
                     break
@@ -866,7 +869,7 @@ class admin_vm:
             self.webDriver.findElement('css_selector', '#VmDiskAttachPopupView_OnSave > button', True)
             time.sleep(1)
 
-            result, msg = self.webDriver.isChangedStatus(self.unAttachedDiskName, 1, 18, ['잠김', 'Locked', 'locked'], ['OK'])
+            result, msg = self.webDriver.isChangedStatus(self._unAttachedDiskName, 1, 18, ['잠김', 'Locked', 'locked'], ['OK'])
 
         except Exception as e:
             result = FAIL
@@ -878,3 +881,107 @@ class admin_vm:
         
         self.tl.junitBuilder('VM_ATTACH_VIRTUAL_DISKS',result, msg) # 모두 대문자
 
+    def virtualDiskHotPlugging(self):
+        # - 2-455 : 가상 디스크 핫 플러깅
+        
+        printLog(printSquare('Virtual Disk Hot Plugging'))
+        result = FAIL
+        msg = ''
+        try:       
+            self.setup()
+
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 디스크탭 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '디스크', True)
+            except:
+                self.webDriver.findElement('link_text', 'Disks', True)
+            time.sleep(0.5)
+
+            # 추가한 가상 디스크 선택
+            self.webDriver.tableSearch(self._unAttachedDiskName, 1, rowClick=True)
+
+            # 추가 옵션 버튼 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div[2]/div/button', True)
+            self.webDriver.findElement('id', 'DetailActionPanelView_Unplug', True)
+            time.sleep(0.3)
+            # OK 클릭
+            self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
+            time.sleep(1)
+            
+            tbody = self.webDriver.findElement('tag_name', 'tbody')
+            for tr in tbody.find_elements_by_tag_name("tr"):
+                td = tr.find_elements_by_tag_name("td") ## 이걸 왜 못가져올까?
+                if self._unAttachedDiskName == td[1].text:
+                    status = td[0].get_attribute('data-tooltip-content')
+
+
+
+    
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM VIRTUAL DISK HOT PLUGGING] " + msg)
+        printLog("[VM VIRTUAL DISK HOT PLUGGING] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'virtual disk hot plugging' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_VIRTUAL_DISK_HOT_PLUGGING',result, msg) # 모두 대문자
+
+    def removeVirtualDisk(self):
+        # - 2-456 : 가상 머신에서 가상 디스크 제거 - 진행중
+        
+        printLog(printSquare('Remove Virtual Disk to VM'))
+        result = FAIL
+        msg = ''
+        try:       
+            self.setup()
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            # 디스크탭 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '디스크', True)
+            except:
+                self.webDriver.findElement('link_text', 'Disks', True)
+            time.sleep(0.5)
+
+            # 추가한 가상 디스크 선택
+            self.webDriver.tableSearch(self._unAttachedDiskName, 1, rowClick=True)
+
+            # 제거 버튼 클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_Remove', True)
+            # 완전 제거 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_latch')
+            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_latch', True)
+
+            # OK 클릭
+            self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemoveDisk > button', True)
+            time.sleep(5)
+
+            # 결과 확인
+            try:
+                removeCheck = self.webDriver.tableSearch(self._unAttachedDiskName, 1, False, False, True)
+                if removeCheck == False:
+                    result = PASS
+                    msg = ''
+                else:
+                    result = FAIL
+                    msg = 'Failed to remove disk'
+            except:
+                result = PASS
+                msg = ''
+            
+
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM REMOVE VIRTUAL DISKS] " + msg)
+        printLog("[VM REMOVE VIRTUAL DISKS] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'remove virtual disks' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_REMOVE_VIRTUAL_DISKS',result, msg) # 모두 대문자
