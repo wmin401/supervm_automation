@@ -277,7 +277,7 @@ class admin_template:
             self.webDriver.tableSearch(self._templateName + '_vm_%s_Disk1'%self.storage, 0, rowClick=True)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Copy')
             self.webDriver.findElement('id', 'ActionPanelView_Copy', True)
-            time.sleep(1)
+            time.sleep(2)
 
             # 별칭 변경
             printLog("[COPY TEMPLATE DISK] Change copy disk's name")
@@ -293,7 +293,8 @@ class admin_template:
             printLog("[COPY TEMPLATE DISK] Check if created")
             printLog("[COPY TEMPLATE DISK] Wait until changed copy disk was created")
 
-            result, msg = self.webDriver.isChangedStatus('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, 10, ['잠김', 'Locked'], ['OK'], 60)
+            result, msg = self.webDriver.isChangedStatus('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, 10, ['잠김', 'Locked'], ['OK'], 180)
+
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
