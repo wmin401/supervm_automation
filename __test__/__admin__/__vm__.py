@@ -475,24 +475,24 @@ class admin_vm:
 
             self.setup()
 
-            # 이미지 잠긴 상태
-            st = time.time()
-            while True:
-                tableValueList = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-                # tableValueList = self.webDriver.tableSearch('auto_vm_HnpZbEOS_Disk1', 2, False, False, True)
+            # # 이미지 잠긴 상태
+            # st = time.time()
+            # while True:
+            #     tableValueList = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            #     # tableValueList = self.webDriver.tableSearch('auto_vm_HnpZbEOS_Disk1', 2, False, False, True)
                 
-                if 'Down' in tableValueList[13]:
-                    break
-                elif '이미지 잠김' in tableValueList[13] or 'Image Locked' in tableValueList[13]:
-                    ed = time.time()  
-                    printLog("[TABLE SEARCH] VM'status is still locked...%ds"%(int(ed-st)))
-                    if ed - st > 60:
-                        result = FAIL
-                        msg = 'VM Image locked...'
-                        printLog("[VM CREATE] RESULT : " + result)
-                        printLog("[VM CREATE] " + msg)
-                        self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
-                        return
+            #     if 'Down' in tableValueList[13]:
+            #         break
+            #     elif '이미지 잠김' in tableValueList[13] or 'Image Locked' in tableValueList[13]:
+            #         ed = time.time()  
+            #         printLog("[TABLE SEARCH] VM'status is still locked...%ds"%(int(ed-st)))
+            #         if ed - st > 60:
+            #             result = FAIL
+            #             msg = 'VM Image locked...'
+            #             printLog("[VM CREATE] RESULT : " + result)
+            #             printLog("[VM CREATE] " + msg)
+            #             self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
+            #             return
             cnt = 0
             while True:
                 time.sleep(1)
