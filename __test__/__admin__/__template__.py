@@ -49,7 +49,7 @@ class admin_template:
         time.sleep(0.3)
         self.removeRole()
         time.sleep(0.3)
-        self.remove()
+        # self.remove()
 
         self.vm.remove()
 
