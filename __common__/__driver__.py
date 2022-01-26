@@ -197,6 +197,7 @@ class SuperVM_driver:
     def isChangedStatus(self, name, nameIdx, statusIdx, failLst, passLst, t=60):
         # 1초마다 상태 변경이 되었는지 확인하는 함수
         st = time.time()
+        cnt = 0
         while True:
             time.sleep(1)
             try:
@@ -204,7 +205,9 @@ class SuperVM_driver:
 
                 for failStr in failLst:
                     if failStr in tableValueList[statusIdx]:
-                        printLog("[%s STATUS] %s..."%(name.upper(), tableValueList[statusIdx]))
+                        if cnt == 0:
+                            printLog("[%s STATUS] %s..."%(name.upper(), tableValueList[statusIdx]))
+                            cnt = 1
 
                 for passStr in passLst:
                     if passStr in tableValueList[statusIdx]:
