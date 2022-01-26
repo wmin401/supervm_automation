@@ -179,6 +179,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
+            printLog("[VM CREATE] " + msg)
         printLog("[VM CREATE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'create' + DELIM + result + DELIM + msg])
         
