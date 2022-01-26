@@ -83,7 +83,7 @@ class admin_vm:
         self.copy()
         self.run()
         self.shutdown()
-        self.remove()
+        # self.remove()
 
     def setup(self):
         # 컴퓨팅
