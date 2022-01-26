@@ -1,3 +1,4 @@
+from re import A
 import time
 from __common__.__parameter__ import *
 from __common__.__module__ import *
@@ -125,8 +126,13 @@ class admin_vm:
             self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
             time.sleep(2)
 
-            # 고급 옵션 표시 클릭
-            self.webDriver.findElement('css_selector','#VmPopupView_OnAdvanced > button',True)
+            # 고급 옵션 표시 클릭 (열려있으면 누르지 않음) -> 이거 처리해야됨
+            self.webDriver.findElement('css_selector','#VmPopupView_OnAdvanced > button')
+            advancedOption = self.webDriver.getAttribute('textContent')
+            if advancedOption == '고급 옵션 숨기기' or advancedOption == 'Hide Advanced Options':
+                pass
+            elif advancedOption == '고급 옵션 표시' or advancedOption == 'Show Advanced Options':
+                self.webDriver.click()
             time.sleep(1)
 
             # 부트 옵션 클릭
