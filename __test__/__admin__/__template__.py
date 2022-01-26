@@ -321,6 +321,7 @@ class admin_template:
             time.sleep(2)
             self._templateVMname = self._templateName + '_vm_%s'%self.storage
             st = time.time()
+            cnt = 0
             while True:
                 tdLst = []
                 time.sleep(1)
@@ -331,7 +332,9 @@ class admin_template:
                     for tr in table.find_elements_by_tag_name("tr"):          
                         td = tr.find_elements_by_tag_name("td")                      
                         if self._templateVMname == td[2].text:                
-                            printLog('[TABLE SEARCH] Find : ' + str(td[2].text))
+                            if cnt == 0:
+                                printLog('[TABLE SEARCH] Find : ' + str(td[2].text))
+                                cnt = 1
                             for i in range(len(td)):
                                 try:
                                     tdLst.append(td[i].text)
