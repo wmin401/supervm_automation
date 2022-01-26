@@ -107,26 +107,32 @@ class admin_vm:
             self.setup()
 
             # 새로 만들기
+            printLog('New VM Button', True)
             self.webDriver.findElement('id','ActionPanelView_NewVm',True)
             time.sleep(2)
 
             # 이름 입력
+            printLog('Input Name', True)
             self.webDriver.findElement('id','VmPopupWidget_name',True)
             self.webDriver.sendKeys(self._vmName)
 
             # 디스크 생성 클릭
+            printLog('Create disk', True)
             self.webDriver.findElement('id','VmPopupWidget_instanceImages__createEdit',True)
             time.sleep(1)
 
             # 크기 입력
+            printLog('Input size', True)
             self.webDriver.findElement('id','VmDiskPopupWidget_size',True)
             self.webDriver.sendKeys(self._diskSize)
             
             # OK 버튼 클릭
+            printLog('Click OK', True)
             self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
             time.sleep(2)
 
             # 고급 옵션 표시 클릭 (열려있으면 누르지 않음) -> 이거 처리해야됨
+            printLog('Open Advanced options', True)
             self.webDriver.findElement('css_selector','#VmPopupView_OnAdvanced > button')
             advancedOption = self.webDriver.getAttribute('textContent')
             if advancedOption == '고급 옵션 숨기기' or advancedOption == 'Hide Advanced Options':
@@ -136,6 +142,7 @@ class admin_vm:
             time.sleep(1)
 
             # 부트 옵션 클릭
+            printLog('Boot options', True)
             self.webDriver.findElement('css_selector','#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(9) > a',True)
 
             # 첫 번째 장치 클릭
@@ -151,6 +158,7 @@ class admin_vm:
             self.webDriver.findElement('id','VmPopupWidget_cdAttached',True)
 
             # OK 클릭
+            printLog('OK 클릭', True)
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector','#VmPopupView_OnSave > button',True)
             time.sleep(10)
