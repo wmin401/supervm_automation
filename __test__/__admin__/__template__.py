@@ -13,21 +13,13 @@ from __test__.__admin__.__vm__ import *
 class admin_template:
     def __init__(self, webDriver):
         self._templateResult = []
-        self.rs = randomString()
-        self._templateName = 'auto_template_' + self.rs
+        self._templateName = 'auto_template_' + randomString()
         self.webDriver = webDriver
 
         self.tl = testlink()
         
-        # 가상머신 생성 필요
-
-        self.vm = admin_vm(self.webDriver)
-        self.vm.create()
-        
-        # 디스크 상태 확인
-        self.vm.diskStatus()
-           
     def test(self):
+
 
         self.setup()
         
@@ -75,6 +67,14 @@ class admin_template:
             msg = ''
             # 중지된 가상머신이 있어야한다.
             # 컴퓨팅 클릭
+            
+            # 가상머신 생성
+            self.vm = admin_vm(self.webDriver)
+            self.vm.create()
+            
+            # 디스크 상태 확인
+            self.vm.diskStatus()
+
             printLog("[CREATE TEMPLATE] Compute - Virtual Machines ")
             self.webDriver.findElement('id','compute',True)
             time.sleep(0.3)

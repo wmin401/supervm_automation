@@ -747,6 +747,7 @@ class admin_vm:
             time.sleep(0.5)
 
             self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
+            time.sleep(2)
 
             ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
             for li in ul.find_elements_by_tag_name('li'):
