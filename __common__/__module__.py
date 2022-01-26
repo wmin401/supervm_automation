@@ -15,7 +15,7 @@ def printLog(text, debug=False):
     print(text)
 
     tt = str(type(text))
-
+    print(tt)
     if 'list' in tt:
         t = '['
         cc = 0
@@ -29,8 +29,8 @@ def printLog(text, debug=False):
     else:
         t = text
 
-    if debug == True:
-        t = '[DEBUG] ' + t
+    if t is not None and debug == True:
+        t = '[DEBUG] ' + str(t)
 
     with open(LOG_FILE, 'a', encoding='utf-8') as logFile:
         logFile.write(t+'\n')
