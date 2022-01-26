@@ -503,6 +503,8 @@ class admin_vm:
 
                 self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
                 self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+
+                time.sleep(2)
                     
                 try:
                     cnt += 1
@@ -550,6 +552,8 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'remove' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
+
+        time.sleep(5)
 
     def addNetworkInterface(self):
 
