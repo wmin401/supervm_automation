@@ -263,11 +263,14 @@ class admin_template:
             
             # 생성된 템플릿 디스크 선택
             printLog("[COPY TEMPLATE DISK] Wait until disk's status will be OK")
+            cnt = 0
             while True:
                 time.sleep(1)
                 tableValueList = self.webDriver.tableSearch(self._templateName + '_vm_%s_Disk1'%self.storage, 0, False, False,returnValueList=True)
                 if '잠김' in tableValueList[10] or 'Locked' in tableValueList[10]:
-                    printLog("[COPY TEMPLATE DISK] Disk's status is still locked ...")
+                    if cnt == 0:
+                        printLog("[COPY TEMPLATE DISK] Disk's status is still locked ...")
+                        cnt = 1
                     continue
                 elif 'OK' in tableValueList[10]:
                     break

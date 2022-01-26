@@ -11,7 +11,7 @@ def secToHms(start, end): # 시작시간, 끝나는 시간
     h, m = divmod(m, 60)
     return h,m,s
 
-def printLog(text):
+def printLog(text, debug=False):
     print(text)
 
     tt = str(type(text))
@@ -28,6 +28,9 @@ def printLog(text):
         t += ']'
     else:
         t = text
+
+    if debug == True:
+        t = '[DEBUG] ' + t
 
     with open(LOG_FILE, 'a', encoding='utf-8') as logFile:
         logFile.write(t+'\n')

@@ -152,46 +152,23 @@ class SuperVM_driver:
         # rowClick : True일 경우 해당 row 클릭
         # nameClick : True일 경우 이름 클릭
         # returnValueList : True일 경우 해당하는 행을 리스트로 반환해줌
-        # printLog("[TABLE SEARCH] Searching table ...")
         time.sleep(1)
 
         table = self.driver.find_element_by_css_selector('tbody')
-        # self.explicitlyWait(30, By.TAG_NAME, 'tr')
         for tr in table.find_elements_by_tag_name("tr"):
-            # self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:
-                printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))
                 if returnValueList == True:
                     tdLst = []
                     for i in range(len(td)):
                         tdLst.append(td[i].text)
                     return tdLst
-                if rowClick == True:                    
-                    # 함수 스택 확인 하는 코드
-                    # 잠시 보류
-                    # import traceback
-                    # callStack = traceback.format_stack()
-                    
-                    # cnt = 0
-                    # for i in callStack:
-                    #     callStack[cnt] = i.split(',')
-                    #     for j in callStack[cnt]:
-                    #         if 'tableSearch' in callStack[cnt][j]:
-                    #             print(callStack[cnt])
-                    #     cnt += 1
+                if rowClick == True:    
+                    printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
                     tr.click()
-                    # 211223 jeonghyeon_kim 수정
-                    # 가상머신 쪽 tr을 클릭 시 상태 부분을 누르지 않고                    
-                    # 데이터 센터 부분을 눌러 오류 발생 아래와 같이 코드 수정
-
-                    # 동일
-                    # 이 부분을 바꾸면 다른 모든 코드를 수정해야됨
-                    # td클릭시 이름을 클릭하게됨
-                    # 우선 원복
-                    # td[nameIdx].click()
                 if nameClick == True:
                     td[nameIdx].find_element_by_tag_name("a").click()
+                    printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
                 return True
 
         return False
@@ -210,8 +187,8 @@ class SuperVM_driver:
             self.explicitlyWait(30, By.TAG_NAME, 'td')
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:
-                printLog('[TABLE SEARCH ALL] : ' + str(td[nameIdx].text))
                 if rowClick == True:
+                    printLog('[TABLE SEARCH ALL] : ' + str(td[nameIdx].text))
                     tr.click()
                 return True
         return False
