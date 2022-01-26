@@ -109,10 +109,12 @@ class admin_vm:
             self.webDriver.findElement('id','ActionPanelView_NewVm',True)
             time.sleep(2)
 
+            printLog(1, True)
             # 이름 입력
             self.webDriver.findElement('id','VmPopupWidget_name',True)
             self.webDriver.sendKeys(self._vmName)
 
+            printLog(2, True)
             # 디스크 생성 클릭
             self.webDriver.findElement('id','VmPopupWidget_instanceImages__createEdit',True)
             time.sleep(1)
@@ -121,6 +123,7 @@ class admin_vm:
             self.webDriver.findElement('id','VmDiskPopupWidget_size',True)
             self.webDriver.sendKeys(self._diskSize)
             
+            printLog(3, True)
             # OK 버튼 클릭
             self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
             time.sleep(2)
@@ -129,17 +132,20 @@ class admin_vm:
             self.webDriver.findElement('id','VmPopupView_OnAdvanced',True)
             time.sleep(1)
 
+            printLog(4, True)
             # 부트 옵션 클릭
             self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[1]/ul/li[9]/a',True)
 
             # 첫 번째 장치 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupWidget_firstBootDevice',True)
-
+            
+            printLog(5, True)
             # 첫 번째 장치 클릭
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector','#VmPopupWidget_firstBootDevice > div > ul > li:nth-child(2)',True)
-
+            
+            printLog(6, True)
             # CD/DVD 연결 체크
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupWidget_cdAttached',True)
@@ -148,7 +154,8 @@ class admin_vm:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('id','VmPopupView_OnSave',True)
             time.sleep(10)
-
+            
+            printLog(7, True)
             _createCheck = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
             if _createCheck == False:
                 result = FAIL
