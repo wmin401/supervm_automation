@@ -67,8 +67,10 @@ class admin_vm2(admin_vm): # 상속
             time.sleep(1)
 
             # 선호도 그룹 클릭
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
-            self.webDriver.findElement('link_text', '선호도 그룹', True)
+            try:
+                self.webDriver.findElement('link_text', '선호도 그룹', True)
+            except:
+                self.webDriver.findElement('link_text', 'Affinity Groups', True)
 
             # New 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
@@ -110,8 +112,10 @@ class admin_vm2(admin_vm): # 상속
             time.sleep(1)
 
             # 선호도 그룹 클릭
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
-            self.webDriver.findElement('link_text', '선호도 그룹', True)
+            try:
+                self.webDriver.findElement('link_text', '선호도 그룹', True)
+            except:
+                self.webDriver.findElement('link_text', 'Affinity Groups', True)
 
             # 생성한 그룹 클릭
             self.webDriver.tableSearch(self._affinityGroupName, 1, True)
@@ -155,8 +159,10 @@ class admin_vm2(admin_vm): # 상속
             time.sleep(1)
 
             # 선호도 그룹 클릭
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
-            self.webDriver.findElement('link_text', '선호도 그룹', True)
+            try:
+                self.webDriver.findElement('link_text', '선호도 그룹', True)
+            except:
+                self.webDriver.findElement('link_text', 'Affinity Groups', True)
 
             # 생성한 그룹 클릭
             self.webDriver.tableSearch(self._affinityGroupName, 1, True)
@@ -201,8 +207,10 @@ class admin_vm2(admin_vm): # 상속
             time.sleep(1)
 
             # 선호도 레이블 클릭
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 레이블')
-            self.webDriver.findElement('link_text', '선호도 레이블', True)
+            try:
+                self.webDriver.findElement('link_text', '선호도 레이블', True)
+            except:
+                self.webDriver.findElement('link_text', 'Affinity Labels', True)
 
             # New 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
@@ -244,8 +252,10 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 선호도 레이블 클릭
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 레이블')
-            self.webDriver.findElement('link_text', '선호도 레이블', True)
+            try:
+                self.webDriver.findElement('link_text', '선호도 레이블', True)
+            except:
+                self.webDriver.findElement('link_text', 'Affinity Labels', True)
 
             # 생성한 레이블 클릭
             self.webDriver.tableSearch(self._affinityLabelName, 0, True)
@@ -299,8 +309,10 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.tableSearch(self._clusterName, 1, False, True)
 
             # Affinity Labels 클릭
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 레이블')
-            self.webDriver.findElement('link_text', '선호도 레이블', True)
+            try:
+                self.webDriver.findElement('link_text', '선호도 레이블', True)
+            except:
+                self.webDriver.findElement('link_text', 'Affinity Labels', True)
 
             # 생성한 label의 이름 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Remove')
