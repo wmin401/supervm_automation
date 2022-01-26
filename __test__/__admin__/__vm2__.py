@@ -16,7 +16,7 @@ class admin_vm2(admin_vm): # 상속
         printLog('VM 2 TEST includes affinity groups, affinity labels, snapshot, export')
         
         self._vm2Result = []
-        self._vmName = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
+        # self._vmName = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
         self._clusterName = 'Default' # Default 로 고정 
 
         
