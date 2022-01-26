@@ -15,7 +15,6 @@ def printLog(text, debug=False):
     print(text)
 
     tt = str(type(text))
-    print(tt)
     if 'list' in tt:
         t = '['
         cc = 0
