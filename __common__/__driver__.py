@@ -167,8 +167,8 @@ class SuperVM_driver:
                     printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
                     tr.click()
                 if nameClick == True:
-                    td[nameIdx].find_element_by_tag_name("a").click()
-                    printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
+                    printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
+                    td[nameIdx].find_element_by_tag_name("a").click() 
                 return True
 
         return False
