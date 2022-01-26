@@ -283,10 +283,11 @@ class admin_template:
             time.sleep(2)
 
             # 별칭 변경
+            self._templateCopyDisk = 'copy_' + self._templateName + '_vm_%s_Disk1'%self.storage
             printLog("[COPY TEMPLATE DISK] Change copy disk's name")
             self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div/div/div[3]/div/div/div[2]/div[1]/div/input')
             self.webDriver.clear()
-            self.webDriver.sendKeys('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage)
+            self.webDriver.sendKeys(self._templateCopyDisk)
 
             self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/div[2]/button', True)
             printLog("[COPY TEMPLATE DISK] Wait 30 seconds until disk is OK")
@@ -296,7 +297,7 @@ class admin_template:
             printLog("[COPY TEMPLATE DISK] Check if created")
             printLog("[COPY TEMPLATE DISK] Wait until changed copy disk was created")
 
-            result, msg = self.webDriver.isChangedStatus('copy_' + self._templateName + '_vm_%s_Disk1'%self.storage, 0, 10, ['잠김', 'Locked'], ['OK'], 180)
+            result, msg = self.webDriver.isChangedStatus(self._templateCopyDisk, 0, 10, ['잠김', 'Locked'], ['OK'], 180)
 
         except Exception as e:
             result = FAIL
