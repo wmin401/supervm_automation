@@ -161,8 +161,9 @@ class admin_vm:
             printLog('OK 클릭', True)
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector','#VmPopupView_OnSave > button',True)
-            time.sleep(10)
             
+            printLog('Table 검색', True)
+            time.sleep(15)
             _createCheck = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
             if _createCheck == False:
                 result = FAIL
@@ -179,7 +180,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM CREATE] " + msg)
+            printLog("[VM CREATE] EXCEPTION : " + msg)
         printLog("[VM CREATE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'create' + DELIM + result + DELIM + msg])
         

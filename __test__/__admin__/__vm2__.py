@@ -64,6 +64,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 생성한 VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(1)
 
             # 선호도 그룹 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
@@ -106,6 +107,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 생성한 VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(1)
 
             # 선호도 그룹 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
@@ -150,6 +152,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 생성한 VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(1)
 
             # 선호도 그룹 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 그룹')
@@ -195,6 +198,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 생성한 VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(1)
 
             # 선호도 레이블 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '선호도 레이블')
