@@ -161,7 +161,10 @@ class SuperVM_driver:
                 if returnValueList == True:
                     tdLst = []
                     for i in range(len(td)):
-                        tdLst.append(td[i].text)
+                        try:
+                            tdLst.append(td[i].text)
+                        except:
+                            tdLst.append('')
                     return tdLst
                 if rowClick == True:    
                     printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
