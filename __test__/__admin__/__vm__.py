@@ -73,7 +73,7 @@ class admin_vm:
         # self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
-        # # 네트워크 인터페이스
+        # 네트워크 인터페이스
         self.addNetworkInterface()
         self.updateNetworkInterface()
         self.networkInterfaceHotPlugging()
@@ -85,7 +85,10 @@ class admin_vm:
 
         # 가상 메모리
         self.virtualMemoryHotPlugging()
-        # self.virtualMemoryHotUnplugging()
+        self.virtualMemoryHotUnplugging()
+
+        # vcpu
+        self.hotPluggingVCPU()
 
         self.reboot()
         self.shutdown()
@@ -511,7 +514,6 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'reboot' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_REBOOT',result, msg) # 모두 대문자
-
 
     def remove(self):
         printLog(printSquare('Remove VM'))
@@ -1163,3 +1165,62 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'virtual memory hot unplugging' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_VIRTUAL_MEMORY_HOT_UNPLUGGING',result, msg) # 모두 대문자
+
+    def hotPluggingVCPU(self):
+        printLog(printSquare('hot plugging vcpu'))
+        result = FAIL
+        msg = ''
+
+        try:       
+            self.setup()
+            # 가상머신 클릭            
+            self.webDriver.tableSearch(self._vmName, 2, True)
+
+            # 편집 클릭
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+
+            # 시스템 탭 클릭
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
+            self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
+
+            # 총 가상 cpu 변경
+            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_totalCPUCores')
+            self.webDriver.findElement('id', 'VmPopupWidget_totalCPUCores')
+            self.webDriver.clear()
+            self.webDriver.sendKeys('2')
+
+            # OK 클릭
+            self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
+
+            # OK 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'VmNextRunConfigurationPopupView_updateExistingVm')
+            self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
+            time.sleep(5)
+
+            # VM 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(1)
+
+            self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
+            self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
+            _cpuNum = self.webDriver.getAttribute('textContent')
+
+            if '2 (2:1:1)' in _cpuNum:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to hot plugging vCPU'
+
+
+
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM HOT PLUGGING VCPU] " + msg)
+        printLog("[VM HOT PLUGGING VCPU] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'hot plugging vcpu' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_HOT_PLUGGING_VCPU',result, msg) # 모두 대문자
