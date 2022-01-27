@@ -73,7 +73,7 @@ class admin_vm:
         # self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
-        # 네트워크 인터페이스
+        # # 네트워크 인터페이스
         self.addNetworkInterface()
         self.updateNetworkInterface()
         self.networkInterfaceHotPlugging()
@@ -82,6 +82,12 @@ class admin_vm:
         self.update()
         self.copy()
         self.run()
+
+        # 가상 메모리
+        self.virtualMemoryHotPlugging()
+        # self.virtualMemoryHotUnplugging()
+
+        self.reboot()
         self.shutdown()
         self.remove()
 
@@ -198,35 +204,27 @@ class admin_vm:
             self.webDriver.tableSearch(self._vmName, 2, True)
 
             # 편집 클릭
-            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)            
 
-            # 시스템 탭 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
-            self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
-
-            # 메모리 사이즈 변경
-            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_memSize')
-            self.webDriver.findElement('id', 'VmPopupWidget_memSize')
+            # 설명 변경            
+            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_description')
+            self.webDriver.findElement('id', 'VmPopupWidget_description')
             self.webDriver.clear()
-            self._updateSize = '2048'
-            self.webDriver.sendKeys(self._updateSize)
+            self.webDriver.sendKeys('updated by automation')
 
             # OK 클릭
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
             time.sleep(2)
 
             # VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            des = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
 
-            self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
-            self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
-            _updated = self.webDriver.getAttribute('textContent')
-
-            if self._updateSize in _updated:
+            if 'updated by automation' in des[15]:
                 result = PASS
+                msg = ''
             else:
                 result = FAIL
-                msg = 'Failed to update memory size'
+                msg = 'Failed to update vm'
 
         except Exception as e:
             result = FAIL
@@ -339,7 +337,6 @@ class admin_vm:
                 try:
                     time.sleep(1)
                     row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-
 
                     if 'Up' in row[13] or '실행 중' in row[13]: # 실행완료
                         printLog("[VM RUN] Succefully run vm")
@@ -476,6 +473,45 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
+
+    def reboot(self):
+        printLog(printSquare('Reboot VM'))
+        result = FAIL
+        msg = ''
+
+        try:        
+            self.setup()
+
+            # 생성한 vm 클릭
+            isRun = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            if 'Down' in isRun[13]: # 실행중이지 않을 경우 종료
+                result = FAIL
+                msg = 'VM is not running ...'
+                printLog("[VM REBOOT] MESSAGE : " + msg)
+                printLog("[VM REBOOT] RESULT : " + result)
+                self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])        
+                self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
+                return
+
+            # 선택
+            self.webDriver.tableSearch(self._vmName, 2, True)
+            # 재부팅 클릭
+            self.webDriver.findElement('css_selector','#ActionPanelView_Reboot > button', True)
+            # OK 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'DefaultConfirmationPopupView_OnReboot')
+            self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
+            # 결과 확인
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 300)            
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+        printLog("[VM REBOOT] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'reboot' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_REBOOT',result, msg) # 모두 대문자
+
 
     def remove(self):
         printLog(printSquare('Remove VM'))
@@ -1007,3 +1043,123 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'remove virtual disks' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_REMOVE_VIRTUAL_DISKS',result, msg) # 모두 대문자
+
+    def virtualMemoryHotPlugging(self):         
+        printLog(printSquare('Virtual memory hot plugging'))
+        result = FAIL
+        msg = ''
+
+        try:       
+            self.setup()
+            # 가상머신 클릭
+            self.webDriver.tableSearch(self._vmName, 2, True)
+
+            # 편집 클릭
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+
+            # 시스템 탭 클릭
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
+            self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
+
+            # 메모리 사이즈 변경
+            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_memSize')
+            self.webDriver.findElement('id', 'VmPopupWidget_memSize')
+            self.webDriver.clear()
+            self._updateSize = '2048'
+            self.webDriver.sendKeys(self._updateSize)
+
+            # OK 클릭
+            self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
+
+            self.webDriver.explicitlyWait(10, By.ID, 'VmNextRunConfigurationPopupView_updateExistingVm')
+            self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
+            time.sleep(3)
+
+            # VM 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+
+            self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
+            self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
+            _memorySize = self.webDriver.getAttribute('textContent')
+
+            if self._updateSize in _memorySize:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to update memory size'
+                printLog("[VM VIRTUAL MEMORY HOT PLUGGING] " + msg)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM VIRTUAL MEMORY HOT PLUGGING] " + msg)
+        printLog("[VM VIRTUAL MEMORY HOT PLUGGING] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'virtual memory hot plugging' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_VIRTUAL_MEMORY_HOT_PLUGGING',result, msg) # 모두 대문자
+
+    def virtualMemoryHotUnplugging(self):        
+        printLog(printSquare('Virtual memory hot unplugging'))
+        result = FAIL
+        msg = ''
+
+        try:       
+            self.setup()
+            # 가상머신 이름 클릭            
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+
+            # 네트워크 인터페이스 클릭
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '가상 머신 장치', True)
+            except:
+                self.webDriver.findElement('link_text', 'Vm Devices', True)
+            time.sleep(0.5)
+
+            idx = -1
+            table = self.webDriver.findElement('css_selector', 'tbody')
+            trs = table.find_elements_by_tag_name('tr')
+            for tr in trs:
+                idx += 1
+                try:
+                    td = tr.find_elements_by_tag_name('td')
+                    if 'memory' in td[1].text:
+                        td[7].find_element_by_css_selector('button').click()
+                        break
+                except:
+                    continue
+            time.sleep(0.5)
+            self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_memoryHotUnplug > button', True)
+
+            time.sleep()
+
+            try:
+                self.webDriver.findElement('link_text', '일반', True)
+            except:
+                self.webDriver.findElement('link_text', 'General', True)
+            time.sleep(0.5)
+
+            self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
+            self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
+            _memorySize = self.webDriver.getAttribute('textContent')
+
+            if '1024' in _memorySize:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to update memory size'
+                printLog("[VM VIRTUAL MEMORY HOT PLUGGING] " + msg)
+
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM VIRTUAL MEMORY HOT UNPLUGGING] " + msg)
+        printLog("[VM VIRTUAL MEMORY HOT UNPLUGGING] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'virtual memory hot unplugging' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_VIRTUAL_MEMORY_HOT_UNPLUGGING',result, msg) # 모두 대문자
