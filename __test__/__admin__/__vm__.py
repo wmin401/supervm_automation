@@ -899,6 +899,7 @@ class admin_vm:
 
     def virtualDiskHotPlugging(self):
         # - 2-455 : 가상 디스크 핫 플러깅
+        # 결과 확인 코드에서 오류발생
         
         printLog(printSquare('Virtual Disk Hot Plugging'))
         result = FAIL
@@ -952,7 +953,7 @@ class admin_vm:
         self.tl.junitBuilder('VM_VIRTUAL_DISK_HOT_PLUGGING',result, msg) # 모두 대문자
 
     def removeVirtualDisk(self):
-        # - 2-456 : 가상 머신에서 가상 디스크 제거 - 진행중
+        # - 2-456 : 가상 머신에서 가상 디스크 제거
         
         printLog(printSquare('Remove Virtual Disk to VM'))
         result = FAIL
