@@ -83,7 +83,7 @@ class admin_vm:
         self.copy()
         self.run()
         self.shutdown()
-        # self.remove()
+        self.remove()
 
     def setup(self):
         # 컴퓨팅
@@ -107,32 +107,32 @@ class admin_vm:
             self.setup()
 
             # 새로 만들기
-            printLog('New VM Button', True)
+            # printLog('New VM Button', True)
             self.webDriver.findElement('id','ActionPanelView_NewVm',True)
             time.sleep(2)
 
             # 이름 입력
-            printLog('Input Name', True)
+            # printLog('Input Name', True)
             self.webDriver.findElement('id','VmPopupWidget_name',True)
             self.webDriver.sendKeys(self._vmName)
 
             # 디스크 생성 클릭
-            printLog('Create disk', True)
+            # printLog('Create disk', True)
             self.webDriver.findElement('id','VmPopupWidget_instanceImages__createEdit',True)
             time.sleep(1)
 
             # 크기 입력
-            printLog('Input size', True)
+            # printLog('Input size', True)
             self.webDriver.findElement('id','VmDiskPopupWidget_size',True)
             self.webDriver.sendKeys(self._diskSize)
             
             # OK 버튼 클릭
-            printLog('Click OK', True)
+            # printLog('Click OK', True)
             self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
             time.sleep(2)
 
             # 고급 옵션 표시 클릭 (열려있으면 누르지 않음)
-            printLog('Open Advanced options', True)
+            # printLog('Open Advanced options', True)
             self.webDriver.findElement('css_selector','#VmPopupView_OnAdvanced > button')
             advancedOption = self.webDriver.getAttribute('textContent')
             if advancedOption == '고급 옵션 숨기기' or advancedOption == 'Hide Advanced Options':
@@ -142,7 +142,7 @@ class admin_vm:
             time.sleep(1)
 
             # 부트 옵션 클릭
-            printLog('Boot options', True)
+            # printLog('Boot options', True)
             self.webDriver.findElement('css_selector','#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(9) > a',True)
 
             # 첫 번째 장치 클릭
@@ -158,11 +158,11 @@ class admin_vm:
             self.webDriver.findElement('id','VmPopupWidget_cdAttached',True)
 
             # OK 클릭
-            printLog('OK 클릭', True)
+            # printLog('OK 클릭', True)
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector','#VmPopupView_OnSave > button',True)
             
-            printLog('Table 검색', True)
+            # printLog('Table 검색', True)
             time.sleep(15)
             _createCheck = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
             if _createCheck == False:
@@ -921,20 +921,25 @@ class admin_vm:
 
             # 추가 옵션 버튼 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div[2]/div/button', True)
+            time.sleep(0.3)
             self.webDriver.findElement('id', 'DetailActionPanelView_Unplug', True)
             time.sleep(0.3)
             # OK 클릭
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
             time.sleep(1)
             
-            tbody = self.webDriver.findElement('tag_name', 'tbody')
-            for tr in tbody.find_elements_by_tag_name("tr"):
-                td = tr.find_elements_by_tag_name("td") ## 이걸 왜 못가져올까?
-                if self._unAttachedDiskName == td[1].text:
-                    status = td[0].get_attribute('data-tooltip-content')
-
-
-
+            table = self.webDriver.findElement('css_selector', 'tbody')
+            trs = table.find_elements_by_tag_name("tr")
+            for i in range(len(trs)):
+                td = trs[i].find_elements_by_tag_name("td")
+                try:
+                    name = td[1].get_attribute('textContent')
+                except:
+                    name = 'None'
+                print(name)
+                # if self._unAttachedDiskName in td[1].get_attribute('textContent'):
+                #     status = td[0].get_attribute('data-tooltip-content')
+                #     print(status)
     
         except Exception as e:
             result = FAIL
