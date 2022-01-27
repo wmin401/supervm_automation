@@ -1,0 +1,265 @@
+{
+  "id": "75c37cad-abaa-4cbe-bf83-c9619f2291b1",
+  "version": "2.0",
+  "name": "templateCreate",
+  "url": "https://master164.tmax.com/ovirt-engine/webadmin/?locale=ko_KR#dashboard-main",
+  "tests": [{
+    "id": "94d1c728-6052-43e0-afa9-3d2c1c354d4f",
+    "name": "create",
+    "commands": [{
+      "id": "58dcb017-4cf5-4a6f-a0e5-050a8d06985e",
+      "comment": "",
+      "command": "open",
+      "target": "https://master164.tmax.com/ovirt-engine/webadmin/?locale=ko_KR#dashboard-main",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "093ad77a-9ea2-405c-bdf0-89095c16fd39",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "974x1040",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "13dbc6a9-4c52-40ec-9ecd-7ef7a4a2118e",
+      "comment": "",
+      "command": "click",
+      "target": "css=#compute > .list-group-item-value",
+      "targets": [
+        ["css=#compute > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='compute']/span[2]", "xpath:idRelative"],
+        ["xpath=//li[2]/a/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'컴퓨팅')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "81642c05-bd1f-4337-9af3-b9f022af222d",
+      "comment": "",
+      "command": "click",
+      "target": "css=#MenuView_vmsAnchor > .list-group-item-value",
+      "targets": [
+        ["css=#MenuView_vmsAnchor > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='MenuView_vmsAnchor']/span", "xpath:idRelative"],
+        ["xpath=//li[2]/div/ul/li/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'가상머신')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "09217793-e33c-4a8e-b61d-b4f2b7a328ef",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "70f54013-3be8-43c2-a3fa-027ee62622e6",
+      "comment": "",
+      "command": "click",
+      "target": "css=#gwt-uid-278 > div",
+      "targets": [
+        ["css=#gwt-uid-278 > div", "css:finder"],
+        ["xpath=//td[@id='gwt-uid-278']/div", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[3]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "22a34e9a-3b69-4390-9162-c191f54bcb63",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-group:nth-child(11) > .btn",
+      "targets": [
+        ["css=.btn-group:nth-child(11) > .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[125]", "xpath:attributes"],
+        ["xpath=//div[4]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5b23fe89-8e20-412b-bb6a-847ddcd9e460",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=템플릿 생성",
+      "targets": [
+        ["linkText=템플릿 생성", "linkText"],
+        ["css=#ActionPanelView_NewTemplate > a", "css:finder"],
+        ["xpath=//a[contains(text(),'템플릿 생성')]", "xpath:link"],
+        ["xpath=//li[@id='ActionPanelView_NewTemplate']/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, 'javascript:;')])[139]", "xpath:href"],
+        ["xpath=//li[11]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'템플릿 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fc90631e-5d3f-41ce-85a0-a8a6753513ff",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9c26e3c3-bf73-4a66-af18-678069ac5358",
+      "comment": "",
+      "command": "click",
+      "target": "id=VmMakeTemplatePopupWidget_name",
+      "targets": [
+        ["id=VmMakeTemplatePopupWidget_name", "id"],
+        ["css=#VmMakeTemplatePopupWidget_name", "css:finder"],
+        ["xpath=//input[@id='VmMakeTemplatePopupWidget_name']", "xpath:attributes"],
+        ["xpath=//div[@id='VmMakeTemplatePopupWidget']/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div[2]/div/div/div/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "41a001cc-ba41-4b65-93e0-7770371c8ddf",
+      "comment": "",
+      "command": "type",
+      "target": "id=VmMakeTemplatePopupWidget_name",
+      "targets": [
+        ["id=VmMakeTemplatePopupWidget_name", "id"],
+        ["css=#VmMakeTemplatePopupWidget_name", "css:finder"],
+        ["xpath=//input[@id='VmMakeTemplatePopupWidget_name']", "xpath:attributes"],
+        ["xpath=//div[@id='VmMakeTemplatePopupWidget']/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div[2]/div/div/div/div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "template_test"
+    }, {
+      "id": "771292c6-f6e6-45e1-95d6-d7e6e377f1bc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=(//button[@type='button'])[142]", "xpath:attributes"],
+        ["xpath=//div[@id='VmMakeTemplatePopupView_OnNewTemplate']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'OK')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "80c4684b-1f52-47ac-b189-00773932651c",
+      "comment": "",
+      "command": "click",
+      "target": "css=#compute > .list-group-item-value",
+      "targets": [
+        ["css=#compute > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='compute']/span[2]", "xpath:idRelative"],
+        ["xpath=//li[2]/a/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'컴퓨팅')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "561cc687-0b00-4a0d-993c-24942925b55b",
+      "comment": "",
+      "command": "click",
+      "target": "css=#MenuView_templatesAnchor > .list-group-item-value",
+      "targets": [
+        ["css=#MenuView_templatesAnchor > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='MenuView_templatesAnchor']/span", "xpath:idRelative"],
+        ["xpath=//ul[2]/li/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'템플릿')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a682834b-2011-4a5e-9c64-92fae5bd59c6",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=ActionPanelView_NewVm",
+      "targets": [
+        ["id=ActionPanelView_NewVm", "id"],
+        ["css=#ActionPanelView_NewVm", "css:finder"],
+        ["xpath=//button[@id='ActionPanelView_NewVm']", "xpath:attributes"],
+        ["xpath=//div[2]/div/div/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'새로 만들기')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "01ae81cf-fb34-457b-aa2e-2a525dab99ad",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=ActionPanelView_NewVm",
+      "targets": [
+        ["id=ActionPanelView_NewVm", "id"],
+        ["css=#ActionPanelView_NewVm", "css:finder"],
+        ["xpath=//button[@id='ActionPanelView_NewVm']", "xpath:attributes"],
+        ["xpath=//div[2]/div/div/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'새로 만들기')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "42a15251-e1e2-4a0a-b85f-da57b3eae4da",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=ActionPanelView_NewVm",
+      "targets": [
+        ["id=ActionPanelView_NewVm", "id"],
+        ["css=#ActionPanelView_NewVm", "css:finder"],
+        ["xpath=//button[@id='ActionPanelView_NewVm']", "xpath:attributes"],
+        ["xpath=//div[2]/div/div/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'새로 만들기')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8916c891-a0f6-4234-adde-65df3acfdc4c",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ba0a992b-511a-482a-80e3-8fd07791fc97",
+      "comment": "",
+      "command": "click",
+      "target": "id=MainTemplateView_table_content_col1_row1",
+      "targets": [
+        ["id=MainTemplateView_table_content_col1_row1", "id"],
+        ["linkText=template_test", "linkText"],
+        ["css=#MainTemplateView_table_content_col1_row1", "css:finder"],
+        ["xpath=//a[contains(text(),'template_test')]", "xpath:link"],
+        ["xpath=//a[@id='MainTemplateView_table_content_col1_row1']", "xpath:attributes"],
+        ["xpath=//td[@id='gwt-uid-1857']/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, 'javascript:;')])[140]", "xpath:href"],
+        ["xpath=//tr[2]/td[2]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "853af444-c1a0-4961-987d-8f6c6691bfe8",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=MainTemplateView_table_content_col1_row1",
+      "targets": [
+        ["id=MainTemplateView_table_content_col1_row1", "id"],
+        ["linkText=template_test", "linkText"],
+        ["css=#MainTemplateView_table_content_col1_row1", "css:finder"],
+        ["xpath=//a[contains(text(),'template_test')]", "xpath:link"],
+        ["xpath=//a[@id='MainTemplateView_table_content_col1_row1']", "xpath:attributes"],
+        ["xpath=(//a[contains(@href, 'javascript:;')])[140]", "xpath:href"],
+        ["xpath=//tr[2]/td[2]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2d8d8776-c054-42a8-a0a2-4da87dd5f9e5",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=MainTemplateView_table_content_col1_row1",
+      "targets": [
+        ["id=MainTemplateView_table_content_col1_row1", "id"],
+        ["linkText=template_test", "linkText"],
+        ["css=#MainTemplateView_table_content_col1_row1", "css:finder"],
+        ["xpath=//a[contains(text(),'template_test')]", "xpath:link"],
+        ["xpath=//a[@id='MainTemplateView_table_content_col1_row1']", "xpath:attributes"],
+        ["xpath=(//a[contains(@href, 'javascript:;')])[140]", "xpath:href"],
+        ["xpath=//tr[2]/td[2]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "655e433c-edb4-483f-af99-efb4b4de0780",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://master164.tmax.com/"],
+  "plugins": []
+}

@@ -1,0 +1,415 @@
+{
+  "id": "e77f6a56-f55a-49e2-a796-5279354be16d",
+  "version": "2.0",
+  "name": "create",
+  "url": "https://master164.tmax.com",
+  "tests": [{
+    "id": "1074ea7a-00d3-4370-9742-161fbfb221ca",
+    "name": "create",
+    "commands": [{
+      "id": "49237681-4fde-44e9-9e1a-7ac08ca2be80",
+      "comment": "",
+      "command": "open",
+      "target": "/ovirt-engine/web-ui/?locale=ko_KR",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0732e2f9-bb62-411f-98db-caf478639732",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1900x1020",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "93f61460-5367-4851-ac2f-cd4dad8c0c46",
+      "comment": "",
+      "command": "click",
+      "target": "id=route-add-vm-button",
+      "targets": [
+        ["id=route-add-vm-button", "id"],
+        ["css=#route-add-vm-button", "css:finder"],
+        ["xpath=//button[@id='route-add-vm-button']", "xpath:attributes"],
+        ["xpath=//div[@id='page-router']/div/div/div/form/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'가상 머신 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ee7bfde2-aa81-496f-9e91-83255473544d",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=route-add-vm-button",
+      "targets": [
+        ["id=route-add-vm-button", "id"],
+        ["css=#route-add-vm-button", "css:finder"],
+        ["xpath=//button[@id='route-add-vm-button']", "xpath:attributes"],
+        ["xpath=//div[@id='page-router']/div/div/div/form/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'가상 머신 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "52fd12fd-9d9b-4b07-9b4a-d8ff682f4460",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=route-add-vm-button",
+      "targets": [
+        ["id=route-add-vm-button", "id"],
+        ["css=#route-add-vm-button", "css:finder"],
+        ["xpath=//button[@id='route-add-vm-button']", "xpath:attributes"],
+        ["xpath=//div[@id='page-router']/div/div/div/form/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'가상 머신 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4319c3ef-b227-4384-a237-8b056ddab143",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-name-edit",
+      "targets": [
+        ["id=create-vm-wizard-basic-name-edit", "id"],
+        ["css=#create-vm-wizard-basic-name-edit", "css:finder"],
+        ["xpath=//input[@id='create-vm-wizard-basic-name-edit']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizard-basic-name']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c011e468-1e64-471d-a58e-61a39c9b7102",
+      "comment": "",
+      "command": "type",
+      "target": "id=create-vm-wizard-basic-name-edit",
+      "targets": [
+        ["id=create-vm-wizard-basic-name-edit", "id"],
+        ["css=#create-vm-wizard-basic-name-edit", "css:finder"],
+        ["xpath=//input[@id='create-vm-wizard-basic-name-edit']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizard-basic-name']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "test1"
+    }, {
+      "id": "d6e533b8-625c-434d-8119-466828c00966",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-description-edit",
+      "targets": [
+        ["id=create-vm-wizard-basic-description-edit", "id"],
+        ["css=#create-vm-wizard-basic-description-edit", "css:finder"],
+        ["xpath=//textarea[@id='create-vm-wizard-basic-description-edit']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizard-basic-description']/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6f5f9c11-331f-4911-acfd-024337b3afe8",
+      "comment": "",
+      "command": "type",
+      "target": "id=create-vm-wizard-basic-description-edit",
+      "targets": [
+        ["id=create-vm-wizard-basic-description-edit", "id"],
+        ["css=#create-vm-wizard-basic-description-edit", "css:finder"],
+        ["xpath=//textarea[@id='create-vm-wizard-basic-description-edit']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizard-basic-description']/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "test1"
+    }, {
+      "id": "444b4e6d-5822-422c-8271-dcd485181469",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-cluster-edit-button-text",
+      "targets": [
+        ["id=create-vm-wizard-basic-cluster-edit-button-text", "id"],
+        ["css=#create-vm-wizard-basic-cluster-edit-button-text", "css:finder"],
+        ["xpath=//span[@id='create-vm-wizard-basic-cluster-edit-button-text']", "xpath:attributes"],
+        ["xpath=//button[@id='create-vm-wizard-basic-cluster-edit-button-toggle']/span", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]/div/div/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "356f60f8-f0bc-41a9-89a8-5eecb3cc52a2",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-cluster-edit-item-Default (Default)",
+      "targets": [
+        ["id=create-vm-wizard-basic-cluster-edit-item-Default (Default)", "id"],
+        ["linkText=Default (Default)", "linkText"],
+        ["css=#create-vm-wizard-basic-cluster-edit-item-Default\\ \\(Default\\)", "css:finder"],
+        ["xpath=//a[contains(text(),'Default (Default)')]", "xpath:link"],
+        ["xpath=//a[@id='create-vm-wizard-basic-cluster-edit-item-Default (Default)']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizard-basic-cluster-edit']/div/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]/div/div/ul/li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Default (Default)')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b144c961-5ca5-4025-985a-37f5d0a74cb0",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-provision-edit-button-text",
+      "targets": [
+        ["id=create-vm-wizard-basic-provision-edit-button-text", "id"],
+        ["css=#create-vm-wizard-basic-provision-edit-button-text", "css:finder"],
+        ["xpath=//span[@id='create-vm-wizard-basic-provision-edit-button-text']", "xpath:attributes"],
+        ["xpath=//button[@id='create-vm-wizard-basic-provision-edit-button-toggle']/span", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'템플릿')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1115b3aa-53da-47ed-8dcc-78987337626e",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-provision-edit-item-템플릿",
+      "targets": [
+        ["id=create-vm-wizard-basic-provision-edit-item-템플릿", "id"],
+        ["linkText=템플릿", "linkText"],
+        ["css=#create-vm-wizard-basic-provision-edit-item-\\D15C\\D50C\\B9BF", "css:finder"],
+        ["xpath=//a[contains(text(),'템플릿')]", "xpath:link"],
+        ["xpath=//a[@id='create-vm-wizard-basic-provision-edit-item-템플릿']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizard-basic-provision-edit']/div/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'템플릿')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7c44af5b-61b9-42b8-a894-2efa9df0f56a",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-template-edit-button-text",
+      "targets": [
+        ["id=create-vm-wizard-basic-template-edit-button-text", "id"],
+        ["css=#create-vm-wizard-basic-template-edit-button-text", "css:finder"],
+        ["xpath=//span[@id='create-vm-wizard-basic-template-edit-button-text']", "xpath:attributes"],
+        ["xpath=//button[@id='create-vm-wizard-basic-template-edit-button-toggle']/span", "xpath:idRelative"],
+        ["xpath=//div[5]/div[2]/div/div/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "998f2e33-e073-454e-98d6-90e58eb01ae4",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-vm-wizard-basic-template-edit-item-Blank",
+      "targets": [
+        ["id=create-vm-wizard-basic-template-edit-item-Blank", "id"],
+        ["linkText=Blank", "linkText"],
+        ["css=#create-vm-wizard-basic-template-edit-item-Blank", "css:finder"],
+        ["xpath=//a[contains(text(),'Blank')]", "xpath:link"],
+        ["xpath=//a[@id='create-vm-wizard-basic-template-edit-item-Blank']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizard-basic-template-edit']/div/ul/li[4]/a", "xpath:idRelative"],
+        ["xpath=//div[5]/div[2]/div/div/ul/li[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Blank')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "837bafc2-3066-4501-a476-b12ee17448e7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(3)",
+      "targets": [
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[39]", "xpath:attributes"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'다음')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "76eab289-e6e8-4fd6-98e7-fba03caef239",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-lg",
+      "targets": [
+        ["css=.btn-lg", "css:finder"],
+        ["xpath=(//button[@type='button'])[31]", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-net']/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'NIC 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3f975b9e-93ba-415b-af99-7ff6f671e143",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.btn-lg",
+      "targets": [
+        ["css=.btn-lg", "css:finder"],
+        ["xpath=(//button[@type='button'])[31]", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-net']/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'NIC 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "08903547-0d67-4f35-aeb1-b68ef87bb89f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(3)",
+      "targets": [
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[35]", "xpath:attributes"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'다음')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a85e9429-641b-468d-b7bb-a2bfc1a13396",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-lg",
+      "targets": [
+        ["css=.btn-lg", "css:finder"],
+        ["xpath=(//button[@type='button'])[31]", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-storage']/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'디스크 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f5b3671f-24ad-490b-993c-4a5ef2a16cf4",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.btn-lg",
+      "targets": [
+        ["css=.btn-lg", "css:finder"],
+        ["xpath=(//button[@type='button'])[31]", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-storage']/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'디스크 생성')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "15754f93-fa19-4102-af7a-45f9a8eabf14",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "id=create-vm-wizards-storage-bootable",
+      "targets": [
+        ["id=create-vm-wizards-storage-bootable", "id"],
+        ["css=#create-vm-wizards-storage-bootable", "css:finder"],
+        ["xpath=//input[@id='create-vm-wizards-storage-bootable']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-storage']/div[2]/table/tbody/tr/td[2]/div/div/label/input", "xpath:idRelative"],
+        ["xpath=//label/input", "xpath:position"]
+      ],
+      "value": "4.5,0.84375"
+    }, {
+      "id": "f14c3642-b9ef-47be-b9cb-fc4f70277533",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "id=create-vm-wizards-storage-bootable",
+      "targets": [
+        ["id=create-vm-wizards-storage-bootable", "id"],
+        ["css=#create-vm-wizards-storage-bootable", "css:finder"],
+        ["xpath=//input[@id='create-vm-wizards-storage-bootable']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-storage']/div[2]/table/tbody/tr/td[2]/div/div/label/input", "xpath:idRelative"],
+        ["xpath=//label/input", "xpath:position"]
+      ],
+      "value": "4.5,0.84375"
+    }, {
+      "id": "bbd93aa4-9649-47d0-bacb-c032f49f5ad8",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "id=create-vm-wizards-storage-bootable",
+      "targets": [
+        ["id=create-vm-wizards-storage-bootable", "id"],
+        ["css=#create-vm-wizards-storage-bootable", "css:finder"],
+        ["xpath=//input[@id='create-vm-wizards-storage-bootable']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-storage']/div[2]/table/tbody/tr/td[2]/div/div/label/input", "xpath:idRelative"],
+        ["xpath=//label/input", "xpath:position"]
+      ],
+      "value": "4.5,0.84375"
+    }, {
+      "id": "354e8644-5397-4bba-8399-51d0b3148ee1",
+      "comment": "",
+      "command": "click",
+      "target": "css=tbody > .editing",
+      "targets": [
+        ["css=tbody > .editing", "css:finder"],
+        ["xpath=//div[@id='create-vm-wizards-storage']/div[2]/table/tbody/tr", "xpath:idRelative"],
+        ["xpath=//tbody/tr", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3d61522d-370b-427c-bc44-a6bfed86c223",
+      "comment": "",
+      "command": "type",
+      "target": "id=create-vm-wizards-storage-undefined-size-edit",
+      "targets": [
+        ["id=create-vm-wizards-storage-undefined-size-edit", "id"],
+        ["css=#create-vm-wizards-storage-undefined-size-edit", "css:finder"],
+        ["xpath=//input[@id='create-vm-wizards-storage-undefined-size-edit']", "xpath:attributes"],
+        ["xpath=//div[@id='create-vm-wizards-storage']/div[2]/table/tbody/tr/td[3]/div/div/input", "xpath:idRelative"],
+        ["xpath=//td[3]/div/div/input", "xpath:position"]
+      ],
+      "value": "5"
+    }, {
+      "id": "ca635713-75f7-4caa-b2f1-09d8d3d26424",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(3)",
+      "targets": [
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[35]", "xpath:attributes"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'다음')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fcde5f90-67db-4593-a32f-53fcd37a5b30",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.btn:nth-child(3)",
+      "targets": [
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[35]", "xpath:attributes"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'다음')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "38d1069e-85af-44d1-8c6e-9cd7eb200ca2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(3)",
+      "targets": [
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[33]", "xpath:attributes"],
+        ["xpath=//button[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "405c47ed-a557-4fae-9e6b-2c68627b4989",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.btn:nth-child(4)",
+      "targets": [
+        ["css=.btn:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='button'])[34]", "xpath:attributes"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'가상 머신 보기 ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "25fd527b-ba25-4967-9896-cf58d5236e56",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(4)",
+      "targets": [
+        ["css=.btn:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='button'])[34]", "xpath:attributes"],
+        ["xpath=//button[4]", "xpath:position"],
+        ["xpath=//button[contains(.,'가상 머신 보기 ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "d4dd7251-a019-40f3-ac5c-c7b4e1373e03",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["1074ea7a-00d3-4370-9742-161fbfb221ca"]
+  }],
+  "urls": ["https://master164.tmax.com/"],
+  "plugins": []
+}

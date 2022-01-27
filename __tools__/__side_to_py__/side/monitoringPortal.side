@@ -1,0 +1,97 @@
+{
+  "id": "7549d689-35de-4ffb-a89a-3fedea01f954",
+  "version": "2.0",
+  "name": "monitoringPortal",
+  "url": "https://master165.tmax.com",
+  "tests": [{
+    "id": "1982c16d-354c-4c04-b457-570da6f591ad",
+    "name": "monitoringPortal",
+    "commands": [{
+      "id": "c5e4248f-c74f-4a08-8356-a843aa39843e",
+      "comment": "",
+      "command": "open",
+      "target": "/ovirt-engine/webadmin/?locale=ko_KR",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "374627ba-fac6-4d4c-a9de-899521557a1e",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "974x1040",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fe5d8d65-0812-4ba5-aadd-7cbd74c5b71f",
+      "comment": "",
+      "command": "click",
+      "target": "css=#compute > .list-group-item-value",
+      "targets": [
+        ["css=#compute > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='compute']/span[2]", "xpath:idRelative"],
+        ["xpath=//li[2]/a/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'컴퓨팅')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b3ca369-5b30-4003-b7ad-f72bce2a67b4",
+      "comment": "",
+      "command": "click",
+      "target": "css=#MenuView_clustersAnchor > .list-group-item-value",
+      "targets": [
+        ["css=#MenuView_clustersAnchor > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='MenuView_clustersAnchor']/span", "xpath:idRelative"],
+        ["xpath=//ul[6]/li/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'클러스터')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c34c0d56-c51f-490e-bb6b-b1dd75c49bb3",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d96b9253-ef26-4369-92e6-b6de10fed66f",
+      "comment": "",
+      "command": "click",
+      "target": "id=MainClusterView_table_content_col1_row0",
+      "targets": [
+        ["id=MainClusterView_table_content_col1_row0", "id"],
+        ["linkText=Default", "linkText"],
+        ["css=#MainClusterView_table_content_col1_row0", "css:finder"],
+        ["xpath=//a[contains(text(),'Default')]", "xpath:link"],
+        ["xpath=//a[@id='MainClusterView_table_content_col1_row0']", "xpath:attributes"],
+        ["xpath=//td[@id='gwt-uid-145']/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, 'javascript:;')])[142]", "xpath:href"],
+        ["xpath=//td[2]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "71d4d3a9-0692-4e94-bc69-f83980e75322",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=MainClusterView_table_content_col1_row0",
+      "targets": [
+        ["id=MainClusterView_table_content_col1_row0", "id"],
+        ["linkText=Default", "linkText"],
+        ["css=#MainClusterView_table_content_col1_row0", "css:finder"],
+        ["xpath=//a[contains(text(),'Default')]", "xpath:link"],
+        ["xpath=//a[@id='MainClusterView_table_content_col1_row0']", "xpath:attributes"],
+        ["xpath=(//a[contains(@href, 'javascript:;')])[142]", "xpath:href"],
+        ["xpath=//td[2]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "ad9ce928-49fa-42cd-9454-c3399f82d02f",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["1982c16d-354c-4c04-b457-570da6f591ad"]
+  }],
+  "urls": ["https://master165.tmax.com/"],
+  "plugins": []
+}

@@ -1,0 +1,145 @@
+{
+  "id": "489a3365-ab8d-4fbb-b5cd-1995b08bb11a",
+  "version": "2.0",
+  "name": "snapshotCreate",
+  "url": "https://master165.tmax.com",
+  "tests": [{
+    "id": "327ef5ed-c2e4-42b6-a54a-eb884a868a82",
+    "name": "snapshotCreate",
+    "commands": [{
+      "id": "3c6530c5-924d-4ef4-9a5c-a5aedf0e73ae",
+      "comment": "",
+      "command": "open",
+      "target": "/ovirt-engine/webadmin/?locale=ko_KR",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c8af23b8-fc69-422d-8cae-46b93f5e425f",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "974x1040",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6a78aba5-7b1b-43eb-9dea-0a2ed9b765e3",
+      "comment": "",
+      "command": "click",
+      "target": "css=#compute > .list-group-item-value",
+      "targets": [
+        ["css=#compute > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='compute']/span[2]", "xpath:idRelative"],
+        ["xpath=//li[2]/a/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'컴퓨팅')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "da48e04d-95ae-4bec-ab54-9f56064b5270",
+      "comment": "",
+      "command": "click",
+      "target": "css=#MenuView_vmsAnchor > .list-group-item-value",
+      "targets": [
+        ["css=#MenuView_vmsAnchor > .list-group-item-value", "css:finder"],
+        ["xpath=//a[@id='MenuView_vmsAnchor']/span", "xpath:idRelative"],
+        ["xpath=//li[2]/div/ul/li/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'가상머신')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "685084cc-39e9-4dcb-b1bf-bbc8c4968ea2",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d604736c-bec4-4939-9cf8-023ff10aedd4",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.GB10KEXCAOB > .dropdown-toggle",
+      "targets": [
+        ["css=.GB10KEXCAOB > .dropdown-toggle", "css:finder"],
+        ["xpath=(//button[@type='button'])[128]", "xpath:attributes"],
+        ["xpath=//div[4]/div/div/button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2c976c21-8eff-4784-a7bb-8617ea4532b2",
+      "comment": "",
+      "command": "click",
+      "target": "id=MainVirtualMachineView_table_content_col2_row4",
+      "targets": [
+        ["id=MainVirtualMachineView_table_content_col2_row4", "id"],
+        ["linkText=auto_vm_nBBnVRiD", "linkText"],
+        ["css=#MainVirtualMachineView_table_content_col2_row4", "css:finder"],
+        ["xpath=//a[contains(text(),'auto_vm_nBBnVRiD')]", "xpath:link"],
+        ["xpath=//a[@id='MainVirtualMachineView_table_content_col2_row4']", "xpath:attributes"],
+        ["xpath=//td[@id='gwt-uid-277']/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, 'javascript:;')])[165]", "xpath:href"],
+        ["xpath=//tr[5]/td[3]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a683acc5-988d-440a-8f9a-b8f6fdbd7081",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=스냅샷",
+      "targets": [
+        ["linkText=스냅샷", "linkText"],
+        ["css=.nav-tabs > li:nth-child(4) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'스냅샷')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '#vms-snapshots')]", "xpath:href"],
+        ["xpath=//div[2]/div/div/ul/li[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'스냅샷')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "57af3465-718d-4e40-83c7-8c4835be7411",
+      "comment": "",
+      "command": "click",
+      "target": "id=DetailActionPanelView_New",
+      "targets": [
+        ["id=DetailActionPanelView_New", "id"],
+        ["css=#DetailActionPanelView_New", "css:finder"],
+        ["xpath=//button[@id='DetailActionPanelView_New']", "xpath:attributes"],
+        ["xpath=//div[2]/div/div[2]/div/div/div/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e676cf48-2fdd-4d29-a54d-c2c0710ed984",
+      "comment": "",
+      "command": "type",
+      "target": "id=VmSnapshotCreatePopupWidget_description",
+      "targets": [
+        ["id=VmSnapshotCreatePopupWidget_description", "id"],
+        ["css=#VmSnapshotCreatePopupWidget_description", "css:finder"],
+        ["xpath=//input[@id='VmSnapshotCreatePopupWidget_description']", "xpath:attributes"],
+        ["xpath=//div[@id='VmSnapshotCreatePopupWidget']/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "test1"
+    }, {
+      "id": "8be016f0-b605-4ac0-8a84-19cf883b378c",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=VmSnapshotCreatePopupWidget_description",
+      "targets": [
+        ["id=VmSnapshotCreatePopupWidget_description", "id"],
+        ["css=#VmSnapshotCreatePopupWidget_description", "css:finder"],
+        ["xpath=//input[@id='VmSnapshotCreatePopupWidget_description']", "xpath:attributes"],
+        ["xpath=//div[@id='VmSnapshotCreatePopupWidget']/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }]
+  }],
+  "suites": [{
+    "id": "b30bfd81-bd81-4395-a6bd-e29e3707bf84",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["327ef5ed-c2e4-42b6-a54a-eb884a868a82"]
+  }],
+  "urls": ["https://master165.tmax.com/"],
+  "plugins": []
+}
