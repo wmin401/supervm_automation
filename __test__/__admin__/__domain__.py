@@ -31,6 +31,7 @@ class admin_domain:
         self._domainISCSIPath = '10.0.0.5'
 
         self._domainLOCALName = 'Local'
+        self._domainLOCALPath = '/data'
 
     def test(self):
         #self.create('nfs')
@@ -85,16 +86,14 @@ class admin_domain:
         #self.maintenance('iscsi')
         #self.destroy('iscsi')
 
-        ##self.create('local')
+        self.create('local')
         self.maintenance('local')
         self.active('local')
-        #self.maintenance('local')
-        #self.detach('local')
-        #self.maintenance('local')
-        #self.detach('local')
-        ##self.create('local')
-        #self.maintenance('local')
-        ##self.destroy('local')
+        self.maintenance('local')
+        self.detach('local')
+        self.create('local')
+        self.maintenance('local')
+        self.destroy('local')
         
     def create(self, storageType):
         printLog('Create Domain')
@@ -218,7 +217,7 @@ class admin_domain:
                     result = FAIL
                     msg = "Failed to create new GLUSTER domain..."
                 
-            '''
+                '''
             elif(storageType == 'ISCSI' or storageType == 'iscsi'):
                 # iSCSI 선택
                 self.webDriver.implicitlyWait(10)
@@ -248,7 +247,52 @@ class admin_domain:
                 else:
                     result = FAIL
                     msg = "Failed to create new GLUSTER domain..."
-            '''
+                '''
+
+            elif(storageType == 'LOCAL' or storageType == 'local'):
+
+                # 데이터 센터 클릭
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('id','StoragePopupView_dataCenter',True)
+
+                # 로컬 스토리지 선택
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[1]/div[1]/div/div[2]/div[1]/div/div/div/ul/li[2]/a',True)
+
+                time.sleep(2)
+
+                # 스토리지 유형 클릭
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('id','StoragePopupView_availableStorageTypeItems',True)
+
+                # 로컬 스토리지 선택
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[3]/div[1]/div/div[1]/div/div/div/ul/li[4]',True)
+
+                # 이름 입력
+                self.webDriver.explicitlyWait(10,By.ID,'StoragePopupView_name')
+                self.webDriver.findElement('id','StoragePopupView_name',True)
+                self.webDriver.sendKeys(self._domainLOCALName)
+
+                # 경로 입력
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('id','LocalStorageView_localPathEditor',True)
+                self.webDriver.sendKeys(self._domainLOCALPath)
+
+                # 새로운 도메인 OK 버튼
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('css_selector','#StoragePopupView_OnSave > button',True)
+
+                time.sleep(50)
+
+                _createCheck = self.webDriver.tableSearch(self._domainLOCALName,2)
+
+                if _createCheck == True:
+                    result = PASS
+                    msg = ''
+                else:
+                    result = FAIL
+                    msg = "Failed to create new LOCAL domain..."
             
         except Exception as e:
             result = FAIL
@@ -667,6 +711,10 @@ class admin_domain:
                 self.webDriver.implicitlyWait(10)
                 self.webDriver.findElement('id','DetailActionPanelView_Detach',True)
 
+                # 도메인을 포멧합니다. 스토리지 컨텐츠가 손실됩니다! 체크
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('id','RemoveConfirmationPopupView_force',True)
+
                 # 스토리지 분리 OK 클릭
                 self.webDriver.implicitlyWait(10)
                 self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnDetach > button',True)
@@ -925,6 +973,12 @@ class admin_domain:
                         
                 _destroyCheck = self.webDriver.tableSearch(self._domainNFSName,2)
 
+                if _destroyCheck == True:
+                    result = FAIL
+                    msg = 'Failed to destroy NFS domain...'
+                else:
+                    result = PASS
+                    msg = ''
 
             elif(storageType == 'CEPH' or storageType == 'ceph'):
 
@@ -952,6 +1006,13 @@ class admin_domain:
                         
                 _destroyCheck = self.webDriver.tableSearch(self._domainCEPHName,2)
 
+                if _destroyCheck == True:
+                    result = FAIL
+                    msg = 'Failed to destroy CEPH domain...'
+                else:
+                    result = PASS
+                    msg = ''
+
             elif(storageType == 'GLUSTER' or storageType == 'gluster'):
 
                 # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
@@ -977,6 +1038,13 @@ class admin_domain:
                 time.sleep(5)
                         
                 _destroyCheck = self.webDriver.tableSearch(self._domainGLUSTERName,2)
+
+                if _destroyCheck == True:
+                    result = FAIL
+                    msg = 'Failed to destroy GLUSTER domain...'
+                else:
+                    result = PASS
+                    msg = ''
             
             elif(storageType == 'ISCSI' or storageType == 'iscsi'):
 
@@ -1004,9 +1072,42 @@ class admin_domain:
                         
                 _destroyCheck = self.webDriver.tableSearch(self._domainISCSIName,2)
 
+                if _destroyCheck == True:
+                    result = FAIL
+                    msg = 'Failed to destroy iSCSI domain...'
+                else:
+                    result = PASS
+                    msg = ''
+            
+            elif(storageType == 'LOCAL' or storageType == 'local'):
+
+                # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
+                self.webDriver.tableSearch(self._domainLOCALName,2,True,False)
+                time.sleep(1)
+
+                # 더보기 클릭
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('css_selector','body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button',True)
+
+                # 파괴 클릭
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('css_selector','#ActionPanelView_Destroy > a',True)
+
+                # 작업 승인 체크
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('id','ForceRemoveConfirmationPopupView_latch',True)
+
+                # 스토리지 도메인 삭제 OK 클릭
+                self.webDriver.implicitlyWait(10)
+                self.webDriver.findElement('id','ForceRemoveConfirmationPopupView_OnDestroy',True)
+
+                time.sleep(5)
+                        
+                _destroyCheck = self.webDriver.tableSearch(self._domainLOCALName,2)
+
             if _destroyCheck == True:
                 result = FAIL
-                msg = 'Failed to destroy new domain...'
+                msg = 'Failed to destroy Local domain...'
             else:
                 result = PASS
                 msg = ''
