@@ -24,26 +24,28 @@ class admin_template:
         self.setup()
         
         self.create()
-        time.sleep(0.3)
-        self.update()
-        time.sleep(0.3)
-        self.createVM(storage='Thin')        
-        time.sleep(0.3)
-        self.copyTemplateDisk()
-        time.sleep(0.3)
-        self.removeVM()
-        time.sleep(0.3)
-        self.createVM(storage='Copy')
-        time.sleep(0.3)
-        self.removeVM()
-        time.sleep(0.3)
-        self.addRole()
-        time.sleep(0.3)
-        self.removeRole()
-        time.sleep(0.3)
-        self.remove()
+        # time.sleep(0.3)
+        # self.update()
+        # time.sleep(0.3)
+        # self.createVM(storage='Thin')        
+        # time.sleep(0.3)
+        # self.copyTemplateDisk()
+        # time.sleep(0.3)
+        # self.removeVM()
+        # time.sleep(0.3)
+        # self.createVM(storage='Copy')
+        # time.sleep(0.3)
+        # self.removeVM()
+        # time.sleep(0.3)
+        # self.addRole()
+        # time.sleep(0.3)
+        # self.removeRole()
+        # time.sleep(0.3)
+        # self.remove()
+        
+        self.templeteMigration()
 
-        self.vm.remove()
+        # self.vm.remove()
 
     def setup(self):
         # 컴퓨팅 클릭
@@ -493,3 +495,105 @@ class admin_template:
         self._templateResult.append(['template' + DELIM + 'remove' + DELIM + result + DELIM + msg])
 
         self.tl.junitBuilder('TEMPLATE_REMOVE', result, msg)
+
+        
+    # 2-529 : 내보내기 도메인으로 템플릿 마이그레이션 
+
+    def templeteMigration(self):    
+        printLog(printSquare('Templete Migration'))
+
+        try:
+            
+            
+            result = FAIL
+            msg = ''
+            #템플릿 탭
+            self.setup() 
+
+            # table 내부 전부 검색해서 입력한 이름이 있을 경우 클릭 
+            time.sleep(0.5)
+            self.webDriver.tableSearch(self._templateName, 1, rowClick=True)   
+
+            # 내보내기 버튼 클릭 
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_____')
+            self.webDriver.findElement('css_selector', '#ActionPanelView_____ > button', True)
+
+            # 내보내기 도메인으로 내보내기 
+            try:
+                self.webDriver.findElement('link_text', '내보내기 도메인으로 내보내기', True)
+            except:
+                self.webDriver.findElement('link_text', 'Export to Export Domain', True)
+                
+            time.sleep(1)
+
+            # 강제 적용 체크박스 클릭 
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[1]/div/div/div[1]/div/span/input', True)   
+            
+            
+            # id_ = self.webDriver.getAttribute('id')
+            
+            # OK클릭
+            self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[3]/div[1]/div[2]/button', True)   
+
+            # 결과 확인하기
+            
+            # 스토리지 클릭
+            printLog("[SETUP] Storage - Disk ")
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_storageTab',True)
+
+            # 스토리지 도메인 클릭 
+            self.webDriver.explicitlyWait(10, By.ID, 'MenuView_domainsAnchor')
+            self.webDriver.findElement('id','MenuView_domainsAnchor',True)
+            time.sleep(2)            
+            
+            
+            #export_domain 클릭 
+            self.webDriver.findElement('link_text', 'export_domain', True)
+            #self.webDriver.tableSearch(self.export_domain1, 2, rowClick=False, nameClick=True)
+            
+            #템플릿 가져오기 클릭 
+            try:
+                self.webDriver.findElement('link_text', '템플릿 가져오기', True)
+            except:
+                self.webDriver.findElement('link_text', 'Template Import', True)
+                
+            # table 내부 전부 검색해서 입력한 이름이 있을 경우 tmp에 저장
+            time.sleep(1)
+            table = self.webDriver.getDriver().find_element_by_css_selector('tbody')
+            i = 0
+            for tr in table.find_elements_by_tag_name("tr"):          
+                td = tr.find_elements_by_tag_name("td")                                       
+                if self._templateName == td[i].text:                     
+                    result = PASS
+                    msg = ''
+                    break
+                else:
+                    result = FAIL
+                    msg = 'Failed to templete migration...'
+                
+
+
+
+                
+            time.sleep(5)
+            tmp = self.webDriver.tableSearch(self._templateName, 0, rowClick=False , nameClick=False, returnValueList = True)   
+            
+            # 값 비교하여 같으면 PASS
+            if self._templateName == tmp[0]:
+                
+                result = PASS
+                msg = ''
+
+            
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[TEMPLETE MIGRATION] " + msg)
+            
+        # 결과 출력
+        printLog("[TEMPLETE MIGRATION] RESULT : " + result)
+        self._templateResult.append(['templete' + DELIM + 'migration' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('TEMPLETE_MIGRATION',result, msg)
