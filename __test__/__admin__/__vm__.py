@@ -63,9 +63,27 @@ class admin_vm:
                 continue
         return status
 
-    def test(self):
-        self.create()
+    def advancedOption(self):
+        # 고급 옵션 표시 클릭 (열려있으면 누르지 않음)
+        self.webDriver.findElement('css_selector','#VmPopupView_OnAdvanced > button')
+        advancedOption = self.webDriver.getAttribute('textContent')
+        if advancedOption == '고급 옵션 숨기기' or advancedOption == 'Hide Advanced Options':
+            pass
+        elif advancedOption == '고급 옵션 표시' or advancedOption == 'Show Advanced Options':
+            self.webDriver.click()
+        time.sleep(1)
 
+    def selectDropdownMenu(self, type_, path, name):
+        # 드롭다운 메뉴에서 원하는거 클릭하고 싶을때 사용    
+        lis = self.webDriver.findElement(type_ + '_all', path + ' > li')
+        for li in lis:
+            if name == li.get_attribute('textContent'):
+                li.click()
+                break
+
+    def test(self):
+        # VM 생성
+        self.create()
         self.createWindows()
 
         # 가상 디스크
@@ -84,12 +102,19 @@ class admin_vm:
         self.copy()
         self.run()
 
+        # 호스트
+        self.pinningToMultipleHosts()
+        self.ViewingPinnedToHost()
+
         # 가상 메모리
         self.virtualMemoryHotPlugging()
         self.virtualMemoryHotUnplugging()
 
         # vcpu
         self.hotPluggingVCPU()
+
+        # cd변경
+        self.changeCD()
 
         self.reboot()
         self.shutdown()
@@ -219,6 +244,7 @@ class admin_vm:
             for li in lis:
                 if 'Windows 10' == li.get_attribute('textContent'):
                     li.click()
+                    break
 
             # 디스크 생성 클릭
             self.webDriver.findElement('id','VmPopupWidget_instanceImages__createEdit',True)
@@ -232,14 +258,7 @@ class admin_vm:
             self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
             time.sleep(2)
 
-            # 고급 옵션 표시 클릭 (열려있으면 누르지 않음)
-            self.webDriver.findElement('css_selector','#VmPopupView_OnAdvanced > button')
-            advancedOption = self.webDriver.getAttribute('textContent')
-            if advancedOption == '고급 옵션 숨기기' or advancedOption == 'Hide Advanced Options':
-                pass
-            elif advancedOption == '고급 옵션 표시' or advancedOption == 'Show Advanced Options':
-                self.webDriver.click()
-            time.sleep(1)
+            self.advancedOption()
 
             # 부트 옵션 클릭
             self.webDriver.findElement('css_selector','#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(9) > a',True)
@@ -1326,3 +1345,196 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'hot plugging vcpu' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_HOT_PLUGGING_VCPU',result, msg) # 모두 대문자
+
+    def pinningToMultipleHosts(self):
+        printLog(printSquare('Pinning VM to Multiple hosts'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            self.setup()
+
+            self._specificHost = ADMIN_HOSTNAME
+            # 생성한 vm 클릭
+            self.webDriver.tableSearch(self._vmName, 2, True)
+
+            # 편집 클릭
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            time.sleep(1)
+
+            self.advancedOption()
+
+            # 특정 호스트 선택
+            lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
+            for li in lis:
+                if '호스트' == li.get_attribute('textContent') or 'Hosts' == li.get_attribute('textContent'):
+                    li.click()
+                    break
+            time.sleep(.3)
+            self.webDriver.findElement('id', 'VmPopupWidget_specificHost', True)
+
+            # admin 노드 선택
+            # self.webDriver.findElement('css_selector', '#VmPopupWidget_defaultHost > div > Button', True)
+            # lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget_defaultHost > div > ul > li')
+            # for li in lis:
+            #     if self._specificHost == li.get_attribute('textContent'):
+            #         li.click()
+            #         break
+
+            # 고가용성 선택
+            for li in lis:
+                if '고가용성' == li.get_attribute('textContent') or 'Hosts' == li.get_attribute('textContent'):
+                    li.click()
+                    break
+            time.sleep(.3)
+            self.webDriver.findElement('id', 'VmPopupWidget_isHighlyAvailable', True)
+            time.sleep(.1)
+
+            
+            self.webDriver.findElement('css_selector', '#VmPopupWidget_lease > div > button', True)
+            
+            lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget_lease > div > ul > li')
+            for li in lis:
+                if '가상 머신 임대 없음' == li.get_attribute('textContent') or 'No VM Lease' == li.get_attribute('textContent'):
+                    li.click()
+
+            # OK
+            self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
+            # self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmNextRunConfigurationPopupView_updateExistingVm')
+            # self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
+
+            # 재부팅
+            self.reboot()
+
+            # 적용 확인
+            self.setup()
+            self.webDriver.tableSearch(self._vmName, 2, rowClick = False, nameClick = True)
+            time.sleep(.5)
+                    
+            self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row7_value')
+            self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row7_value')
+            _highAvailability = self.webDriver.getAttribute('textContent')
+
+            if '예' in _highAvailability or 'Yes' in _highAvailability:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to pin multiple hosts'
+                printLog("[VM PINNING MULTIPLE HOSTS] " + msg)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM PINNING MULTIPLE HOSTS] " + msg)
+        printLog("[VM PINNING MULTIPLE HOSTS] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'pinning multiple hosts' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_PINNING_MULTIPLE_HOSTS',result, msg) # 모두 대문자
+
+    def ViewingPinnedToHost(self):
+        
+        printLog(printSquare('Viewing VM pinned to hosts'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            # 컴퓨팅 - 호스트
+            time.sleep(2)
+            printLog("[VM SETUP] Compute - Hosts")
+            self.webDriver.findElement('id','compute', True)
+            time.sleep(0.5)
+            self.webDriver.findElement('id','MenuView_hostsAnchor',True)
+            time.sleep(2)
+
+            self.webDriver.tableSearch(self._specificHost, 2, rowClick = False, nameClick = True)
+            time.sleep(1)
+
+            time.sleep(0.5)
+            try:
+                self.webDriver.findElement('link_text', '가상머신', True)
+            except:
+                self.webDriver.findElement('link_text', 'Virtual Machines', True)
+            time.sleep(0.5)
+
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[3]/div[1]/div/div/div/div/div[2]/label[2]', True)
+
+            isPinned = self.webDriver.tableSearch(self._vmName, 1, rowClick = False, nameClick = False, returnValueList = True)
+            if isPinned is not False:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to view...'
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM VIEWING PINNED HOSTS] " + msg)
+        printLog("[VM VIEWING PINNED HOSTS] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'viewing pinned hosts' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_VIEWING_PINNED_HOSTS',result, msg) # 모두 대문자
+
+    def changeCD(self):        
+        printLog(printSquare('Change CD for VM'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            self.setup()
+            self._vmName = 'test'
+            self._cdName = 'Windows10.iso'
+
+            # 생성한 vm 클릭
+            self.webDriver.tableSearch(self._vmName, 2, True)
+
+            # 꺼내기 생략
+            # # 추가 옵션 - CD 변경 클릭
+            # self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            # self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
+            # self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
+
+            # # 꺼내기 선택
+            # self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
+            # self.selectDropdownMenu('css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', '[꺼내기]')
+            # self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
+            # time.sleep(.5)
+
+            # 추가 옵션 - CD 변경 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
+            self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
+
+            # Windows10.iso 선택
+            self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
+            self.selectDropdownMenu('css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
+            self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
+            time.sleep(.5)
+            
+            # 추가 옵션 - CD 변경 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
+            self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
+
+            self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button')
+            cd = self.webDriver.getAttribute('textContent')
+            if cd == self._cdName:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to change cd'
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM CHANGE CD] " + msg)
+        printLog("[VM CHANGE CD] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'change cd' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_CHANGE_CD',result, msg) # 모두 대문자
+
