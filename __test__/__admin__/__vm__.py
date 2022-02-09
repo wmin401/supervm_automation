@@ -1,4 +1,3 @@
-from re import A
 import time
 from __common__.__parameter__ import *
 from __common__.__module__ import *
@@ -67,10 +66,12 @@ class admin_vm:
     def test(self):
         self.create()
 
+        self.createWindows()
+
         # 가상 디스크
         self.addVirtualDisk()
         self.attachDisk()
-        # self.virtualDiskHotPlugging()
+        self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
         # 네트워크 인터페이스
@@ -194,6 +195,102 @@ class admin_vm:
         self._vmResult.append(['vm' + DELIM + 'create' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_CREATE',result, msg) # 모두 대문자
+
+    def createWindows(self):
+        printLog(printSquare('Create windows VM'))
+        result = FAIL
+        msg = ''
+
+        try:            
+            self.setup()
+
+            # 새로 만들기
+            self.webDriver.findElement('id','ActionPanelView_NewVm',True)
+            time.sleep(2)
+
+            # 이름 입력
+            self.webDriver.findElement('id','VmPopupWidget_name',True)
+            self.windowsVMName = 'auto_vm_windows_%s'%randomString()
+            self.webDriver.sendKeys(self.windowsVMName)
+
+            # 운영 시스템 변경
+            self.webDriver.findElement('css_selector','#VmPopupWidget_osType > div > button', True)
+            lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget_osType > div > ul > li')
+            for li in lis:
+                if 'Windows 10' == li.get_attribute('textContent'):
+                    li.click()
+
+            # 디스크 생성 클릭
+            self.webDriver.findElement('id','VmPopupWidget_instanceImages__createEdit',True)
+            time.sleep(1)
+
+            # 크기 입력
+            self.webDriver.findElement('id','VmDiskPopupWidget_size',True)
+            self.webDriver.sendKeys(self._diskSize)
+            
+            # OK 버튼 클릭
+            self.webDriver.findElement('id','VmDiskPopupView_OnSave',True)
+            time.sleep(2)
+
+            # 고급 옵션 표시 클릭 (열려있으면 누르지 않음)
+            self.webDriver.findElement('css_selector','#VmPopupView_OnAdvanced > button')
+            advancedOption = self.webDriver.getAttribute('textContent')
+            if advancedOption == '고급 옵션 숨기기' or advancedOption == 'Hide Advanced Options':
+                pass
+            elif advancedOption == '고급 옵션 표시' or advancedOption == 'Show Advanced Options':
+                self.webDriver.click()
+            time.sleep(1)
+
+            # 부트 옵션 클릭
+            self.webDriver.findElement('css_selector','#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(9) > a',True)
+
+            # 첫 번째 장치 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','VmPopupWidget_firstBootDevice',True)
+            
+            # 첫 번째 장치 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('css_selector','#VmPopupWidget_firstBootDevice > div > ul > li:nth-child(2)',True)
+            
+            # CD/DVD 연결 체크
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','VmPopupWidget_cdAttached',True)
+            time.sleep(.3)
+
+            # windows.iso 클릭            
+            self.webDriver.findElement('css_selector', '#VmPopupWidget_cdImage > div > button', True)
+            lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget_cdImage > div > ul > li')
+            for li in lis:
+                if 'Windows10.iso' == li.get_attribute('textContent'):
+                    li.click()
+
+            # OK 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('css_selector','#VmPopupView_OnSave > button',True)
+            time.sleep(15)
+
+            # 생성 확인
+            _createCheck = self.webDriver.tableSearch(self.windowsVMName, 2, False, False, True)
+            if _createCheck == False:
+                result = FAIL
+                msg = "Failed to create new vm..."
+                printLog("[VM CREATE WINDOWS] " + msg)
+
+            else:
+                result = PASS
+                printLog("VM NAME : %s"%self.windowsVMName)
+                printLog("VM DISK NAME : %s_disk"%self.windowsVMName)
+                printLog("VM DISK SIZE : %s GiB"%self._diskSize)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM CREATE WINDOWS] EXCEPTION : " + msg)
+        printLog("[VM CREATE WINDOWS] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'create windows' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_CREATE_WINDOWS',result, msg) # 모두 대문자
 
     def update(self):
         printLog(printSquare('Update VM'))
@@ -967,19 +1064,24 @@ class admin_vm:
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
             time.sleep(1)
             
-            table = self.webDriver.findElement('css_selector', 'tbody')
-            trs = table.find_elements_by_tag_name("tr")
-            for i in range(len(trs)):
-                td = trs[i].find_elements_by_tag_name("td")
-                try:
-                    name = td[1].get_attribute('textContent')
-                except:
-                    name = 'None'
-                print(name)
-                # if self._unAttachedDiskName in td[1].get_attribute('textContent'):
-                #     status = td[0].get_attribute('data-tooltip-content')
-                #     print(status)
-    
+            # 스토리지 - 디스크
+            printLog("[VM SETUP] Storage - Disks")
+            self.webDriver.findElement('id','MenuView_storageTab', True)
+            time.sleep(0.5)
+            self.webDriver.findElement('id','MenuView_disksAnchor',True)
+            time.sleep(2)
+
+            self.webDriver.tableSearch(self._unAttachedDiskName, 0, rowClick = False, nameClick = True)
+            time.sleep(1)
+
+            try:
+                self.webDriver.findElement('link_text', '가상 머신', True)
+            except:
+                self.webDriver.findElement('link_text', 'Virtual Machines', True)
+            time.sleep(0.5)
+
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
+
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
