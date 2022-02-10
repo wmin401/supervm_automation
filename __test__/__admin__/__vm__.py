@@ -1081,21 +1081,21 @@ class admin_vm:
             # 가상머신 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 디스크탭 클릭
-            time.sleep(0.5)
+            time.sleep(1)
             try:
                 self.webDriver.findElement('link_text', '디스크', True)
             except:
                 self.webDriver.findElement('link_text', 'Disks', True)
-            time.sleep(0.5)
+            time.sleep(1)
 
             # 추가한 가상 디스크 선택
             self.webDriver.tableSearch(self._unAttachedDiskName, 1, rowClick=True)
 
             # 추가 옵션 버튼 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div[2]/div/button', True)
-            time.sleep(0.3)
+            time.sleep(1)
             self.webDriver.findElement('id', 'DetailActionPanelView_Unplug', True)
-            time.sleep(0.3)
+            time.sleep(1)
             # OK 클릭
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
             time.sleep(1)
@@ -1103,7 +1103,7 @@ class admin_vm:
             # 스토리지 - 디스크
             printLog("[VM SETUP] Storage - Disks")
             self.webDriver.findElement('id','MenuView_storageTab', True)
-            time.sleep(0.5)
+            time.sleep(1)
             self.webDriver.findElement('id','MenuView_disksAnchor',True)
             time.sleep(2)
 
@@ -1114,7 +1114,7 @@ class admin_vm:
                 self.webDriver.findElement('link_text', '가상 머신', True)
             except:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
-            time.sleep(0.5)
+            time.sleep(1)
 
             result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
 
@@ -1197,11 +1197,12 @@ class admin_vm:
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            time.sleep(1)
 
             # 시스템 탭 클릭
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
             self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
-
+            time.sleep(0.5)
             # 메모리 사이즈 변경
             self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_memSize')
             self.webDriver.findElement('id', 'VmPopupWidget_memSize')
@@ -1221,6 +1222,7 @@ class admin_vm:
 
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(1)
 
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
