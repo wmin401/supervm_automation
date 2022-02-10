@@ -1391,7 +1391,7 @@ class admin_vm:
                 if '호스트' == li.get_attribute('textContent') or 'Hosts' == li.get_attribute('textContent'):
                     li.click()
                     break
-            time.sleep(.3)
+            time.sleep(1)
             self.webDriver.findElement('id', 'VmPopupWidget_specificHost', True)
 
             # admin 노드 선택
@@ -1407,9 +1407,9 @@ class admin_vm:
                 if '고가용성' == li.get_attribute('textContent') or 'Hosts' == li.get_attribute('textContent'):
                     li.click()
                     break
-            time.sleep(.3)
+            time.sleep(1)
             self.webDriver.findElement('id', 'VmPopupWidget_isHighlyAvailable', True)
-            time.sleep(.1)
+            time.sleep(1)
 
             
             self.webDriver.findElement('css_selector', '#VmPopupWidget_lease > div > button', True)
@@ -1421,7 +1421,7 @@ class admin_vm:
 
             # OK
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
-            time.sleep(.3)
+            time.sleep(1)
             self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
             time.sleep(5)
 
@@ -1431,7 +1431,7 @@ class admin_vm:
             # 적용 확인
             self.setup()
             self.webDriver.tableSearch(self._vmName, 2, rowClick = False, nameClick = True)
-            time.sleep(.5)
+            time.sleep(1)
                     
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row7_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row7_value')
