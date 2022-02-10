@@ -84,22 +84,22 @@ class admin_vm:
     def test(self):
         # VM 생성
         self.create()
-        # self.createWindows()
+        self.createWindows()
 
-        # # 가상 디스크
-        # self.addVirtualDisk()
-        # self.attachDisk()
-        # self.virtualDiskHotPlugging()
-        # self.removeVirtualDisk()
+        # 가상 디스크
+        self.addVirtualDisk()
+        self.attachDisk()
+        self.virtualDiskHotPlugging()
+        self.removeVirtualDisk()
 
-        # # 네트워크 인터페이스
-        # self.addNetworkInterface()
-        # self.updateNetworkInterface()
-        # self.networkInterfaceHotPlugging()
-        # self.deleteNetworkInterface()
+        # 네트워크 인터페이스
+        self.addNetworkInterface()
+        self.updateNetworkInterface()
+        self.networkInterfaceHotPlugging()
+        self.deleteNetworkInterface()
 
-        # self.update()
-        # self.copy()
+        self.update()
+        self.copy()
         self.run()
 
         # 호스트
