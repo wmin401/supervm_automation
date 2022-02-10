@@ -7,7 +7,7 @@ from __common__.__testlink__ import testlink
 from __test__.__admin__.__cluster__ import admin_cluster
 class admin_vm:
     def __init__(self, webDriver):
-        printLog('VM 1 TEST includes create, update, copy, run, shutdown, remove')
+        printLog('VM 1 TEST includes CRUD')
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
         # self._vmName = 'for_automation'
@@ -103,7 +103,7 @@ class admin_vm:
         self.run()
 
         # 호스트
-        self.pinningToMultipleHosts()
+        self.pinToMultipleHosts()
         self.ViewingPinnedToHost()
 
         # 가상 메모리
@@ -203,7 +203,7 @@ class admin_vm:
             if _createCheck == False:
                 result = FAIL
                 msg = "Failed to create new vm..."
-                printLog("[VM CREATE] " + msg)
+                printLog("[VM CREATE] MESSAGE : " + msg)
 
             else:
                 result = PASS
@@ -215,7 +215,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM CREATE] EXCEPTION : " + msg)
+            printLog("[VM CREATE] MESSAGE : " + msg)
         printLog("[VM CREATE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'create' + DELIM + result + DELIM + msg])
         
@@ -293,7 +293,7 @@ class admin_vm:
             if _createCheck == False:
                 result = FAIL
                 msg = "Failed to create new vm..."
-                printLog("[VM CREATE WINDOWS] " + msg)
+                printLog("[VM CREATE WINDOWS] MESSAGE : " + msg)
 
             else:
                 result = PASS
@@ -305,7 +305,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM CREATE WINDOWS] EXCEPTION : " + msg)
+            printLog("[VM CREATE WINDOWS] MESSAGE : " + msg)
         printLog("[VM CREATE WINDOWS] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'create windows' + DELIM + result + DELIM + msg])
         
@@ -323,7 +323,8 @@ class admin_vm:
             self.webDriver.tableSearch(self._vmName, 2, True)
 
             # 편집 클릭
-            self.webDriver.findElement('id','ActionPanelView_Edit',True)            
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)    
+            time.sleep(3)        
 
             # 설명 변경            
             self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_description')
@@ -344,12 +345,13 @@ class admin_vm:
             else:
                 result = FAIL
                 msg = 'Failed to update vm'
+                printLog("[VM UPDATE] MESSAGE : " + msg)
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM UPDATE] " + msg)
+            printLog("[VM UPDATE] MESSAGE : " + msg)
         printLog("[VM UPDATE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'update' + DELIM + result + DELIM + msg])
         
@@ -383,7 +385,13 @@ class admin_vm:
             self.webDriver.findElement('id', 'VmPopupWidget_name', True)
             self.webDriver.sendKeys('copy_%s'%self._vmName)
 
+            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_description')
+            self.webDriver.findElement('id', 'VmPopupWidget_description', True)
+            self.webDriver.sendKeys('copied by automation')
+
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
+
+            time.sleep(60)
 
             st = time.time()
             while True:
@@ -403,18 +411,19 @@ class admin_vm:
                     if time.time() - st > 360: #최대 5분      
                         result = FAIL
                         msg = "Failed to copy vm..."
-                        printLog("[VM COPY] " + msg)                  
+                        printLog("[VM COPY] MESSAGE : " + msg)                  
                         break
                 except Exception as e:
                     result = FAIL
                     msg = str(e).replace("\n",'')
                     msg = msg[:msg.find('Element <')]
-                    printLog("[VM COPY] " + msg)
+                    printLog("[VM COPY] MESSAGE : " + msg)
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
+            printLog("[VM COPY] MESSAGE : " + msg)
         printLog("[VM COPY] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'copy' + DELIM + result + DELIM + msg])
         
@@ -422,7 +431,7 @@ class admin_vm:
 
         printLog("[VM COPY] Wait until vm's status will be ok")
 
-        time.sleep(120)
+        time.sleep(30)
 
     def run(self):
 
@@ -439,6 +448,7 @@ class admin_vm:
             if not self.diskStatus():
                 result = FAIL
                 msg = 'Disk is locked(timeout)...'
+                printLog("[VM SHUTDOWN] MESSAGE : " + msg)
                 self.tl.junitBuilder('VM_RUN',result, msg) # 모두 대문자
                 return
 
@@ -475,19 +485,20 @@ class admin_vm:
                     if ed - st > 300:
                         result = FAIL
                         msg = 'Failed to run vm ...'
-                        printLog("[VM SHUTDOWN] Message : " + msg)
+                        printLog("[VM SHUTDOWN] MESSAGE : " + msg)
                         break
 
                 except Exception as e:
                     result = FAIL
                     msg = str(e).replace("\n",'')
                     msg = msg[:msg.find('Element <')]
-                    printLog("[VM RUN] Message : " + msg)
+                    printLog("[VM RUN] MESSAGE : " + msg)
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
+            printLog("[VM RUN] MESSAGE : " + msg)
         printLog("[VM RUN] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'run' + DELIM + result + DELIM + msg])
         
@@ -588,12 +599,13 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
+            printLog("[VM SHUTDOWN] MESSAGE : " + msg)
         printLog("[VM SHUTDOWN] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
 
-    def reboot(self):
+    def reboot(self, save = True):
         printLog(printSquare('Reboot VM'))
         result = FAIL
         msg = ''
@@ -626,10 +638,13 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-        printLog("[VM REBOOT] RESULT : " + result)
-        self._vmResult.append(['vm' + DELIM + 'reboot' + DELIM + result + DELIM + msg])
+            printLog("[VM REBOOT] MESSAGE : " + msg)
         
-        self.tl.junitBuilder('VM_REBOOT',result, msg) # 모두 대문자
+        if save == True:
+            printLog("[VM REBOOT] RESULT : " + result)
+            self._vmResult.append(['vm' + DELIM + 'reboot' + DELIM + result + DELIM + msg])
+            
+            self.tl.junitBuilder('VM_REBOOT',result, msg) # 모두 대문자
 
     def remove(self):
         printLog(printSquare('Remove VM'))
@@ -641,7 +656,7 @@ class admin_vm:
                 result = FAIL
                 msg = 'Disk is locked...'
                 printLog("[REMOVE VM] RESULT : " + result)
-                printLog("[REMOVE VM] " + msg)
+                printLog("[REMOVE VM] MESSAGE : " + msg)
                 self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
                 return
 
@@ -720,7 +735,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM REMOVE] " + msg)
+            printLog("[VM REMOVE] MESSAGE : " + msg)
         printLog("[VM REMOVE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'remove' + DELIM + result + DELIM + msg])
         
@@ -767,12 +782,13 @@ class admin_vm:
                 else:
                     result = FAIL
                     msg = 'Failed to add network interface'
+                    printLog("[VM ADD NETWORK INTERFACE] MESSAGE : " + msg)
             
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM ADD NETWORK INTERFACE] " + msg)
+            printLog("[VM ADD NETWORK INTERFACE] MESSAGE : " + msg)
         printLog("[VM ADD NETWORK INTERFACE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'add network interface' + DELIM + result + DELIM + msg])
         
@@ -818,12 +834,13 @@ class admin_vm:
                 else:
                     result = FAIL
                     msg = 'Failed to add network interface'
+                    printLog("[VM UPDATE NETWORK INTERFACE] MESSAGE : " + msg)
             
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM UPDATE NETWORK INTERFACE] " + msg)
+            printLog("[VM UPDATE NETWORK INTERFACE] MESSAGE : " + msg)
         printLog("[VM UPDATE NETWORK INTERFACE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'update network interface' + DELIM + result + DELIM + msg])
         
@@ -882,7 +899,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM NETWORK INTERFACE HOT PLUGGING] " + msg)
+            printLog("[VM NETWORK INTERFACE HOT PLUGGING] MESSAGE : " + msg)
         printLog("[VM NETWORK INTERFACE HOT PLUGGING] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'network interface hot plugging' + DELIM + result + DELIM + msg])
         
@@ -933,7 +950,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM DELETE NETWORK INTERFACE] " + msg)
+            printLog("[VM DELETE NETWORK INTERFACE] MESSAGE : " + msg)
         printLog("[VM DELETE NETWORK INTERFACE] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'delete network interface' + DELIM + result + DELIM + msg])
         
@@ -976,7 +993,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM ADD VIRTUAL DISKS] " + msg)
+            printLog("[VM ADD VIRTUAL DISKS] MESSAGE : " + msg)
         printLog("[VM ADD VIRTUAL DISKS] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'add virtual disks' + DELIM + result + DELIM + msg])
         
@@ -995,9 +1012,9 @@ class admin_vm:
             # 스토리지 - 디스크
             printLog("[VM SETUP] Storage - Disks")
             self.webDriver.findElement('id','MenuView_storageTab', True)
-            time.sleep(0.5)
-            self.webDriver.findElement('id','MenuView_disksAnchor',True)
             time.sleep(1)
+            self.webDriver.findElement('id','MenuView_disksAnchor',True)
+            time.sleep(2)
             # 새로 만들기 클릭
             self.webDriver.findElement('id','ActionPanelView_New',True)
 
@@ -1045,7 +1062,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM ATTACH VIRTUAL DISKS] " + msg)
+            printLog("[VM ATTACH VIRTUAL DISKS] MESSAGE : " + msg)
         printLog("[VM ATTACH VIRTUAL DISKS] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'attach virtual disks' + DELIM + result + DELIM + msg])
         
@@ -1105,7 +1122,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM VIRTUAL DISK HOT PLUGGING] " + msg)
+            printLog("[VM VIRTUAL DISK HOT PLUGGING] MESSAGE : " + msg)
         printLog("[VM VIRTUAL DISK HOT PLUGGING] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'virtual disk hot plugging' + DELIM + result + DELIM + msg])
         
@@ -1151,6 +1168,7 @@ class admin_vm:
                 else:
                     result = FAIL
                     msg = 'Failed to remove disk'
+                    printLog("[VM REMOVE VIRTUAL DISKS] MESSAGE : " + msg)
             except:
                 result = PASS
                 msg = ''
@@ -1161,7 +1179,7 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM REMOVE VIRTUAL DISKS] " + msg)
+            printLog("[VM REMOVE VIRTUAL DISKS] MESSAGE : " + msg)
         printLog("[VM REMOVE VIRTUAL DISKS] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'remove virtual disks' + DELIM + result + DELIM + msg])
         
@@ -1193,10 +1211,13 @@ class admin_vm:
 
             # OK 클릭
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
+            time.sleep(1)
 
-            self.webDriver.explicitlyWait(10, By.ID, 'VmNextRunConfigurationPopupView_updateExistingVm')
-            self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
-            time.sleep(3)
+            try:
+                self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
+                time.sleep(3)
+            except:
+                pass
 
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
@@ -1231,9 +1252,10 @@ class admin_vm:
         try:       
             self.setup()
             # 가상머신 이름 클릭            
+
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
-            # 네트워크 인터페이스 클릭
+            # 가상 머신 장치 클릭
             time.sleep(0.5)
             try:
                 self.webDriver.findElement('link_text', '가상 머신 장치', True)
@@ -1250,19 +1272,16 @@ class admin_vm:
                     td = tr.find_elements_by_tag_name('td')
                     if 'memory' in td[1].text:
                         td[7].find_element_by_css_selector('button').click()
+                        time.sleep(1)
                         break
                 except:
                     continue
-            time.sleep(0.5)
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_memoryHotUnplug > button', True)
+            time.sleep(20)
 
-            time.sleep()
+            self.setup()
 
-            try:
-                self.webDriver.findElement('link_text', '일반', True)
-            except:
-                self.webDriver.findElement('link_text', 'General', True)
-            time.sleep(0.5)
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
@@ -1273,15 +1292,14 @@ class admin_vm:
                 msg = ''
             else:
                 result = FAIL
-                msg = 'Failed to update memory size'
-                printLog("[VM VIRTUAL MEMORY HOT PLUGGING] " + msg)
-
-
+                msg = 'Failed to hot unplug memory size'
+                printLog("[VM VIRTUAL MEMORY HOT UNPLUGGING] " + msg)
+            
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM VIRTUAL MEMORY HOT UNPLUGGING] " + msg)
+            printLog("[VM VIRTUAL MEMORY HOT UNPLUGGING] MESSAGE : " + msg)
         printLog("[VM VIRTUAL MEMORY HOT UNPLUGGING] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'virtual memory hot unplugging' + DELIM + result + DELIM + msg])
         
@@ -1332,6 +1350,7 @@ class admin_vm:
             else:
                 result = FAIL
                 msg = 'Failed to hot plugging vCPU'
+                printLog("[VM HOT PLUGGING VCPU] MESSAGE : " + msg)
 
 
 
@@ -1340,13 +1359,13 @@ class admin_vm:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM HOT PLUGGING VCPU] " + msg)
+            printLog("[VM HOT PLUGGING VCPU] MESSAGE : " + msg)
         printLog("[VM HOT PLUGGING VCPU] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'hot plugging vcpu' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_HOT_PLUGGING_VCPU',result, msg) # 모두 대문자
 
-    def pinningToMultipleHosts(self):
+    def pinToMultipleHosts(self):
         printLog(printSquare('Pinning VM to Multiple hosts'))
         result = FAIL
         msg = ''
@@ -1400,11 +1419,12 @@ class admin_vm:
 
             # OK
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
-            # self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmNextRunConfigurationPopupView_updateExistingVm')
-            # self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
+            time.sleep(.3)
+            self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
+            time.sleep(5)
 
             # 재부팅
-            self.reboot()
+            self.reboot(save = False)
 
             # 적용 확인
             self.setup()
@@ -1421,17 +1441,17 @@ class admin_vm:
             else:
                 result = FAIL
                 msg = 'Failed to pin multiple hosts'
-                printLog("[VM PINNING MULTIPLE HOSTS] " + msg)
+                printLog("[VM PIN MULTIPLE HOSTS] MESSAGE : " + msg)
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM PINNING MULTIPLE HOSTS] " + msg)
-        printLog("[VM PINNING MULTIPLE HOSTS] RESULT : " + result)
+            printLog("[VM PIN MULTIPLE HOSTS] MESSAGE : " + msg)
+        printLog("[VM PIN MULTIPLE HOSTS] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'pinning multiple hosts' + DELIM + result + DELIM + msg])
         
-        self.tl.junitBuilder('VM_PINNING_MULTIPLE_HOSTS',result, msg) # 모두 대문자
+        self.tl.junitBuilder('VM_PIN_MULTIPLE_HOSTS',result, msg) # 모두 대문자
 
     def ViewingPinnedToHost(self):
         
@@ -1467,12 +1487,13 @@ class admin_vm:
             else:
                 result = FAIL
                 msg = 'Failed to view...'
+                printLog("[VM VIEWING PINNED HOSTS] MESSAGE : " + msg)
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM VIEWING PINNED HOSTS] " + msg)
+            printLog("[VM VIEWING PINNED HOSTS] MESSAGE : " + msg)
         printLog("[VM VIEWING PINNED HOSTS] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'viewing pinned hosts' + DELIM + result + DELIM + msg])
         
@@ -1485,7 +1506,6 @@ class admin_vm:
 
         try:          
             self.setup()
-            self._vmName = 'test'
             self._cdName = 'Windows10.iso'
 
             # 생성한 vm 클릭
@@ -1527,12 +1547,17 @@ class admin_vm:
             else:
                 result = FAIL
                 msg = 'Failed to change cd'
+                printLog("[VM CHANGE CD] MESSAGE : " + msg)
+
+            # 확인 후 취소 클릭            
+            self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_Cancel > button', True)
+            
 
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM CHANGE CD] " + msg)
+            printLog("[VM CHANGE CD] MESSAGE : " + msg)
         printLog("[VM CHANGE CD] RESULT : " + result)
         self._vmResult.append(['vm' + DELIM + 'change cd' + DELIM + result + DELIM + msg])
         
