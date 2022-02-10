@@ -1,4 +1,5 @@
 import time
+
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
@@ -16,11 +17,9 @@ class admin_vm2(admin_vm): # 상속
         printLog('VM 2 TEST includes Administrative tasks')
         
         self._vm2Result = []
-        self._vmName = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
+        self._vm2Name = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
         self._clusterName = 'Default' # Default 로 고정 
 
-        
-    
     def check(self, exist, value, idx):
         _check = self.webDriver.tableSearch(value, idx)
         if exist == True:
@@ -53,6 +52,10 @@ class admin_vm2(admin_vm): # 상속
 
         # 내보내기
         self.exportToDomain()
+        self.exportToHost()
+
+        # # 가져오기
+        self.importFromHost()
 
     def affinityGroupCreate(self):
         printLog(printSquare('Create Affinity Group'))
@@ -63,7 +66,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
             time.sleep(1)
 
             # 선호도 그룹 클릭
@@ -93,7 +96,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM AFFINITY GROUP CREATE] " + msg)
+            printLog("[VM AFFINITY GROUP CREATE] MESSAGE : " + msg)
         printLog("[VM AFFINITY GROUP CREATE] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'affinity group create' + DELIM + result + DELIM + msg])
         
@@ -108,7 +111,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
             time.sleep(1)
 
             # 선호도 그룹 클릭
@@ -140,7 +143,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM AFFINITY GROUP UPDATE] " + msg)
+            printLog("[VM AFFINITY GROUP UPDATE] MESSAGE : " + msg)
         printLog("[VM AFFINITY GROUP UPDATE] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'affinity group update' + DELIM + result + DELIM + msg])
         
@@ -155,7 +158,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
             time.sleep(1)
 
             # 선호도 그룹 클릭
@@ -188,7 +191,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM AFFINITY GROUP REMOVE] " + msg)
+            printLog("[VM AFFINITY GROUP REMOVE] MESSAGE : " + msg)
         printLog("[VM AFFINITY GROUP REMOVE] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'affinity group remove' + DELIM + result + DELIM + msg])
         
@@ -203,7 +206,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
             time.sleep(1)
 
             # 선호도 레이블 클릭
@@ -234,7 +237,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM AFFINITY LABEL CREATE] " + msg)
+            printLog("[VM AFFINITY LABEL CREATE] MESSAGE : " + msg)
         printLog("[VM AFFINITY LABEL CREATE] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'affinity label create' + DELIM + result + DELIM + msg])
         
@@ -249,7 +252,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 선호도 레이블 클릭
             try:
@@ -282,7 +285,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM AFFINITY LABEL UPDATE] " + msg)
+            printLog("[VM AFFINITY LABEL UPDATE] MESSAGE : " + msg)
         printLog("[VM AFFINITY LABEL UPDATE] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'affinity label update' + DELIM + result + DELIM + msg])
         
@@ -347,7 +350,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM AFFINITY LABEL REMOVE] " + msg)
+            printLog("[VM AFFINITY LABEL REMOVE] MESSAGE : " + msg)
         printLog("[VM AFFINITY LABEL REMOVE] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'affinity label remove' + DELIM + result + DELIM + msg])
         
@@ -362,7 +365,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 스냅샷 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '스냅샷')
@@ -396,16 +399,16 @@ class admin_vm2(admin_vm): # 상속
                     break
                 else:
                     result = FAIL
-                    msg = 'Failed to create snapshot of %s'%self._vmName
+                    msg = 'Failed to create snapshot of %s'%self._vm2Name
                     if cnt == len(lis):
-                        printLog("[VM SNAPSHOT CREATE] " + msg)
+                        printLog("[VM SNAPSHOT CREATE] MESSAGE : " + msg)
                     continue
             
         except Exception as e:   
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM SNAPSHOT CREATE] " + msg)
+            printLog("[VM SNAPSHOT CREATE] MESSAGE : " + msg)
 
         # 결과 출력
         printLog("[VM SNAPSHOT CREATE] RESULT : " + result)
@@ -423,7 +426,7 @@ class admin_vm2(admin_vm): # 상속
         try:
             self.setup()
                 # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 스냅샷 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '스냅샷')
@@ -479,7 +482,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM SNAPSHOT RESTORE VM] " + msg)
+            printLog("[VM SNAPSHOT RESTORE VM] MESSAGE : " + msg)
 
         # 결과 출력
         printLog("[VM SNAPSHOT RESTORE VM] RESULT : " + result)
@@ -500,7 +503,7 @@ class admin_vm2(admin_vm): # 상속
         try:
             self.setup()
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 스냅샷 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '스냅샷')
@@ -543,7 +546,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM CREATE VM IN SNAPSHOT] " + msg)
+            printLog("[VM CREATE VM IN SNAPSHOT] MESSAGE : " + msg)
 
         # 결과 출력
         printLog("[VM CREATE VM IN SNAPSHOT] RESULT : " + result)
@@ -559,7 +562,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 스냅샷 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '스냅샷')
@@ -624,7 +627,7 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM SNAPSHOT REMOVE] " + msg)
+            printLog("[VM SNAPSHOT REMOVE] MESSAGE : " + msg)
 
         # 결과 출력
         printLog("[VM SNAPSHOT REMOVE] RESULT : " + result)
@@ -638,13 +641,13 @@ class admin_vm2(admin_vm): # 상속
         result = FAIL
         msg = ''
 
-        self._exportedVMName = self._vmName + '_exported'
+        self._exportedVMName = self._vm2Name + '_exported'
 
         try:
             self.setup()
 
-            # 생성한 VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, True)
+            # 생성한 VM 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, True)
 
             # 내보내기 클릭
             self.webDriver.findElement('id', 'ActionPanelView_VmExport', True)
@@ -665,6 +668,7 @@ class admin_vm2(admin_vm): # 상속
                     if time.time() - st > 180:
                         result = FAIL
                         msg = 'Failed to data export(Timeout)'
+                        printLog("[VM EXPORT TO DATA DOMAIN] MESSAGE : " + msg)
                         break
 
                     a = self.webDriver.tableSearch(self._exportedVMName, 2, False, False, True)
@@ -679,10 +683,179 @@ class admin_vm2(admin_vm): # 상속
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM EXPORT TO DATA DOMAIN] " + msg)
+            printLog("[VM EXPORT TO DATA DOMAIN] MESSAGE : " + msg)
 
         # 결과 출력
         printLog("[VM EXPORT TO DATA DOMAIN] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'export to data domain' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('VM_EXPORT_TO_DATA_DOMAIN',result, msg)
+        
+    def exportToHost(self):
+        # - 2-515 : 호스트에서 가상 머신 가져 오기
+          
+        printLog(printSquare('Export VM to host'))
+        result = FAIL
+        msg = ''
+
+        try:
+            self.setup()
+
+            # 생성한 VM 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, True)
+
+            # 가져오기 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            time.sleep(.5)
+            self.webDriver.findElement('id', 'ActionPanelView_ExportOva', True)
+            
+            time.sleep(1)
+
+            # 호스트 선택
+            self.webDriver.findElement('css_selector', '#ExportOvaWidget_proxy > div > button', True)
+            self.selectDropdownMenu('css_selector', '#ExportOvaWidget_proxy > div > ul', ADMIN_HOSTNAME)
+
+            # 경로 입력
+            self.webDriver.findElement('id', 'ExportOvaWidget_path', True)
+            self.webDriver.sendKeys('/root')
+
+            # 이름 변경
+            self.webDriver.findElement('id', 'ExportOvaWidget_name', True)
+            self.webDriver.clear()
+            self.webDriver.sendKeys('exported_%s.ova'%self._vm2Name)
+            
+
+            self.webDriver.findElement('css_selector', '#ExportOvaPopupView_OnExportOva > button', True)
+            time.sleep(30)
+
+            ssh_ = ssh_connection(ADMIN_HOST_IP, '22', ADMIN_HOST_ID, ADMIN_HOST_PW)
+            ssh_.activate()
+
+            # ssh 접속하여 ova 파일 생성되는지 확인
+            st = time.time()
+            printLog("[VM EXPORT TO HOST] Finding exported_%s.ova file ..."%self._vm2Name)
+            while True:
+                
+                o, e = ssh_.commandExec('ls /root |grep %s'%self._vm2Name)
+                if o == []:
+                    continue
+
+                elif o[0] == 'exported_%s.ova'%self._vm2Name:
+                    result = PASS
+                    msg = ''
+                    break
+                elif time.time() - st > 120:
+                    result = FAIL
+                    msg = 'Failed to export to host(timeout_'
+                    printLog("[VM EXPORT TO HOST] MESSAGE : " + msg)
+
+            ssh_.deactivate()
+
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM EXPORT TO HOST] MESSAGE : " + msg)
+
+        # 결과 출력
+        printLog("[VM EXPORT TO HOST] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'export to host' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('VM_EXPORT_TO_HOST',result, msg)
+                
+    def importFromHost(self):
+        # - 2-515 : 호스트에서 가상 머신 가져 오기
+          
+        printLog(printSquare('Import VM from host'))
+        result = FAIL
+        msg = ''
+        
+
+        try:
+            self.setup()
+
+            # 생성한 VM 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, True)
+
+            # 가져오기 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            time.sleep(0.3)
+            self.webDriver.findElement('id', 'ActionPanelView_ImportVm', True)
+            time.sleep(2)
+
+            # 소스 메뉴 클릭
+            sourceMenu = self.webDriver.findElement('css_selector_all', '#dropdownMenu')
+            sourceMenu[1].click()
+            time.sleep(.5)
+            # 가상 어플라이언스 클릭
+            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[1]/div/div[1]/div/div/div/ul', '가상 어플라이언스 (OVA)')
+            time.sleep(1)
+
+            # 호스트 메뉴 클릭
+            sourceMenu[6].click()
+            # admin 호스트 클릭
+            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[5]/div[1]/div/div[1]/div/div/div/ul', ADMIN_HOSTNAME)
+
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[5]/div[2]/div[2]/div[1]/div/input', True)
+            self.webDriver.sendKeys('/root')
+
+            # 로드 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[5]/div[3]/div/div/button', True)
+            time.sleep(15)
+
+            # 가상머신 클릭
+            vmTable = self.webDriver.findElement('css_selector_all', 'tbody')[1]
+            for tr in vmTable.find_elements_by_tag_name('tr'):
+                td = tr.find_elements_by_tag_name('td')
+                if 'exported_%s.ova'%self._vm2Name in td[1].text:
+                    td[0].click()
+                    break
+
+            # 화살표 버튼 클릭 후 OK
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[9]/div/div/div[4]/table/tbody/tr/td/table/tbody/tr[1]/td/div/div/img', True)
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/div[2]/button', True)
+
+            time.sleep(3)
+
+            copyVMTables = self.webDriver.findElement('css_selector_all', 'tbody')
+            copyVMTable = copyVMTables[len(copyVMTables)-1]
+            for tr in copyVMTable.find_elements_by_tag_name('tr'):
+                td = tr.find_elements_by_tag_name('td')
+                if self._vm2Name == td[1].text:
+                    tr.click()
+                    clicked = True
+                    time.sleep(.5)
+                    break
+
+            if clicked == True:
+                self.webDriver.findElement('xpath' ,'/html/body/div[5]/div/div/div/div[2]/div/div/table/tbody/tr[4]/td/div/div[2]/div/div[3]/div/div[2]/div/div/div/div/div[1]/div[1]/div/div[2]/div/div[1]/input')
+                self.webDriver.clear()
+                self.webDriver.sendKeys('from_host_%s'%self._vm2Name)
+                
+                self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/div[3]/button', True)
+                time.sleep(2)
+
+                isCreated = self.webDriver.tableSearch('from_host_%s'%self._vm2Name, 2, False, False, True)
+                if isCreated == False:
+                    result = FAIL
+                    msg = 'Failed to import from host'
+                    printLog("[VM IMPORT FROM HOST] MESSAGE : " + msg)
+                else:
+                    result = PASS
+                    msg = ''
+
+            else:
+                result = FAIL
+                msg = 'Failed to import from host'
+                printLog("[VM IMPORT FROM HOST] MESSAGE : " + msg)
+
+
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM IMPORT FROM HOST] MESSAGE : " + msg)
+
+        # 결과 출력
+        printLog("[VM IMPORT FROM HOST] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'import from host' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('VM_IMPORT_FROM_HOST',result, msg)
         
