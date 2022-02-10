@@ -84,27 +84,27 @@ class admin_vm:
     def test(self):
         # VM 생성
         self.create()
-        self.createWindows()
+        # self.createWindows()
 
-        # 가상 디스크
-        self.addVirtualDisk()
-        self.attachDisk()
-        self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # # 가상 디스크
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
-        # 네트워크 인터페이스
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # # 네트워크 인터페이스
+        # self.addNetworkInterface()
+        # self.updateNetworkInterface()
+        # self.networkInterfaceHotPlugging()
+        # self.deleteNetworkInterface()
 
-        self.update()
-        self.copy()
+        # self.update()
+        # self.copy()
         self.run()
 
-        # 호스트
-        self.pinToMultipleHosts()
-        self.ViewingPinnedToHost()
+        # # 호스트
+        # self.pinToMultipleHosts()
+        # self.ViewingPinnedToHost()
 
         # 가상 메모리
         self.virtualMemoryHotPlugging()
@@ -113,10 +113,10 @@ class admin_vm:
         # vcpu
         self.hotPluggingVCPU()
 
-        # cd변경
-        self.changeCD()
+        # # cd변경
+        # self.changeCD()
 
-        self.reboot()
+        # self.reboot()
         self.shutdown()
         self.remove()
 
@@ -381,12 +381,11 @@ class admin_vm:
             self.webDriver.findElement('id', 'ActionPanelView_CloneVm', True)
         
             time.sleep(1)
-            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_name')
             self.webDriver.findElement('id', 'VmPopupWidget_name', True)
             self.webDriver.sendKeys('copy_%s'%self._vmName)
 
-            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_description')
             self.webDriver.findElement('id', 'VmPopupWidget_description', True)
+            self.webDriver.clear()
             self.webDriver.sendKeys('copied by automation')
 
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
@@ -478,7 +477,7 @@ class admin_vm:
                         msg = 'VM is still powering up ...'
                         if cnt < 1:
                             printLog("[VM RUN] Status : " + row[13])
-                            printLog("[VM RUN] Message : " + msg)
+                            printLog("[VM RUN] MESSAGE : " + msg)
                             cnt += 1
                         continue
                     ed = time.time()
@@ -585,14 +584,14 @@ class admin_vm:
             #         elif ed - st > 120:
             #             result = FAIL
             #             msg = 'Failed to shutdown vm ...'
-            #             printLog("[VM SHUTDOWN] Message : " + msg)
+            #             printLog("[VM SHUTDOWN] MESSAGE : " + msg)
             #             break
 
             #     except Exception as e:
             #         result = FAIL
             #         msg = str(e).replace("\n",'')
             #         msg = msg[:msg.find('Element <')]
-            #         printLog("[VM SHUTDOWN] Message : " + msg)
+            #         printLog("[VM SHUTDOWN] MESSAGE : " + msg)
             #         continue
 
         except Exception as e:
@@ -1216,7 +1215,7 @@ class admin_vm:
 
             try:
                 self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
-                time.sleep(3)
+                time.sleep(5)
             except:
                 pass
 
@@ -1258,12 +1257,12 @@ class admin_vm:
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 가상 머신 장치 클릭
-            time.sleep(0.5)
+            time.sleep(2)
             try:
                 self.webDriver.findElement('link_text', '가상 머신 장치', True)
             except:
                 self.webDriver.findElement('link_text', 'Vm Devices', True)
-            time.sleep(0.5)
+            time.sleep(1)
 
             idx = -1
             table = self.webDriver.findElement('css_selector', 'tbody')
@@ -1274,7 +1273,7 @@ class admin_vm:
                     td = tr.find_elements_by_tag_name('td')
                     if 'memory' in td[1].text:
                         td[7].find_element_by_css_selector('button').click()
-                        time.sleep(1)
+                        time.sleep(3)
                         break
                 except:
                     continue
@@ -1381,9 +1380,11 @@ class admin_vm:
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
-            time.sleep(1)
+            time.sleep(2)
 
             self.advancedOption()
+            
+            time.sleep(1)
 
             # 특정 호스트 선택
             lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
