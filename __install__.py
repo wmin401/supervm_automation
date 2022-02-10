@@ -17,23 +17,23 @@ class install():
         self._ssh.activate()     
 
     def isDeployed(self):    
-        printLog("[DEPLOY] Check if SuperVM is deployed")
-        printLog("[DEPLOY] hosted-engine --vm-status")
+        printLog("[DEPLOY] Check if SuperVM is deployed", debug=False, install=True)
+        printLog("[DEPLOY] hosted-engine --vm-status", debug=False, install=True)
         o, e = self._ssh.commandExec('hosted-engine --vm-status')
         for i in o:
-            printLog(i)
+            printLog(i,debug=False, install=True)
         for i in o:
             if 'good' in i:
-                printLog('[DEPLOY] ' + i)
-                printLog('[DEPLOY] SuperVM is deployed ')
+                printLog('[DEPLOY] ' + i,debug=False, install=True)
+                printLog('[DEPLOY] SuperVM is deployed ', debug=False, install=True)
                 return True
         
-        printLog("[DEPLOY] SuperVM didn't deploy")
+        printLog("[DEPLOY] SuperVM didn't deploy", debug=False, install=True)
         return False
 
     def setup(self):
         _result = FAIL
-        printLog("[SETUP] Initialize engine")
+        printLog("[SETUP] Initialize engine", debug=False, install=True)
         try:
             # hostname 변경
             self._ssh.commandExec('hostnamectl set-hostname %s'%(ADMIN_HOSTNAME))
@@ -44,66 +44,66 @@ class install():
             # hosts에 입력한 ip가 있는지 확인 후 없을 때만 추가
             for i in o:
                 if ADMIN_HOST_IP in i:
-                    printLog('[SETUP] Engine VM IP is already using !!!')
-                    printLog('[SETUP] Check /etc/hosts file in engine vm !!!')
+                    printLog('[SETUP] Engine VM IP is already using !!!', debug=False, install=True)
+                    printLog('[SETUP] Check /etc/hosts file in engine vm !!!', debug=False, install=True)
                     _hosts = False
                     break
             if _hosts == True:
-                printLog("[SETUP] Add hosts")
+                printLog("[SETUP] Add hosts", debug=False, install=True)
                 self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ADMIN_HOST_IP, ADMIN_HOSTNAME))
                 self._ssh.commandExec('echo "%s %s" >> /etc/hosts'%(ENGINE_VM_IP, ENGINE_VM_FQDN))
 
             o, e = self._ssh.commandExec('ls /etc/yum.repos.d/hypervm.repo')
             _repo = True
             if  o != [] and 'hypervm.repo' in o[0]:
-                printLog('[SETUP] hypervm.repo is already exists !!!')
-                printLog('[SETUP] Check hypervm.repo file !!!')
+                printLog('[SETUP] hypervm.repo is already exists !!!', debug=False, install=True)
+                printLog('[SETUP] Check hypervm.repo file !!!', debug=False, install=True)
                 _repo = False            
             if _repo == True:
                 # hypervm repository 생성
-                printLog("[SETUP] Make /etc/yum.repos.d/hypervm.repo")
+                printLog("[SETUP] Make /etc/yum.repos.d/hypervm.repo", debug=False, install=True)
                 self._ssh.commandExec('echo "[hypervm]" >> /etc/yum.repos.d/hypervm.repo')
                 self._ssh.commandExec('echo "name=hypervm-repo" >> /etc/yum.repos.d/hypervm.repo')
                 self._ssh.commandExec('echo "baseurl=%s" >> /etc/yum.repos.d/hypervm.repo'%(SUPERVM_REPO_URL))
                 self._ssh.commandExec('echo "gpgcheck=0" >> /etc/yum.repos.d/hypervm.repo')
-                printLog("[SETUP] dnf update ")
+                printLog("[SETUP] dnf update ", debug=False, install=True)
                 self._ssh.commandExec('dnf clean all')
                 self._ssh.commandExec('dnf update -y')
 
-            printLog("[SETUP] Install ovirt-hosted-engine-setup")
+            printLog("[SETUP] Install ovirt-hosted-engine-setup", debug=False, install=True)
             self._ssh.commandExec('sudo dnf module disable virt -y', t=21600 )
             self._ssh.commandExec('sudo dnf module enable pki-deps postgresql:12 parfait -y', t=21600)
             self._ssh.commandExec('systemctl enable --now libvirtd cockpit.socket')
             self._ssh.commandExec('dnf install -y ovirt-hosted-engine-setup', t=21600)
             o, e = self._ssh.commandExec('rpm -q ovirt-hosted-engine-setup')
             if 'ovirt-hosted-engine-setup' in o[0] and 'not installed' not in o[0]:
-                printLog("[SETUP] Successfully installed ovirt packages")
+                printLog("[SETUP] Successfully installed ovirt packages", debug=False, install=True)
                 _result = PASS
             else:
-                printLog("[SETUP] Failed install ovirt packages")
+                printLog("[SETUP] Failed install ovirt packages", debug=False, install=True)
                 _result = FAIL
         except Exception as e:            
             _result = FAIL
-            printLog("[SETUP] ERROR : %s"%(str(e)))
+            printLog("[SETUP] ERROR : %s"%(str(e)), debug=False, install=True)
            
     def nfs(self):
         _result = FAIL
-        printLog("[NFS] Set nfs at %s"%(ADMIN_HOST_IP))
+        printLog("[NFS] Set nfs at %s"%(ADMIN_HOST_IP), debug=False, install=True)
         try:
             o, e = self._ssh.commandExec('cat /etc/exports')
             _nfs = True
             for i in o:
                 if NFS_PATH in i:
-                    printLog("[NFS] NFS folder already exist")
+                    printLog("[NFS] NFS folder already exist", debug=False, install=True)
                     _nfs = False
                     break
             if _nfs == True:
-                printLog("[NFS] Install nfs packages")
+                printLog("[NFS] Install nfs packages", debug=False, install=True)
                 self._ssh.commandExec('dnf install -y nfs-utils')
-                printLog("[NFS] Start service for nfs")
+                printLog("[NFS] Start service for nfs", debug=False, install=True)
                 self._ssh.commandExec('systemctl start rpcbind')
                 self._ssh.commandExec('systemctl start nfs-server')
-                printLog("[NFS] Set nfs")
+                printLog("[NFS] Set nfs", debug=False, install=True)
                 self._ssh.commandExec('chkconfig rpcbind on')
                 self._ssh.commandExec('chkconfig nfs-server on')
                 self._ssh.commandExec('mkdir %s'%(NFS_PATH))
@@ -115,28 +115,28 @@ class install():
                 self._ssh.commandExec('chown -R 36:36 %s'%(NFS_PATH))
                 self._ssh.commandExec('chmod 777 %s'%(NFS_PATH))
                 o, e = self._ssh.commandExec('ls -al /nfs')
-                printLog('[NFS] ls -al /nfs')
+                printLog('[NFS] ls -al /nfs', debug=False, install=True)
                 for i in o:
-                    printLog(i)
-                printLog("[NFS] Add service to firewall")
+                    printLog(i, debug=False, install=True)
+                printLog("[NFS] Add service to firewall", debug=False, install=True)
                 self._ssh.commandExec('firewall-cmd --permanent --add-service=nfs')
                 self._ssh.commandExec('firewall-cmd --permanent --add-service=mountd')
                 self._ssh.commandExec('firewall-cmd --permanent --add-service=rpc-bind')
                 self._ssh.commandExec('firewall-cmd --reload')
             o, e = self._ssh.commandExec('firewall-cmd --list-all |grep services')
             if 'nfs' in o[0] and 'mountd' in o[0] and 'rpc-bind' in o[0]:
-                printLog("[NFS] Successfully set nfs")
+                printLog("[NFS] Successfully set nfs", debug=False, install=True)
                 _result = PASS
             else:
-                printLog("[NFS] Failed to set nfs")
+                printLog("[NFS] Failed to set nfs", debug=False, install=True)
                 _result = FAIL
         except Exception as e:
-            printLog("[NFS] ERROR : %s"%(str(e)))
+            printLog("[NFS] ERROR : %s"%(str(e)), debug=False, install=True)
 
     def ceph(self, initialize = False):
         _result = FAIL
         if initialize == True:
-            printLog("[CEPH] Remove ceph-common and podman images")
+            printLog("[CEPH] Remove ceph-common and podman images", debug=False, install=True)
             # 초기화 후 다시 설치            
             # ceph 삭제
             # ceph 도커 이미지 삭제
@@ -144,16 +144,16 @@ class install():
             o, e = self._ssh.commandExec('podman rmi -f 557c 5b72 d324 0881 e5a6', t=3600)
 
         # sdb에다가 해야됨(추가해야됨)
-        printLog("[CEPH] Set ceph to %s at %s"%(CEPH_DISK_PATH, CEPH_IP))
+        printLog("[CEPH] Set ceph to %s at %s"%(CEPH_DISK_PATH, CEPH_IP), debug=False, install=True)
         try:
-            printLog("[CEPH] Install ceph packages")
+            printLog("[CEPH] Install ceph packages", debug=False, install=True)
             o, e = self._ssh.commandExec('dnf -y install podman chrony lvm2 gdisk', t=3600)
             o, e = self._ssh.commandExec('systemctl start chronyd && systemctl status chronyd', t=3600)
             o, e = self._ssh.commandExec('curl --silent --remote-name --location https://github.com/ceph/ceph/raw/v15.2.10/src/cephadm/cephadm', t=3600)
             self._ssh.commandExec('chmod +x cephadm', t=3600)
             o, e = self._ssh.commandExec('dnf install -y ceph-common', t=3600)
 
-            printLog("[CEPH] Set ceph")
+            printLog("[CEPH] Set ceph", debug=False, install=True)
             o, e = self._ssh.commandExec('./cephadm --image docker.io/ceph/ceph:v15.2.10 bootstrap --mon-ip %s --allow-fqdn-hostname'%(CEPH_IP), t=3600)
             o, e = self._ssh.commandExec('sgdisk --zap-all %s'%(CEPH_DISK_PATH), t=3600)
             o, e = self._ssh.commandExec('dd if=/dev/zero of=%s bs=1M count=100 oflag=direct,dsync'%(CEPH_DISK_PATH))
@@ -164,7 +164,7 @@ class install():
 
             o, e = self._ssh.commandExec('ceph orch device ls --refresh', t=3600)
 
-            printLog("[CEPH] Make /root/osd_%s file"%(ADMIN_HOSTNAME))
+            printLog("[CEPH] Make /root/osd_%s file"%(ADMIN_HOSTNAME), debug=False, install=True)
             o, e = self._ssh.commandExec('ls /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
             if o != [] and '/root/osd_%s.yaml'%ADMIN_HOSTNAME == o[0].replace('\n',''):
                 self._ssh.commandExec('rm -rf /root/osd_%s.yaml'%(ADMIN_HOSTNAME))
@@ -179,7 +179,7 @@ class install():
             self._ssh.commandExec('echo " - %s" >> /root/osd_%s.yaml'%(CEPH_DISK_PATH,ADMIN_HOSTNAME))
             o, e = self._ssh.commandExec('ceph orch apply osd -i /root/osd_%s.yaml'%ADMIN_HOSTNAME, t=3600)
             
-            printLog("[CEPH] Config ceph")
+            printLog("[CEPH] Config ceph", debug=False, install=True)
             o, e = self._ssh.commandExec('ceph osd pool set device_health_metrics size 1', t=3600)
             o, e = self._ssh.commandExec('ceph osd pool create replicapool 32 32 replicated', t=3600)
             o, e = self._ssh.commandExec('ceph osd pool set replicapool size 1', t=3600)            
@@ -195,9 +195,9 @@ class install():
 
             o, e = self._ssh.commandExec('ceph fs subvolume create myfs tim1 --size 322122547200 --uid 36 --gid 36', t=3600)
             o, e = self._ssh.commandExec('ceph fs subvolume info myfs tim1', t=3600)
-            printLog('[CEPH] ceph fs subvolume info myfs tim1')
+            printLog('[CEPH] ceph fs subvolume info myfs tim1', debug=False, install=True)
             for i in o:
-                printLog(i)
+                printLog(i, debug=False, install=True)
                 i = i.split(":")
                 #'    "state": "complete",'
                 if 'state' in i[0]:
@@ -207,23 +207,23 @@ class install():
                     else:
                         _result  = FAIL
             if _result == PASS:
-                printLog('[CEPH] Successfully set ceph')
+                printLog('[CEPH] Successfully set ceph', debug=False, install=True)
             else:
-                printLog('[CEPH] Failed to set ceph')                   
+                printLog('[CEPH] Failed to set ceph', debug=False, install=True)                   
 
         except Exception as e:
             _result = FAIL
-            printLog("[CEPH] ERROR : %s"%(str(e)))
+            printLog("[CEPH] ERROR : %s"%(str(e)), debug=False, install=True)
 
     def answers(self):
         _result = FAIL
-        printLog("[ANSWERS] Make answers.conf file")
+        printLog("[ANSWERS] Make answers.conf file", debug=False, install=True)
         try:
             # answers.conf 파일 만들기
             o, e = self._ssh.commandExec('ls /root/answers.conf')
             if o != [] and 'answers.conf' in o[0]:
                 self._ssh.commandExec('rm -rf /root/answers.conf')
-                #printLog("* answers.conf file is already exists !!!")
+                #printLog("* answers.conf file is already exists !!!", debug=False, install=True)
 
             self._ssh.commandExec('echo "[environment:default]" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_CORE/deployProceed=bool:True" >> /root/answers.conf')
@@ -238,7 +238,7 @@ class install():
             o, e = self._ssh.commandExec('dnf -y install ovirt-hosted-engine-setup', t=3600)        
             o, e = self._ssh.commandExec('ls /etc/sysconfig/network-scripts/ |grep "ifcfg-e"')        
             _networkName = o[0][6:] 
-            printLog("[ANSWERS] NETWORK NAME = %s"%_networkName)
+            printLog("[ANSWERS] NETWORK NAME = %s"%_networkName, debug=False, install=True)
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeIf=str:%s" >> /root/answers.conf'%(_networkName))
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_NETWORK/fqdn=str:%s" >> /root/answers.conf'%(ENGINE_VM_FQDN))
@@ -281,7 +281,7 @@ class install():
                 # secret key 받기
                 o, e = self._ssh.commandExec('ceph auth get-key client.admin')
                 _secretKey = o[0]
-                printLog("[ANSWRES] Secret key = %s"%_secretKey)
+                printLog("[ANSWRES] Secret key = %s"%_secretKey, debug=False, install=True)
                 self._ssh.commandExec('echo "OVEHOSTED_STORAGE/mntOptions=str:name=admin,secret=%s" >> /root/answers.conf'%(_secretKey))
                 # get storageDomainConnection path
                 o, e = self._ssh.commandExec('ceph fs subvolume info myfs tim1')
@@ -304,7 +304,7 @@ class install():
                         self.SUBVOLUME_PATH = i[1][i[1].find('"')+1:i[1].find('"', i[1].find('"')+1)]
                         # ex. /volumes/_nogroup/tim1/c21023fe-c818-4559-9489-bcb407cb8072
                 self._ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainConnection=str:%s:%s" >> /root/answers.conf'%(self.STORAGEDOMAIN_URL, self.SUBVOLUME_PATH))
-                printLog('[ANSWERS] Storage Domain Connection = %s:%s'%(self.STORAGEDOMAIN_URL, self.SUBVOLUME_PATH))     
+                printLog('[ANSWERS] Storage Domain Connection = %s:%s'%(self.STORAGEDOMAIN_URL, self.SUBVOLUME_PATH), debug=False, install=True)     
                 self._ssh.commandExec('echo "OVEHOSTED_STORAGE/vfsType=str:ceph" >> /root/answers.conf')           
                 
             self._ssh.commandExec('echo "OVEHOSTED_STORAGE/storageDomainName=str:hosted_storage" >> /root/answers.conf')
@@ -334,43 +334,43 @@ class install():
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmCDRom=none:None" >> /root/answers.conf')                        
             o, e = self._ssh.commandExec('python3.6 -c "from ovirt_hosted_engine_setup import util as ohostedutil; print(ohostedutil.randomMAC())"')        
             _macAddress = o[0]
-            printLog("[ANSWERS] MAC ADDRESS = %s"%_macAddress)
+            printLog("[ANSWERS] MAC ADDRESS = %s"%_macAddress, debug=False, install=True)
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmMACAddr=str:%s" >> /root/answers.conf'%(_macAddress))
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmMemSizeMB=int:%s" >> /root/answers.conf'%(ENGINE_VM_MEMORY))
             self._ssh.commandExec('echo "OVEHOSTED_VM/vmVCpus=str:4" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/proLinuxRepoAddress=str:http://prolinux-repo.tmaxos.com/prolinux/8.2/os/x86_64" >> /root/answers.conf')
             self._ssh.commandExec('echo "OVEHOSTED_VM/ovirtRepoAddress=str:%s" >> /root/answers.conf'%(SUPERVM_REPO_URL))
 
-            o, e = self._ssh.commandExec('cat /root/answers.conf')
-            printLog('[ANSWERS] cat /root/answers.conf')
+            o, e = self._ssh.commandExec('cat /root/answers.conf', debug=False, install=True)
+            printLog('[ANSWERS] cat /root/answers.conf', debug=False, install=True)
             for i in o:
                 printLog(i)
             _result = PASS
         except Exception as e:            
             _result = FAIL
-            printLog("[ANSWERS] ERROR : %s"%(str(e)))
+            printLog("[ANSWERS] ERROR : %s"%(str(e)), debug=False, install=True)
 
     def deploy(self):
         _result = FAIL
-        printLog("[DEPLOY] Start deploy")   
-        printLog("[DEPLOY] This task needs a lot of time. So you must need to wait")
-        printLog("[DEPLOY] If you want to see the progress of installation, see /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log file in %s"%ADMIN_HOST_IP)   
-        printLog("[DEPLOY] ex). tail -f /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log")   
+        printLog("[DEPLOY] Start deploy", debug=False, install=True)   
+        printLog("[DEPLOY] This task needs a lot of time. So you must need to wait", debug=False, install=True)
+        printLog("[DEPLOY] If you want to see the progress of installation, see /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log file in %s"%ADMIN_HOST_IP, debug=False, install=True)   
+        printLog("[DEPLOY] ex). tail -f /var/log/ovirt-hosted-engine-setup/ovirt-hosted-engine-setup-{date}.log", debug=False, install=True)   
 
         try:
             self._ssh.commandExec('hosted-engine --deploy --config-append=answers.conf', t = 216000, pty = True)
-            printLog("[DEPLOY] Deploy finished")
+            printLog("[DEPLOY] Deploy finished", debug=False, install=True)
             time.sleep(10)
             if self.isDeployed():
                 _result = PASS
-                printLog("[DEPLOY] Successfully finished deploy")    
+                printLog("[DEPLOY] Successfully finished deploy", debug=False, install=True)    
             else:
                 _result = FAIL
-                printLog("[DEPLOY] Failed to deploy, check log file")
+                printLog("[DEPLOY] Failed to deploy, check log file", debug=False, install=True)
 
         except Exception as e:
             _result = FAIL
-            printLog("[DEPLOY] ERROR : %s"%(str(e)))
+            printLog("[DEPLOY] ERROR : %s"%(str(e)), debug=False, install=True)
         # ssh 연결 해제
         self._ssh.deactivate()        
         time.sleep(5)
@@ -378,7 +378,7 @@ class install():
     def cleanup(self): 
         # deploy 실패시 자동 실행(1안)
         # deploy 이전에 실행(2안)
-        printLog("[CLEANUP] Start cleanup using ovirt-hosted-engine-cleanup")   
+        printLog("[CLEANUP] Start cleanup using ovirt-hosted-engine-cleanup", debug=False, install=True)   
         o, e = self._ssh.commandExec('ovirt-hosted-engine-cleanup -q', t=216000) # -q : 사용자 입력없이 실행되는 옵션
         for i in o:
             print(i)
@@ -404,12 +404,12 @@ def main():
                 hypervm.answers()
                 hypervm.deploy()
                 h, m, s = secToHms(install_time, time.time())
-                printLog("* DEPLOY TIME : %dh %dm %.2fs"%(h, m, s))
+                printLog("* DEPLOY TIME : %dh %dm %.2fs"%(h, m, s), debug=False, install=True)
         except:
-            printLog('[ERROR] Somthing wrong!')
+            printLog('[ERROR] Somthing wrong!', debug=False, install=True)
             return
     else:
-        printLog("* It didn't execute SuperVM installation")
+        printLog("* It didn't execute SuperVM installation", debug=False, install=True)
 
 if __name__ == "__main__":        
 

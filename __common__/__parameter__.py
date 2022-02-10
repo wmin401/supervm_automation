@@ -57,7 +57,8 @@ else: # 로컬
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
     ADMIN_HOSTNAME = 'hypervm41.tmax.dom'
-    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc/prolinux/8/arch/x86_64/'
+    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc0/prolinux/8/arch/x86_64/'
+    
     ENGINE_VM_IP = '192.168.17.165'
     ADMIN_HOST_IP = '192.168.17.41'
     ADMIN_GATEWAY = '192.168.17.1'
@@ -91,7 +92,7 @@ else: # 로컬
     DOMAIN_TEST = 'false'
     HOST_TEST = 'false'
     QOS_TEST = 'false'
-    TEMPLATE_TEST = 'true'
+    TEMPLATE_TEST = 'false'
     VM_TEST = 'false'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
@@ -112,7 +113,7 @@ RESULT_PATH = 'results'
 RESULT_FILE = 'SuperVM_Result_%04d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday)
 TMP_RESULT_FILE = 'tmp_SuperVM_Result_%04d%02d%02d_%02d%02d%02d.csv'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 LOG_FILE = RESULT_PATH + '/log/SuperVM_Automation_log_%04d%02d%02d_%02d%02d%02d.log'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
-DEPLOY_LOG_FILE = RESULT_PATH + '/log/SuperVM_Automation_deploy_log_%04d%02d%02d_%02d%02d%02d.log'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+INSTALL_LOG_FILE = RESULT_PATH + '/log/SuperVM_Automation_deploy_log_%04d%02d%02d_%02d%02d%02d.log'%(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 DELIM = ';'
 PASS = 'PASS'
 STOP = 'STOP'

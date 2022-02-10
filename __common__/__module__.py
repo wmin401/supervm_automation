@@ -11,7 +11,7 @@ def secToHms(start, end): # 시작시간, 끝나는 시간
     h, m = divmod(m, 60)
     return h,m,s
 
-def printLog(text, debug=False):
+def printLog(text, debug=False, install=False):
     print(text)
 
     tt = str(type(text))
@@ -31,8 +31,13 @@ def printLog(text, debug=False):
     if t is not None and debug == True:
         t = '[DEBUG] ' + str(t)
 
-    with open(LOG_FILE, 'a', encoding='utf-8') as logFile:
-        logFile.write(t+'\n')
+    if install == True:
+        with open(INSTALL_LOG_FILE, 'a', encoding='utf-8') as logFile:
+            logFile.write(t+'\n')
+    else:
+        with open(LOG_FILE, 'a', encoding='utf-8') as logFile:
+            logFile.write(t+'\n')
+
 
 ## 원하는 경로에 폴더를 생성해줌
 ## 하위 경로 입력시, 폴더가 존재하지 않으면 같이 생성
