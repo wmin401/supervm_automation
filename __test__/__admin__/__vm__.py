@@ -84,22 +84,22 @@ class admin_vm:
     def test(self):
         # VM 생성
         self.create()
-        self.createWindows()
+        # self.createWindows()
 
-        # 가상 디스크
-        self.addVirtualDisk()
-        self.attachDisk()
-        self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # # 가상 디스크
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
-        # 네트워크 인터페이스
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # # 네트워크 인터페이스
+        # self.addNetworkInterface()
+        # self.updateNetworkInterface()
+        # self.networkInterfaceHotPlugging()
+        # self.deleteNetworkInterface()
 
-        self.update()
-        self.copy()
+        # self.update()
+        # self.copy()
         self.run()
 
         # 호스트
@@ -1210,8 +1210,8 @@ class admin_vm:
             self.webDriver.sendKeys(self._updateSize)
 
             # OK 클릭
-            self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
-            time.sleep(1)
+            self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
+            time.sleep(2)
 
             try:
                 self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
