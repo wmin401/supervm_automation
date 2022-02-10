@@ -108,7 +108,7 @@ class admin_vm:
 
         # 가상 메모리
         self.virtualMemoryHotPlugging()
-        self.virtualMemoryHotUnplugging()
+        # self.virtualMemoryHotUnplugging()
 
         # vcpu
         self.hotPluggingVCPU()
