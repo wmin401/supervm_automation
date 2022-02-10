@@ -73,9 +73,17 @@ class admin_vm:
             self.webDriver.click()
         time.sleep(1)
 
-    def selectDropdownMenu(self, type_, path, name):
+    def selectDropdownMenu(self, type_, ulTagPath, name):
         # 드롭다운 메뉴에서 원하는거 클릭하고 싶을때 사용    
-        lis = self.webDriver.findElement(type_ + '_all', path + ' > li')
+        time.sleep(1)
+        if type_ == 'css_selector':
+            lis = self.webDriver.findElement(type_ + '_all', ulTagPath + ' > li')
+        elif type_ == 'xpath':
+            lis = self.webDriver.findElement(type_ + '_all', ulTagPath + '/li')
+        else:
+            printLog("[SELECT DROPDOWN MENU] Undefined type")
+            return
+
         for li in lis:
             if name == li.get_attribute('textContent'):
                 li.click()
