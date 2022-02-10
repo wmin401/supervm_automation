@@ -408,8 +408,8 @@ def main():
         except:
             printLog('[ERROR] Somthing wrong!', debug=False, install=True)
             return
-    else:
-        printLog("* It didn't execute SuperVM installation", debug=False, install=True)
+    # else:
+    #     printLog("* It didn't execute SuperVM installation", debug=False, install=True)
 
 if __name__ == "__main__":        
 
