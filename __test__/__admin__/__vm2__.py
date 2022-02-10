@@ -13,7 +13,7 @@ class admin_vm2(admin_vm): # 상속
         self._affinityGroupName = 'auto_affinity_group_%s'%randomString()
         self._affinityLabelName = 'auto_affinity_label_%s'%randomString()
         self._snapshotName = 'auto_snapshot_%s'%randomString()
-        printLog('VM 2 TEST includes affinity groups, affinity labels, snapshot, export')
+        printLog('VM 2 TEST includes Administrative tasks')
         
         self._vm2Result = []
         self._vmName = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
