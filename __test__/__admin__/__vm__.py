@@ -7,7 +7,7 @@ from __common__.__testlink__ import testlink
 from __test__.__admin__.__cluster__ import admin_cluster
 class admin_vm:
     def __init__(self, webDriver):
-        printLog('VM 1 TEST includes CRUD')
+        # printLog('VM 1 TEST includes CRUD')
         self._vmResult = []
         self._vmName = 'auto_vm_%s'%randomString()
         # self._vmName = 'for_automation'
