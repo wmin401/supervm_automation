@@ -661,7 +661,7 @@ class admin_vm2(admin_vm): # 상속
         result = FAIL
         msg = ''
 
-        self._exportedVMName = self._vm2Name + '_exported'
+        self._exportedVMName = 'exported_' + self._vm2Name
 
         try:
             self.setup()
