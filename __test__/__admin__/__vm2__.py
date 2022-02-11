@@ -34,7 +34,7 @@ class admin_vm2(admin_vm): # 상속
                 return PASS, ''
 
     def test(self):
-        
+
         # vm 생성
         self.vm2 = admin_vm(self.webDriver)
         self.vm2._vmName = self.vm2._vmName + '_2'
@@ -61,8 +61,12 @@ class admin_vm2(admin_vm): # 상속
         self.exportToDomain()
         self.exportToHost()
 
-        # # 가져오기
+         # 가져오기
         self.importFromHost()
+        
+        # 마이그레이션
+        self.preventingAutoMigration()
+        self.settingMigrationPriority()
 
     def affinityGroupCreate(self):
         printLog(printSquare('Create Affinity Group'))
@@ -876,4 +880,93 @@ class admin_vm2(admin_vm): # 상속
         printLog("[VM IMPORT FROM HOST] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'import from host' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('VM_IMPORT_FROM_HOST',result, msg)
+        
+    def preventingAutoMigration(self):
+        # - 2-520 : 가상 머신의 자동 마이그레이션 방지
+        printLog(printSquare('Prevent auto migration of VM'))
+        result = FAIL
+        msg = ''
+        
+        try:
+            self.setup()
+
+            # 생성한 VM 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, True)
+
+            # 편집 버튼 클릭
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            time.sleep(1)
+
+            # 특정 호스트 선택
+            lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
+            for li in lis:
+                if '호스트' == li.get_attribute('textContent') or 'Hosts' == li.get_attribute('textContent'):
+                    li.click()
+                    break
+            time.sleep(1)
+
+            # 수동 마이그레이션만 허용
+            self.webDriver.findElement('css_selector', '#VmPopupWidget_migrationMode > div > button', True)
+            self.selectDropdownMenu('css_selector', '#VmPopupWidget_migrationMode > div > ul', '수동 마이그레이션만 허용')
+
+            self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
+            time.sleep(3)
+
+            result = PASS
+            msg = ''
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM PREVENT AUTO MIGRATION] MESSAGE : " + msg)
+
+        # 결과 출력
+        printLog("[VM PREVENT AUTO MIGRATION] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'prevent auto migration' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('VM_PREVENT_AUTO_MIGRATION',result, msg)
+        
+    def settingMigrationPriority(self):
+        # - 2-522 : 마이그레이션 우선 순위 설정
+        
+        printLog(printSquare('Setting migration priority of VM'))
+        result = FAIL
+        msg = ''
+        
+        try:
+            self.setup()
+
+            # 생성한 VM 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, True)
+
+            # 편집 버튼 클릭
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            time.sleep(1)
+
+            # 특정 호스트 선택
+            lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
+            for li in lis:
+                if '고가용성' == li.get_attribute('textContent'):
+                    li.click()
+                    break
+            time.sleep(1)
+
+            # 우선순위 선택
+            self.webDriver.findElement('css_selector', '#VmPopupWidget_priority > div > button', True)
+            self.selectDropdownMenu('css_selector', '#VmPopupWidget_priority > div > ul', '높음')
+
+            self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
+            time.sleep(3)
+
+            result = PASS
+            msg = ''
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM SETTING MIGRATION PRIORITY] MESSAGE : " + msg)
+
+        # 결과 출력
+        printLog("[VM SETTING MIGRATION PRIORITY] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'setting migration priority' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('VM_SETTING_MIGRATION_PRIORITY',result, msg)
         
