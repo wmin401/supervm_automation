@@ -17,7 +17,7 @@ class admin_vm2(admin_vm): # 상속
         printLog('VM 2 TEST includes Administrative tasks')
         
         self._vm2Result = []
-        self._vm2Name = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
+        # self._vm2Name = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
         self._clusterName = 'Default' # Default 로 고정 
 
     def check(self, exist, value, idx):
@@ -34,21 +34,28 @@ class admin_vm2(admin_vm): # 상속
                 return PASS, ''
 
     def test(self):
-        # 선호도 그룹
-        self.affinityGroupCreate()
-        self.affinityGroupUpdate()
-        self.affinityGroupRemove()
-        
-        # 선호도 레이블
-        self.affinityLabelCreate()
-        self.affinityLabelUpdate()
-        self.affinityLabelRemove()
 
-        # 스냅샷
-        self.snapshotCreate()
-        self.restoreVMUsingSnapshot()
-        self.vmCreateInSnapshot()
-        self.snapshotRemove()
+        self.vm2 = admin_vm(self.webDriver)
+        self.vm2._vmName = self.vm2._vmName + '_2'
+        self._vm2Name = self.vm2._vmName
+        self.vm2.create()
+        # self._vm2Name = self.vm2._vmName + '_2'
+
+        # 선호도 그룹
+        # self.affinityGroupCreate()
+        # self.affinityGroupUpdate()
+        # self.affinityGroupRemove()
+        
+        # # 선호도 레이블
+        # self.affinityLabelCreate()
+        # self.affinityLabelUpdate()
+        # self.affinityLabelRemove()
+
+        # # 스냅샷
+        # self.snapshotCreate()
+        # self.restoreVMUsingSnapshot()
+        # self.vmCreateInSnapshot()
+        # self.snapshotRemove()
 
         # 내보내기
         self.exportToDomain()
@@ -375,7 +382,7 @@ class admin_vm2(admin_vm): # 상속
             # 생성 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
             self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
-            time.sleep(0.5)
+            time.sleep(2)
 
             # 설명 입력
             self.webDriver.explicitlyWait(10, By.ID, 'VmSnapshotCreatePopupWidget_description')
@@ -384,7 +391,7 @@ class admin_vm2(admin_vm): # 상속
 
             # OK 클릭
             self.webDriver.findElement('id', 'VmSnapshotCreatePopupView_OnSave', True)
-            time.sleep(5)
+            time.sleep(10)
 
             # 확인 방법 li 태그를 모두 확인하면서 text Content에 내가 입력한 값이 포함되어있으면 성공
             ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
@@ -745,7 +752,7 @@ class admin_vm2(admin_vm): # 상속
                     break
                 elif time.time() - st > 120:
                     result = FAIL
-                    msg = 'Failed to export to host(timeout_'
+                    msg = 'Failed to export to host(timeout)'
                     printLog("[VM EXPORT TO HOST] MESSAGE : " + msg)
 
             ssh_.deactivate()
