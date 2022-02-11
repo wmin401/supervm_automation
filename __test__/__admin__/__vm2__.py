@@ -41,6 +41,15 @@ class admin_vm2(admin_vm): # 상속
         self._vm2Name = self.vm2._vmName
         self.vm2.create()
 
+        # 사용자 액세스
+        self.assignToUser()
+        self.removeAccessFromUser()
+        
+        # 가상 머신 장치
+        self.addHostDevice()
+        self.pinAnotherHost()
+        self.removeHostDevice()
+
         # 선호도 그룹
         self.affinityGroupCreate()
         self.affinityGroupUpdate()
@@ -970,3 +979,303 @@ class admin_vm2(admin_vm): # 상속
         self._vm2Result.append(['vm' + DELIM + 'setting migration priority' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('VM_SETTING_MIGRATION_PRIORITY',result, msg)
         
+    def assignToUser(self):
+
+        # - 2-476 : 사용자에게 가상 머신 할당
+
+        printLog(printSquare('Assign to user'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            self.setup()
+
+            # 생성한 VM 이름 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
+            time.sleep(2)
+
+            # 권한 클릭
+            try:
+                self.webDriver.findElement('link_text', '권한', True)
+            except:
+                self.webDriver.findElement('link_text', 'role', True)
+
+            # New 클릭
+            time.sleep(1)
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_New')
+            self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
+            time.sleep(1)
+
+            # 검색 클릭
+            self.webDriver.findElement('css_selector', '#PermissionsPopupView_searchButton > button', True)
+            time.sleep(3)
+
+            userTable = self.webDriver.findElement('css_selector_all', 'tbody')[1]
+
+            for tr in userTable.find_elements_by_tag_name('tr'):
+                td = tr.find_elements_by_tag_name("td")
+                if td[1].get_attribute('textContent') == USER_ID:
+                    td[0].find_element_by_tag_name('input').click()
+                    break
+            
+            # 할당된 역할 선택 - AuditLogManager 추가
+            roleMenu = self.webDriver.findElement('css_selector', '#PermissionsPopupView_role > div > button', True)
+            self.selectDropdownMenu('css_selector', '#PermissionsPopupView_role > div > ul', 'AuditLogManager')
+
+            # OK 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('css_selector', '#PermissionsPopupView_OnAdd > button', True)
+            time.sleep(2)
+            # 생성 확인
+            _addCheck = self.webDriver.tableSearch('AuditLogManager', 4)        
+            if _addCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to add new role..."
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM ASSIGN TO USER] MESSAGE : " + msg)
+        printLog("[VM ASSIGN TO USER] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'assign to user' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_ASSIGN_TO_USER',result, msg) # 모두 대문자
+
+    def removeAccessFromUser(self):        
+        # 2-477:사용자의 가상 머신에 대한 액세스 제거
+        printLog(printSquare('Remove access from user'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            self.setup()
+
+            # 생성한 VM 이름 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
+            time.sleep(2)
+
+            # 권한 클릭
+            try:
+                self.webDriver.findElement('link_text', '권한', True)
+            except:
+                self.webDriver.findElement('link_text', 'role', True)
+            time.sleep(2)
+            
+            # 생성한 권한 찾아서 클릭
+            self.webDriver.tableSearch('AuditLogManager', 4, rowClick=True)
+            # 제거 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Remove')
+            self.webDriver.findElement('id', 'DetailActionPanelView_Remove', True)
+            # OK 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
+            self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
+            time.sleep(2)
+            _removeCheck = self.webDriver.tableSearch('AuditLogManager', 4, False, False, True)
+            if _removeCheck == False:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to remove role..."
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM REMOVE ACCESS FROM USER] MESSAGE : " + msg)
+        printLog("[VM REMOVE ACCESS FROM USER] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'remove access from user' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_REMOVE_ACCESS_FROM_USER',result, msg) # 모두 대문자
+
+    def addHostDevice(self):
+        # 2-482 : 가상 머신에 호스트 장치 추가 
+        printLog(printSquare('Add host device to VM'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            self.setup()
+
+            # 생성한 VM 이름 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
+            time.sleep(2)
+
+            # 호스트 장치 클릭
+            try:
+                self.webDriver.findElement('link_text', '호스트 장치', True)
+            except:
+                self.webDriver.findElement('link_text', 'Host Devices', True)
+            time.sleep(2)
+
+            # 장치 추가 클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
+            time.sleep(1)
+
+            # 제일 상단 장치 추가
+            deviceTable = self.webDriver.findElement('css_selector_all', 'tbody')[1]
+            for tr in deviceTable.find_elements_by_tag_name('tr'):
+                td = tr.find_elements_by_tag_name('td')
+                self._deviceName = td[1].get_attribute('textContent')
+                td[0].find_element_by_tag_name('input').click()
+                time.sleep(.5)
+                break
+                
+            self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[4]/table/tbody/tr/td/table/tbody/tr/td[1]/div/div/img', True)
+            time.sleep(.5)
+            self.webDriver.findElement("css_selector", '#AddVmHostDevicePopupView_OnSave > button', True)
+            time.sleep(2)
+
+            devices = self.webDriver.tableSearch(self._deviceName, 0, False, False, True)
+            if devices[0] == self._deviceName:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to add host device'
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM ADD HOST DEVICE] MESSAGE : " + msg)
+        printLog("[VM ADD HOST DEVICE] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'add host device' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_ADD_HOST_DEVICE',result, msg) # 모두 대문자
+
+    def removeHostDevice(self):
+        # 2-483 : 가상 머신에서 호스트 장치 제거
+        printLog(printSquare('Remove host device from VM'))
+        result = FAIL
+        msg = ''
+
+        try:          
+            self.setup()
+
+            # 생성한 VM 이름 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
+            time.sleep(2)
+
+            # 호스트 장치 클릭
+            try:
+                self.webDriver.findElement('link_text', '호스트 장치', True)
+            except:
+                self.webDriver.findElement('link_text', 'Host Devices', True)
+            time.sleep(2)
+
+            # 추가된 장치 클릭
+            self.webDriver.tableSearch(self._deviceName, 0, True)
+
+            # 장치 삭제 클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_Remove', True)
+            time.sleep(1)
+
+            self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
+            time.sleep(1)
+
+            devices = self.webDriver.tableSearch(self._deviceName, 0, False, False, True)
+            if devices == False:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to remove host device'
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM REMOVE HOST DEVICE] MESSAGE : " + msg)
+        printLog("[VM REMOVE HOST DEVICE] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'remove host device' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_REMOVE_HOST_DEVICE',result, msg) # 모두 대문자
+    
+    def pinAnotherHost(self):
+        # 2-484 : 가상 머신을 다른 호스트에 고정
+        # 다른 호스트가 필요하다.(현재는 테스트 불가능)
+
+        printLog(printSquare('Pin another host'))
+        result = FAIL
+        msg = ''
+
+        self._anotherHostName = ADMIN_HOSTNAME
+
+        try:
+
+            self.setup()
+
+            # 생성한 VM 이름 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
+            time.sleep(2)
+
+            # 호스트 장치 클릭
+            try:
+                self.webDriver.findElement('link_text', '호스트 장치', True)
+            except:
+                self.webDriver.findElement('link_text', 'Host Devices', True)
+            time.sleep(2)
+
+            # 추가된 장치 클릭
+            self.webDriver.tableSearch(self._deviceName, 0, True)
+            # 다른 호스트에 고정 클릭
+            self.webDriver.findElement('id', 'DetailActionPanelView_RepinHost', True)
+            time.sleep(2)
+
+            # 호스트 선택
+            self.webDriver.findElement('css_selector', '#dropdownMenu', True)
+            self.selectDropdownMenu('css_selector', '#VmRepinHostPopupView_pinnedHostEditor > div > ul', self._anotherHostName)
+
+            # OK 클릭
+            self.webDriver.findElement('css_selector', '#VmRepinHostPopupView_OnRepin > button', True)
+            time.sleep(1)
+
+            # 컴퓨팅 - 호스트
+            time.sleep(2)
+            printLog("[VM PIN ANOTHER HOST] Compute - Hosts")
+            self.webDriver.findElement('id','compute', True)
+            time.sleep(0.5)
+            self.webDriver.findElement('id','MenuView_hostsAnchor',True)
+            time.sleep(2)
+
+            # 호스트 이름 클릭
+            self.webDriver.tableSearch(self._anotherHostName, 2, False, True)
+            time.sleep(1)
+
+            # 호스트 장치 클릭
+            try:
+                self.webDriver.findElement('link_text', '가상머신', True)
+            except:
+                self.webDriver.findElement('link_text', 'Virtual Machines', True)
+            time.sleep(2)
+
+            # 현재 호스트에 고정 클릭
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[3]/div[1]/div/div/div/div/div[2]/label[2]', True)
+
+            # 확인
+            isPinned = self.webDriver.tableSearch(self._vm2Name, 1, False, False, True)
+            if isPinned == False:
+                result = FAIL
+                msg = 'Failed to pin another host'
+            else:
+                if isPinned[1] == self._vm2Name:
+                    result = PASS
+                    msg = ''
+                else:
+                    result = FAIL
+                    msg = 'Failed to pin another host'
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM PIN ANOTHER HOST] MESSAGE : " + msg)
+        printLog("[VM PIN ANOTHER HOST] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'pin another host' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_PIN_ANOTHER_HOST',result, msg) # 모두 대문자
