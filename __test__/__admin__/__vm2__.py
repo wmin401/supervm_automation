@@ -696,6 +696,7 @@ class admin_vm2(admin_vm): # 상속
         printLog("[VM EXPORT TO DATA DOMAIN] RESULT : " + result)
         self._vm2Result.append(['vm' + DELIM + 'export to data domain' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('VM_EXPORT_TO_DATA_DOMAIN',result, msg)
+        printLog("[VM EXPORT TO DATA DOMAIN] RESULT Wait 30 seconds ...")
         
     def exportToHost(self):
         # - 2-515 : 호스트에서 가상 머신 가져 오기
