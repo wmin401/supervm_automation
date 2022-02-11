@@ -14,7 +14,7 @@ class admin_vm2(admin_vm): # 상속
         self._affinityGroupName = 'auto_affinity_group_%s'%randomString()
         self._affinityLabelName = 'auto_affinity_label_%s'%randomString()
         self._snapshotName = 'auto_snapshot_%s'%randomString()
-        printLog('VM 2 TEST includes Administrative tasks')
+        # printLog('VM 2 TEST includes Administrative tasks')
         
         self._vm2Result = []
         # self._vm2Name = 'for_automation' # 개별 테스트를 위해서 이렇게 값을 overriding
@@ -712,10 +712,9 @@ class admin_vm2(admin_vm): # 상속
 
             # 가져오기 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
-            time.sleep(.5)
-            self.webDriver.findElement('id', 'ActionPanelView_ExportOva', True)
-            
             time.sleep(1)
+            self.webDriver.findElement('id', 'ActionPanelView_ExportOva', True)            
+            time.sleep(5)
 
             # 호스트 선택
             self.webDriver.findElement('css_selector', '#ExportOvaWidget_proxy > div > button', True)
@@ -860,6 +859,14 @@ class admin_vm2(admin_vm): # 상속
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM IMPORT FROM HOST] MESSAGE : " + msg)
+
+
+        # ova 파일 삭제        
+        ssh_ = ssh_connection(ADMIN_HOST_IP, '22', ADMIN_HOST_ID, ADMIN_HOST_PW)
+        ssh_.activate()
+        ssh_.commandExec('rm -rf /root/exported_%s.ova'%self._vm2Name)
+        ssh_.deactivate()
+
 
         # 결과 출력
         printLog("[VM IMPORT FROM HOST] RESULT : " + result)
