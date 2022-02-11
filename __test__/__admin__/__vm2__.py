@@ -34,28 +34,28 @@ class admin_vm2(admin_vm): # 상속
                 return PASS, ''
 
     def test(self):
-
+        
+        # vm 생성
         self.vm2 = admin_vm(self.webDriver)
         self.vm2._vmName = self.vm2._vmName + '_2'
         self._vm2Name = self.vm2._vmName
         self.vm2.create()
-        # self._vm2Name = self.vm2._vmName + '_2'
 
         # 선호도 그룹
-        # self.affinityGroupCreate()
-        # self.affinityGroupUpdate()
-        # self.affinityGroupRemove()
+        self.affinityGroupCreate()
+        self.affinityGroupUpdate()
+        self.affinityGroupRemove()
         
-        # # 선호도 레이블
-        # self.affinityLabelCreate()
-        # self.affinityLabelUpdate()
-        # self.affinityLabelRemove()
+        # 선호도 레이블
+        self.affinityLabelCreate()
+        self.affinityLabelUpdate()
+        self.affinityLabelRemove()
 
-        # # 스냅샷
-        # self.snapshotCreate()
-        # self.restoreVMUsingSnapshot()
-        # self.vmCreateInSnapshot()
-        # self.snapshotRemove()
+        # 스냅샷
+        self.snapshotCreate()
+        self.restoreVMUsingSnapshot()
+        self.vmCreateInSnapshot()
+        self.snapshotRemove()
 
         # 내보내기
         self.exportToDomain()
