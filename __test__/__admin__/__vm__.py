@@ -125,6 +125,7 @@ class admin_vm:
         self.changeCD()
 
         self.reboot()
+        self.pause()
         self.shutdown()
         self.remove()
 
@@ -1574,3 +1575,29 @@ class admin_vm:
         
         self.tl.junitBuilder('VM_CHANGE_CD',result, msg) # 모두 대문자
 
+    def pause(self):
+        
+        printLog(printSquare('Pause VM'))
+        result = FAIL
+        msg = ''
+
+        try:        
+            self.setup()
+
+            # 선택
+            self.webDriver.tableSearch(self._vmName, 2, True)
+            # 일시중지 클릭
+            self.webDriver.findElement('id','ActionPanelView_Pause', True)
+
+            # 결과 확인
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '실행 중', '저장 중인 상태'], ['Suspended', '일시중지됨'], 300)            
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM PAUSE] MESSAGE : " + msg)        
+            
+        printLog("[VM PAUSE] RESULT : " + result)
+        self._vmResult.append(['vm' + DELIM + 'pause' + DELIM + result + DELIM + msg])            
+        self.tl.junitBuilder('VM_PAUSE',result, msg) # 모두 대문자
