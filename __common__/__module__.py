@@ -72,3 +72,20 @@ def printSquare(msg):
  %s
 ========================================================='''%msg.capitalize()
     return m
+
+
+def selectDropdownMenu(webDriver, type_, ulTagPath, name):
+    # 드롭다운 메뉴에서 원하는거 클릭하고 싶을때 사용    
+    time.sleep(1)
+    if type_ == 'css_selector':
+        lis = webDriver.findElement(type_ + '_all', ulTagPath + ' > li')
+    elif type_ == 'xpath':
+        lis = webDriver.findElement(type_ + '_all', ulTagPath + '/li')
+    else:
+        printLog("[SELECT DROPDOWN MENU] Undefined type")
+        return
+
+    for li in lis:
+        if name == li.get_attribute('textContent'):
+            li.click()
+            break

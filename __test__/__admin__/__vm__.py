@@ -73,21 +73,7 @@ class admin_vm:
             self.webDriver.click()
         time.sleep(1)
 
-    def selectDropdownMenu(self, type_, ulTagPath, name):
-        # 드롭다운 메뉴에서 원하는거 클릭하고 싶을때 사용    
-        time.sleep(1)
-        if type_ == 'css_selector':
-            lis = self.webDriver.findElement(type_ + '_all', ulTagPath + ' > li')
-        elif type_ == 'xpath':
-            lis = self.webDriver.findElement(type_ + '_all', ulTagPath + '/li')
-        else:
-            printLog("[SELECT DROPDOWN MENU] Undefined type")
-            return
 
-        for li in lis:
-            if name == li.get_attribute('textContent'):
-                li.click()
-                break
 
     def test(self):
         # VM 생성 - 2
@@ -1538,7 +1524,7 @@ class admin_vm:
 
             # # 꺼내기 선택
             # self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
-            # self.selectDropdownMenu('css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', '[꺼내기]')
+            # selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', '[꺼내기]')
             # self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
             # time.sleep(.5)
 
@@ -1549,7 +1535,7 @@ class admin_vm:
 
             # Windows10.iso 선택
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
-            self.selectDropdownMenu('css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
+            selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
             time.sleep(.5)
             

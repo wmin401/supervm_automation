@@ -736,7 +736,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 호스트 선택
             self.webDriver.findElement('css_selector', '#ExportOvaWidget_proxy > div > button', True)
-            self.selectDropdownMenu('css_selector', '#ExportOvaWidget_proxy > div > ul', ADMIN_HOSTNAME)
+            selectDropdownMenu(self.webDriver, 'css_selector', '#ExportOvaWidget_proxy > div > ul', ADMIN_HOSTNAME)
 
             # 경로 입력
             self.webDriver.findElement('id', 'ExportOvaWidget_path', True)
@@ -812,13 +812,13 @@ class admin_vm2(admin_vm): # 상속
             sourceMenu[1].click()
             time.sleep(.5)
             # 가상 어플라이언스 클릭
-            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[1]/div/div[1]/div/div/div/ul', '가상 어플라이언스 (OVA)')
+            selectDropdownMenu(self.webDriver, 'xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[1]/div/div[1]/div/div/div/ul', '가상 어플라이언스 (OVA)')
             time.sleep(1)
 
             # 호스트 메뉴 클릭
             sourceMenu[6].click()
             # admin 호스트 클릭
-            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[5]/div[1]/div/div[1]/div/div/div/ul', ADMIN_HOSTNAME)
+            selectDropdownMenu(self.webDriver, 'xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[5]/div[1]/div/div[1]/div/div/div/ul', ADMIN_HOSTNAME)
 
             self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[5]/div[2]/div[2]/div[1]/div/input', True)
             self.webDriver.sendKeys('/root')
@@ -919,7 +919,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 수동 마이그레이션만 허용
             self.webDriver.findElement('css_selector', '#VmPopupWidget_migrationMode > div > button', True)
-            self.selectDropdownMenu('css_selector', '#VmPopupWidget_migrationMode > div > ul', '수동 마이그레이션만 허용')
+            selectDropdownMenu(self.webDriver, 'css_selector', '#VmPopupWidget_migrationMode > div > ul', '수동 마이그레이션만 허용')
 
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
             time.sleep(3)
@@ -964,7 +964,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 우선순위 선택
             self.webDriver.findElement('css_selector', '#VmPopupWidget_priority > div > button', True)
-            self.selectDropdownMenu('css_selector', '#VmPopupWidget_priority > div > ul', '높음')
+            selectDropdownMenu(self.webDriver, 'css_selector', '#VmPopupWidget_priority > div > ul', '높음')
 
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
             time.sleep(3)
@@ -1023,7 +1023,7 @@ class admin_vm2(admin_vm): # 상속
             
             # 할당된 역할 선택 - AuditLogManager 추가
             roleMenu = self.webDriver.findElement('css_selector', '#PermissionsPopupView_role > div > button', True)
-            self.selectDropdownMenu('css_selector', '#PermissionsPopupView_role > div > ul', 'AuditLogManager')
+            selectDropdownMenu(self.webDriver, 'css_selector', '#PermissionsPopupView_role > div > ul', 'AuditLogManager')
 
             # OK 클릭
             self.webDriver.implicitlyWait(10)
@@ -1232,7 +1232,7 @@ class admin_vm2(admin_vm): # 상속
 
             # 호스트 선택
             self.webDriver.findElement('css_selector', '#dropdownMenu', True)
-            self.selectDropdownMenu('css_selector', '#VmRepinHostPopupView_pinnedHostEditor > div > ul', self._anotherHostName)
+            selectDropdownMenu(self.webDriver, 'css_selector', '#VmRepinHostPopupView_pinnedHostEditor > div > ul', self._anotherHostName)
 
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmRepinHostPopupView_OnRepin > button', True)
@@ -1314,13 +1314,13 @@ class admin_vm2(admin_vm): # 상속
             sourceMenu[39].click() ## 39번째이지만, 새로운 빌드시 변경될 수 있음
             time.sleep(.5)
             # sap_agent 선택
-            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[11]/div/div[2]/div/div/div/div/div/div[1]/div[1]/div[2]/div[1]/div/div/div/ul', 'sap_agent')
+            selectDropdownMenu(self.webDriver, 'xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[11]/div/div[2]/div/div/div/div/div/div[1]/div[1]/div[2]/div[1]/div/div/div/ul', 'sap_agent')
             time.sleep(1)
 
             # 소스 메뉴 클릭
             sourceMenu = self.webDriver.findElement('css_selector_all', '#dropdownMenu')
             sourceMenu[40].click() ## 40번째이지만, 새로운 빌드시 변경될 수 있음
-            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[11]/div/div[2]/div/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div/div/div/ul', 'true')
+            selectDropdownMenu(self.webDriver, 'xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[11]/div/div[2]/div/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div/div/div/ul', 'true')
             time.sleep(.5)
 
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
