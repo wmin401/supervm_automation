@@ -89,3 +89,4 @@ def selectDropdownMenu(webDriver, type_, ulTagPath, name):
         if name == li.get_attribute('textContent'):
             li.click()
             break
+    time.sleep(1)
