@@ -120,8 +120,8 @@ class admin_vm:
         self.ViewingPinnedToHost()
 
         # 가상 메모리 - 2
-        # self.virtualMemoryHotPlugging()
-        # self.virtualMemoryHotUnplugging()
+        self.virtualMemoryHotPlugging()
+        self.virtualMemoryHotUnplugging()
 
         # vcpu - 1
         self.hotPluggingVCPU()
@@ -646,7 +646,7 @@ class admin_vm:
             self.webDriver.explicitlyWait(10, By.ID, 'DefaultConfirmationPopupView_OnReboot')
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
             # 결과 확인
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 300)            
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 600)            
 
         except Exception as e:
             result = FAIL
@@ -1236,7 +1236,7 @@ class admin_vm:
 
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
-            time.sleep(1)
+            time.sleep(3)
 
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
@@ -1298,6 +1298,7 @@ class admin_vm:
             self.setup()
 
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(3)
 
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
@@ -1596,7 +1597,7 @@ class admin_vm:
             self.webDriver.findElement('id','ActionPanelView_Pause', True)
 
             # 결과 확인
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '실행 중', '저장 중인 상태'], ['Suspended', '일시중지됨'], 300)            
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '실행 중', '저장 중인 상태', 'Saving'], ['Suspended', '일시중지됨'], 300)            
 
         except Exception as e:
             result = FAIL
