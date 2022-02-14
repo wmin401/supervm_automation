@@ -90,40 +90,46 @@ class admin_vm:
                 break
 
     def test(self):
-        # VM 생성
+        # VM 생성 - 2
         self.create()
         self.createWindows()
 
-        # 가상 디스크
+        # 가상 디스크 - 4
         self.addVirtualDisk()
         self.attachDisk()
         self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
-        # 네트워크 인터페이스
+        # 네트워크 인터페이스 - 4
         self.addNetworkInterface()
         self.updateNetworkInterface()
         self.networkInterfaceHotPlugging()
         self.deleteNetworkInterface()
 
+        # 업데이트 - 1
         self.update()
+
+        # 복사 - 1 
         self.copy()
+
+        # 실행 - 1
         self.run()
 
-        # 호스트
+        # 호스트 - 2
         self.pinToMultipleHosts()
         self.ViewingPinnedToHost()
 
-        # 가상 메모리
+        # 가상 메모리 - 2
         self.virtualMemoryHotPlugging()
-        # self.virtualMemoryHotUnplugging()
+        self.virtualMemoryHotUnplugging()
 
-        # vcpu
+        # vcpu - 1
         self.hotPluggingVCPU()
 
-        # # cd변경
+        # cd변경 - 1
         self.changeCD()
 
+        # 종료 및 정지 - 4
         self.reboot()
         self.pause()
         self.shutdown()
