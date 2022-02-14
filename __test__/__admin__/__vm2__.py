@@ -77,6 +77,9 @@ class admin_vm2(admin_vm): # 상속
         self.preventingAutoMigration()
         self.settingMigrationPriority()
 
+        # SAP monitoring
+        self.enablingSAPMonitoring()
+
     def affinityGroupCreate(self):
         printLog(printSquare('Create Affinity Group'))
         result = FAIL
@@ -460,7 +463,7 @@ class admin_vm2(admin_vm): # 상속
             for li in lis:
                 try:
                     if self._snapshotName in li.text: 
-                        printLog("[VM SNAPSHOT REMOVE] Snapshot Name : %s"%self._snapshotName)
+                        printLog("[VM SNAPSHOT RESTORE VM] Snapshot Name : %s"%self._snapshotName)
                         li.click()
                         isClicked = True
                         break
@@ -473,11 +476,11 @@ class admin_vm2(admin_vm): # 상속
             # 미리보기 드롭다운 메뉴에서 사용자 지정 선택
             self.webDriver.findElement('css_selector', '#DetailActionPanelView_Preview > button.btn.btn-default.dropdown-toggle', True)
             self.webDriver.findElement('css_selector', '#DetailActionPanelView_Preview > ul > li', True)
-            time.sleep(1)
+            time.sleep(2)
 
             # OK 클릭
             self.webDriver.findElement('id', 'VmSnapshotCustomPreviewPopupView_OnCustomPreview', True)
-            time.sleep(5)
+            time.sleep(10)
             
             # Active VM 이 Active VM before the preview로 변경되면 성공
             
@@ -513,7 +516,7 @@ class admin_vm2(admin_vm): # 상속
         # 테스트 이후 되돌리기 클릭
         self.webDriver.findElement('id', 'DetailActionPanelView_Undo', True)
         printLog("[VM SNAPSHOT RESTORE VM] Going back to before restore...")
-        time.sleep(30)
+        time.sleep(60)
 
     def vmCreateInSnapshot(self):        
         printLog(printSquare('Create VM in snapshot'))
@@ -537,7 +540,7 @@ class admin_vm2(admin_vm): # 상속
             for li in lis:
                 try:
                     if self._snapshotName in li.text: 
-                        printLog("[VM SNAPSHOT REMOVE] Snapshot Name : %s"%self._snapshotName)
+                        printLog("[VM CREATE IN SNAPSHOT] Snapshot Name : %s"%self._snapshotName)
                         li.click()
                         isClicked = True
                         break
@@ -553,24 +556,24 @@ class admin_vm2(admin_vm): # 상속
             # 이름 입력 후 생성
             self.webDriver.explicitlyWait(10, By.ID, 'VmClonePopupWidget_name')
             self.webDriver.findElement('id', 'VmClonePopupWidget_name')
-            self.webDriver.sendKeys('VM_for_%s'%self._snapshotName)
+            self.webDriver.sendKeys('VM_from_%s'%self._snapshotName)
             # OK 클릭
             self.webDriver.findElement('id', 'VmClonePopupView_OnCloneVM', True)
             
             # 컴퓨팅 - 가상머신
             self.setup()
             # 가상머신 목록 확인
-            result, msg = self.webDriver.isChangedStatus('VM_for_%s'%self._snapshotName, 2, 13, ['이미지 잠김', 'Image locked', "Image Locked"], ['Down'], 300)
+            result, msg = self.webDriver.isChangedStatus('VM_from_%s'%self._snapshotName, 2, 13, ['이미지 잠김', 'Image locked', "Image Locked"], ['Down'], 300)
 
         except Exception as e:   
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-            printLog("[VM CREATE VM IN SNAPSHOT] MESSAGE : " + msg)
+            printLog("[VM CREATE IN SNAPSHOT] MESSAGE : " + msg)
 
         # 결과 출력
-        printLog("[VM CREATE VM IN SNAPSHOT] RESULT : " + result)
-        self._vm2Result.append(['vm' + DELIM + 'create vm in snapshot' + DELIM + result + DELIM + msg])        
+        printLog("[VM CREATE IN SNAPSHOT] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'create in snapshot' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('VM_CREATE_IN_SNAPSHOT',result, msg)
 
     def snapshotRemove(self):    
@@ -1279,3 +1282,60 @@ class admin_vm2(admin_vm): # 상속
         self._vm2Result.append(['vm' + DELIM + 'pin another host' + DELIM + result + DELIM + msg])
         
         self.tl.junitBuilder('VM_PIN_ANOTHER_HOST',result, msg) # 모두 대문자
+
+    def enablingSAPMonitoring(self):
+
+        # 2-503:SAP 모니터링 활성화
+
+        printLog(printSquare('Eanble SAP Monitoring'))
+        result = FAIL
+        msg = ''
+
+        try:
+            self.setup()
+
+            # 생성한 VM 클릭
+            self.webDriver.tableSearch(self._vm2Name, 2, True)
+
+            # 편집 버튼 클릭
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            time.sleep(1)
+
+            # 사용자 정의 속성 선택
+            lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
+            for li in lis:
+                if '사용자 정의 속성' == li.get_attribute('textContent'):
+                    li.click()
+                    break
+            time.sleep(1)
+            
+            # 소스 메뉴 클릭
+            sourceMenu = self.webDriver.findElement('css_selector_all', '#dropdownMenu')
+            sourceMenu[39].click() ## 39번째이지만, 새로운 빌드시 변경될 수 있음
+            time.sleep(.5)
+            # sap_agent 선택
+            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[11]/div/div[2]/div/div/div/div/div/div[1]/div[1]/div[2]/div[1]/div/div/div/ul', 'sap_agent')
+            time.sleep(1)
+
+            # 소스 메뉴 클릭
+            sourceMenu = self.webDriver.findElement('css_selector_all', '#dropdownMenu')
+            sourceMenu[40].click() ## 40번째이지만, 새로운 빌드시 변경될 수 있음
+            self.selectDropdownMenu('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[11]/div/div[2]/div/div/div/div/div/div[1]/div[2]/div[3]/div[1]/div/div/div/ul', 'true')
+            time.sleep(.5)
+
+            self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
+            time.sleep(2)
+
+            result = PASS
+            msg = ''
+            
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[VM ENABLE SAP MONITORING] MESSAGE : " + msg)
+        printLog("[VM ENABLE SAP MONITORING] RESULT : " + result)
+        self._vm2Result.append(['vm' + DELIM + 'enable SAP monitoring' + DELIM + result + DELIM + msg])
+        
+        self.tl.junitBuilder('VM_ENABLE_SAP_MONITORING',result, msg) # 모두 대문자
