@@ -41,43 +41,43 @@ class admin_vm2(admin_vm): # 상속
         self._vm2Name = self.vm2._vmName
         self.vm2.create()
 
-        # 사용자 액세스
+        # 사용자 액세스 - 2
         self.assignToUser()
         self.removeAccessFromUser()
         
-        # 가상 머신 장치
+        # 가상 머신 장치 - 3
         self.addHostDevice()
         self.pinAnotherHost()
         self.removeHostDevice()
 
-        # 선호도 그룹
+        # 선호도 그룹 - 3
         self.affinityGroupCreate()
         self.affinityGroupUpdate()
         self.affinityGroupRemove()
         
-        # 선호도 레이블
+        # 선호도 레이블 - 3
         self.affinityLabelCreate()
         self.affinityLabelUpdate()
         self.affinityLabelRemove()
 
-        # 스냅샷
+        # 스냅샷 - 4
         self.snapshotCreate()
         self.restoreVMUsingSnapshot()
         self.vmCreateInSnapshot()
         self.snapshotRemove()
 
-        # 내보내기
+        # 내보내기 - 2
         self.exportToDomain()
         self.exportToHost()
 
-         # 가져오기
+         # 가져오기 - 1
         self.importFromHost()
         
-        # 마이그레이션
+        # 마이그레이션 - 2
         self.preventingAutoMigration()
         self.settingMigrationPriority()
 
-        # SAP monitoring
+        # SAP monitoring - 1
         self.enablingSAPMonitoring()
 
     def affinityGroupCreate(self):
