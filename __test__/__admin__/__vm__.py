@@ -120,8 +120,8 @@ class admin_vm:
         self.ViewingPinnedToHost()
 
         # 가상 메모리 - 2
-        self.virtualMemoryHotPlugging()
-        self.virtualMemoryHotUnplugging()
+        # self.virtualMemoryHotPlugging()
+        # self.virtualMemoryHotUnplugging()
 
         # vcpu - 1
         self.hotPluggingVCPU()
