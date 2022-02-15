@@ -76,32 +76,32 @@ class admin_vm:
 
     def test(self):
         # VM 생성 - 2
-        self.create()
-        self.createWindows()
+        # self.create()
+        # self.createWindows()
 
-        # 가상 디스크 - 4
-        self.addVirtualDisk()
-        self.attachDisk()
-        self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # # 가상 디스크 - 4
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
-        # 네트워크 인터페이스 - 4
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # # 네트워크 인터페이스 - 4
+        # self.addNetworkInterface()
+        # self.updateNetworkInterface()
+        # self.networkInterfaceHotPlugging()
+        # self.deleteNetworkInterface()
 
-        # 업데이트 - 1
-        self.update()
+        # # 업데이트 - 1
+        # self.update()
 
-        # 복사 - 1 
-        self.copy()
+        # # 복사 - 1 
+        # self.copy()
 
         # 실행 - 1
-        self.run()
+        # self.run()
 
         # 호스트 - 2
-        self.pinToMultipleHosts()
+        # self.pinToMultipleHosts()
         self.ViewingPinnedToHost()
 
         # 가상 메모리 - 2
@@ -631,7 +631,7 @@ class admin_vm:
             self.webDriver.explicitlyWait(10, By.ID, 'DefaultConfirmationPopupView_OnReboot')
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
             # 결과 확인
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 600)            
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 1200)
 
         except Exception as e:
             result = FAIL
@@ -1415,6 +1415,7 @@ class admin_vm:
 
             
             self.webDriver.findElement('css_selector', '#VmPopupWidget_lease > div > button', True)
+            time.sleep(.3)
             
             lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget_lease > div > ul > li')
             for li in lis:
@@ -1462,6 +1463,8 @@ class admin_vm:
         printLog(printSquare('Viewing VM pinned to hosts'))
         result = FAIL
         msg = ''
+        # self._vmName = 'auto_vm_VFdPlSqp'
+        # self._specificHost = ADMIN_HOSTNAME
 
         try:          
             # 컴퓨팅 - 호스트
@@ -1473,18 +1476,16 @@ class admin_vm:
             time.sleep(2)
 
             self.webDriver.tableSearch(self._specificHost, 2, rowClick = False, nameClick = True)
-            time.sleep(1)
-
-            time.sleep(0.5)
+            time.sleep(2)
             try:
                 self.webDriver.findElement('link_text', '가상머신', True)
             except:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
-            time.sleep(0.5)
+            time.sleep(1)
 
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[3]/div[1]/div/div/div/div/div[2]/label[2]', True)
 
-            isPinned = self.webDriver.tableSearch(self._vmName, 1, rowClick = False, nameClick = False, returnValueList = True)
+            isPinned = self.webDriver.tableSearch(self._vmName, 2, rowClick = False, nameClick = False, returnValueList = True)
             if isPinned is not False:
                 result = PASS
                 msg = ''
