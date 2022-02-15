@@ -86,9 +86,9 @@ class admin_host:
         time.sleep(1)
         printLog("[HOST SETUP] Compute - Hosts")
         self.webDriver.findElement('id','compute',True)
-        time.sleep(0.5)
+        time.sleep(1)
         self.webDriver.findElement('id','MenuView_hostsAnchor',True)
-        time.sleep(2)
+        time.sleep(3)
     
     def test(self):
 
@@ -278,7 +278,7 @@ class admin_host:
             # 관리
             installBtn = self.webDriver.findElement('css_selector_all', '#ActionPanelView___')[1]
             installBtn.click()
-            time.sleep(.5)
+            time.sleep(1)
             
             installDropdownMenu = installBtn.find_elements_by_tag_name('ul')
             for ul in installDropdownMenu:
@@ -295,7 +295,7 @@ class admin_host:
                 self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/div[2]/button', True)
             except:
                 pass
-            time.sleep(1)
+            time.sleep(10)
 
             result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Maintenance', 'Down', 'Reboot'], ['Up'], 1200)
 
