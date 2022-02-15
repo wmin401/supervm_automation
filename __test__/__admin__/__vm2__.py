@@ -1129,9 +1129,9 @@ class admin_vm2(admin_vm): # 상속
                 break
                 
             self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[4]/table/tbody/tr/td/table/tbody/tr/td[1]/div/div/img', True)
-            time.sleep(.5)
+            time.sleep(1)
             self.webDriver.findElement("css_selector", '#AddVmHostDevicePopupView_OnSave > button', True)
-            time.sleep(2)
+            time.sleep(3)
 
             devices = self.webDriver.tableSearch(self._deviceName, 0, False, False, True)
             if devices[0] == self._deviceName:
