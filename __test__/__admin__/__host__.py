@@ -97,8 +97,10 @@ class admin_host:
         self.create()
         self.configuringHostSPM()
         self.moveToMaintenance()
-        # self.activateHost()   
+        self.activateHost()   
         self.viewHostDevice()
+
+        self.moveToMaintenance()
         self.reinstall()     
 
         self.moveToMaintenance()
@@ -116,9 +118,11 @@ class admin_host:
             self.webDriver.findElement('id', 'ActionPanelView_New', True)
             time.sleep(1)
             self.webDriver.findElement('id', 'HostPopupView_name', True)
-            self.webDriver.sendKeys(self._hostName)
+            self.webDriver.sendKeys(self._hostName)            
             self.webDriver.findElement('id', 'HostPopupView_host', True)
             self.webDriver.sendKeys(self._hostName)
+            self.webDriver.findElement('id', 'HostPopupView_userPassword', True)
+            self.webDriver.sendKeys(self._hostPW)
             self.webDriver.findElement('id', 'HostPopupView_rebootHostAfterInstall', True)
             a = self.webDriver.getAttribute('checked')
 
@@ -161,7 +165,7 @@ class admin_host:
             self.webDriver.tableSearch(self._hostName, 2, True)
             # 편집 클릭
             self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
-            time.sleep(1)
+            time.sleep(2)
 
             # 호스트 엔진 선택
             lis = self.webDriver.findElement('css_selector_all', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
@@ -182,6 +186,7 @@ class admin_host:
 
             # 호스트 이름 클릭
             self.webDriver.tableSearch(self._hostName, 2, False, True)
+            time.sleep(2)
 
             self.webDriver.findElement('id', 'HostGeneralSubTabView_generalFormPanel_col0_row1_value')
             spmPriority = self.webDriver.getAttribute('textContent')
@@ -219,7 +224,7 @@ class admin_host:
             self.webDriver.findElement('css_selector', '#HostMaintenanceConfirmationPopupView_OnMaintenance > button', True)
             time.sleep(1)
 
-            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Up', 'Down'], ['Maintenance'], 300)
+            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Up', 'Down', 'PreparingMaintenance', 'Unassigned'], ['Maintenance'], 300)
 
 
         except Exception as e:
@@ -273,6 +278,7 @@ class admin_host:
             # 관리
             installBtn = self.webDriver.findElement('css_selector_all', '#ActionPanelView___')[1]
             installBtn.click()
+            time.sleep(.5)
             
             installDropdownMenu = installBtn.find_elements_by_tag_name('ul')
             for ul in installDropdownMenu:
@@ -291,7 +297,7 @@ class admin_host:
                 pass
             time.sleep(1)
 
-            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Maintenance', 'Down'], ['Up'], 1200)
+            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Maintenance', 'Down', 'Reboot'], ['Up'], 1200)
 
 
         except Exception as e:
