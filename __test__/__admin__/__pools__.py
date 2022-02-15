@@ -25,8 +25,8 @@ class admin_pools:
         self._template_instance = admin_template(webDriver) # template class 사용
 
     def test(self):
-        self._template_instance.create() # 템플릿 생성
-        time.sleep(0.3)
+        # self._template_instance.create() # 템플릿 생성
+        # time.sleep(0.3)
         self.setup()
         self.create()
         time.sleep(10) # 풀 내 가상 머신 생성 시간 대기 필요
@@ -272,7 +272,7 @@ class admin_pools:
         printLog("[[ADD VMS IN POOLS] RESULT : " + result)
         self._poolsResult.append(['add' + DELIM + 'vms' + DELIM + 'in' + DELIM + 'pools' + DELIM + result + DELIM + msg])
 
-        self.tl.junitBuilder('[ADD_VMS_IN_POOLS', result, msg)
+        self.tl.junitBuilder('ADD_VMS_IN_POOLS', result, msg)
 
     def detachVmsInPools(self):
         printLog(printSquare('Detach Vms In Pools'))
@@ -354,7 +354,7 @@ class admin_pools:
         printLog("[[DETACH VMS IN POOLS] RESULT : " + result)
         self._poolsResult.append(['detach' + DELIM + 'vms' + DELIM + 'in' + DELIM + 'pools' + DELIM + result + DELIM + msg])
 
-        self.tl.junitBuilder('[DETACH VMS IN POOLS', result, msg)
+        self.tl.junitBuilder('DETACH_VMS_IN_POOLS', result, msg)
 
 
     def delete(self):
