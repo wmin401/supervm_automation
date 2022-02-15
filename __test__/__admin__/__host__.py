@@ -48,7 +48,7 @@ class admin_host:
         printLog("1. Add IP in /etc/hosts")
         printLog("2. Create hypervm repository")
         printLog("3. Disable virt module")
-        printLog("4. Eanble pki-deps postgresql:12 parfait modules")
+        printLog("4. Enable pki-deps postgresql:12 parfait modules")
         printLog("5. Install ovirt-hosted-engine-setup")
 
 
