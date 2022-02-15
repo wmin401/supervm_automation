@@ -224,7 +224,7 @@ class admin_host:
             self.webDriver.findElement('css_selector', '#HostMaintenanceConfirmationPopupView_OnMaintenance > button', True)
             time.sleep(1)
 
-            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Up', 'Down', 'PreparingMaintenance', 'Unassigned'], ['Maintenance'], 300)
+            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Up', 'Down', 'PreparingForMaintenance', 'Unassigned'], ['Maintenance'], 300)
 
 
         except Exception as e:

@@ -213,7 +213,7 @@ class SuperVM_driver:
                             cnt = 1
 
                 for passStr in passLst:
-                    if passStr in tableValueList[statusIdx]:
+                    if passStr == tableValueList[statusIdx]:
                         return PASS, ''
 
                 ed = time.time()
