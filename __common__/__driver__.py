@@ -214,6 +214,7 @@ class SuperVM_driver:
 
                 for passStr in passLst:
                     if passStr == tableValueList[statusIdx]:
+                        printLog("[%s STATUS] %s..."%(name, tableValueList[statusIdx]))
                         return PASS, ''
 
                 ed = time.time()
