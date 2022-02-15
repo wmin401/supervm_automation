@@ -209,7 +209,7 @@ class SuperVM_driver:
                 for failStr in failLst:
                     if failStr in tableValueList[statusIdx]:
                         if cnt == 0:
-                            printLog("[%s STATUS] %s..."%(name.upper(), tableValueList[statusIdx]))
+                            printLog("[%s STATUS] %s..."%(name, tableValueList[statusIdx]))
                             cnt = 1
 
                 for passStr in passLst:
@@ -218,7 +218,7 @@ class SuperVM_driver:
 
                 ed = time.time()
                 if ed-st >= t:
-                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%(name.upper(),t))
+                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%(name,t))
                     return FAIL, 'Timeout'
             except:
                 continue
