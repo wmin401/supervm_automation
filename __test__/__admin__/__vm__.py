@@ -76,33 +76,34 @@ class admin_vm:
 
     def test(self):
         # VM 생성 - 2
+        time.sleep(5)
         self.create()
-        self.createWindows()
+        # self.createWindows()
 
-        # 가상 디스크 - 4
-        self.addVirtualDisk()
-        self.attachDisk()
-        self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # # 가상 디스크 - 4
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
-        # 네트워크 인터페이스 - 4
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # # 네트워크 인터페이스 - 4
+        # self.addNetworkInterface()
+        # self.updateNetworkInterface()
+        # self.networkInterfaceHotPlugging()
+        # self.deleteNetworkInterface()
 
-        # 업데이트 - 1
-        self.update()
+        # # 업데이트 - 1
+        # self.update()
 
-        # 복사 - 1 
-        self.copy()
+        # # 복사 - 1 
+        # self.copy()
 
         # 실행 - 1
         self.run()
 
         # 호스트 - 2
-        self.pinToMultipleHosts()
-        self.ViewingPinnedToHost()
+        # self.pinToMultipleHosts()
+        # self.ViewingPinnedToHost()
 
         # 가상 메모리 - 2
         self.virtualMemoryHotPlugging()
@@ -435,6 +436,7 @@ class admin_vm:
     def run(self):
 
         printLog(printSquare('Run VM'))
+        time.sleep(2)
 
         # 스케줄링 정책이 power_saving 이면 됨
         # cc = admin_cluster(self.webDriver)
@@ -1319,6 +1321,7 @@ class admin_vm:
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            time.sleep(3)
 
             # 시스템 탭 클릭
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
@@ -1340,7 +1343,7 @@ class admin_vm:
 
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
-            time.sleep(1)
+            time.sleep(2)
 
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
@@ -1471,7 +1474,7 @@ class admin_vm:
             time.sleep(2)
             printLog("[VM SETUP] Compute - Hosts")
             self.webDriver.findElement('id','compute', True)
-            time.sleep(0.5)
+            time.sleep(1)
             self.webDriver.findElement('id','MenuView_hostsAnchor',True)
             time.sleep(2)
 
@@ -1485,14 +1488,20 @@ class admin_vm:
 
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[3]/div[1]/div/div/div/div/div[2]/label[2]', True)
 
-            isPinned = self.webDriver.tableSearch(self._vmName, 2, rowClick = False, nameClick = False, returnValueList = True)
-            if isPinned is not False:
-                result = PASS
-                msg = ''
-            else:
-                result = FAIL
-                msg = 'Failed to view...'
+            try:
+                isPinned = self.webDriver.tableSearch(self._vmName, 1, rowClick = False, nameClick = False, returnValueList = True)
+                if isPinned is not False:
+                    result = PASS
+                    msg = ''
+                else:
+                    result = FAIL
+                    msg = 'Failed to view...'
+                    printLog("[VM VIEWING PINNED HOSTS] MESSAGE : " + msg)
+            except IndexError as e:
+                msg = str(e).replace("\n",'')
+                msg = msg[:msg.find('Element <')]
                 printLog("[VM VIEWING PINNED HOSTS] MESSAGE : " + msg)
+                result = PASS
 
         except Exception as e:
             result = FAIL
@@ -1537,7 +1546,7 @@ class admin_vm:
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
             selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
-            time.sleep(.5)
+            time.sleep(2)
             
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
