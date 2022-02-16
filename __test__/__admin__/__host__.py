@@ -45,11 +45,12 @@ class admin_host:
         # master_host : 마스터 노드의 /etc/hosts에 추가 여부
 
         printLog("If you want to test host, you have to install packages before test")
-        printLog("1. Add IP in /etc/hosts")
-        printLog("2. Create hypervm repository")
-        printLog("3. Disable virt module")
-        printLog("4. Enable pki-deps postgresql:12 parfait modules")
-        printLog("5. Install ovirt-hosted-engine-setup")
+        printLog("1. Install ProLinux 8.3")
+        printLog("2. Add IP in /etc/hosts")
+        printLog("3. Create hypervm repository")
+        printLog("4. Disable virt module")
+        printLog("5. Enable pki-deps postgresql:12 parfait modules")
+        printLog("6. Install ovirt-hosted-engine-setup")
 
 
         # 새로 생성한 hosts에 추가
