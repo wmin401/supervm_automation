@@ -117,7 +117,6 @@ class SuperVM_driver:
             raise(e)
 
         if click == True:
-            self.implicitlyWait(5)
             self.element.click()
 
         return self.element
