@@ -200,16 +200,17 @@ class SuperVM_driver:
         # 1초마다 상태 변경이 되었는지 확인하는 함수
         st = time.time()
         cnt = 0
+        before = ''
         while True:
             time.sleep(1)
             try:
                 tableValueList = self.tableSearch(name, nameIdx, rowClick=False, nameClick=False, returnValueList=True)        
-
+                current = tableValueList[statusIdx]
                 for failStr in failLst:
                     if failStr in tableValueList[statusIdx]:
-                        if cnt == 0:
+                        if current != before:
                             printLog("[%s STATUS] %s..."%(name, tableValueList[statusIdx]))
-                            cnt = 1
+                            before = current
 
                 for passStr in passLst:
                     if passStr == tableValueList[statusIdx]:
