@@ -453,7 +453,7 @@ class admin_vm:
 
             # 생성한 vm 클릭
             self.webDriver.tableSearch(self._vmName, 2, True)            
-            self.webDriver.findElement('id','ActionPanelView_Run',True)   
+            self.webDriver.findElement('css_selector','#ActionPanelView_Run > button',True)   
 
             st=time.time()
             cnt = 0
@@ -750,12 +750,12 @@ class admin_vm:
             # 가상머신 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 네트워크 인터페이스 클릭
-            time.sleep(0.5)
+            time.sleep(2)
             try:
                 self.webDriver.findElement('link_text', '네트워크 인터페이스', True)
             except:
                 self.webDriver.findElement('link_text', 'Network Interfaces', True)
-            time.sleep(0.5)
+            time.sleep(1)
 
             self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
             time.sleep(2)
@@ -765,7 +765,7 @@ class admin_vm:
             self.webDriver.sendKeys(self._networkInterfaceName)
 
             self.webDriver.findElement('css_selector', '#VmInterfacePopupView_OnSave > button', True)
-            time.sleep(2)
+            time.sleep(3)
 
             ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
             for li in ul.find_elements_by_tag_name('li'):
@@ -1076,12 +1076,12 @@ class admin_vm:
             # 가상머신 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 디스크탭 클릭
-            time.sleep(1)
+            time.sleep(2)
             try:
                 self.webDriver.findElement('link_text', '디스크', True)
             except:
                 self.webDriver.findElement('link_text', 'Disks', True)
-            time.sleep(1)
+            time.sleep(2)
 
             # 추가한 가상 디스크 선택
             self.webDriver.tableSearch(self._unAttachedDiskName, 1, rowClick=True)
@@ -1100,10 +1100,10 @@ class admin_vm:
             self.webDriver.findElement('id','MenuView_storageTab', True)
             time.sleep(1)
             self.webDriver.findElement('id','MenuView_disksAnchor',True)
-            time.sleep(2)
+            time.sleep(3)
 
             self.webDriver.tableSearch(self._unAttachedDiskName, 0, rowClick = False, nameClick = True)
-            time.sleep(1)
+            time.sleep(2)
 
             try:
                 self.webDriver.findElement('link_text', '가상 머신', True)
