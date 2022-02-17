@@ -1,6 +1,5 @@
 import time
 
-from soupsieve import select
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 

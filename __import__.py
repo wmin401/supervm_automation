@@ -21,5 +21,6 @@ from __test__.__admin__.__pools__ import *
 from __test__.__admin__.__external_provider__ import *
 from __test__.__vm__.__vm__ import *
 from __test__.__admin__.__quota__ import *
+from __test__.__monitoring__.__monitoring__ import *
 
 # entry point import

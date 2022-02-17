@@ -50,6 +50,8 @@ if IN_JENKINS == 'true':
     # entry point para1
 
     BUILD_ID = os.getenv('BUILD_ID')
+
+    MONITORING_TEST = os.getenv('MONITORING_TEST')
     
 else: # 로컬
     ENGINE_VM_FQDN = 'master165.tmax.com'
@@ -73,7 +75,7 @@ else: # 로컬
     CEPH_DISK_PATH = '/dev/sdb'
 
     ## 테스트 자동화 매개변수 ##
-    SECURE = 'true'
+    SECURE = 'false'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
     BROWSER_VERSION = 'ver98'
@@ -104,6 +106,8 @@ else: # 로컬
     # entry point para2
     
     BUILD_ID = 'local'
+
+    MONITORING_TEST = 'true'
 
 #############################
 
