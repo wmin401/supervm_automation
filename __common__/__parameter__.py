@@ -47,11 +47,11 @@ if IN_JENKINS == 'true':
 
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
 
+    MONITORING_TEST = os.getenv('MONITORING_TEST')
+
     # entry point para1
 
     BUILD_ID = os.getenv('BUILD_ID')
-
-    MONITORING_TEST = os.getenv('MONITORING_TEST')
     
 else: # 로컬
     ENGINE_VM_FQDN = 'master165.tmax.com'
@@ -102,12 +102,13 @@ else: # 로컬
     QUOTA_TEST = 'false'
     
     VM_PORTAL_TEST = 'false'
+
+    MONITORING_TEST = 'false'
         
     # entry point para2
     
     BUILD_ID = 'local'
 
-    MONITORING_TEST = 'true'
 
 #############################
 
