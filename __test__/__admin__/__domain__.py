@@ -225,8 +225,6 @@ class admin_domain:
                     result = FAIL
                     msg = "Failed to create new GLUSTER domain..."
                 
-            '''
-                '''
             elif(storageType == 'ISCSI' or storageType == 'iscsi'):
                 # iSCSI 선택
                 self.webDriver.implicitlyWait(10)
@@ -256,8 +254,6 @@ class admin_domain:
                 else:
                     result = FAIL
                     msg = "Failed to create new GLUSTER domain..."
-            '''
-                '''
 
             elif(storageType == 'LOCAL' or storageType == 'local'):
 
