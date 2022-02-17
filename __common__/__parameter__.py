@@ -50,6 +50,8 @@ if IN_JENKINS == 'true':
     # entry point para1
 
     BUILD_ID = os.getenv('BUILD_ID')
+
+    MONITORING_TEST = os.getenv('MONITORING_TEST')
     
 else: # 로컬
     ENGINE_VM_FQDN = 'master165.tmax.com'
@@ -104,6 +106,8 @@ else: # 로컬
     # entry point para2
     
     BUILD_ID = 'local'
+
+    MONITORING_TEST = 'true'
 
 #############################
 

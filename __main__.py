@@ -161,6 +161,17 @@ def main():
         
         _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
 
+    if MONITORING_TEST == 'true':
+        # url 접속
+        # 로그인        
+        webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
+        printLine()
+        printLog(printSquare("*** VM PORTAL Test ***"))
+        _portal_vm = vm_vm(webDriver)
+        _portal_vm.test()
+        
+        _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
+
     printLog(printSquare('6. Save Result'))
     saveTotalResult(_totalResult)
     ## 테스트 이후 결과 종합하는거 필요
