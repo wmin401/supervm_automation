@@ -1111,8 +1111,10 @@ class admin_vm:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
             time.sleep(1)
 
+            print(5)
             result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
 
+            print(6)
         except Exception as e:
             result = FAIL
             msg = str(e).replace("\n",'')
@@ -1192,7 +1194,7 @@ class admin_vm:
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
-            time.sleep(1)
+            time.sleep(2)
 
             # 시스템 탭 클릭
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
@@ -1215,6 +1217,7 @@ class admin_vm:
             except:
                 pass
 
+            ##############  
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             time.sleep(3)
@@ -1222,6 +1225,8 @@ class admin_vm:
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             _memorySize = self.webDriver.getAttribute('textContent')
+            ##############
+
 
             if self._updateSize in _memorySize:
                 result = PASS
@@ -1312,7 +1317,6 @@ class admin_vm:
             self.setup()
             # 가상머신 클릭            
             self.webDriver.tableSearch(self._vmName, 2, True)
-            print(1)
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
             time.sleep(3)
@@ -1321,7 +1325,6 @@ class admin_vm:
             self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
             time.sleep(1)
 
-            print(2)
             # 총 가상 cpu 변경
             self.webDriver.findElement('id', 'VmPopupWidget_totalCPUCores')
             self.webDriver.clear()
@@ -1331,7 +1334,7 @@ class admin_vm:
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
             time.sleep(2)
 
-            print(3)
+            ##############
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
             time.sleep(5)
@@ -1339,8 +1342,7 @@ class admin_vm:
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             time.sleep(2)
-
-            print(4)
+            ##############
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
             _cpuNum = self.webDriver.getAttribute('textContent')
 
