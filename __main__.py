@@ -164,13 +164,13 @@ def main():
     if MONITORING_TEST == 'true':
         # url 접속
         # 로그인        
-        webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
+        webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine-grafana')
         printLine()
-        printLog(printSquare("*** VM PORTAL Test ***"))
-        _portal_vm = vm_vm(webDriver)
-        _portal_vm.test()
+        printLog(printSquare("*** MONITORING PORTAL Test ***"))
+        _portal_monitoring = monitoring_monitoring(webDriver)
+        _portal_monitoring.test()
         
-        _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
+        _totalResult = saveResult(_portal_monitoring._monitoringResult, _totalResult)
 
     printLog(printSquare('6. Save Result'))
     saveTotalResult(_totalResult)
