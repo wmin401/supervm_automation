@@ -57,7 +57,7 @@ else: # 로컬
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
     ADMIN_HOSTNAME = 'hypervm41.tmax.dom'
-    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc0/prolinux/8/arch/x86_64/'
+    SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc2/prolinux/8/arch/x86_64/'
     
     ENGINE_VM_IP = '192.168.17.165'
     ADMIN_HOST_IP = '192.168.17.41'
@@ -93,7 +93,7 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'false'
+    VM_TEST = 'true'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
