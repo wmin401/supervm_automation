@@ -11,3 +11,10 @@ def accessVmPortal(webDriver):
     webDriver.implicitlyWait(10)
     time.sleep(1)
     _vmPortal = webDriver.findElement('id','WelcomePage_userportal_webui',True)
+
+
+def accessMonitoringPortal(webDriver):
+    printLog("* Portal : Monitoring Portal")
+    webDriver.implicitlyWait(10)
+    time.sleep(1)
+    _MonitoringPortal = webDriver.findElement('id','WelcomePage_monitoringportal_webui',True)

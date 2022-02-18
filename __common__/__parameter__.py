@@ -87,6 +87,10 @@ else: # 로컬
     USER_ID = 'admin'
     USER_PW = 'asdf'
 
+    ## Grafana(모니터링 포털) 로그인 정보
+    G_USER_ID = 'admin'
+    G_USER_PW = 'asdf'
+
     # 테스트 실행여부
     CLUSTER_TEST = 'false'
     DATA_CENTER_TEST = 'false'
