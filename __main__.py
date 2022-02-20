@@ -165,6 +165,7 @@ def main():
         # 로그인        
         webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine-grafana')
         printLine()
+        # accessMonitoringPortal(webDriver)
         printLog(printSquare("*** MONITORING PORTAL Test ***"))
         _portal_monitoring = monitoring_monitoring(webDriver)
         _portal_monitoring.test()
