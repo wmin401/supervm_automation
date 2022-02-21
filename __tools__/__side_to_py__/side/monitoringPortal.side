@@ -1,97 +1,330 @@
 {
-  "id": "7549d689-35de-4ffb-a89a-3fedea01f954",
+  "id": "581de8d3-4d27-42b7-9c64-600220b099af",
   "version": "2.0",
-  "name": "monitoringPortal",
-  "url": "https://master165.tmax.com",
+  "name": "MonitoringPortal",
+  "url": "https://master165.tmax.com/ovirt-engine-grafana",
   "tests": [{
-    "id": "1982c16d-354c-4c04-b457-570da6f591ad",
-    "name": "monitoringPortal",
+    "id": "d98c1c34-0ce8-4ce2-9385-daebe66b2f70",
+    "name": "monitoring_login",
     "commands": [{
-      "id": "c5e4248f-c74f-4a08-8356-a843aa39843e",
+      "id": "a1326464-76c3-459c-af3c-f4bf85b61c89",
       "comment": "",
       "command": "open",
-      "target": "/ovirt-engine/webadmin/?locale=ko_KR",
+      "target": "/ovirt-engine-grafana/login",
       "targets": [],
       "value": ""
     }, {
-      "id": "374627ba-fac6-4d4c-a9de-899521557a1e",
+      "id": "d37f5e3b-1196-4635-b937-7a2f6bb42fcb",
       "comment": "",
       "command": "setWindowSize",
-      "target": "974x1040",
+      "target": "973x1159",
       "targets": [],
       "value": ""
     }, {
-      "id": "fe5d8d65-0812-4ba5-aadd-7cbd74c5b71f",
+      "id": "10fd1451-5782-4dad-8f56-f54f4e83ef6b",
       "comment": "",
       "command": "click",
-      "target": "css=#compute > .list-group-item-value",
+      "target": "name=user",
       "targets": [
-        ["css=#compute > .list-group-item-value", "css:finder"],
-        ["xpath=//a[@id='compute']/span[2]", "xpath:idRelative"],
-        ["xpath=//li[2]/a/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'컴퓨팅')]", "xpath:innerText"]
+        ["name=user", "name"],
+        ["css=.css-8e5b3:nth-child(1) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='user']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "4b3ca369-5b30-4003-b7ad-f72bce2a67b4",
+      "id": "12ebca3e-43c1-45f2-b1ba-22ff9fab7e85",
+      "comment": "",
+      "command": "type",
+      "target": "name=user",
+      "targets": [
+        ["name=user", "name"],
+        ["css=.css-8e5b3:nth-child(1) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='user']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "083b8aa1-4f26-4c68-86aa-60db75d12382",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.css-8e5b3:nth-child(2) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[2]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "asdf"
+    }, {
+      "id": "6bf98bda-dacc-404c-a7d9-5bac03c876d7",
       "comment": "",
       "command": "click",
-      "target": "css=#MenuView_clustersAnchor > .list-group-item-value",
+      "target": "css=.css-1daj7gy-button",
       "targets": [
-        ["css=#MenuView_clustersAnchor > .list-group-item-value", "css:finder"],
-        ["xpath=//a[@id='MenuView_clustersAnchor']/span", "xpath:idRelative"],
-        ["xpath=//ul[6]/li/a/span", "xpath:position"],
-        ["xpath=//span[contains(.,'클러스터')]", "xpath:innerText"]
+        ["css=.css-1daj7gy-button", "css:finder"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Log in')]", "xpath:innerText"]
       ],
       "value": ""
-    }, {
-      "id": "c34c0d56-c51f-490e-bb6b-b1dd75c49bb3",
+    }]
+  }, {
+    "id": "3ab9bb93-925d-4111-b295-77eaddccd101",
+    "name": "monitoring_create",
+    "commands": [{
+      "id": "040b3624-621f-40ad-ad07-4e73a2b8d409",
       "comment": "",
-      "command": "runScript",
-      "target": "window.scrollTo(0,0)",
+      "command": "open",
+      "target": "https://master165.tmax.com/ovirt-engine-grafana/?orgId=1",
       "targets": [],
       "value": ""
     }, {
-      "id": "d96b9253-ef26-4369-92e6-b6de10fed66f",
+      "id": "059e686c-3de8-445f-8c2b-5e84b5703b35",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1176",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "89d069fe-22ef-47dc-af70-493020e9b096",
       "comment": "",
       "command": "click",
-      "target": "id=MainClusterView_table_content_col1_row0",
+      "target": "css=.sidemenu-item:nth-child(7) .css-sr6nr",
       "targets": [
-        ["id=MainClusterView_table_content_col1_row0", "id"],
-        ["linkText=Default", "linkText"],
-        ["css=#MainClusterView_table_content_col1_row0", "css:finder"],
-        ["xpath=//a[contains(text(),'Default')]", "xpath:link"],
-        ["xpath=//a[@id='MainClusterView_table_content_col1_row0']", "xpath:attributes"],
-        ["xpath=//td[@id='gwt-uid-145']/div/a", "xpath:idRelative"],
-        ["xpath=(//a[contains(@href, 'javascript:;')])[142]", "xpath:href"],
-        ["xpath=//td[2]/div/a", "xpath:position"]
+        ["css=.sidemenu-item:nth-child(7) .css-sr6nr", "css:finder"]
       ],
       "value": ""
     }, {
-      "id": "71d4d3a9-0692-4e94-bc69-f83980e75322",
+      "id": "c7a8e2a6-541a-4a2c-8888-f847c3474d3d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Users",
+      "targets": [
+        ["linkText=Users", "linkText"],
+        ["css=.sidemenu-item:nth-child(7) li:nth-child(2) > a", "css:finder"],
+        ["xpath=(//a[contains(text(),'Users')])[2]", "xpath:link"],
+        ["xpath=(//a[contains(@href, '/ovirt-engine-grafana/admin/users')])[3]", "xpath:href"],
+        ["xpath=//div[7]/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f67df185-02af-4c33-955c-94f2d86d64b8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1mhnkuh",
+      "targets": [
+        ["css=.css-1mhnkuh", "css:finder"],
+        ["xpath=//div/div/div[2]/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'New user')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "edd4755d-3eed-4977-b403-547c38f09d07",
       "comment": "",
       "command": "mouseOver",
-      "target": "id=MainClusterView_table_content_col1_row0",
+      "target": "css=.css-1mhnkuh",
       "targets": [
-        ["id=MainClusterView_table_content_col1_row0", "id"],
-        ["linkText=Default", "linkText"],
-        ["css=#MainClusterView_table_content_col1_row0", "css:finder"],
-        ["xpath=//a[contains(text(),'Default')]", "xpath:link"],
-        ["xpath=//a[@id='MainClusterView_table_content_col1_row0']", "xpath:attributes"],
-        ["xpath=(//a[contains(@href, 'javascript:;')])[142]", "xpath:href"],
-        ["xpath=//td[2]/div/a", "xpath:position"]
+        ["css=.css-1mhnkuh", "css:finder"],
+        ["xpath=//div/div/div[2]/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'New user')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5b4bbff0-be8e-4a1d-9a83-879029353241",
+      "comment": "",
+      "command": "click",
+      "target": "name=name",
+      "targets": [
+        ["name=name", "name"],
+        ["css=.css-8e5b3:nth-child(1) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "47f209ad-61d7-41dd-878a-e2b23a1fe5e4",
+      "comment": "",
+      "command": "type",
+      "target": "name=name",
+      "targets": [
+        ["name=name", "name"],
+        ["css=.css-8e5b3:nth-child(1) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test1"
+    }, {
+      "id": "842dd0d8-c175-4225-84ec-3f76487d98c3",
+      "comment": "",
+      "command": "click",
+      "target": "name=email",
+      "targets": [
+        ["name=email", "name"],
+        ["css=.css-8e5b3:nth-child(2) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='email']", "xpath:attributes"],
+        ["xpath=//div[2]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fb595cf8-d056-4688-97ee-20b9bfbd7bd4",
+      "comment": "",
+      "command": "type",
+      "target": "name=email",
+      "targets": [
+        ["name=email", "name"],
+        ["css=.css-8e5b3:nth-child(2) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='email']", "xpath:attributes"],
+        ["xpath=//div[2]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "test1@gmail.com"
+    }, {
+      "id": "430211b9-1cdc-40fd-9844-7c993c53d452",
+      "comment": "",
+      "command": "click",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.css-8e5b3:nth-child(3) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//div[3]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4fbae99d-a7b0-4bac-b21a-7f21d3842ae4",
+      "comment": "",
+      "command": "type",
+      "target": "name=login",
+      "targets": [
+        ["name=login", "name"],
+        ["css=.css-8e5b3:nth-child(3) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='login']", "xpath:attributes"],
+        ["xpath=//div[3]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "test1"
+    }, {
+      "id": "b2b5a497-dcf1-45d6-8dce-bd7e29ce4cf8",
+      "comment": "",
+      "command": "click",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.css-8e5b3:nth-child(4) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[4]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "738e821c-a807-4fe5-854c-a6c8146bec1e",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=.css-8e5b3:nth-child(4) .css-1bjepp-input-input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//div[4]/div[2]/div/div/input", "xpath:position"]
+      ],
+      "value": "asdf"
+    }, {
+      "id": "534ef9c2-a309-4c49-897b-b56e54c4042c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1mhnkuh",
+      "targets": [
+        ["css=.css-1mhnkuh", "css:finder"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Create user')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "c1f849ab-1868-4c03-9128-afc4eb7e3819",
+    "name": "monitoring_delete",
+    "commands": [{
+      "id": "794c5869-84a9-4e1d-b10e-758906bb2e63",
+      "comment": "",
+      "command": "open",
+      "target": "https://master165.tmax.com/ovirt-engine-grafana/?orgId=1",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e28d7f93-8969-4d44-9eda-beddcd829af6",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "973x1159",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "25e138e3-8127-495d-8f40-3b3617525095",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sidemenu-item:nth-child(6) > .sidemenu-link path",
+      "targets": [
+        ["css=.sidemenu-item:nth-child(6) > .sidemenu-link path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "9f09a59b-4cfa-40e7-a3ad-125845cffca8",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Users",
+      "targets": [
+        ["linkText=Users", "linkText"],
+        ["css=.sidemenu-item:nth-child(6) li:nth-child(3) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'Users')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/ovirt-engine-grafana/org/users')]", "xpath:href"],
+        ["xpath=//div[6]/ul/li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Users')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6d57d664-f25c-4e0a-9760-7422ee8faaba",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(2) .css-1k0li3k-button path",
+      "targets": [
+        ["css=tr:nth-child(2) .css-1k0li3k-button path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "8262372a-dc04-45ab-a3a2-b9b53695f860",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=tr:nth-child(2) .css-1k0li3k-button path",
+      "targets": [
+        ["css=tr:nth-child(2) .css-1k0li3k-button path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "30503ce0-3017-48de-a87c-0762b9a3a19f",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=tr:nth-child(2) .css-1k0li3k-button path",
+      "targets": [
+        ["css=tr:nth-child(2) .css-1k0li3k-button path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "50a5b6a1-e718-419e-bd44-5a85935da0f9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-jigxr0-button > .css-1mhnkuh",
+      "targets": [
+        ["css=.css-jigxr0-button > .css-1mhnkuh", "css:finder"],
+        ["xpath=//button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Delete')]", "xpath:innerText"]
       ],
       "value": ""
     }]
   }],
   "suites": [{
-    "id": "ad9ce928-49fa-42cd-9454-c3399f82d02f",
+    "id": "937ebf20-6a78-44ba-9a86-a565a81e3d53",
     "name": "Default Suite",
     "persistSession": false,
     "parallel": false,
     "timeout": 300,
-    "tests": ["1982c16d-354c-4c04-b457-570da6f591ad"]
+    "tests": ["d98c1c34-0ce8-4ce2-9385-daebe66b2f70"]
   }],
-  "urls": ["https://master165.tmax.com/"],
+  "urls": ["https://master165.tmax.com/", "https://master165.tmax.com/ovirt-engine-grafana"],
   "plugins": []
 }

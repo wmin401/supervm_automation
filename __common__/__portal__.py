@@ -17,4 +17,4 @@ def accessMonitoringPortal(webDriver):
     printLog("* Portal : Monitoring Portal")
     webDriver.implicitlyWait(10)
     time.sleep(1)
-    _MonitoringPortal = webDriver.findElement('id','WelcomePage_monitoringportal_webui',True)
+    _MonitoringPortal = webDriver.findElement('id','WelcomePage_monitoring_grafana',True)
