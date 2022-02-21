@@ -99,7 +99,7 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'true'
+    VM_TEST = 'false'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
@@ -107,7 +107,7 @@ else: # 로컬
     
     VM_PORTAL_TEST = 'false'
 
-    MONITORING_TEST = 'false'
+    MONITORING_TEST = 'true'
         
     # entry point para2
     
