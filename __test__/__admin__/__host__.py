@@ -147,7 +147,7 @@ class admin_host:
 
             if result == FAIL:
                 _status = self.webDriver.tableSearch(self._hostName, 2, False, False, True)
-                if _status[7] == 'InstallFailed':
+                if _status[7] == 'InstallFailed' or _status[7] == 'Maintenanace':
                     self.activateHost()
 
                 result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 180)
@@ -307,9 +307,9 @@ class admin_host:
 
             if result == FAIL:
                 _status = self.webDriver.tableSearch(self._hostName, 2, False, False, True)
-                if _status[7] == 'InstallFailed':
+                if _status[7] == 'InstallFailed' or _status[7] == 'Maintenanace':
                     self.activateHost()
-
+                
                 result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 180)
 
 
@@ -348,7 +348,6 @@ class admin_host:
         printLog("[HOST VIEW DEVICES] RESULT : " + result)
         self._hostResult.append(['host;view devices;' + result + ';' + msg])
         self.tl.junitBuilder('HOST_VIEW_DEVICES',result, msg) # 모두 대문자
-  
 
     def remove(self):
         
