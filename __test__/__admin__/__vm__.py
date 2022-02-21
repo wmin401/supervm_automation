@@ -16,6 +16,7 @@ class admin_vm:
         self._networkInterfaceName = 'auto_nic_%s'%randomString()
 
         self.webDriver = webDriver
+        printLog("iso 파일이 디스크에 추가되어있어야지 가상머신 생성 가능")
 
         self.tl = testlink()
 
@@ -1535,7 +1536,7 @@ class admin_vm:
 
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
-            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
+            time.sleep(.5)
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
 
             # Windows10.iso 선택
@@ -1546,7 +1547,7 @@ class admin_vm:
             
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
-            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
+            time.sleep(.5)
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
 
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button')
