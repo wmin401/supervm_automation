@@ -73,7 +73,7 @@ class admin_host:
             ssh_.commandExec('touch /etc/yum.repos.d/hypervm.repo')
             ssh_.commandExec('echo "[hypervm.repo]" >> /etc/yum.repos.d/hypervm.repo')
             ssh_.commandExec('echo "name=hypervm-repo" >> /etc/yum.repos.d/hypervm.repo')
-            ssh_.commandExec('echo "baseurl=http://172.21.7.2/supervm/22.0.0-rc0/prolinux/8/arch/x86_64/" >> /etc/yum.repos.d/hypervm.repo')
+            ssh_.commandExec('echo "baseurl=http://172.21.7.2/supervm/22.0.0-rc2/prolinux/8/arch/x86_64/" >> /etc/yum.repos.d/hypervm.repo')
             ssh_.commandExec('echo "gpgcheck=0" >> /etc/yum.repos.d/hypervm.repo')
         # 설치
         o, e = ssh_.commandExec('sudo dnf module disable virt -y')

@@ -141,8 +141,7 @@ def main():
         _externalProvider.test()
 
         _totalResult = saveResult(_externalProvider._externalProviderResult, _totalResult)
-
-    # entry point main
+        
     if QUOTA_TEST == 'true':
         printLine()
         printLog(printSquare("*** Quota Test ***"))
@@ -172,6 +171,8 @@ def main():
         _portal_monitoring.test()
         
         _totalResult = saveResult(_portal_monitoring._monitoringResult, _totalResult)
+
+    # entry point main
 
     printLog(printSquare('6. Save Result'))
     saveTotalResult(_totalResult)
