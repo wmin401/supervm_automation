@@ -1544,6 +1544,19 @@ class admin_vm:
             selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
             time.sleep(2)
+
+            try:
+                self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/button', True)
+                result = FAIL
+                msg = 'Unexpected exception'
+                printLog("[VM CHANGE CD] MESSAGE : " + msg)
+                printLog("[VM CHANGE CD] RESULT : " + result)
+                self._vmResult.append(['vm' + DELIM + 'change cd' + DELIM + result + DELIM + msg])
+                
+                self.tl.junitBuilder('VM_CHANGE_CD',result, msg)
+                return
+            except:
+                pass                
             
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
