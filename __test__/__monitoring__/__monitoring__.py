@@ -140,7 +140,7 @@ class monitoring_monitoring: # 모두 소문자
 
         try:
             # click
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > grafana-app > sidemenu > div.sidemenu__top > div:nth-child(6) > a > span > div')
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '/html/body/grafana-app/sidemenu/div[2]/div[6]/a/span/div')
             self.webDriver.findElement('css_selector', 'body > grafana-app > sidemenu > div.sidemenu__top > div:nth-child(6) > a > span > div', True)
 
             # click
