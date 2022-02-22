@@ -107,7 +107,7 @@ else: # 로컬
     
     VM_PORTAL_TEST = 'false'
 
-    MONITORING_TEST = 'true'
+    MONITORING_TEST = 'false'
         
     # entry point para2
     
