@@ -8,7 +8,8 @@ from __common__.__testlink__ import *
 from selenium.webdriver.common.by import By
 
 '''
-    Cloud Service 팀 내 vSphere 환경 기준 작성
+    # Cloud Service 팀 내 vSphere 환경 기준 작성
+    연구소 내 vSphere 환경 기준 작성
 
     작성자 : CQA2 김정현
 '''
@@ -41,7 +42,7 @@ class admin_external_provider:
         self._vCenterIp = '192.168.9.231' # 환경에 따라 수정 필요
         self._esxiIp = '192.168.9.219' # 환경에 따라 수정 필요
         self._externalProviderDatacenter = 'Datacenter' # 환경에 따라 수정 필요
-        self._proxyHost = 'hypervm40.tmax.dom' # 환경에 따라 수정 필요
+        self._proxyHost = 'hypervm41.tmax.dom' # 환경에 따라 수정 필요
         self._userName = 'tmax@vsphere.local ' # 환경에 따라 수정 필요
         self._userPassword = 'Tmax@2323' # 환경에 따라 수정 필요
         self._editedExternalProviderDescription = 'auto_external_provider_edited_'+randomString()
