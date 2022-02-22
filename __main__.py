@@ -60,7 +60,8 @@ def main():
         _cluster = admin_cluster(webDriver)
         _cluster.test()      
 
-        _totalResult = saveResult(_cluster._clusterResult, _totalResult)        
+        _totalResult = saveResult(_cluster._clusterResult, _totalResult)     
+        time.sleep(1)   
         
     if DATA_CENTER_TEST == 'true':
         printLine()
@@ -68,7 +69,8 @@ def main():
         _data_center = admin_data_center(webDriver)
         _data_center.test()
             
-        _totalResult = saveResult(_data_center._data_centerResult, _totalResult)        
+        _totalResult = saveResult(_data_center._data_centerResult, _totalResult)   
+        time.sleep(1)     
 
     if DISK_TEST == 'true':
         printLine()
@@ -77,6 +79,7 @@ def main():
         _disk.test()
             
         _totalResult = saveResult(_disk._diskResult, _totalResult)
+        time.sleep(1)
     
     if HOST_TEST == 'true':
         printLine()
@@ -84,7 +87,8 @@ def main():
         _host = admin_host(webDriver)
         _host.test()
             
-        _totalResult = saveResult(_host._hostResult, _totalResult)            
+        _totalResult = saveResult(_host._hostResult, _totalResult)   
+        time.sleep(1)         
         
     if DOMAIN_TEST == 'true':
         printLine()
@@ -92,7 +96,8 @@ def main():
         _domain = admin_domain(webDriver)
         _domain.test()
             
-        _totalResult = saveResult(_domain._domainResult, _totalResult)        
+        _totalResult = saveResult(_domain._domainResult, _totalResult)
+        time.sleep(1)        
             
     if QOS_TEST == 'true':
         printLine()
@@ -101,6 +106,7 @@ def main():
         _qos.test()
             
         _totalResult = saveResult(_qos._qosResult, _totalResult)
+        time.sleep(1)
     
     if TEMPLATE_TEST == 'true':
         printLine()
@@ -109,6 +115,7 @@ def main():
         _template.test()
         
         _totalResult = saveResult(_template._templateResult, _totalResult)
+        time.sleep(1)
         
     if VM_TEST == 'true':
         printLine()
@@ -117,6 +124,7 @@ def main():
         _vm.test()
 
         _totalResult = saveResult(_vm._vmResult, _totalResult)
+        time.sleep(1)
 
     if VM2_TEST == 'true':
         printLine()
@@ -125,6 +133,7 @@ def main():
         _vm2.test()
             
         _totalResult = saveResult(_vm2._vm2Result, _totalResult)
+        time.sleep(1)
 
     if POOLS_TEST == 'true':
         printLine()
@@ -133,6 +142,7 @@ def main():
         _pools.test()
 
         _totalResult = saveResult(_pools._poolsResult, _totalResult)
+        time.sleep(1)
 
     if EXTERNAL_PROVIDER_TEST == 'true':
         printLine()
@@ -141,6 +151,7 @@ def main():
         _externalProvider.test()
 
         _totalResult = saveResult(_externalProvider._externalProviderResult, _totalResult)
+        time.sleep(1)
         
     if QUOTA_TEST == 'true':
         printLine()
@@ -149,6 +160,7 @@ def main():
         _quota.test()
             
         _totalResult = saveResult(_quota._quotaResult, _totalResult)
+        time.sleep(1)
 
     if VM_PORTAL_TEST == 'true':
         webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
@@ -159,6 +171,7 @@ def main():
         _portal_vm.test()
         
         _totalResult = saveResult(_portal_vm._vmPortalResult, _totalResult)
+        time.sleep(1)
 
     if MONITORING_TEST == 'true':
         # url 접속
