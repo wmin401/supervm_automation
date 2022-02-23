@@ -143,7 +143,7 @@ class admin_host:
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnSaveInternalNotFromApprove > button', True)
             time.sleep(2)
 
-            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 300)
+            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 600)
 
             if result == FAIL:
                 _status = self.webDriver.tableSearch(self._hostName, 2, False, False, True)
