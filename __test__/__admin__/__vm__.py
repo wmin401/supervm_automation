@@ -428,7 +428,7 @@ class admin_vm:
 
         printLog("[VM COPY] Wait until vm's status will be ok")
 
-        time.sleep(30)
+        time.sleep(60)
 
     def run(self):
 
