@@ -143,14 +143,14 @@ class admin_host:
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnSaveInternalNotFromApprove > button', True)
             time.sleep(2)
 
-            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 180)
+            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 300)
 
             if result == FAIL:
                 _status = self.webDriver.tableSearch(self._hostName, 2, False, False, True)
                 if _status[7] == 'InstallFailed' or _status[7] == 'Maintenanace':
                     self.activateHost()
 
-                result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 180)
+                result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 300)
 
         except Exception as e:
             result = FAIL
