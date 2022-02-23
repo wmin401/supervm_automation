@@ -766,8 +766,9 @@ class admin_vm:
             self.webDriver.sendKeys(self._networkInterfaceName)
 
             self.webDriver.findElement('css_selector', '#VmInterfacePopupView_OnSave > button', True)
-            time.sleep(3)
+            time.sleep(5)
 
+            self.webDriver.explicitlyWait(10, By.XPATH, '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
             ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
             for li in ul.find_elements_by_tag_name('li'):
                 nidList = li.find_element_by_css_selector('div.list-view-pf-main-info > div.list-view-pf-body > div:nth-child(1) > div.list-group-item-heading')
@@ -1094,7 +1095,7 @@ class admin_vm:
             time.sleep(1)
             # OK 클릭
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
-            time.sleep(1)
+            time.sleep(3)
             
             # 스토리지 - 디스크
             printLog("[VM SETUP] Storage - Disks")
@@ -1104,13 +1105,13 @@ class admin_vm:
             time.sleep(3)
 
             self.webDriver.tableSearch(self._unAttachedDiskName, 0, rowClick = False, nameClick = True)
-            time.sleep(2)
+            time.sleep(3)
 
             try:
                 self.webDriver.findElement('link_text', '가상 머신', True)
             except:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
-            time.sleep(1)
+            time.sleep(2)
 
             print(5)
             result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
@@ -1210,7 +1211,7 @@ class admin_vm:
 
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
-            time.sleep(2)
+            time.sleep(3)
 
             try:
                 self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
@@ -1342,7 +1343,7 @@ class admin_vm:
 
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
-            time.sleep(2)
+            time.sleep(3)
             ##############
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
             _cpuNum = self.webDriver.getAttribute('textContent')
