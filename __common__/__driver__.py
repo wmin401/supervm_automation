@@ -209,12 +209,12 @@ class SuperVM_driver:
                 for failStr in failLst:
                     if failStr in tableValueList[statusIdx]:
                         if current != before:
-                            printLog("[%s STATUS] %s..."%(name, tableValueList[statusIdx]))
+                            printLog("[%s STATUS] %s"%(name, tableValueList[statusIdx]))
                             before = current
 
                 for passStr in passLst:
                     if passStr == tableValueList[statusIdx]:
-                        printLog("[%s STATUS] %s..."%(name, tableValueList[statusIdx]))
+                        printLog("[%s STATUS] %s"%(name, tableValueList[statusIdx]))
                         return PASS, ''
 
                 ed = time.time()
