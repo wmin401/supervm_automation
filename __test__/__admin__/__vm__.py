@@ -211,6 +211,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM CREATE] MESSAGE : " + msg)
@@ -301,6 +302,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM CREATE WINDOWS] MESSAGE : " + msg)
@@ -347,6 +349,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM UPDATE] MESSAGE : " + msg)
@@ -418,6 +421,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM COPY] MESSAGE : " + msg)
@@ -492,6 +496,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM RUN] MESSAGE : " + msg)
@@ -593,6 +598,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM SHUTDOWN] MESSAGE : " + msg)
@@ -632,6 +638,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM REBOOT] MESSAGE : " + msg)
@@ -729,6 +736,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM REMOVE] MESSAGE : " + msg)
@@ -783,6 +791,7 @@ class admin_vm:
             
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM ADD NETWORK INTERFACE] MESSAGE : " + msg)
@@ -835,6 +844,7 @@ class admin_vm:
             
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM UPDATE NETWORK INTERFACE] MESSAGE : " + msg)
@@ -894,6 +904,7 @@ class admin_vm:
             
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM NETWORK INTERFACE HOT PLUGGING] MESSAGE : " + msg)
@@ -945,6 +956,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM DELETE NETWORK INTERFACE] MESSAGE : " + msg)
@@ -988,6 +1000,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM ADD VIRTUAL DISKS] MESSAGE : " + msg)
@@ -1057,6 +1070,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM ATTACH VIRTUAL DISKS] MESSAGE : " + msg)
@@ -1119,6 +1133,7 @@ class admin_vm:
             print(6)
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM VIRTUAL DISK HOT PLUGGING] MESSAGE : " + msg)
@@ -1176,6 +1191,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM REMOVE VIRTUAL DISKS] MESSAGE : " + msg)
@@ -1197,7 +1213,7 @@ class admin_vm:
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
             time.sleep(2)
-
+            printLog('edit popup', debug=True)
             # 시스템 탭 클릭
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
             self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
@@ -1208,6 +1224,7 @@ class admin_vm:
             self.webDriver.clear()
             self._updateSize = '2048'
             self.webDriver.sendKeys(self._updateSize)
+            printLog('changed memory size', debug=True)
 
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
@@ -1218,17 +1235,21 @@ class admin_vm:
                 time.sleep(5)
             except:
                 pass
+            printLog('OK double check', debug=True)
 
             ##############  
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             time.sleep(3)
+            printLog('vm name clicked', debug=True)
+
 
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             _memorySize = self.webDriver.getAttribute('textContent')
             ##############
 
+            printLog('read memory check', debug=True)
 
             if self._updateSize in _memorySize:
                 result = PASS
@@ -1240,6 +1261,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM VIRTUAL MEMORY HOT PLUGGING] " + msg)
@@ -1302,6 +1324,7 @@ class admin_vm:
             
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM VIRTUAL MEMORY HOT UNPLUGGING] MESSAGE : " + msg)
@@ -1358,6 +1381,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM HOT PLUGGING VCPU] MESSAGE : " + msg)
@@ -1451,6 +1475,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM PIN MULTIPLE HOSTS] MESSAGE : " + msg)
@@ -1503,6 +1528,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM VIEWING PINNED HOSTS] MESSAGE : " + msg)
@@ -1579,6 +1605,7 @@ class admin_vm:
             
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM CHANGE CD] MESSAGE : " + msg)
@@ -1605,6 +1632,7 @@ class admin_vm:
 
         except Exception as e:
             result = FAIL
+            printLog(str(e))
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
             printLog("[VM PAUSE] MESSAGE : " + msg)        
