@@ -104,12 +104,12 @@ class admin_vm:
         self.pinToMultipleHosts()
         self.ViewingPinnedToHost()
 
-        # 가상 메모리 - 2
-        self.virtualMemoryHotPlugging()
-        self.virtualMemoryHotUnplugging()
+        # # 가상 메모리 - 2
+        # self.virtualMemoryHotPlugging()
+        # self.virtualMemoryHotUnplugging()
 
-        # vcpu - 1
-        self.hotPluggingVCPU()
+        # # vcpu - 1
+        # self.hotPluggingVCPU()
 
         # cd변경 - 1
         self.changeCD()
@@ -1507,7 +1507,7 @@ class admin_vm:
                 self.webDriver.findElement('link_text', '가상머신', True)
             except:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
-            time.sleep(1)
+            time.sleep(2)
 
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[3]/div[1]/div/div/div/div/div[2]/label[2]', True)
 
