@@ -163,14 +163,7 @@ class SuperVM_driver:
                         try:
                             tdLst.append(td[i].text)
                         except:
-                            if td[i].text == '':
-                                try:
-                                    tmp = td[i].find_element_by_tag_name('div')
-                                    tdLst.append(tmp.text)                                    
-                                except:
-                                    tdLst.append('')
-                            else:
-                                tdLst.append('')
+                            tdLst.append('')
                     return tdLst
                 if rowClick == True:    
                     printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
