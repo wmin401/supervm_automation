@@ -163,7 +163,14 @@ class SuperVM_driver:
                         try:
                             tdLst.append(td[i].text)
                         except:
-                            tdLst.append('')
+                            if td[i].text == '':
+                                try:
+                                    tmp = td[i].find_element_by_tag_name('div')
+                                    tdLst.append(tmp.text)                                    
+                                except:
+                                    tdLst.append('')
+                            else:
+                                tdLst.append('')
                     return tdLst
                 if rowClick == True:    
                     printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
@@ -199,7 +206,6 @@ class SuperVM_driver:
     def isChangedStatus(self, name, nameIdx, statusIdx, failLst, passLst, t=60):
         # 1초마다 상태 변경이 되었는지 확인하는 함수
         st = time.time()
-        cnt = 0
         before = ''
         while True:
             time.sleep(1)
