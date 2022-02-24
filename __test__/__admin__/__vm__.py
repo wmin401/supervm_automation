@@ -82,7 +82,7 @@ class admin_vm:
         # 가상 디스크 - 4
         self.addVirtualDisk()
         self.attachDisk()
-        self.virtualDiskHotPlugging()
+        # self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
         # 네트워크 인터페이스 - 4
@@ -104,12 +104,12 @@ class admin_vm:
         self.pinToMultipleHosts()
         self.ViewingPinnedToHost()
 
-        # # 가상 메모리 - 2
-        # self.virtualMemoryHotPlugging()
-        # self.virtualMemoryHotUnplugging()
+        # 가상 메모리 - 2
+        self.virtualMemoryHotPlugging()
+        self.virtualMemoryHotUnplugging()
 
-        # # vcpu - 1
-        # self.hotPluggingVCPU()
+        # vcpu - 1
+        self.hotPluggingVCPU()
 
         # cd변경 - 1
         self.changeCD()
@@ -1568,6 +1568,7 @@ class admin_vm:
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(.5)
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
 
             # Windows10.iso 선택
@@ -1592,6 +1593,7 @@ class admin_vm:
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(.5)
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
 
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button')
