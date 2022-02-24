@@ -150,7 +150,7 @@ class admin_host:
                 if _status[7] == 'InstallFailed' or _status[7] == 'Maintenanace':
                     self.activateHost()
 
-                result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['InstallFailed', 'Installing', 'Reboot'], ['Up'], 1200)
+                result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['InstallFailed', 'Installing', 'Reboot'], ['Up'], 300)
 
         except Exception as e:
             result = FAIL
@@ -303,14 +303,14 @@ class admin_host:
                 pass
             time.sleep(10)
 
-            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Maintenance', 'Down', 'Reboot'], ['Up'], 180)
+            result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Maintenance', 'Down', 'Reboot'], ['Up'], 1200)
 
             if result == FAIL:
                 _status = self.webDriver.tableSearch(self._hostName, 2, False, False, True)
                 if _status[7] == 'InstallFailed' or _status[7] == 'Maintenanace':
                     self.activateHost()
                 
-                result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 180)
+                result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Reboot'], ['Up'], 300)
 
 
         except Exception as e:
