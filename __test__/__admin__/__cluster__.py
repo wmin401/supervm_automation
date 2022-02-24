@@ -150,6 +150,7 @@ class admin_cluster:
             # 생성한 CPU 프로필 선택
             self.webDriver.tableSearchAll(0, self._cpuProfileName, 0, True)
             # 제거 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Remove')
             self.webDriver.findElement('id','DetailActionPanelView_Remove',True)
             # OK 클릭        
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
@@ -183,6 +184,7 @@ class admin_cluster:
             self.webDriver.tableSearch(self._clusterName, 1, True, False)            
             # 우측 편집 버튼 클릭
             self.webDriver.implicitlyWait(10)            
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
             # 호환 버전 클릭 / 4.4 -> 4.5
             time.sleep(1)
@@ -192,6 +194,7 @@ class admin_cluster:
             #ClusterPopupView_versionEditor > div > ul > li:nth-child(2)
             # OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
+            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_OnSave')
             self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             # Confirm OK 버튼 클릭
             time.sleep(0.5)
@@ -232,6 +235,7 @@ class admin_cluster:
             # 우측 편집 버튼 클릭
             time.sleep(1)
             self.webDriver.implicitlyWait(10)            
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
             time.sleep(1)
             # 스케줄링 정책 탭 클릭
@@ -245,6 +249,7 @@ class admin_cluster:
             self.webDriver.findElement('css_selector_all','#ClusterPopupView_clusterPolicyEditor > div > ul > li')[0].click()        
             # OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
+            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_OnSave')
             self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             time.sleep(0.3)
             # 저장 불가능일 경우
@@ -289,6 +294,7 @@ class admin_cluster:
                    lis[i].click() 
             # MoM 정책 동기화 버튼 클릭
             self.webDriver.implicitlyWait(10)
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_updateMomPolicyCommand')
             self.webDriver.findElement('id','DetailActionPanelView_updateMomPolicyCommand',True)  
 
             result = PASS
@@ -316,6 +322,7 @@ class admin_cluster:
             # 우측 편집 버튼 클릭
             time.sleep(1)
             self.webDriver.implicitlyWait(10)            
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
             time.sleep(0.5)
             # 최적화 탭 클릭
@@ -326,6 +333,7 @@ class admin_cluster:
             self.webDriver.findElement('id','ClusterPopupView_optimizationForDesktopEditor', True)
             # OK 버튼 클릭
             self.webDriver.implicitlyWait(10)
+            self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_OnSave')
             self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             
             # 저장 불가능일 경우
@@ -367,9 +375,11 @@ class admin_cluster:
             self.webDriver.findElement('css_selector','.btn-group:nth-child(4) .fa', True)
             time.sleep(0.3)
             # 삭제 버튼 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
             self.webDriver.findElement('id','ActionPanelView_Remove',True)            
             time.sleep(0.5)
             # OK 버튼 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)     
             time.sleep(2)       
             # table 내부 전부 검색해서 입력한 이름이 있을경우 FAIL
