@@ -1569,7 +1569,8 @@ class admin_vm:
 
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
-            time.sleep(.5)
+            time.sleep(2)
+            printLog(1.5, debug=True)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
             printLog(2, debug=True)
