@@ -1098,10 +1098,12 @@ class admin_vm:
             except:
                 self.webDriver.findElement('link_text', 'Disks', True)
             time.sleep(2)
+            printLog(1, debug=True)
 
             # 추가한 가상 디스크 선택
             self.webDriver.tableSearch(self._unAttachedDiskName, 1, rowClick=True)
 
+            printLog(2, debug=True)
             # 추가 옵션 버튼 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div[2]/div/button', True)
             time.sleep(1)
@@ -1110,6 +1112,7 @@ class admin_vm:
             # OK 클릭
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
             time.sleep(3)
+            printLog(3, debug=True)
             
             # 스토리지 - 디스크
             printLog("[VM SETUP] Storage - Disks")
@@ -1117,20 +1120,21 @@ class admin_vm:
             time.sleep(1)
             self.webDriver.findElement('id','MenuView_disksAnchor',True)
             time.sleep(3)
+            printLog(4, debug=True)
 
             self.webDriver.tableSearch(self._unAttachedDiskName, 0, rowClick = False, nameClick = True)
             time.sleep(3)
 
             try:
+                printLog(5, debug=True)
                 self.webDriver.findElement('link_text', '가상 머신', True)
             except:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
             time.sleep(2)
 
-            print(5)
             result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
 
-            print(6)
+            printLog(6, debug=True)
         except Exception as e:
             result = FAIL
             printLog(str(e))
