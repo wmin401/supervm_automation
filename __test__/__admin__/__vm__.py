@@ -1553,6 +1553,8 @@ class admin_vm:
             # 생성한 vm 클릭
             self.webDriver.tableSearch(self._vmName, 2, True)
 
+            printLog(1, debug=True)
+
             # 꺼내기 생략
             # # 추가 옵션 - CD 변경 클릭
             # self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
@@ -1570,13 +1572,13 @@ class admin_vm:
             time.sleep(.5)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
-
+            printLog(2, debug=True)
             # Windows10.iso 선택
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
             selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
             time.sleep(2)
-
+            printLog(3, debug=True)
             try:
                 self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/button', True)
                 result = FAIL
@@ -1589,13 +1591,13 @@ class admin_vm:
                 return
             except:
                 pass                
-            
+            printLog(4, debug=True)
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(.5)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
-
+            printLog(5, debug=True)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button')
             cd = self.webDriver.getAttribute('textContent')
             if cd == self._cdName:
@@ -1605,7 +1607,7 @@ class admin_vm:
                 result = FAIL
                 msg = 'Failed to change cd'
                 printLog("[VM CHANGE CD] MESSAGE : " + msg)
-
+            printLog(6, debug=True)
             # 확인 후 취소 클릭            
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_Cancel > button', True)
             
