@@ -1553,7 +1553,6 @@ class admin_vm:
             # 생성한 vm 클릭
             self.webDriver.tableSearch(self._vmName, 2, True)
 
-            printLog(1, debug=True)
 
             # 꺼내기 생략
             # # 추가 옵션 - CD 변경 클릭
@@ -1570,16 +1569,16 @@ class admin_vm:
             # 추가 옵션 - CD 변경 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(2)
-            printLog(1.5, debug=True)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
             printLog(2, debug=True)
             # Windows10.iso 선택
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
+            printLog(3, debug=True)
             selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
+            printLog(4, debug=True)
             time.sleep(2)
-            printLog(3, debug=True)
             try:
                 self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/button', True)
                 result = FAIL
