@@ -1,4 +1,5 @@
 import time
+from selenium.webdriver.common.by import By
 
 from __common__.__parameter__ import *
 from __common__.__module__ import *
@@ -115,8 +116,10 @@ class admin_host:
             self.setup()
 
             # 새로 만들기
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_New')
             self.webDriver.findElement('id', 'ActionPanelView_New', True)
             time.sleep(1)
+            self.webDriver.explicitlyWait(10, By.ID, 'HostPopupView_name')
             self.webDriver.findElement('id', 'HostPopupView_name', True)
             self.webDriver.sendKeys(self._hostName)            
             self.webDriver.findElement('id', 'HostPopupView_host', True)
@@ -138,6 +141,7 @@ class admin_host:
             hostEngine[2].click()
             selectDropdownMenu(self.webDriver, 'xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[6]/div/div[2]/div[2]/div/div[1]/div/div/div/ul', '배포')
 
+            self.webDriver.explicitlyWait(10, By.ID, 'HostPopupView_OnSaveFalse')
             self.webDriver.findElement('id', 'HostPopupView_OnSaveFalse', True)
             time.sleep(1)
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnSaveInternalNotFromApprove > button', True)
@@ -170,6 +174,7 @@ class admin_host:
             # 생성한 호스트 클릭
             self.webDriver.tableSearch(self._hostName, 2, True)
             # 편집 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
             self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
             time.sleep(2)
 
@@ -185,6 +190,7 @@ class admin_host:
             self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[3]/div/div[2]/div[5]/div/span/input', True)
 
             # OK 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'HostPopupView_OnSaveFalse')
             self.webDriver.findElement('id', 'HostPopupView_OnSaveFalse', True)
             time.sleep(1)
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnSaveInternalNotFromApprove > button', True)
@@ -194,6 +200,7 @@ class admin_host:
             self.webDriver.tableSearch(self._hostName, 2, False, True)
             time.sleep(2)
 
+            self.webDriver.explicitlyWait(10, By.ID, 'HostGeneralSubTabView_generalFormPanel_col0_row1_value')
             self.webDriver.findElement('id', 'HostGeneralSubTabView_generalFormPanel_col0_row1_value')
             spmPriority = self.webDriver.getAttribute('textContent')
 
@@ -374,11 +381,13 @@ class admin_host:
             hostEngine[2].click()
             selectDropdownMenu(self.webDriver, 'xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[2]/div[6]/div/div[2]/div[2]/div/div[1]/div/div/div/ul', '배포 취소')
 
+            self.webDriver.explicitlyWait(10, By.ID, 'HostPopupView_OnSaveFalse')
             self.webDriver.findElement('id', 'HostPopupView_OnSaveFalse', True)
             time.sleep(1)
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnSaveInternalNotFromApprove > button', True)
             time.sleep(2)
 
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
             self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
             time.sleep(1)
             self.webDriver.findElement('css_selector', '#RemoveConfirmationPopupView_OnRemove > button', True)
