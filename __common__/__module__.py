@@ -77,6 +77,7 @@ def printSquare(msg):
 def selectDropdownMenu(webDriver, type_, ulTagPath, name):
     # 드롭다운 메뉴에서 원하는거 클릭하고 싶을때 사용    
     time.sleep(1)
+    printLog("[SELECT DROPDOWN MENU] Selecting menu")
     if type_ == 'css_selector':
         lis = webDriver.findElement(type_ + '_all', ulTagPath + ' > li')
     elif type_ == 'xpath':
