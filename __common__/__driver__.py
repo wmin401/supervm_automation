@@ -160,7 +160,9 @@ class SuperVM_driver:
                 if returnValueList == True:
                     tdLst = []
                     for i in range(len(td)):
+                        print(i,td[i])
                         try:
+                            print(td[i].text)
                             tdLst.append(td[i].text)
                         except:
                             tdLst.append('')
