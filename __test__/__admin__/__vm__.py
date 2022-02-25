@@ -527,73 +527,16 @@ class admin_vm:
             # 선택
             # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)
             self.webDriver.tableSearch(self._vmName, 2, True)
-            for i in range(3):
-                # 종료 클릭
-                self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#ActionPanelView_Shutdown > button:nth-child(1)')
-                self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
-                time.sleep(0.5)
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#ActionPanelView_Shutdown > button:nth-child(1)')
+            self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
+            time.sleep(0.5)
                 # OK 클릭
-                try:
-                    self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnShutdown > button',True)
-                except:
-                    continue
-                time.sleep(2)
-                
-                row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-                # row = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
+            try:
+                self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnShutdown > button',True)
+            except:
+                pass
 
-                if 'Down' in row[13]: # 
-                    result = PASS
-                    msg = ''
-                    break
-
-
-            # st = time.time()
-            # cnt = 0
-            # while True:
-            #     try:                          
-            #         time.sleep(1)
-            #         row = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-            #         # row = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
-
-            #         if 'Down' in row[13]: # 
-            #             result = PASS
-            #             msg = ''
-            #             break
-                        
-            #         elif 'Powering Down' in row[13] or '전원을 끄는 중' in row[13]: #
-            #             result = FAIL
-            #             msg = 'VM is still shutting down ...'
-            #             cnt += 1
-            #             if cnt < 1:
-            #                 printLog("[VM SHHTDOWN] Status : " + row[13])
-            #                 printLog("[VM SHUTDOWN] Message : " + msg)
-            #             continue
-            #         ed = time.time()
-            #         more = 0
-            #         # 30초마다 종료버튼 클릭
-            #         if int(ed - st)%30 == 0 and more == 0: 
-            #             more = 1
-            #             self.webDriver.tableSearch(self._vmName, 2, True)
-            #             # 종료 클릭
-            #             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
-            #             self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
-            #             # OK 클릭
-            #             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnShutdown')
-            #             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
-
-            #         elif ed - st > 120:
-            #             result = FAIL
-            #             msg = 'Failed to shutdown vm ...'
-            #             printLog("[VM SHUTDOWN] MESSAGE : " + msg)
-            #             break
-
-            #     except Exception as e:
-            #         result = FAIL
-            #         msg = str(e).replace("\n",'')
-            #         msg = msg[:msg.find('Element <')]
-            #         printLog("[VM SHUTDOWN] MESSAGE : " + msg)
-            #         continue
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '전원을 끄는 중'], ['Down'], 300)
 
         except Exception as e:
             result = FAIL
