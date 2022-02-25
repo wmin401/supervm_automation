@@ -631,7 +631,7 @@ class admin_vm:
             # 재부팅 클릭
             self.webDriver.findElement('css_selector','#ActionPanelView_Reboot > button', True)
             # OK 클릭
-            self.webDriver.explicitlyWait(10, By.ID, 'DefaultConfirmationPopupView_OnReboot')
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#DefaultConfirmationPopupView_OnReboot > button')
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
             # 결과 확인
             result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 1200)
