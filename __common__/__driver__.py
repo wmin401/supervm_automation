@@ -164,6 +164,7 @@ class SuperVM_driver:
                             tdLst.append(td[i].text)
                         except:
                             tdLst.append('')
+                    printLog('[TABLE SEARCH] TABLE :', tdLst)      
                     return tdLst
                 if rowClick == True:    
                     printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))      
