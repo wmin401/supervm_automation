@@ -39,7 +39,6 @@ class admin_vm:
             time.sleep(1)
             try:
                 tableValueList = self.webDriver.tableSearch(self._diskName, 0, False, False, True)
-                printLog(tableValueList, debug=True)
                 if 'OK' in tableValueList[10]:
                     printLog("[DISK STATUS] Disk's status is OK")
                     status = True
