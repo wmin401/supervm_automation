@@ -205,7 +205,8 @@ class SuperVM_driver:
         while True:
             time.sleep(1)
             try:
-                tableValueList = self.tableSearch(name, nameIdx, rowClick=False, nameClick=False, returnValueList=True)        
+                tableValueList = self.tableSearch(name, nameIdx, rowClick=False, nameClick=False, returnValueList=True)    
+                printLog(tableValueList, debug=True)    
                 current = tableValueList[statusIdx]
                 for failStr in failLst:
                     if failStr in tableValueList[statusIdx]:
