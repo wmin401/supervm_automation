@@ -568,7 +568,9 @@ class admin_vm:
                 return
 
             # 선택
+            printLog('1')
             self.webDriver.tableSearch(self._vmName, 2, True)
+            printLog('2')
             # 재부팅 클릭
             self.webDriver.findElement('css_selector','#ActionPanelView_Reboot > button:nth-child(1)', True)
             printLog('#ActionPanelView_Reboot > button:nth-child(1)')
