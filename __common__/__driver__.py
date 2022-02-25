@@ -199,6 +199,7 @@ class SuperVM_driver:
     
     def isChangedStatus(self, name, nameIdx, statusIdx, failLst, passLst, t=60):
         # 1초마다 상태 변경이 되었는지 확인하는 함수
+        printLog("[STATUS CHECK] Check status changed")
         st = time.time()
         before = ''
         while True:
