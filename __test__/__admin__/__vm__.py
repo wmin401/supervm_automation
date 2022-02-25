@@ -529,12 +529,12 @@ class admin_vm:
             self.webDriver.tableSearch(self._vmName, 2, True)
             for i in range(3):
                 # 종료 클릭
-                self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Shutdown')
-                self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
+                self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#ActionPanelView_Shutdown > button:nth-child(1)')
+                self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
                 time.sleep(0.5)
                 # OK 클릭
                 try:
-                    self.webDriver.findElement('id','RemoveConfirmationPopupView_OnShutdown',True)
+                    self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnShutdown > button',True)
                 except:
                     continue
                 time.sleep(2)
@@ -1632,7 +1632,7 @@ class admin_vm:
             # 선택
             self.webDriver.tableSearch(self._vmName, 2, True)
             # 일시중지 클릭
-            self.webDriver.findElement('id','ActionPanelView_Pause', True)
+            self.webDriver.findElement('css_selector','#ActionPanelView_Pause', True)
 
             # 결과 확인
             result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '실행 중', '저장 중인 상태', 'Saving'], ['Suspended', '일시중지됨'], 300)            
