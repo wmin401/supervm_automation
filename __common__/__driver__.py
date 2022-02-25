@@ -224,7 +224,8 @@ class SuperVM_driver:
                     if passStr == tableValueList[statusIdx]:
                         printLog("[%s STATUS] %s"%(name, tableValueList[statusIdx]))
                         return PASS, ''
-            except:
+            except Exception as e: 
+                printLog('[STATUS CHECK] %s'%(str(e)))
                 continue
 
     def trunOffAlert(self):
