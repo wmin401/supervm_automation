@@ -571,6 +571,7 @@ class admin_vm:
             self.webDriver.tableSearch(self._vmName, 2, True)
             # 재부팅 클릭
             self.webDriver.findElement('css_selector','#ActionPanelView_Reboot > button:nth-child(1)', True)
+            time.sleep(1)
             # OK 클릭
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
             # 결과 확인
