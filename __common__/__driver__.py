@@ -163,8 +163,6 @@ class SuperVM_driver:
                         try:
                             tdLst.append(td[i].text)
                         except:
-                            tdLst.append(td[i].get_attribute('textContent'))
-                        finally:
                             tdLst.append('')
                     printLog('[TABLE SEARCH] TABLE : ' + str(tdLst))
                     return tdLst
