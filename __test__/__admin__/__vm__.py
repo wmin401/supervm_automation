@@ -452,7 +452,6 @@ class admin_vm:
                 msg = 'Disk is locked(timeout)...'
                 printLog("[VM RUN] MESSAGE : " + msg)
                 self.tl.junitBuilder('VM_RUN',result, msg) # 모두 대문자
-                return
 
             self.setup()
 
