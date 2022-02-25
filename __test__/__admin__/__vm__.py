@@ -526,8 +526,7 @@ class admin_vm:
             # 선택
             # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)
             self.webDriver.tableSearch(self._vmName, 2, True)
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#ActionPanelView_Shutdown > button:nth-child(1)')
-            self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
+            self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
             time.sleep(0.5)
                 # OK 클릭
             try:
@@ -570,7 +569,7 @@ class admin_vm:
             # 선택
             self.webDriver.tableSearch(self._vmName, 2, True)
             # 재부팅 클릭
-            self.webDriver.findElement('css_selector','#ActionPanelView_Reboot > button:nth-child(1)', True)
+            self.webDriver.findElement('id','ActionPanelView_Reboot', True)
             time.sleep(1)
             # OK 클릭
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
@@ -606,24 +605,6 @@ class admin_vm:
 
             self.setup()
 
-            # # 이미지 잠긴 상태
-            # st = time.time()
-            # while True:
-            #     tableValueList = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-            #     # tableValueList = self.webDriver.tableSearch('auto_vm_HnpZbEOS_Disk1', 2, False, False, True)
-                
-            #     if 'Down' in tableValueList[13]:
-            #         break
-            #     elif '이미지 잠김' in tableValueList[13] or 'Image Locked' in tableValueList[13]:
-            #         ed = time.time()  
-            #         printLog("[TABLE SEARCH] VM'status is still locked...%ds"%(int(ed-st)))
-            #         if ed - st > 60:
-            #             result = FAIL
-            #             msg = 'VM Image locked...'
-            #             printLog("[VM CREATE] RESULT : " + result)
-            #             printLog("[VM CREATE] " + msg)
-            #             self.tl.junitBuilder('VM_REMOVE',result, msg) # 모두 대문자
-            #             return
             cnt = 0
             while True:
                 time.sleep(1)
@@ -1574,7 +1555,7 @@ class admin_vm:
             # 선택
             self.webDriver.tableSearch(self._vmName, 2, True)
             # 일시중지 클릭
-            self.webDriver.findElement('css_selector','#ActionPanelView_Pause', True)
+            self.webDriver.findElement('id','ActionPanelView_Pause', True)
 
             # 결과 확인
             result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '실행 중', '저장 중인 상태', 'Saving'], ['Suspended', '일시중지됨'], 300)            
