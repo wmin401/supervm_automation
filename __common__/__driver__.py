@@ -160,11 +160,11 @@ class SuperVM_driver:
                 if returnValueList == True:
                     tdLst = []
                     for i in range(len(td)):
-                        print(i,td[i])
                         try:
-                            print(td[i].text)
                             tdLst.append(td[i].text)
                         except:
+                            tdLst.append(td[i].get_attribute('textContent'))
+                        finally:
                             tdLst.append('')
                     printLog('[TABLE SEARCH] TABLE : ' + str(tdLst))
                     return tdLst
