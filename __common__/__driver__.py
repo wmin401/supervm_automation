@@ -203,6 +203,10 @@ class SuperVM_driver:
         st = time.time()
         before = ''
         while True:
+            ed = time.time()
+            if ed-st >= t:
+                printLog("[%s STATUS] Failed status changed : %ss Timeout"%(name,t))
+                return FAIL, 'Timeout'
             time.sleep(1)
             try:
                 tableValueList = self.tableSearch(name, nameIdx, rowClick=False, nameClick=False, returnValueList=True)    
@@ -218,11 +222,6 @@ class SuperVM_driver:
                     if passStr == tableValueList[statusIdx]:
                         printLog("[%s STATUS] %s"%(name, tableValueList[statusIdx]))
                         return PASS, ''
-
-                ed = time.time()
-                if ed-st >= t:
-                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%(name,t))
-                    return FAIL, 'Timeout'
             except:
                 continue
 
