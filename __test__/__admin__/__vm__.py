@@ -568,18 +568,13 @@ class admin_vm:
                 return
 
             # 선택
-            printLog('1')
             self.webDriver.tableSearch(self._vmName, 2, True)
-            printLog('2')
             # 재부팅 클릭
             self.webDriver.findElement('css_selector','#ActionPanelView_Reboot > button:nth-child(1)', True)
-            printLog('#ActionPanelView_Reboot > button:nth-child(1)')
             # OK 클릭
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#DefaultConfirmationPopupView_OnReboot > button')
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
-            printLog('#DefaultConfirmationPopupView_OnReboot > button')
             # 결과 확인
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 1200)
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 180)
 
         except Exception as e:
             result = FAIL
