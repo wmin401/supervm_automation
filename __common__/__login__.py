@@ -17,6 +17,12 @@ def portalLogin(webDriver):
     webDriver.implicitlyWait(10)
     _userPW.send_keys(USER_PW)
 
+    _profile = webDriver.findElement('id', 'profile', True)
+    _options = _profile.find_elements_by_tag_name('option')
+    for opt in _options:
+        if opt.text == 'internal':
+            opt.click()
+
     webDriver.implicitlyWait(10)
     _loginBtn = webDriver.findElement('css_selector','#loginForm > div.pf-c-form__group.pf-m-action > button',True)
 
