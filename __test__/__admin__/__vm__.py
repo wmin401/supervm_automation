@@ -534,7 +534,41 @@ class admin_vm:
             except:
                 pass
 
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '전원을 끄는 중'], ['Down'], 300)
+            printLog("[STATUS CHECK] Check status changed")
+            st = time.time()
+            before = ''
+            t = 300
+            failLst = ['Up', '전원을 끄는 중']
+            passLst = ['Down']
+            name = 'VM REMOVE'
+            while True:
+                ed = time.time()
+                if result == PASS:
+                    break
+                if ed-st >= 300:
+                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%(name,t))
+                    result, msg = FAIL, 'Timeout'
+                    break
+                time.sleep(1)
+                try:
+                    tableValueList = self.tableSearch(name, 2, rowClick=False, nameClick=False, returnValueList=True)    
+                    printLog(tableValueList, debug=True)    
+                    current = tableValueList[13]
+                    for failStr in failLst:
+                        if failStr in tableValueList[13]:
+                            if current != before:
+                                printLog("[%s STATUS] %s"%(name, tableValueList[13]))
+                                before = current
+
+                    for passStr in passLst:
+                        if passStr == tableValueList[13]:
+                            printLog("[%s STATUS] %s"%(name, tableValueList[13]))
+                            result, msg = PASS, ''
+                            break
+                except Exception as e: 
+                    printLog('[STATUS CHECK] %s'%(str(e)))
+                    continue
+            
 
         except Exception as e:
             result = FAIL
