@@ -116,7 +116,7 @@ class admin_vm:
         # 종료 및 정지 - 4
         # self.reboot()
         # self.pause()
-        # self.shutdown()
+        self.shutdown()
         self.remove()
 
     def setup(self):
@@ -526,7 +526,7 @@ class admin_vm:
             # 선택
             # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)
             self.webDriver.tableSearch(self._vmName, 2, True)
-            self.webDriver.findElement('id','ActionPanelView_Shutdown',True)
+            self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
             time.sleep(0.5)
                 # OK 클릭
             try:
