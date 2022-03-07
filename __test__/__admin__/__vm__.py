@@ -100,8 +100,8 @@ class admin_vm:
         self.run()
 
         # 호스트 - 2
-        self.pinToMultipleHosts()
-        self.ViewingPinnedToHost()
+        # self.pinToMultipleHosts()
+        # self.ViewingPinnedToHost()
 
         # # 가상 메모리 - 2
         # self.virtualMemoryHotPlugging()
