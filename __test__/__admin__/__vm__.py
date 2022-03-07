@@ -114,7 +114,7 @@ class admin_vm:
         # self.changeCD()
 
         # 종료 및 정지 - 4
-        self.reboot()
+        # self.reboot()
         self.pause()
         self.shutdown()
         self.remove()
