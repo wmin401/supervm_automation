@@ -614,8 +614,8 @@ class admin_vm:
                 time.sleep(0.3)
                 self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
 
-                self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
-                self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
+                self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'RemoveConfirmationPopupView_OnRemove > button')
+                self.webDriver.findElement('css_selector', 'RemoveConfirmationPopupView_OnRemove > button', True)
 
                 time.sleep(2)
                     
