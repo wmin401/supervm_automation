@@ -75,7 +75,7 @@ else: # 로컬
     CEPH_DISK_PATH = '/dev/sdb'
 
     ## 테스트 자동화 매개변수 ##
-    SECURE = 'false'
+    SECURE = 'true'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
     BROWSER_VERSION = 'ver98'
@@ -99,7 +99,7 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'false'
+    VM_TEST = 'true'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'

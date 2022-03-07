@@ -76,25 +76,25 @@ class admin_vm:
         # VM 생성 - 2
         time.sleep(5)
         self.create()
-        self.createWindows()
+        # self.createWindows()
 
         # 가상 디스크 - 4
-        self.addVirtualDisk()
-        self.attachDisk()
-        # self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
         # 네트워크 인터페이스 - 4
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # # self.addNetworkInterface()
+        # # self.updateNetworkInterface()
+        # # self.networkInterfaceHotPlugging()
+        # # self.deleteNetworkInterface()
 
-        # # 업데이트 - 1
-        self.update()
+        # # # 업데이트 - 1
+        # self.update()
 
-        # # 복사 - 1 
-        self.copy()
+        # # # 복사 - 1 
+        # self.copy()
 
         # 실행 - 1
         self.run()
@@ -527,7 +527,7 @@ class admin_vm:
             # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)
             self.webDriver.tableSearch(self._vmName, 2, True)
             self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
-            time.sleep(0.5)
+            time.sleep(1)
                 # OK 클릭
             try:
                 self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnShutdown > button',True)
@@ -540,29 +540,28 @@ class admin_vm:
             t = 300
             failLst = ['Up', '전원을 끄는 중']
             passLst = ['Down']
-            name = 'VM REMOVE'
             while True:
                 ed = time.time()
                 if result == PASS:
                     break
                 if ed-st >= 300:
-                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%(name,t))
+                    printLog("[%s STATUS] Failed status changed : %ss Timeout"%(self._vmName,t))
                     result, msg = FAIL, 'Timeout'
                     break
                 time.sleep(1)
                 try:
-                    tableValueList = self.tableSearch(name, 2, rowClick=False, nameClick=False, returnValueList=True)    
+                    tableValueList = self.webDriver.tableSearch(self._vmName, 2, rowClick=False, nameClick=False, returnValueList=True)    
                     printLog(tableValueList, debug=True)    
                     current = tableValueList[13]
                     for failStr in failLst:
                         if failStr in tableValueList[13]:
                             if current != before:
-                                printLog("[%s STATUS] %s"%(name, tableValueList[13]))
+                                printLog("[%s STATUS] %s"%(self._vmName, tableValueList[13]))
                                 before = current
 
                     for passStr in passLst:
                         if passStr == tableValueList[13]:
-                            printLog("[%s STATUS] %s"%(name, tableValueList[13]))
+                            printLog("[%s STATUS] %s"%(self._vmName, tableValueList[13]))
                             result, msg = PASS, ''
                             break
                 except Exception as e: 
