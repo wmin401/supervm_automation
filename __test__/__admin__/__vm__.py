@@ -76,25 +76,25 @@ class admin_vm:
         # VM 생성 - 2
         time.sleep(5)
         self.create()
-        self.createWindows()
+        # self.createWindows()
 
-        # 가상 디스크 - 4
-        self.addVirtualDisk()
-        self.attachDisk()
-        # self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # # 가상 디스크 - 4
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
-        # 네트워크 인터페이스 - 4
+        # # 네트워크 인터페이스 - 4
         # self.addNetworkInterface()
         # self.updateNetworkInterface()
         # self.networkInterfaceHotPlugging()
         # self.deleteNetworkInterface()
 
-        # # # 업데이트 - 1
-        self.update()
+        # # # # 업데이트 - 1
+        # self.update()
 
-        # # 복사 - 1 
-        self.copy()
+        # # # 복사 - 1 
+        # self.copy()
 
         # 실행 - 1
         self.run()
@@ -513,7 +513,6 @@ class admin_vm:
 
             # 생성한 vm 클릭
             isRun = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-            # isRun = self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, False, False, True)
             if 'Down' in isRun[13]: # 실행중이지 않을 경우 종료
                 result = FAIL
                 msg = 'VM is not running ...'
@@ -524,7 +523,6 @@ class admin_vm:
                 return
 
             # 선택
-            # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)
             self.webDriver.tableSearch(self._vmName, 2, True)
             self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
             time.sleep(3)
