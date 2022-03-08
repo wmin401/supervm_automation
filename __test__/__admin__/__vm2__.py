@@ -1009,6 +1009,14 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
             time.sleep(1)
 
+            # 프로필 선택
+            profiles = self.webDriver.findElement('id', 'PermissionsPopupView_profile')
+            profiles.click()
+            profiles_lis = profiles.find_elements_by_tag_name('li')
+            for li in profiles_lis:
+                if 'internal' in li.text:
+                    li.click()
+
             # 검색 클릭
             self.webDriver.findElement('css_selector', '#PermissionsPopupView_searchButton > button', True)
             time.sleep(3)
