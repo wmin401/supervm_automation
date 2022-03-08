@@ -532,6 +532,7 @@ class admin_vm:
             except:
                 pass
 
+            time.sleep(2)
             printLog("[STATUS CHECK] Check status changed")
             st = time.time()
             before = ''
@@ -545,8 +546,24 @@ class admin_vm:
                     result, msg = FAIL, 'Timeout'
                     break
                 time.sleep(1)
+                tableValueList = []
                 try:
-                    tableValueList = self.webDriver.tableSearch(self._vmName, 2, rowClick=False, nameClick=False, returnValueList=True)    
+                    listUp = False
+                    table = self.webDriver.findElement('css_selector', 'tbody')
+                    for tr in table.find_elements_by_tag_name("tr"):
+                        if listUp == True:
+                            break
+                        td = tr.find_elements_by_tag_name("td")
+                        if self._vmName == td[2].text:
+                            tableValueList = []
+                            for i in range(len(td)):
+                                try:
+                                    tableValueList.append(td[i].text)
+                                except:
+                                    tableValueList.append('')
+                            printLog('[TABLE SEARCH] TABLE : ' + str(tableValueList))
+                            listUp = True
+                            break
                     printLog(tableValueList, debug=True)    
                     current = tableValueList[13]
                     for failStr in ['Up', '전원을 끄는 중']:
