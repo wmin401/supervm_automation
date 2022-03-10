@@ -155,6 +155,7 @@ class SuperVM_driver:
 
         table = self.driver.find_element_by_css_selector('tbody')
         for tr in table.find_elements_by_tag_name("tr"):
+            time.sleep(.5)
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:
                 if returnValueList == True:
