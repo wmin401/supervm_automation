@@ -522,7 +522,7 @@ class admin_vm:
                 self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])        
                 self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
                 return
-
+            printLog(1, debug=True)
             # 선택
             self.webDriver.tableSearch(self._vmName, 2, True)
             self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
@@ -532,6 +532,7 @@ class admin_vm:
                 self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnShutdown > button',True)
             except:
                 pass
+            printLog(2, debug=True)
 
             time.sleep(2)
             printLog("[STATUS CHECK] Check status changed")
@@ -1008,6 +1009,7 @@ class admin_vm:
             self.webDriver.sendKeys('5')
             self.webDriver.findElement('id','VmDiskPopupWidget_alias')
             self.webDriver.sendKeys(self._unAttachedDiskName)
+            printLog("[VM SETUP] Disk : %s"%self._unAttachedDiskName)
 
             printLog(2, debug=True)
             self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
