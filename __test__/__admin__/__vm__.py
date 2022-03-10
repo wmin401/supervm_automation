@@ -76,45 +76,45 @@ class admin_vm:
         # VM 생성 - 2
         time.sleep(5)
         self.create()
-        self.createWindows()
+        # self.createWindows()
 
-        # 가상 디스크 - 4
-        self.addVirtualDisk()
-        self.attachDisk()
-        # self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # # 가상 디스크 - 4
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
-        # 네트워크 인터페이스 - 4
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # # 네트워크 인터페이스 - 4
+        # self.addNetworkInterface()
+        # self.updateNetworkInterface()
+        # self.networkInterfaceHotPlugging()
+        # self.deleteNetworkInterface()
 
-        # # # 업데이트 - 1
-        self.update()
+        # # # # 업데이트 - 1
+        # self.update()
 
-        # # 복사 - 1 
-        self.copy()
+        # # # 복사 - 1 
+        # self.copy()
 
         # 실행 - 1
         self.run()
 
         # 호스트 - 2
-        self.pinToMultipleHosts()
-        self.ViewingPinnedToHost()
+        # self.pinToMultipleHosts()
+        # self.ViewingPinnedToHost()
 
-        # 가상 메모리 - 2
-        self.virtualMemoryHotPlugging()
-        # self.virtualMemoryHotUnplugging()
+        # # 가상 메모리 - 2
+        # self.virtualMemoryHotPlugging()
+        # # self.virtualMemoryHotUnplugging()
 
-        # vcpu - 1
-        self.hotPluggingVCPU()
+        # # vcpu - 1
+        # self.hotPluggingVCPU()
 
-        # cd변경 - 1
-        self.changeCD()
+        # # cd변경 - 1
+        # self.changeCD()
 
         # 종료 및 정지 - 4
-        self.reboot()
+        # self.reboot()
         self.pause()
         self.shutdown()
         self.remove()
