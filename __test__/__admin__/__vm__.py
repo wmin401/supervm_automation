@@ -100,24 +100,24 @@ class admin_vm:
         self.run()
 
         # 호스트 - 2
-        # self.pinToMultipleHosts()
-        # self.ViewingPinnedToHost()
+        self.pinToMultipleHosts()
+        self.ViewingPinnedToHost()
 
-        # # 가상 메모리 - 2
-        # self.virtualMemoryHotPlugging()
+        # 가상 메모리 - 2
+        self.virtualMemoryHotPlugging()
         # self.virtualMemoryHotUnplugging()
 
-        # # vcpu - 1
-        # self.hotPluggingVCPU()
+        # vcpu - 1
+        self.hotPluggingVCPU()
 
-        # # cd변경 - 1
-        # self.changeCD()
+        # cd변경 - 1
+        self.changeCD()
 
         # 종료 및 정지 - 4
-        # self.reboot()
-        # self.pause()
-        # self.shutdown()
-        # self.remove()
+        self.reboot()
+        self.pause()
+        self.shutdown()
+        self.remove()
 
     def setup(self):
         # 컴퓨팅
@@ -128,6 +128,7 @@ class admin_vm:
 
         # 가상머신
         self.webDriver.findElement('id','MenuView_vmsAnchor',True)
+        self.webDriver.implicitlyWait(10)
         time.sleep(3)
 
     def create(self):
@@ -1066,12 +1067,10 @@ class admin_vm:
             except:
                 self.webDriver.findElement('link_text', 'Disks', True)
             time.sleep(2)
-            printLog(1, debug=True)
 
             # 추가한 가상 디스크 선택
             self.webDriver.tableSearch(self._unAttachedDiskName, 1, rowClick=True)
 
-            printLog(2, debug=True)
             # 추가 옵션 버튼 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div[2]/div/button', True)
             time.sleep(1)
@@ -1080,7 +1079,6 @@ class admin_vm:
             # OK 클릭
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
             time.sleep(3)
-            printLog(3, debug=True)
             
             # 스토리지 - 디스크
             printLog("[VM SETUP] Storage - Disks")
@@ -1088,7 +1086,6 @@ class admin_vm:
             time.sleep(1)
             self.webDriver.findElement('id','MenuView_disksAnchor',True)
             time.sleep(3)
-            printLog(4, debug=True)
 
             self.webDriver.tableSearch(self._unAttachedDiskName, 0, rowClick = False, nameClick = True)
             time.sleep(3)
@@ -1102,7 +1099,6 @@ class admin_vm:
 
             result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
 
-            printLog(6, debug=True)
         except Exception as e:
             result = FAIL
             printLog(str(e))
@@ -1181,6 +1177,7 @@ class admin_vm:
             self.setup()
             # 가상머신 클릭
             self.webDriver.tableSearch(self._vmName, 2, True)
+            printLog(1, debug=True)
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
@@ -1200,11 +1197,11 @@ class admin_vm:
 
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
-            time.sleep(3)
+            time.sleep(2)
 
             try:
                 self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
-                time.sleep(5)
+                time.sleep(3)
             except:
                 pass
             printLog('OK double check', debug=True)
@@ -1253,6 +1250,7 @@ class admin_vm:
 
             self.webDriver.tableSearch(self._vmName, 2, False, True)
 
+            printLog(1, debug=True)
             # 가상 머신 장치 클릭
             time.sleep(2)
             try:
@@ -1261,6 +1259,7 @@ class admin_vm:
                 self.webDriver.findElement('link_text', 'Vm Devices', True)
             time.sleep(1)
 
+            printLog(2, debug=True)
             idx = -1
             table = self.webDriver.findElement('css_selector', 'tbody')
             trs = table.find_elements_by_tag_name('tr')
@@ -1274,6 +1273,7 @@ class admin_vm:
                         break
                 except:
                     continue
+            printLog(3, debug=True)
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_memoryHotUnplug > button', True)
             time.sleep(20)
 
@@ -1281,11 +1281,13 @@ class admin_vm:
 
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             time.sleep(3)
+            printLog(4, debug=True)
 
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             _memorySize = self.webDriver.getAttribute('textContent')
 
+            printLog(5, debug=True)
             if '1024' in _memorySize:
                 result = PASS
                 msg = ''
@@ -1317,11 +1319,13 @@ class admin_vm:
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
             time.sleep(3)
+            printLog(1, debug=True)
 
             # 시스템 탭 클릭
             self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
             time.sleep(1)
 
+            printLog(2, debug=True)
             # 총 가상 cpu 변경
             self.webDriver.findElement('id', 'VmPopupWidget_totalCPUCores')
             self.webDriver.clear()
@@ -1330,12 +1334,14 @@ class admin_vm:
             # OK 클릭
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
             time.sleep(2)
+            printLog(3, debug=True)
 
             ##############
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
             time.sleep(5)
 
+            printLog(4, debug=True)
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             time.sleep(3)
@@ -1343,6 +1349,7 @@ class admin_vm:
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
             _cpuNum = self.webDriver.getAttribute('textContent')
 
+            printLog(5, debug=True)
             if '2 (2:1:1)' in _cpuNum:
                 result = PASS
                 msg = ''
@@ -1379,8 +1386,8 @@ class admin_vm:
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
             time.sleep(2)
-
             self.advancedOption()
+            printLog(1, debug=True)
             
             time.sleep(1)
 
@@ -1393,6 +1400,7 @@ class admin_vm:
             time.sleep(1)
             self.webDriver.findElement('id', 'VmPopupWidget_specificHost', True)
 
+            printLog(2, debug=True)
             # # 호스트 선택
             # self.webDriver.findElement('css_selector', '#VmPopupWidget_defaultHost > div > Button', True)
             # lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget_defaultHost > div > ul > li')
@@ -1406,37 +1414,42 @@ class admin_vm:
                 if '고가용성' == li.get_attribute('textContent') or 'Hosts' == li.get_attribute('textContent'):
                     li.click()
                     break
+            printLog(3, debug=True)
             time.sleep(1)
             self.webDriver.findElement('id', 'VmPopupWidget_isHighlyAvailable', True)
             time.sleep(1)
-
             
             self.webDriver.findElement('css_selector', '#VmPopupWidget_lease > div > button', True)
             time.sleep(1)
+            printLog(4, debug=True)
             
             lis = self.webDriver.findElement('css_selector_all', '#VmPopupWidget_lease > div > ul > li')
             for li in lis:
                 if '가상 머신 임대 없음' == li.get_attribute('textContent') or 'No VM Lease' == li.get_attribute('textContent'):
                     li.click()
 
+            printLog(5, debug=True)
             # OK
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
-            time.sleep(1)
+            time.sleep(2)
             self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
-            time.sleep(5)
+            time.sleep(3)
 
             # 재부팅
             self.reboot(save = False)
 
+            printLog(6, debug=True)
             # 적용 확인
             self.setup()
             self.webDriver.tableSearch(self._vmName, 2, rowClick = False, nameClick = True)
             time.sleep(1)
                     
+            printLog(7, debug=True)
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row7_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row7_value')
             _highAvailability = self.webDriver.getAttribute('textContent')
 
+            printLog(8, debug=True)
             if '예' in _highAvailability or 'Yes' in _highAvailability:
                 result = PASS
                 msg = ''
@@ -1472,6 +1485,7 @@ class admin_vm:
             time.sleep(1)
             self.webDriver.findElement('id','MenuView_hostsAnchor',True)
             time.sleep(4)
+            printLog(1, debug=True)
 
             self.webDriver.tableSearch(self._specificHost, 2, rowClick = False, nameClick = True)
             time.sleep(2)
@@ -1483,8 +1497,10 @@ class admin_vm:
 
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[3]/div[1]/div/div/div/div/div[2]/label[2]', True)
 
+            printLog(2, debug=True)
             try:
                 isPinned = self.webDriver.tableSearch(self._vmName, 1, rowClick = False, nameClick = False, returnValueList = True)
+                printLog(3, debug=True)
                 if isPinned is not False:
                     result = PASS
                     msg = ''
@@ -1521,7 +1537,7 @@ class admin_vm:
             # 생성한 vm 클릭
             self.webDriver.tableSearch(self._vmName, 2, True)
 
-
+            printLog(1, debug=True)
             # 꺼내기 생략
             # # 추가 옵션 - CD 변경 클릭
             # self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
@@ -1597,15 +1613,19 @@ class admin_vm:
 
         try:        
             self.setup()
+            printLog(1, debug=True)
 
             # 선택
             self.webDriver.tableSearch(self._vmName, 2, True)
+            printLog(2, debug=True)
             # 일시중지 클릭
             self.webDriver.findElement('id','ActionPanelView_Pause', True)
 
+            printLog(3, debug=True)
             # 결과 확인
             result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '실행 중', '저장 중인 상태', 'Saving'], ['Suspended', '일시중지됨'], 300)            
 
+            printLog(4, debug=True)
         except Exception as e:
             result = FAIL
             printLog(str(e))
