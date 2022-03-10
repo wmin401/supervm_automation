@@ -1,6 +1,5 @@
 # -*- encoding= utf-8 -*-
 import time
-from tkinter import CURRENT
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium import webdriver
@@ -151,7 +150,7 @@ class SuperVM_driver:
         # rowClick : True일 경우 해당 row 클릭
         # nameClick : True일 경우 이름 클릭
         # returnValueList : True일 경우 해당하는 행을 리스트로 반환해줌
-        time.sleep(1)
+        time.sleep(2)
 
         self.explicitlyWait(10, By.CSS_SELECTOR, 'tbody')
         table = self.driver.find_element_by_css_selector('tbody')
