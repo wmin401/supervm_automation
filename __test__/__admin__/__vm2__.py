@@ -66,7 +66,7 @@ class admin_vm2(admin_vm): # 상속
         self.vmCreateInSnapshot()
         self.snapshotRemove()
 
-        # 내보내기 - 2
+        # # 내보내기 - 2
         self.exportToDomain()
         self.exportToHost()
 

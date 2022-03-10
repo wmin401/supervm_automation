@@ -97,26 +97,26 @@ class admin_vm:
         self.copy()
 
         # 실행 - 1
-        # self.run()
+        self.run()
 
         # 호스트 - 2
-        # self.pinToMultipleHosts()
-        # self.ViewingPinnedToHost()
+        self.pinToMultipleHosts()
+        self.ViewingPinnedToHost()
 
-        # # 가상 메모리 - 2
-        # self.virtualMemoryHotPlugging()
-        # self.virtualMemoryHotUnplugging()
+        # 가상 메모리 - 2
+        self.virtualMemoryHotPlugging()
+        self.virtualMemoryHotUnplugging()
 
-        # # vcpu - 1
-        # self.hotPluggingVCPU()
+        # vcpu - 1
+        self.hotPluggingVCPU()
 
         # cd변경 - 1
-        # self.changeCD()
+        self.changeCD()
 
         # 종료 및 정지 - 4
-        # self.reboot()
-        # self.pause()
-        # self.shutdown()
+        self.reboot()
+        self.pause()
+        self.shutdown()
         self.remove()
 
     def setup(self):
