@@ -111,7 +111,7 @@ class SuperVM_driver:
             elif element_type == 'link_text_all':
                 self.element = self.driver.find_elements_by_link_text(path)
             else:
-                printLog("You can use : xpath, css_selector, name, id, tag_name, class_name")
+                printLog("You can use : [xpath, css_selector, name, id, tag_name, class_name, link_text] + _all")
         except Exception as e:
             printLog("* can't find element using " + element_type)
             raise(e)
@@ -156,6 +156,7 @@ class SuperVM_driver:
         table = self.driver.find_element_by_css_selector('tbody')
         for tr in table.find_elements_by_tag_name("tr"):
             time.sleep(.5)
+            self.implicitlyWait(10)
             td = tr.find_elements_by_tag_name("td")
             if name == td[nameIdx].text:
                 if returnValueList == True:
@@ -174,6 +175,7 @@ class SuperVM_driver:
                 if nameClick == True:
                     printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
                     td[nameIdx].find_element_by_tag_name("a").click() 
+                    self.implicitlyWait(10)
                     time.sleep(1)
                 return True
 
