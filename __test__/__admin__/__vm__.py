@@ -1649,6 +1649,11 @@ class admin_vm:
                 if time.time() - st > 120:
                     result = FAIL
                     msg = 'Timeout 120s'
+                    printLog("[VM PAUSE] %s"%msg)
+                    sts = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+                    if sts[13] == '일시중지됨' or sts[13] == 'Suspended':
+                        result = PASS
+                        msg = ''
                     break
                 try:
                     sts = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
