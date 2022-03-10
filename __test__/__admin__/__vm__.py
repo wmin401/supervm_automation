@@ -100,18 +100,18 @@ class admin_vm:
         self.run()
 
         # 호스트 - 2
-        self.pinToMultipleHosts()
-        self.ViewingPinnedToHost()
+        # self.pinToMultipleHosts()
+        # self.ViewingPinnedToHost()
 
-        # 가상 메모리 - 2
-        self.virtualMemoryHotPlugging()
-        self.virtualMemoryHotUnplugging()
+        # # 가상 메모리 - 2
+        # self.virtualMemoryHotPlugging()
+        # self.virtualMemoryHotUnplugging()
 
-        # vcpu - 1
-        self.hotPluggingVCPU()
+        # # vcpu - 1
+        # self.hotPluggingVCPU()
 
-        # cd변경 - 1
-        self.changeCD()
+        # # cd변경 - 1
+        # self.changeCD()
 
         # 종료 및 정지 - 4
         self.reboot()
