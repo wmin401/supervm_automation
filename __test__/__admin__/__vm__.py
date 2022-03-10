@@ -942,6 +942,7 @@ class admin_vm:
 
         try:       
             self.setup()
+            printLog(1, debug=True)
             # 가상머신 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 디스크탭 클릭
@@ -951,6 +952,7 @@ class admin_vm:
             except:
                 self.webDriver.findElement('link_text', 'Disks', True)
             time.sleep(0.5)
+            printLog(2, debug=True)
 
             # 새로 만들기클릭
             self.webDriver.findElement('id', 'DetailActionPanelView_New', True)
@@ -959,14 +961,18 @@ class admin_vm:
             self.webDriver.findElement('id', 'VmDiskPopupWidget_size')
             self.webDriver.sendKeys('5')
 
+            printLog(3, debug=True)
             self.webDriver.findElement('id', 'VmDiskPopupWidget_alias')
             self.webDriver.clear()
             self.webDriver.sendKeys('added_' + self._diskName)
 
+            printLog(4, debug=True)
             self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
 
+            printLog(5, debug=True)
             result, msg = self.webDriver.isChangedStatus('added_' + self._diskName, 1, 18, ['잠김', 'locked', 'Locked'], ['OK'], 300)
 
+            printLog(6, debug=True)
         except Exception as e:
             result = FAIL
             printLog(str(e))
@@ -997,22 +1003,26 @@ class admin_vm:
             # 새로 만들기 클릭
             self.webDriver.findElement('id','ActionPanelView_New',True)
 
+            printLog(1, debug=True)
             self.webDriver.findElement('id','VmDiskPopupWidget_size')
             self.webDriver.sendKeys('5')
             self.webDriver.findElement('id','VmDiskPopupWidget_alias')
             self.webDriver.sendKeys(self._unAttachedDiskName)
 
+            printLog(2, debug=True)
             self.webDriver.findElement('css_selector', '#VmDiskPopupView_OnSave > button', True)
             time.sleep(5)
 
 
             self.webDriver.isChangedStatus(self._unAttachedDiskName, 0, 10, ['잠김', 'Locked', 'locked'], ['OK'], 300)            
 
+            printLog(3, debug=True)
             self.setup()
             # 가상머신 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 디스크탭 클릭
             time.sleep(0.5)
+            printLog(4, debug=True)
             try:
                 self.webDriver.findElement('link_text', '디스크', True)
             except:
@@ -1022,6 +1032,7 @@ class admin_vm:
             # 연결 클릭
             self.webDriver.findElement('id', 'DetailActionPanelView_Attach', True)
             time.sleep(3)
+            printLog(5, debug=True)
         
             table = self.webDriver.findElement('css_selector_all', 'tbody')
             for tr in table[1].find_elements_by_tag_name("tr"):
@@ -1031,10 +1042,12 @@ class admin_vm:
                     td[0].find_element_by_css_selector('div > input').click()
                     break
 
+            printLog(6, debug=True)
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmDiskAttachPopupView_OnSave > button', True)
             time.sleep(1)
 
+            printLog(7, debug=True)
             result, msg = self.webDriver.isChangedStatus(self._unAttachedDiskName, 1, 18, ['잠김', 'Locked', 'locked'], ['OK'])
 
         except Exception as e:
@@ -1060,6 +1073,7 @@ class admin_vm:
 
             # 가상머신 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            printLog(1, debug=True)
             # 디스크탭 클릭
             time.sleep(2)
             try:
@@ -1071,6 +1085,7 @@ class admin_vm:
             # 추가한 가상 디스크 선택
             self.webDriver.tableSearch(self._unAttachedDiskName, 1, rowClick=True)
 
+            printLog(2, debug=True)
             # 추가 옵션 버튼 클릭
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[1]/div/div[1]/div[2]/div/button', True)
             time.sleep(1)
@@ -1080,6 +1095,7 @@ class admin_vm:
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_OnUnplug > button', True)            
             time.sleep(3)
             
+            printLog(3, debug=True)
             # 스토리지 - 디스크
             printLog("[VM SETUP] Storage - Disks")
             self.webDriver.findElement('id','MenuView_storageTab', True)
@@ -1087,6 +1103,7 @@ class admin_vm:
             self.webDriver.findElement('id','MenuView_disksAnchor',True)
             time.sleep(3)
 
+            printLog(4, debug=True)
             self.webDriver.tableSearch(self._unAttachedDiskName, 0, rowClick = False, nameClick = True)
             time.sleep(3)
 
@@ -1097,6 +1114,7 @@ class admin_vm:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
             time.sleep(2)
 
+            printLog(5, debug=True)
             result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
 
         except Exception as e:
