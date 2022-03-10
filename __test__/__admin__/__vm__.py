@@ -1633,19 +1633,40 @@ class admin_vm:
 
         try:        
             self.setup()
-            printLog(1, debug=True)
 
             # 선택
             self.webDriver.tableSearch(self._vmName, 2, True)
-            printLog(2, debug=True)
             # 일시중지 클릭
             self.webDriver.findElement('id','ActionPanelView_Pause', True)
+            time.sleep(5)
 
-            printLog(3, debug=True)
             # 결과 확인
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['Up', '실행 중', '저장 중인 상태', 'Saving'], ['Suspended', '일시중지됨'], 300)            
 
-            printLog(4, debug=True)
+            st = time.time()
+            before = ''
+            while True:
+                time.sleep(1)
+                if time.time() - st > 120:
+                    result = FAIL
+                    msg = 'Timeout 120s'
+                    break
+                try:
+                    sts = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+                    try:
+                        current = sts[13]
+                    except:
+                        current = 'Exception'
+                    if current == '일시중지됨' or current == 'Suspended':
+                        result = PASS
+                        msg = ''
+                        break
+                    elif current == '실행 중' or current == '저장 중인 상태' or current == 'Saving':
+                        if before != current:
+                            printLog("[VM PAUSE] %s"%str(current))
+                            before = current
+                except:
+                    pass
+
         except Exception as e:
             result = FAIL
             printLog(str(e))
