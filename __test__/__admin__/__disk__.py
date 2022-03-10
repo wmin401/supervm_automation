@@ -16,13 +16,51 @@ class admin_disk:
         self.webDriver = webDriver
         self.tl = testlink()
 
+        self.isoFilePath = 'D:\iso_files'
+        self.isoFileName = 'ProLinux-8.2_4.18.0-193.el8.x86_64.iso'
+
     def test(self):
         #self.create()
         #self.diskMove()
         #self.diskChangeinterface()
         #self.vmCreate()
-        self.diskCopy()
+        # self.diskCopy()
         #self.remove()
+        self.uploadISO()
+
+    def uploadISO(self):
+        printLog('Create Disk')
+        
+        # 스토리지
+        time.sleep(1)
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','MenuView_storageTab',True)
+
+        # 디스크
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('id','MenuView_disksAnchor',True)
+            
+        #새로 만들기                  
+        time.sleep(1)
+        self.webDriver.implicitlyWait(10)
+        self.webDriver.findElement('css_selector','#ActionPanelView____ > button',True)            
+        self.webDriver.findElement('css_selector','#ActionPanelView____ > ul > li:nth-child(1) > a',True)
+
+        self.webDriver.explicitlyWait(10, By.ID, 'UploadImagePopupView_fileUploadButton')
+        self.webDriver.findElement('id','UploadImagePopupView_fileUploadButton',True)
+
+        time.sleep(2)
+
+        # 파일 다이얼로그 추가
+        openFileDialog(title_='열기', filePath = self.isoFilePath, fileName = self.isoFileName)
+        time.sleep(2)
+
+        self.webDriver.findElement('css_selector', '#UploadImagePopupView_Ok > button', True)
+
+        time.sleep(2)
+
+        tmp = self.webDriver.tableSearch(self.isoFileName, 0, False, False, True)
+
         
     def create(self):
         printLog('Create Disk')
