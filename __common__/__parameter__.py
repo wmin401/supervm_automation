@@ -78,7 +78,7 @@ else: # 로컬
     SECURE = 'true'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
-    BROWSER_VERSION = 'ver98'
+    BROWSER_VERSION = 'ver99'
     BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
     IF_HEADLESS = 'false' # 헤드리스 사용 여부(사용 금지)
@@ -99,7 +99,7 @@ else: # 로컬
     HOST_TEST = 'false'
     QOS_TEST = 'false'
     TEMPLATE_TEST = 'false'
-    VM_TEST = 'true'
+    VM_TEST = 'false'
     VM2_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
