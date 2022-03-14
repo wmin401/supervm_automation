@@ -1381,8 +1381,8 @@ class admin_vm:
             h = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
             self._specificHost = h[4]
             printLog("VM HOST : %s"%self._specificHost)
-            # 생성한 vm 클릭
-            self.webDriver.tableSearch(self._vmName, 2, True)
+            # 생성한 vm 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
