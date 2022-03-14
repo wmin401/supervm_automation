@@ -1,3 +1,4 @@
+from re import T
 import time
 from __common__.__parameter__ import *
 from __common__.__module__ import *
@@ -1646,6 +1647,7 @@ class admin_vm:
             before = ''
             while True:
                 time.sleep(1)
+                printLog(1, debug=True)
                 if time.time() - st > 120:
                     result = FAIL
                     msg = 'Timeout 120s'
@@ -1657,10 +1659,12 @@ class admin_vm:
                     break
                 try:
                     sts = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+                    printLog(2, debug=True)
                     try:
                         current = sts[13]
                     except:
                         current = 'Exception'
+                    printLog(3, debug=True)
                     if current == '일시중지됨' or current == 'Suspended':
                         result = PASS
                         msg = ''
@@ -1669,7 +1673,11 @@ class admin_vm:
                         if before != current:
                             printLog("[VM PAUSE] %s"%str(current))
                             before = current
+                    
+                    printLog(4, debug=True)
                 except:
+                    
+                    printLog(5, debug=True)
                     pass
 
         except Exception as e:
