@@ -1639,46 +1639,17 @@ class admin_vm:
             self.webDriver.tableSearch(self._vmName, 2, True)
             # 일시중지 클릭
             self.webDriver.findElement('id','ActionPanelView_Pause', True)
-            time.sleep(5)
+            printLog("[VM PAUSE] Wait until status is changed")    
+            time.sleep(90)
 
             # 결과 확인
-
-            st = time.time()
-            before = ''
-            while True:
-                time.sleep(1)
-                printLog(1, debug=True)
-                if time.time() - st > 120:
-                    result = FAIL
-                    msg = 'Timeout 120s'
-                    printLog("[VM PAUSE] %s"%msg)
-                    sts = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-                    if sts[13] == '일시중지됨' or sts[13] == 'Suspended':
-                        result = PASS
-                        msg = ''
-                    break
-                try:
-                    sts = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-                    printLog(2, debug=True)
-                    try:
-                        current = sts[13]
-                    except:
-                        current = 'Exception'
-                    printLog(3, debug=True)
-                    if current == '일시중지됨' or current == 'Suspended':
-                        result = PASS
-                        msg = ''
-                        break
-                    elif current == '실행 중' or current == '저장 중인 상태' or current == 'Saving':
-                        if before != current:
-                            printLog("[VM PAUSE] %s"%str(current))
-                            before = current
-                    
-                    printLog(4, debug=True)
-                except:
-                    
-                    printLog(5, debug=True)
-                    pass
+            isPaused = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            if isPaused[13] == '일시중지됨' or isPaused[13] == 'Suspended':
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = 'Failed to change status to pause'
 
         except Exception as e:
             result = FAIL
