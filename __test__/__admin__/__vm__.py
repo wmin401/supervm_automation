@@ -77,32 +77,32 @@ class admin_vm:
         # VM 생성 - 2
         time.sleep(5)
         self.create()
-        self.createWindows()
+        # self.createWindows()
 
-        # 가상 디스크 - 4
-        self.addVirtualDisk()
-        self.attachDisk()
-        # self.virtualDiskHotPlugging()
-        self.removeVirtualDisk()
+        # # 가상 디스크 - 4
+        # self.addVirtualDisk()
+        # self.attachDisk()
+        # # self.virtualDiskHotPlugging()
+        # self.removeVirtualDisk()
 
-        # 네트워크 인터페이스 - 4
-        self.addNetworkInterface()
-        self.updateNetworkInterface()
-        self.networkInterfaceHotPlugging()
-        self.deleteNetworkInterface()
+        # # 네트워크 인터페이스 - 4
+        # self.addNetworkInterface()
+        # self.updateNetworkInterface()
+        # self.networkInterfaceHotPlugging()
+        # self.deleteNetworkInterface()
 
-        # # # 업데이트 - 1
-        self.update()
+        # # # # 업데이트 - 1
+        # self.update()
 
-        # # 복사 - 1 
-        self.copy()
+        # # # 복사 - 1 
+        # self.copy()
 
         # 실행 - 1
         self.run()
 
         # 호스트 - 2
-        self.pinToMultipleHosts()
-        self.ViewingPinnedToHost()
+        # self.pinToMultipleHosts()
+        # self.ViewingPinnedToHost()
 
         # # 가상 메모리 - 2
         # self.virtualMemoryHotPlugging()
@@ -116,9 +116,9 @@ class admin_vm:
 
         # 종료 및 정지 - 4
         self.reboot()
-        self.pause()
-        self.shutdown()
-        self.remove()
+        # self.pause()
+        # self.shutdown()
+        # self.remove()
 
     def setup(self):
         # 컴퓨팅
@@ -601,6 +601,7 @@ class admin_vm:
 
         try:        
             self.setup()
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
 
             # 생성한 vm 클릭
             isRun = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
@@ -612,17 +613,20 @@ class admin_vm:
                 self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])        
                 self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
                 return
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
 
             # 선택
             self.webDriver.tableSearch(self._vmName, 2, True)
             # 재부팅 클릭
             self.webDriver.findElement('id','ActionPanelView_Reboot', True)
             time.sleep(1)
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
             # OK 클릭
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
             # 결과 확인
             result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 180)
 
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
         except Exception as e:
             result = FAIL
             printLog(str(e))
@@ -1531,15 +1535,18 @@ class admin_vm:
             # time.sleep(.5)
 
             # 추가 옵션 - CD 변경 클릭
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(2)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
             # Windows10.iso 선택
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
             selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
             time.sleep(2)
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
             try:
                 self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/button', True)
                 result = FAIL
@@ -1553,6 +1560,7 @@ class admin_vm:
             except:
                 pass                
             # 추가 옵션 - CD 변경 클릭
+            printLog(self.webDriver.getDriver().get_current_url, debug=True)
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(.5)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
