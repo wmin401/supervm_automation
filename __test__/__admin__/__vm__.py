@@ -112,10 +112,10 @@ class admin_vm:
         self.hotPluggingVCPU()
 
         # # cd변경 - 1
-        # self.changeCD()
+        self.changeCD()
 
         # 종료 및 정지 - 4
-        # self.reboot()
+        self.reboot()
         # self.pause()
         # self.shutdown()
         # self.remove()
@@ -601,7 +601,6 @@ class admin_vm:
 
         try:        
             self.setup()
-            printLog(self.webDriver.getDriver().current_url, debug=True)
 
             # 생성한 vm 클릭
             isRun = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
@@ -613,17 +612,18 @@ class admin_vm:
                 self._vmResult.append(['vm' + DELIM + 'shutdown' + DELIM + result + DELIM + msg])        
                 self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
                 return
-            printLog(self.webDriver.getDriver().current_url, debug=True)
 
-            # 선택
-            self.webDriver.tableSearch(self._vmName, 2, True)
+            # 가상머신 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 재부팅 클릭
             self.webDriver.findElement('id','ActionPanelView_Reboot', True)
             time.sleep(1)
-            printLog(self.webDriver.getDriver().current_url, debug=True)
             # OK 클릭
             self.webDriver.findElement('css_selector','#DefaultConfirmationPopupView_OnReboot > button', True)
             # 결과 확인
+        
+            self.setup()
+
             result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 180)
 
             printLog(self.webDriver.getDriver().current_url, debug=True)
@@ -1181,9 +1181,9 @@ class admin_vm:
 
         try:       
             self.setup()
-            # 가상머신 클릭
-            self.webDriver.tableSearch(self._vmName, 2, True)
-            printLog(1, debug=True)
+            # 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
+
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
@@ -1211,6 +1211,9 @@ class admin_vm:
             except:
                 pass
             printLog('OK double check', debug=True)
+
+
+            self.setup()
 
             ##############  
             # VM 이름 클릭
@@ -1315,8 +1318,8 @@ class admin_vm:
 
         try:       
             self.setup()
-            # 가상머신 클릭            
-            self.webDriver.tableSearch(self._vmName, 2, True)
+            # 가상머신 이름 클릭            
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
             time.sleep(3)
@@ -1338,6 +1341,8 @@ class admin_vm:
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
             time.sleep(5)
+
+            self.setup()
 
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
@@ -1519,8 +1524,8 @@ class admin_vm:
             self.setup()
             self._cdName = 'Windows10.iso'
 
-            # 생성한 vm 클릭
-            self.webDriver.tableSearch(self._vmName, 2, True)
+            # 생성한 vm 이름 클릭
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 꺼내기 생략
             # # 추가 옵션 - CD 변경 클릭
@@ -1533,23 +1538,17 @@ class admin_vm:
             # selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', '[꺼내기]')
             # self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
             # time.sleep(.5)
-
             # 추가 옵션 - CD 변경 클릭
 
-
-
-            printLog(self.webDriver.getDriver().current_url, debug=True)
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(2)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
-            printLog(self.webDriver.getDriver().current_url, debug=True)
             # Windows10.iso 선택
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button', True)
             selectDropdownMenu(self.webDriver, 'css_selector', '#VmChangeCDPopupWidget_isoImage > div > ul', self._cdName)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupView_OnChangeCD > button', True)
             time.sleep(2)
-            printLog(self.webDriver.getDriver().current_url, debug=True)
             try:
                 self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/button', True)
                 result = FAIL
@@ -1563,7 +1562,6 @@ class admin_vm:
             except:
                 pass                
             # 추가 옵션 - CD 변경 클릭
-            printLog(self.webDriver.getDriver().current_url, debug=True)
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(.5)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
