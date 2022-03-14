@@ -154,29 +154,33 @@ class SuperVM_driver:
 
         self.explicitlyWait(10, By.CSS_SELECTOR, 'tbody')
         table = self.driver.find_element_by_css_selector('tbody')
-        for tr in table.find_elements_by_tag_name("tr"):
-            self.explicitlyWait(10, By.TAG_NAME, 'td')
-            td = tr.find_elements_by_tag_name("td")
-            if name == td[nameIdx].text:
-                if returnValueList == True:
-                    tdLst = []
-                    for i in range(len(td)):
-                        try:
-                            tdLst.append(td[i].text)
-                        except:
-                            tdLst.append('')
-                    printLog('[TABLE SEARCH] TABLE : ' + str(tdLst))
-                    return tdLst
-                if rowClick == True:    
-                    printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
-                    time.sleep(1) 
-                    tr.click()
-                if nameClick == True:
-                    printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
-                    td[nameIdx].find_element_by_tag_name("a").click() 
-                    self.implicitlyWait(10)
-                    time.sleep(1)
-                return True
+        try:
+            for tr in table.find_elements_by_tag_name("tr"):
+                self.explicitlyWait(10, By.TAG_NAME, 'td')
+                td = tr.find_elements_by_tag_name("td")
+                if name == td[nameIdx].text:
+                    if returnValueList == True:
+                        tdLst = []
+                        for i in range(len(td)):
+                            try:
+                                tdLst.append(td[i].text)
+                            except:
+                                tdLst.append('')
+                        printLog('[TABLE SEARCH] TABLE : ' + str(tdLst))
+                        return tdLst
+                    if rowClick == True:    
+                        printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
+                        time.sleep(1) 
+                        tr.click()
+                    if nameClick == True:
+                        printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
+                        td[nameIdx].find_element_by_tag_name("a").click() 
+                        self.implicitlyWait(10)
+                        time.sleep(1)
+                    return True
+        except Exception as e:
+            printLog('[TABLE SEARCH] EXCEPTION : ' + str(e))
+            return False
 
         return False
 
