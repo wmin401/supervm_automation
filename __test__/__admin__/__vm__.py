@@ -1644,6 +1644,7 @@ class admin_vm:
 
             # 결과 확인
             isPaused = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            printLog(isPaused, debug=True)
             if isPaused[13] == '일시중지됨' or isPaused[13] == 'Suspended':
                 result = PASS
                 msg = ''
