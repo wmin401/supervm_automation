@@ -152,9 +152,9 @@ class SuperVM_driver:
         # returnValueList : True일 경우 해당하는 행을 리스트로 반환해줌
         time.sleep(2)
 
-        self.explicitlyWait(10, By.CSS_SELECTOR, 'tbody')
-        table = self.driver.find_element_by_css_selector('tbody')
         try:
+            self.explicitlyWait(10, By.CSS_SELECTOR, 'tbody')
+            table = self.driver.find_element_by_css_selector('tbody')
             for tr in table.find_elements_by_tag_name("tr"):
                 self.explicitlyWait(10, By.TAG_NAME, 'td')
                 td = tr.find_elements_by_tag_name("td")
