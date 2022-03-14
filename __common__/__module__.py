@@ -29,7 +29,7 @@ def printLog(text, debug=False, install=False):
         t = text
 
     if t is not None and debug == True:
-        t = '[DEBUG] ' + str(t)
+        t = '[DEBUG]' + str(t)
 
     if install == True:
         with open(INSTALL_LOG_FILE, 'a', encoding='utf-8') as logFile:
