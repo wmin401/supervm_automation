@@ -105,17 +105,17 @@ class admin_vm:
         # self.ViewingPinnedToHost()
 
         # # 가상 메모리 - 2
-        # self.virtualMemoryHotPlugging()
+        self.virtualMemoryHotPlugging()
         # # self.virtualMemoryHotUnplugging()
 
         # # vcpu - 1
-        # self.hotPluggingVCPU()
+        self.hotPluggingVCPU()
 
         # # cd변경 - 1
-        self.changeCD()
+        # self.changeCD()
 
         # 종료 및 정지 - 4
-        self.reboot()
+        # self.reboot()
         # self.pause()
         # self.shutdown()
         # self.remove()
@@ -1535,6 +1535,9 @@ class admin_vm:
             # time.sleep(.5)
 
             # 추가 옵션 - CD 변경 클릭
+
+
+
             printLog(self.webDriver.getDriver().current_url, debug=True)
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(2)
