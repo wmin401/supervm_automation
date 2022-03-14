@@ -101,8 +101,8 @@ class admin_vm:
         self.run()
 
         # 호스트 - 2
-        # self.pinToMultipleHosts()
-        # self.ViewingPinnedToHost()
+        self.pinToMultipleHosts()
+        self.ViewingPinnedToHost()
 
         # # 가상 메모리 - 2
         # self.virtualMemoryHotPlugging()
@@ -112,10 +112,10 @@ class admin_vm:
         # self.hotPluggingVCPU()
 
         # # cd변경 - 1
-        # self.changeCD()
+        self.changeCD()
 
         # 종료 및 정지 - 4
-        # self.reboot()
+        self.reboot()
         self.pause()
         self.shutdown()
         self.remove()
@@ -1593,7 +1593,7 @@ class admin_vm:
             # 일시중지 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Pause')
             self.webDriver.findElement('id','ActionPanelView_Pause', True)
-            printLog("[VM PAUSE] Wait until status is changed")    
+            printLog("[VM PAUSE] Wait until status will change")    
             time.sleep(90)
 
             self.setup()
