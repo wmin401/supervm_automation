@@ -77,48 +77,48 @@ class admin_vm:
         # VM 생성 - 2
         time.sleep(5)
         self.create()
-        # self.createWindows()
+        self.createWindows()
 
-        # # 가상 디스크 - 4
-        # self.addVirtualDisk()
-        # self.attachDisk()
-        # # self.virtualDiskHotPlugging()
-        # self.removeVirtualDisk()
+        # 가상 디스크 - 4
+        self.addVirtualDisk()
+        self.attachDisk()
+        # self.virtualDiskHotPlugging()
+        self.removeVirtualDisk()
 
-        # # 네트워크 인터페이스 - 4
-        # self.addNetworkInterface()
-        # self.updateNetworkInterface()
-        # self.networkInterfaceHotPlugging()
-        # self.deleteNetworkInterface()
+        # 네트워크 인터페이스 - 4
+        self.addNetworkInterface()
+        self.updateNetworkInterface()
+        self.networkInterfaceHotPlugging()
+        self.deleteNetworkInterface()
 
-        # # # # 업데이트 - 1
-        # self.update()
+        # # # 업데이트 - 1
+        self.update()
 
-        # # # 복사 - 1 
-        # self.copy()
+        # # 복사 - 1 
+        self.copy()
 
         # 실행 - 1
         self.run()
 
         # 호스트 - 2
-        # self.pinToMultipleHosts()
-        # self.ViewingPinnedToHost()
+        self.pinToMultipleHosts()
+        self.ViewingPinnedToHost()
 
-        # # 가상 메모리 - 2
+        # 가상 메모리 - 2
         self.virtualMemoryHotPlugging()
-        # # self.virtualMemoryHotUnplugging()
+        # self.virtualMemoryHotUnplugging()
 
-        # # vcpu - 1
+        # vcpu - 1
         self.hotPluggingVCPU()
 
-        # # cd변경 - 1
-        self.changeCD()
+        # cd변경 - 1
+        # self.changeCD()
 
         # 종료 및 정지 - 4
         self.reboot()
-        # self.pause()
-        # self.shutdown()
-        # self.remove()
+        self.pause()
+        self.shutdown()
+        self.remove()
 
     def setup(self):
         # 컴퓨팅
@@ -1607,15 +1607,26 @@ class admin_vm:
 
             self.setup()
 
-            # 결과 확인
-            isPaused = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-            printLog(isPaused, debug=True)
-            if isPaused[13] == '일시중지됨' or isPaused[13] == 'Suspended':
-                result = PASS
-                msg = ''
-            else:
-                result = FAIL
-                msg = 'Failed to change status to pause'
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['실행 중', 'Up', 'Down'],['일시중지됨', 'Suspended'])
+
+            # # 결과 확인
+            # st=time.time()
+            # while True:
+            #     time.sleep(1)
+            #     if time.time()-st > 120:
+            #         result = FAIL
+            #         msg = 'Timeout(120s)'
+            #         break
+            #     isPaused = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+            #     printLog(isPaused, debug=True)
+            #     if isPaused[13] == '일시중지됨' or isPaused[13] == 'Suspended':
+            #         result = PASS
+            #         msg = ''
+            #         break
+            #     else:
+            #         result = FAIL
+            #         msg = 'Failed to change status to pause'
+            #         continue
 
         except Exception as e:
             result = FAIL
