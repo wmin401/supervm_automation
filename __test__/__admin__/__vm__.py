@@ -1607,26 +1607,23 @@ class admin_vm:
 
             self.setup()
 
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['실행 중', 'Up', 'Down'],['일시중지됨', 'Suspended'])
+            # result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['실행 중', 'Up', 'Down'],['일시중지됨', 'Suspended'])
 
-            # # 결과 확인
-            # st=time.time()
-            # while True:
-            #     time.sleep(1)
-            #     if time.time()-st > 120:
-            #         result = FAIL
-            #         msg = 'Timeout(120s)'
-            #         break
-            #     isPaused = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
-            #     printLog(isPaused, debug=True)
-            #     if isPaused[13] == '일시중지됨' or isPaused[13] == 'Suspended':
-            #         result = PASS
-            #         msg = ''
-            #         break
-            #     else:
-            #         result = FAIL
-            #         msg = 'Failed to change status to pause'
-            #         continue
+            # 결과 확인
+            st=time.time()
+            while True:
+                time.sleep(1)
+                if time.time()-st > 120:
+                    result = FAIL
+                    msg = 'Timeout(120s)'
+                    printLog("[VM PAUSE] MESSAGE : " + msg)     
+                    break
+                isPaused = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
+                printLog(isPaused, debug=True)
+                if isPaused[13] == '일시중지됨' or isPaused[13] == 'Suspended':
+                    result = PASS
+                    msg = ''
+                    break
 
         except Exception as e:
             result = FAIL
