@@ -152,7 +152,7 @@ class SuperVM_driver:
         # returnValueList : True일 경우 해당하는 행을 리스트로 반환해줌
         time.sleep(2)
 
-        printLog(self.driver.current_url, debug=True)
+        printLog('[TABLE SEARCH] ' + str(self.driver.current_url), debug=True)
 
         try:
             self.explicitlyWait(10, By.CSS_SELECTOR, 'tbody')
@@ -173,7 +173,7 @@ class SuperVM_driver:
                     if rowClick == True:    
                         printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
                         time.sleep(1) 
-                        tr.click()
+                        tr.click() ## 여기서 자꾸 호스트를 클릭해버리네?
                     if nameClick == True:
                         printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
                         td[nameIdx].find_element_by_tag_name("a").click() 

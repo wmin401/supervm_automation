@@ -1638,12 +1638,13 @@ class admin_vm:
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             # 일시중지 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Pause')
             self.webDriver.findElement('id','ActionPanelView_Pause', True)
             printLog("[VM PAUSE] Wait until status is changed")    
             time.sleep(90)
 
             self.setup()
-            
+
             # 결과 확인
             isPaused = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
             printLog(isPaused, debug=True)
