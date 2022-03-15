@@ -82,7 +82,7 @@ class admin_vm:
         # # 가상 디스크 - 4
         self.addVirtualDisk()
         self.attachDisk()
-        self.virtualDiskHotPlugging()
+        # self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
         # # 네트워크 인터페이스 - 4
