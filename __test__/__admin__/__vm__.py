@@ -1094,7 +1094,8 @@ class admin_vm:
 
             self.webDriver.tableSearch(self._unAttachedDiskName, 0, rowClick = False, nameClick = True)
             time.sleep(3)
-
+            printLog(self.webDriver.getDriver().current_url, debug=True)
+            
             try:
                 self.webDriver.findElement('link_text', '가상 머신', True)
             except:
