@@ -74,18 +74,18 @@ class admin_vm:
         time.sleep(1)
 
     def test(self):
-        # VM 생성 - 2
+        # # VM 생성 - 2
         time.sleep(5)
         self.create()
         self.createWindows()
 
-        # 가상 디스크 - 4
+        # # 가상 디스크 - 4
         self.addVirtualDisk()
         self.attachDisk()
         self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
-        # 네트워크 인터페이스 - 4
+        # # 네트워크 인터페이스 - 4
         self.addNetworkInterface()
         self.updateNetworkInterface()
         self.networkInterfaceHotPlugging()
@@ -97,24 +97,24 @@ class admin_vm:
         # # 복사 - 1 
         self.copy()
 
-        # 실행 - 1
+        # # 실행 - 1
         self.run()
 
-        # 호스트 - 2
+        # # 호스트 - 2
         self.pinToMultipleHosts()
         self.ViewingPinnedToHost()
 
-        # 가상 메모리 - 2
+        # # 가상 메모리 - 2
         self.virtualMemoryHotPlugging()
         # self.virtualMemoryHotUnplugging()
 
-        # vcpu - 1
+        # # vcpu - 1
         self.hotPluggingVCPU()
 
-        # cd변경 - 1
-        # self.changeCD()
+        # # cd변경 - 1
+        self.changeCD()
 
-        # 종료 및 정지 - 4
+        # # 종료 및 정지 - 4
         self.reboot()
         self.pause()
         self.shutdown()
@@ -1538,7 +1538,7 @@ class admin_vm:
             # time.sleep(.5)
             # 추가 옵션 - CD 변경 클릭
 
-            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(2)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_ChangeCD')
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
