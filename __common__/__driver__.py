@@ -175,7 +175,8 @@ class SuperVM_driver:
                         time.sleep(1) 
                         tr.click() ## 여기서 자꾸 호스트를 클릭해버리네?
                     if nameClick == True:
-                        printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
+                        printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))    
+                        printLog('[TABLE SEARCH] NAMECLICk : ' + str(self.driver.current_url), debug=True) 
                         td[nameIdx].find_element_by_tag_name("a").click() 
                         self.implicitlyWait(10)
                         time.sleep(1)
