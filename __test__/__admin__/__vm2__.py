@@ -527,6 +527,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
             # 생성한 VM 이름 클릭
             self.webDriver.tableSearch(self._vm2Name, 2, False, True)
+            printLog(self.webDriver.getDriver().current_url, debug=True)
 
             # 스냅샷 클릭
             self.webDriver.explicitlyWait(10, By.LINK_TEXT, '스냅샷')
@@ -536,6 +537,7 @@ class admin_vm2(admin_vm): # 상속
             # 생성된 스냅샷 선택
             ul = self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[2]/div/div[2]/div/div[2]/div/ul')
             lis = ul.find_elements_by_tag_name('li')
+            printLog(self.webDriver.getDriver().current_url, debug=True)
             isClicked = False
             for li in lis:
                 try:
@@ -549,9 +551,11 @@ class admin_vm2(admin_vm): # 상속
             if isClicked == False:
                 result = FAIL
                 msg = 'Failed to remove snapshot(Not found)'
+            printLog(self.webDriver.getDriver().current_url, debug=True)
 
             # 복제 클릭
             self.webDriver.findElement('id', 'DetailActionPanelView_CloneVM', True)
+            printLog(self.webDriver.getDriver().current_url, debug=True)
 
             # 이름 입력 후 생성
             self.webDriver.explicitlyWait(10, By.ID, 'VmClonePopupWidget_name')
@@ -559,6 +563,7 @@ class admin_vm2(admin_vm): # 상속
             self.webDriver.sendKeys('VM_from_%s'%self._snapshotName)
             # OK 클릭
             self.webDriver.findElement('id', 'VmClonePopupView_OnCloneVM', True)
+            printLog(self.webDriver.getDriver().current_url, debug=True)
             
             # 컴퓨팅 - 가상머신
             self.setup()
