@@ -82,7 +82,7 @@ class admin_vm:
         # 가상 디스크 - 4
         self.addVirtualDisk()
         self.attachDisk()
-        # self.virtualDiskHotPlugging()
+        self.virtualDiskHotPlugging()
         self.removeVirtualDisk()
 
         # 네트워크 인터페이스 - 4
@@ -1096,13 +1096,11 @@ class admin_vm:
             time.sleep(3)
 
             try:
-                printLog(5, debug=True)
                 self.webDriver.findElement('link_text', '가상 머신', True)
             except:
                 self.webDriver.findElement('link_text', 'Virtual Machines', True)
             time.sleep(2)
 
-            printLog(5, debug=True)
             result, msg = self.webDriver.isChangedStatus(self._vmName, 1, 9, ['Up'], ['Down'])
 
         except Exception as e:
