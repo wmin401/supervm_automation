@@ -1566,6 +1566,7 @@ class admin_vm:
             self.webDriver.findElement('id', 'ActionPanelView_ChangeCD', True)
             self.webDriver.findElement('css_selector', '#VmChangeCDPopupWidget_isoImage > div > button')
             cd = self.webDriver.getAttribute('textContent')
+            printLog("[VM CHANGE CD] CD NAME : " + str(cd))
             if cd == self._cdName:
                 result = PASS
                 msg = ''
