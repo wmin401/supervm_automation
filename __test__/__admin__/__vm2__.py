@@ -515,8 +515,8 @@ class admin_vm2(admin_vm): # 상속
 
         # 테스트 이후 되돌리기 클릭
         self.webDriver.findElement('id', 'DetailActionPanelView_Undo', True)
-        printLog("[VM SNAPSHOT RESTORE VM] Going back to before restore...")
-        time.sleep(60)
+        printLog("[VM SNAPSHOT RESTORE VM] Go back before restore...")
+        time.sleep(90)
 
     def vmCreateInSnapshot(self):        
         printLog(printSquare('Create VM in snapshot'))
