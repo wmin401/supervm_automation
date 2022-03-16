@@ -45,11 +45,11 @@ def main():
     portalLogin(webDriver)
     
     tl.junitBuilder('LOGIN', PASS, '')    
-    time.sleep(3) 
-    printLog(printSquare("4. Access Portal"))
 
+    printLog(printSquare("4. Access Portal"))
     if ADMIN_TEST == 'true':       
         accessAdminPortal(webDriver) 
+        time.sleep(3) 
         webDriver.trunOffAlert()        
 
         if CLUSTER_TEST == 'true':        
