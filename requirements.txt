@@ -1,2 +1,3 @@
 selenium
 pypiwin32
+pywinauto
