@@ -16,8 +16,8 @@ class admin_disk:
         self.webDriver = webDriver
         self.tl = testlink()
 
-        self.isoFilePath = 'C:\\Users\\Lee\\Desktop'
-        self.isoFileName = 'ProLinux-8.4.9.iso'
+        self.isoFilePath = 'C:\\Users\\jaewon\\Desktop\\ISO\\PL-release'
+        self.isoFileName = 'ProLinux-8.1.2-minimal.iso'
 
     def test(self):
         #self.create()
