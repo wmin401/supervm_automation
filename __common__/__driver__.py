@@ -173,13 +173,14 @@ class SuperVM_driver:
                     if rowClick == True:    
                         printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))     
                         time.sleep(1) 
-                        tr.click() ## 여기서 자꾸 호스트를 클릭해버리네?
+                        # tr.click() ## 여기서 자꾸 호스트를 클릭해버리네?
+                        td[nameIdx].click()
                     if nameClick == True:
                         printLog('[TABLE SEARCH] Search : ' + str(td[nameIdx].text))    
-                        printLog('[TABLE SEARCH] NAMECLICk : ' + str(self.driver.current_url), debug=True) 
                         td[nameIdx].find_element_by_tag_name("a").click() 
                         self.implicitlyWait(10)
                         time.sleep(1)
+                        printLog('[TABLE SEARCH] NAMECLICk : ' + str(self.driver.current_url), debug=True) 
                     return True
         except Exception as e:
             printLog('[TABLE SEARCH] EXCEPTION : ' + str(e))
