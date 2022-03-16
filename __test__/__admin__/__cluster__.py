@@ -19,6 +19,7 @@ class admin_cluster:
         self.webDriver = webDriver
 
         self.tl = testlink()
+        self.ver = '4.6'
             
     def test(self):
         self.create()
@@ -27,8 +28,8 @@ class admin_cluster:
         time.sleep(0.3)
         self.CPUProfileRemove()
         time.sleep(0.3)
-        # self.changeVersion()
-        # time.sleep(0.3)
+        self.changeVersion()
+        time.sleep(0.3)
         self.scheduling()
         time.sleep(0.3)
         self.MoMUpdate()
@@ -178,22 +179,25 @@ class admin_cluster:
         printLog(printSquare("Change Cluster Compatibility Version"))
         try:
             self.setup() # 컴퓨팅 - 클러스터
-            time.sleep(0.3)   
+            time.sleep(1.5)   
             # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.tableSearch(self._clusterName, 1, True, False)            
-            # 우측 편집 버튼 클릭
-            self.webDriver.implicitlyWait(10)            
+            self.webDriver.tableSearch(self._clusterName, 1, False, True)            
+            # 우측 편집 버튼 클릭      
+            time.sleep(1)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
             self.webDriver.findElement('id','ActionPanelView_Edit', True)
-            # 호환 버전 클릭 / 4.4 -> 4.5
+            
+            # 호환 버전 클릭 / 4.6 밖에 없기 때문에 실패함
+            self.webDriver.findElement('css_selector','#ClusterPopupView_versionEditor > div > button', True)            
+            lis = self.webDriver.findElement('css_selector_all', '#ClusterPopupView_versionEditor > div > ul > li')
+            for li in lis:
+                if self.ver == li.text:
+                    printLog("[SELECT DROPDOWN MENU] Select %s"%(str(li.text)))
+                    li.click()
+                    break
             time.sleep(1)
-            self.webDriver.explicitlyWait(30, By.ID, 'ClusterPopupView_versionEditor')
-            self.webDriver.findElement('id','ClusterPopupView_versionEditor',True)
-            self.webDriver.findElement('css_selector_all','#ClusterPopupView_versionEditor > div > ul > li')[1].click()
-            #ClusterPopupView_versionEditor > div > ul > li:nth-child(2)
+
             # OK 버튼 클릭
-            self.webDriver.implicitlyWait(10)
             self.webDriver.explicitlyWait(10, By.ID, 'ClusterPopupView_OnSave')
             self.webDriver.findElement('id','ClusterPopupView_OnSave',True)
             # Confirm OK 버튼 클릭
@@ -211,10 +215,10 @@ class admin_cluster:
             printLog("[CLUSTER CHANGE VERSION] MESSAGE : " + msg)        
             # 저장 불가능시
             time.sleep(0.3)
-            self.webDriver.findElement('css_selector', 'body > div:nth-child(10) > div > div > div > div.modal-footer.wizard-pf-footer.footerPosition > div.GHYIDY4CMOB > button', True)
+            self.webDriver.findElement('xpath', '/html/body/div[7]/div/div/div/div[3]/div[1]/button', True)
             # 취소 클릭
             time.sleep(0.3)
-            self.webDriver.findElement('id','ClusterPopupView_Cancel',True)
+            self.webDriver.findElement('css_selector','#ClusterPopupView_Cancel > button',True)
 
 
         printLog("[CLUSTER CHANGE VERSION] RESULT : " + result)
