@@ -44,123 +44,121 @@ def main():
     printLog(printSquare('3. Login'))
     portalLogin(webDriver)
     
-    tl.junitBuilder('LOGIN', PASS, '')
-
+    tl.junitBuilder('LOGIN', PASS, '')    
+    time.sleep(3) 
     printLog(printSquare("4. Access Portal"))
-    accessAdminPortal(webDriver)
-    time.sleep(3)
+
+    if ADMIN_TEST == 'true':       
+        accessAdminPortal(webDriver) 
+        webDriver.trunOffAlert()        
+
+        if CLUSTER_TEST == 'true':        
+            printLine()
+            printLog(printSquare("*** Cluster Test ***"))
+            _cluster = admin_cluster(webDriver)
+            _cluster.test()      
+
+            _totalResult = saveResult(_cluster._clusterResult, _totalResult)     
+            time.sleep(1)   
+            
+        if DATA_CENTER_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** Data Center Test ***"))
+            _data_center = admin_data_center(webDriver)
+            _data_center.test()
+                
+            _totalResult = saveResult(_data_center._data_centerResult, _totalResult)   
+            time.sleep(1)     
+
+        if DISK_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** Disk Test ***"))
+            _disk = admin_disk(webDriver)
+            _disk.test()
+                
+            _totalResult = saveResult(_disk._diskResult, _totalResult)
+            time.sleep(1)
         
-    printLog(printSquare("5. Start Test"))
-
-    webDriver.trunOffAlert()
-    
-    if CLUSTER_TEST == 'true':        
-        printLine()
-        printLog(printSquare("*** Cluster Test ***"))
-        _cluster = admin_cluster(webDriver)
-        _cluster.test()      
-
-        _totalResult = saveResult(_cluster._clusterResult, _totalResult)     
-        time.sleep(1)   
+        if HOST_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** Host Test ***"))
+            _host = admin_host(webDriver)
+            _host.test()
+                
+            _totalResult = saveResult(_host._hostResult, _totalResult)   
+            time.sleep(1)         
+            
+        if DOMAIN_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** Domain Test ***"))
+            _domain = admin_domain(webDriver)
+            _domain.test()
+                
+            _totalResult = saveResult(_domain._domainResult, _totalResult)
+            time.sleep(1)        
+                
+        if QOS_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** QoS Test ***"))
+            _qos = admin_qos(webDriver)
+            _qos.test()
+                
+            _totalResult = saveResult(_qos._qosResult, _totalResult)
+            time.sleep(1)
         
-    if DATA_CENTER_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** Data Center Test ***"))
-        _data_center = admin_data_center(webDriver)
-        _data_center.test()
+        if TEMPLATE_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** Template Test ***"))
+            _template = admin_template(webDriver)
+            _template.test()
             
-        _totalResult = saveResult(_data_center._data_centerResult, _totalResult)   
-        time.sleep(1)     
+            _totalResult = saveResult(_template._templateResult, _totalResult)
+            time.sleep(1)
+            
+        if VM_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** VM 1 Test ***"))
+            _vm = admin_vm(webDriver)
+            _vm.test()
 
-    if DISK_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** Disk Test ***"))
-        _disk = admin_disk(webDriver)
-        _disk.test()
-            
-        _totalResult = saveResult(_disk._diskResult, _totalResult)
-        time.sleep(1)
-    
-    if HOST_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** Host Test ***"))
-        _host = admin_host(webDriver)
-        _host.test()
-            
-        _totalResult = saveResult(_host._hostResult, _totalResult)   
-        time.sleep(1)         
-        
-    if DOMAIN_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** Domain Test ***"))
-        _domain = admin_domain(webDriver)
-        _domain.test()
-            
-        _totalResult = saveResult(_domain._domainResult, _totalResult)
-        time.sleep(1)        
-            
-    if QOS_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** QoS Test ***"))
-        _qos = admin_qos(webDriver)
-        _qos.test()
-            
-        _totalResult = saveResult(_qos._qosResult, _totalResult)
-        time.sleep(1)
-    
-    if TEMPLATE_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** Template Test ***"))
-        _template = admin_template(webDriver)
-        _template.test()
-        
-        _totalResult = saveResult(_template._templateResult, _totalResult)
-        time.sleep(1)
-        
-    if VM_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** VM 1 Test ***"))
-        _vm = admin_vm(webDriver)
-        _vm.test()
+            _totalResult = saveResult(_vm._vmResult, _totalResult)
+            time.sleep(1)
 
-        _totalResult = saveResult(_vm._vmResult, _totalResult)
-        time.sleep(1)
+        if VM2_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** VM 2 Test ***"))
+            _vm2 = admin_vm2(webDriver)
+            _vm2.test()
+                
+            _totalResult = saveResult(_vm2._vm2Result, _totalResult)
+            time.sleep(1)
 
-    if VM2_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** VM 2 Test ***"))
-        _vm2 = admin_vm2(webDriver)
-        _vm2.test()
+        if POOLS_TEST == 'true':
+            printLine()
+            printLog("*** POOLS Test ***")
+            _pools = admin_pools(webDriver)
+            _pools.test()
+
+            _totalResult = saveResult(_pools._poolsResult, _totalResult)
+            time.sleep(1)
+
+        if EXTERNAL_PROVIDER_TEST == 'true':
+            printLine()
+            printLog("*** External Provider Test ***")
+            _externalProvider = admin_external_provider(webDriver)
+            _externalProvider.test()
+
+            _totalResult = saveResult(_externalProvider._externalProviderResult, _totalResult)
+            time.sleep(1)
             
-        _totalResult = saveResult(_vm2._vm2Result, _totalResult)
-        time.sleep(1)
-
-    if POOLS_TEST == 'true':
-        printLine()
-        printLog("*** POOLS Test ***")
-        _pools = admin_pools(webDriver)
-        _pools.test()
-
-        _totalResult = saveResult(_pools._poolsResult, _totalResult)
-        time.sleep(1)
-
-    if EXTERNAL_PROVIDER_TEST == 'true':
-        printLine()
-        printLog("*** External Provider Test ***")
-        _externalProvider = admin_external_provider(webDriver)
-        _externalProvider.test()
-
-        _totalResult = saveResult(_externalProvider._externalProviderResult, _totalResult)
-        time.sleep(1)
-        
-    if QUOTA_TEST == 'true':
-        printLine()
-        printLog(printSquare("*** Quota Test ***"))
-        _quota = admin_quota(webDriver)
-        _quota.test()
-            
-        _totalResult = saveResult(_quota._quotaResult, _totalResult)
-        time.sleep(1)
+        if QUOTA_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** Quota Test ***"))
+            _quota = admin_quota(webDriver)
+            _quota.test()
+                
+            _totalResult = saveResult(_quota._quotaResult, _totalResult)
+            time.sleep(1)
 
     if VM_PORTAL_TEST == 'true':
         webDriver.openURL('https://' + ENGINE_VM_FQDN + '/ovirt-engine')
