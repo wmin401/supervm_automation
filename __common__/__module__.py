@@ -88,6 +88,7 @@ def selectDropdownMenu(webDriver, type_, ulTagPath, name):
 
     for li in lis:
         if name == li.get_attribute('textContent'):
+            printLog("[SELECT DROPDOWN MENU] Select %s"%(str(li.get_attribute('textContent'))))
             li.click()
             break
     time.sleep(1)
