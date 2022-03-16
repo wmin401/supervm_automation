@@ -388,7 +388,7 @@ class install():
 
 def main():
 
-    initResult()
+    initResult(csvSave=False)
 
     if INSTALL_SUPERVM == 'true':
         install_time = time.time()

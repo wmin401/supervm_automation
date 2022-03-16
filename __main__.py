@@ -12,7 +12,7 @@ def saveResult(res, lst):
 def main():
 
     # 테스트 초기 세팅
-    initResult()
+    initResult(csvSave=True)
     _totalResult = []
     tl = testlink() # 젠킨스 오류 방지용 샘플파일 생성하기 위해
     
