@@ -16,8 +16,8 @@ class admin_disk:
         self.webDriver = webDriver
         self.tl = testlink()
 
-        self.isoFilePath = 'D:\iso_files'
-        self.isoFileName = 'ProLinux-8.2_4.18.0-193.el8.x86_64.iso'
+        self.isoFilePath = 'C:\\Users\\Lee\\Desktop'
+        self.isoFileName = 'ProLinux-8.4.9.iso'
 
     def test(self):
         #self.create()
@@ -46,14 +46,16 @@ class admin_disk:
         self.webDriver.findElement('css_selector','#ActionPanelView____ > button',True)            
         self.webDriver.findElement('css_selector','#ActionPanelView____ > ul > li:nth-child(1) > a',True)
 
-        self.webDriver.explicitlyWait(10, By.ID, 'UploadImagePopupView_fileUploadButton')
-        self.webDriver.findElement('id','UploadImagePopupView_fileUploadButton',True)
+        # 파일 선택 클릭
+        # self.webDriver.explicitlyWait(10, By.ID, 'UploadImagePopupView_fileUploadButton')
+        # self.webDriver.findElement('id','UploadImagePopupView_fileUploadButton',True)
 
         time.sleep(2)
 
-        # 파일 다이얼로그 추가
-        openFileDialog(title_='열기', filePath = self.isoFilePath, fileName = self.isoFileName)
-        time.sleep(2)
+
+        self.webDriver.findElement('id', 'UploadImagePopupView_fileUpload')
+        self.webDriver.sendKeys(self.isoFilePath + '\\' + self.isoFileName)
+        time.sleep(1)
 
         self.webDriver.findElement('css_selector', '#UploadImagePopupView_Ok > button', True)
 
