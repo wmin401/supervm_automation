@@ -368,11 +368,11 @@ class admin_cluster:
         try:               
             self.setup() # 컴퓨팅 - 클러스터
             time.sleep(0.5)
-            # table 내부에 생성한 클러스터의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._clusterName, 1, True)
+            # table 내부에 생성한 클러스터의 이름이 있을 경우 클러스터의 이름 클릭
+            self.webDriver.tableSearch(self._clusterName, 1, False, True)
             # 우측 추가 옵션 버튼 클릭
             self.webDriver.implicitlyWait(10)            
-            self.webDriver.findElement('css_selector','.btn-group:nth-child(4) .fa', True)
+            self.webDriver.findElement('xpath','./html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div/button', True)
             time.sleep(0.3)
             # 삭제 버튼 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
@@ -382,6 +382,9 @@ class admin_cluster:
             self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnRemove')
             self.webDriver.findElement('id','RemoveConfirmationPopupView_OnRemove',True)     
             time.sleep(2)       
+
+            self.setup()
+            
             # table 내부 전부 검색해서 입력한 이름이 있을경우 FAIL
             try:
                 removeCheck = self.webDriver.tableSearch(self._clusterName, 1, False, False, True)
