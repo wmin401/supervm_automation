@@ -68,7 +68,7 @@ class admin_host:
         ssh_.activate()    
         # 레포지토리 파일 생성
         o, e = ssh_.commandExec('ls /etc/yum.repos.d/ |grep hypervm.repo')
-        if 'hypervm.repo' in o[0]:
+        if o != [] and 'hypervm.repo' in o[0]:
             pass
         else:
             ssh_.commandExec('touch /etc/yum.repos.d/hypervm.repo')
