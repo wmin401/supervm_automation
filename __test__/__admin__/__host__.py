@@ -46,14 +46,9 @@ class admin_host:
 
         printLog("If you want to test host, you have to install packages before test")
         printLog("1. Install ProLinux 8.3")
-        printLog("2. Add IP in /etc/hosts")
-        printLog("3. Create hypervm repository")
-        printLog("4. Disable virt module")
-        printLog("5. Enable pki-deps postgresql:12 parfait modules")
-        printLog("6. Install ovirt-hosted-engine-setup")
-
 
         # 새로 생성한 hosts에 추가
+        printLog("2. Add IP in /etc/hosts")
         self.addHost(self._hostIP, 'root', 'asdf', self._hostIP, self._hostName)
         self.addHost(self._hostIP, 'root', 'asdf', ENGINE_VM_IP, ENGINE_VM_FQDN)
 
@@ -66,6 +61,7 @@ class admin_host:
         ## 패키지 설치
         ssh_ = ssh_connection(self._hostIP, 22, self._hostID, self._hostPW)
         ssh_.activate()    
+        printLog("3. Create hypervm repository")
         # 레포지토리 파일 생성
         o, e = ssh_.commandExec('ls /etc/yum.repos.d/ |grep hypervm.repo')
         if o != [] and 'hypervm.repo' in o[0]:
@@ -77,8 +73,11 @@ class admin_host:
             ssh_.commandExec('echo "baseurl=http://172.21.7.2/supervm/22.0.0-rc2/prolinux/8/arch/x86_64/" >> /etc/yum.repos.d/hypervm.repo')
             ssh_.commandExec('echo "gpgcheck=0" >> /etc/yum.repos.d/hypervm.repo')
         # 설치
+        printLog("4. Disable virt module")
         o, e = ssh_.commandExec('sudo dnf module disable virt -y')
+        printLog("5. Enable pki-deps postgresql:12 parfait modules")
         o, e = ssh_.commandExec('sudo dnf module enable pki-deps postgresql:12 parfait -y')
+        printLog("6. Install ovirt-hosted-engine-setup")
         o, e = ssh_.commandExec('dnf install -y ovirt-hosted-engine-setup cockpit', 180)
         o, e = ssh_.commandExec('systemctl enable --now cockpit.socket', 180)
         ssh_.deactivate()
