@@ -11,8 +11,8 @@ class admin_host:
     def __init__(self, webDriver):
         printLog("* 호스트 테스트 시작")
         self._hostResult = []
-        self._hostName = 'hypervm171.tmax.dom'
-        self._hostIP = '192.168.17.171'
+        self._hostName = 'hypervm170.tmax.dom'
+        self._hostIP = '192.168.17.170'
         self._hostID = 'root'
         self._hostPW = 'asdf'
         self.webDriver = webDriver
@@ -46,14 +46,9 @@ class admin_host:
 
         printLog("If you want to test host, you have to install packages before test")
         printLog("1. Install ProLinux 8.3")
-        printLog("2. Add IP in /etc/hosts")
-        printLog("3. Create hypervm repository")
-        printLog("4. Disable virt module")
-        printLog("5. Enable pki-deps postgresql:12 parfait modules")
-        printLog("6. Install ovirt-hosted-engine-setup")
-
 
         # 새로 생성한 hosts에 추가
+        printLog("2. Add IP in /etc/hosts")
         self.addHost(self._hostIP, 'root', 'asdf', self._hostIP, self._hostName)
         self.addHost(self._hostIP, 'root', 'asdf', ENGINE_VM_IP, ENGINE_VM_FQDN)
 
@@ -66,9 +61,10 @@ class admin_host:
         ## 패키지 설치
         ssh_ = ssh_connection(self._hostIP, 22, self._hostID, self._hostPW)
         ssh_.activate()    
+        printLog("3. Create hypervm repository")
         # 레포지토리 파일 생성
         o, e = ssh_.commandExec('ls /etc/yum.repos.d/ |grep hypervm.repo')
-        if 'hypervm.repo' in o[0]:
+        if o != [] and 'hypervm.repo' in o[0]:
             pass
         else:
             ssh_.commandExec('touch /etc/yum.repos.d/hypervm.repo')
@@ -77,8 +73,11 @@ class admin_host:
             ssh_.commandExec('echo "baseurl=http://172.21.7.2/supervm/22.0.0-rc2/prolinux/8/arch/x86_64/" >> /etc/yum.repos.d/hypervm.repo')
             ssh_.commandExec('echo "gpgcheck=0" >> /etc/yum.repos.d/hypervm.repo')
         # 설치
+        printLog("4. Disable virt module")
         o, e = ssh_.commandExec('sudo dnf module disable virt -y')
+        printLog("5. Enable pki-deps postgresql:12 parfait modules")
         o, e = ssh_.commandExec('sudo dnf module enable pki-deps postgresql:12 parfait -y')
+        printLog("6. Install ovirt-hosted-engine-setup")
         o, e = ssh_.commandExec('dnf install -y ovirt-hosted-engine-setup cockpit', 180)
         o, e = ssh_.commandExec('systemctl enable --now cockpit.socket', 180)
         ssh_.deactivate()
@@ -171,14 +170,14 @@ class admin_host:
         try:
             self.setup()
 
-            # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            # 생성한 호스트의 이름 클릭
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
             # 편집 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
             self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
             time.sleep(2)
 
-            # 호스트 엔진 선택
+            # SPM 선택
             lis = self.webDriver.findElement('css_selector_all', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
             for li in lis:
                 if 'SPM' == li.get_attribute('textContent'):
@@ -197,12 +196,13 @@ class admin_host:
             time.sleep(2)
 
             # 호스트 이름 클릭
-            self.webDriver.tableSearch(self._hostName, 2, False, True)
-            time.sleep(2)
+            # self.webDriver.tableSearch(self._hostName, 2, False, True)
+            # time.sleep(2)
 
             self.webDriver.explicitlyWait(10, By.ID, 'HostGeneralSubTabView_generalFormPanel_col0_row1_value')
             self.webDriver.findElement('id', 'HostGeneralSubTabView_generalFormPanel_col0_row1_value')
             spmPriority = self.webDriver.getAttribute('textContent')
+            printLog("[HOST CONFIGURE SPM] SPM : %s"%str(spmPriority))
 
             if spmPriority == '높음':
                 result = PASS
@@ -210,6 +210,7 @@ class admin_host:
             else:
                 result = FAIL
                 msg = 'Faild to change SPM priority...'
+                printLog("[HOST CONFIGURE SPM] MESSAGE : " + msg)
 
         except Exception as e:
             result = FAIL
@@ -228,7 +229,7 @@ class admin_host:
             self.setup()
             # 생성한 호스트 클릭
             time.sleep(1)
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
 
             # 관리
             self.webDriver.findElement('css_selector', '#ActionPanelView___ > button', True)
@@ -236,6 +237,8 @@ class admin_host:
             time.sleep(1)
             self.webDriver.findElement('css_selector', '#HostMaintenanceConfirmationPopupView_OnMaintenance > button', True)
             time.sleep(1)
+
+            self.setup()
 
             result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Up', 'Down', 'PreparingForMaintenance', 'Unassigned'], ['Maintenance'], 300)
 
@@ -256,7 +259,7 @@ class admin_host:
         try:
             self.setup()
             # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
 
             # 관리
             self.webDriver.findElement('css_selector', '#ActionPanelView___ > button', True)
@@ -267,6 +270,8 @@ class admin_host:
             except:
                 pass
             time.sleep(1)
+
+            self.setup()
 
             result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Unassigned', 'Maintenance', 'Down'], ['Up'], 600)
 
@@ -286,7 +291,8 @@ class admin_host:
         try:
             self.setup()
             # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
+            time.sleep(2)
 
             # 관리
             installBtn = self.webDriver.findElement('css_selector_all', '#ActionPanelView___')[1]
@@ -309,6 +315,8 @@ class admin_host:
             except:
                 pass
             time.sleep(10)
+
+            self.setup()
 
             result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Maintenance', 'Down', 'Reboot'], ['Up'], 1200)
 
@@ -363,7 +371,7 @@ class admin_host:
         try:
             self.setup()
             # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, rowClick = True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
             time.sleep(1)
             # 편집 클릭
             self.webDriver.findElement('id', 'ActionPanelView_Edit', True)

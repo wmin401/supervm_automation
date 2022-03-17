@@ -88,14 +88,7 @@ def selectDropdownMenu(webDriver, type_, ulTagPath, name):
 
     for li in lis:
         if name == li.get_attribute('textContent'):
+            printLog("[SELECT DROPDOWN MENU] Select %s"%(str(li.get_attribute('textContent'))))
             li.click()
             break
     time.sleep(1)
-
-
-import pywinauto
-def openFileDialog(title_, filePath, fileName):
-    app = pywinauto.Application().connect(title=title_)
-    dialog = app.top_window()
-    dialog.Edit.type_keys(filePath + '\\' + fileName)
-    dialog['&OpenButton'].click()      

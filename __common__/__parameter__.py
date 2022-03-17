@@ -32,6 +32,7 @@ if IN_JENKINS == 'true':
     USER_ID = os.getenv('USER_ID')
     USER_PW = os.getenv('USER_PW')
 
+    ADMIN_TEST = os.getenv('ADMIN_TEST')
     CLUSTER_TEST = os.getenv('CLUSTER_TEST')
     DATA_CENTER_TEST = os.getenv('DATA_CENTER_TEST')
     DISK_TEST = os.getenv('DISK_TEST')
@@ -92,6 +93,9 @@ else: # 로컬
     G_USER_PW = 'asdf'
 
     # 테스트 실행여부
+
+    ADMIN_TEST = 'true' ## admin test 할때는 체크
+
     CLUSTER_TEST = 'false'
     DATA_CENTER_TEST = 'false'
     DISK_TEST = 'false'
