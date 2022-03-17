@@ -170,14 +170,14 @@ class admin_host:
         try:
             self.setup()
 
-            # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            # 생성한 호스트의 이름 클릭
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
             # 편집 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Edit')
             self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
             time.sleep(2)
 
-            # 호스트 엔진 선택
+            # SPM 선택
             lis = self.webDriver.findElement('css_selector_all', 'body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.wizard-pf-sidebar.dialog_noOverflow > ul > li')
             for li in lis:
                 if 'SPM' == li.get_attribute('textContent'):
@@ -196,12 +196,13 @@ class admin_host:
             time.sleep(2)
 
             # 호스트 이름 클릭
-            self.webDriver.tableSearch(self._hostName, 2, False, True)
-            time.sleep(2)
+            # self.webDriver.tableSearch(self._hostName, 2, False, True)
+            # time.sleep(2)
 
             self.webDriver.explicitlyWait(10, By.ID, 'HostGeneralSubTabView_generalFormPanel_col0_row1_value')
             self.webDriver.findElement('id', 'HostGeneralSubTabView_generalFormPanel_col0_row1_value')
             spmPriority = self.webDriver.getAttribute('textContent')
+            printLog("[HOST CONFIGURE SPM] SPM : %s"%str(spmPriority))
 
             if spmPriority == '높음':
                 result = PASS
@@ -209,6 +210,7 @@ class admin_host:
             else:
                 result = FAIL
                 msg = 'Faild to change SPM priority...'
+                printLog("[HOST CONFIGURE SPM] MESSAGE : " + msg)
 
         except Exception as e:
             result = FAIL
@@ -227,7 +229,7 @@ class admin_host:
             self.setup()
             # 생성한 호스트 클릭
             time.sleep(1)
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
 
             # 관리
             self.webDriver.findElement('css_selector', '#ActionPanelView___ > button', True)
@@ -235,6 +237,8 @@ class admin_host:
             time.sleep(1)
             self.webDriver.findElement('css_selector', '#HostMaintenanceConfirmationPopupView_OnMaintenance > button', True)
             time.sleep(1)
+
+            self.setup()
 
             result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Up', 'Down', 'PreparingForMaintenance', 'Unassigned'], ['Maintenance'], 300)
 
@@ -255,7 +259,7 @@ class admin_host:
         try:
             self.setup()
             # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
 
             # 관리
             self.webDriver.findElement('css_selector', '#ActionPanelView___ > button', True)
@@ -266,6 +270,8 @@ class admin_host:
             except:
                 pass
             time.sleep(1)
+
+            self.setup()
 
             result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Unassigned', 'Maintenance', 'Down'], ['Up'], 600)
 
@@ -285,7 +291,8 @@ class admin_host:
         try:
             self.setup()
             # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
+            time.sleep(2)
 
             # 관리
             installBtn = self.webDriver.findElement('css_selector_all', '#ActionPanelView___')[1]
@@ -308,6 +315,8 @@ class admin_host:
             except:
                 pass
             time.sleep(10)
+
+            self.setup()
 
             result, msg = self.webDriver.isChangedStatus(self._hostName, 2, 7, ['Installing', 'Maintenance', 'Down', 'Reboot'], ['Up'], 1200)
 
@@ -362,7 +371,7 @@ class admin_host:
         try:
             self.setup()
             # 생성한 호스트 클릭
-            self.webDriver.tableSearch(self._hostName, 2, rowClick = True)
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
             time.sleep(1)
             # 편집 클릭
             self.webDriver.findElement('id', 'ActionPanelView_Edit', True)
