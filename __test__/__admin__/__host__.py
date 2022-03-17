@@ -11,8 +11,8 @@ class admin_host:
     def __init__(self, webDriver):
         printLog("* 호스트 테스트 시작")
         self._hostResult = []
-        self._hostName = 'hypervm171.tmax.dom'
-        self._hostIP = '192.168.17.171'
+        self._hostName = 'hypervm170.tmax.dom'
+        self._hostIP = '192.168.17.170'
         self._hostID = 'root'
         self._hostPW = 'asdf'
         self.webDriver = webDriver
