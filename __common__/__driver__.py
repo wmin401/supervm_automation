@@ -180,7 +180,7 @@ class SuperVM_driver:
                         td[nameIdx].find_element_by_tag_name("a").click() 
                         self.implicitlyWait(10)
                         time.sleep(1)
-                        printLog('[TABLE SEARCH] NAMECLICk : ' + str(self.driver.current_url), debug=True) 
+                        printLog('[TABLE SEARCH] Name Click : ' + str(self.driver.current_url), debug=True) 
                     return True
         except Exception as e:
             printLog('[TABLE SEARCH] EXCEPTION : ' + str(e))
@@ -222,7 +222,7 @@ class SuperVM_driver:
             time.sleep(1)
             try:
                 tableValueList = self.tableSearch(name, nameIdx, rowClick=False, nameClick=False, returnValueList=True)    
-                printLog(tableValueList, debug=True)    
+                # printLog(tableValueList, debug=True)    
                 current = tableValueList[statusIdx]
                 for failStr in failLst:
                     if failStr in tableValueList[statusIdx]:
