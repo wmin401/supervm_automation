@@ -18,11 +18,7 @@ class admin_template:
 
         self.tl = testlink()
         
-    def test(self):
-
-
-        self.setup()
-        
+    def test(self):      
         self.create()
         time.sleep(0.3)
         self.update()
@@ -82,11 +78,11 @@ class admin_template:
             time.sleep(0.3)
             # 가상머신 클릭
             self.webDriver.findElement('id','MenuView_vmsAnchor', True)
-            self.webDriver.tableSearch(self.vm._vmName, 2, rowClick=True)
+            self.webDriver.tableSearch(self.vm._vmName, 2, False, True)
             time.sleep(0.3)
             # 추가 옵션 버튼 클릭
             self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('css_selector','.btn-group:nth-child(11) > .btn',True)
+            self.webDriver.findElement('xpath','/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button',True)
             
             # 템플릿 생성 클릭
             printLog("[CREATE TEMPLATE] Create template")
@@ -115,6 +111,7 @@ class admin_template:
             self.webDriver.implicitlyWait(10)
             self.webDriver.findElement('css_selector','#VmMakeTemplatePopupView_OnNewTemplate > button', True)
             time.sleep(3)
+
             # 템플릿 탭
             self.setup()
 
@@ -142,7 +139,7 @@ class admin_template:
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
             time.sleep(1)
-            self.webDriver.tableSearch(self._templateName, 1, rowClick=True)    
+            self.webDriver.tableSearch(self._templateName, 1, False, True)    
 
             # 편집 클릭
             printLog("[UPDATE TEMPLATE] Update template")
@@ -157,10 +154,12 @@ class admin_template:
             self.webDriver.findElement('css_selector', '#TemplateEditPopupView_OnSaveConfirm > button', True)
             time.sleep(2)
 
+            self.setup()
+
             # 설명에 추가되면 성공
-            _updateCheck = self.webDriver.tableSearch(des, 9)
             printLog("[UPDATE TEMPLATE] Check if updated")
-            if _updateCheck == True:
+            _templateDescription = self.webDriver.tableSearch(self._templateName, 1, False, False, True)
+            if _templateDescription[9] == des:            
                 result = PASS
                 msg = ''
             else:
@@ -188,7 +187,7 @@ class admin_template:
             time.sleep(1)
             printLog("[CREATE VM] New virtual machine")
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_CreateVM')
-            self.webDriver.tableSearch(self._templateName, 1, rowClick=True)
+            self.webDriver.tableSearch(self._templateName, 1, False, True)
             self.webDriver.findElement('id','ActionPanelView_CreateVM',True)
             time.sleep(1)
 
@@ -232,8 +231,8 @@ class admin_template:
             self.webDriver.findElement('id','MenuView_vmsAnchor',True)
             time.sleep(2)
             printLog("[CREATE VM] Check if created")
-            _createCheck = self.webDriver.tableSearch(self._templateName + '_vm_%s'%self.storage, 2, rowClick=True)        
-            if _createCheck == True:
+            _createCheck = self.webDriver.tableSearch(self._templateName + '_vm_%s'%self.storage, 2, False, False, True)        
+            if _createCheck[2] == self._templateName + '_vm_%s'%self.storage:
                 result = PASS
                 msg = ''
             else:
@@ -279,7 +278,7 @@ class admin_template:
             
             # 복사 클릭
             printLog("[COPY TEMPLATE DISK] Copy template disk")
-            self.webDriver.tableSearch(self._templateName + '_vm_%s_Disk1'%self.storage, 0, rowClick=True)
+            self.webDriver.tableSearch(self._templateName + '_vm_%s_Disk1'%self.storage, 0, False, True)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Copy')
             self.webDriver.findElement('id', 'ActionPanelView_Copy', True)
             time.sleep(2)
@@ -299,6 +298,14 @@ class admin_template:
             printLog("[COPY TEMPLATE DISK] Check if created")
             printLog("[COPY TEMPLATE DISK] Wait until changed copy disk was created")
 
+            printLog("[COPY TEMPLATE DISK] Storage - Disks")
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_storageTab',True)
+            time.sleep(0.5)
+            self.webDriver.explicitlyWait(10, By.ID, 'MenuView_disksAnchor')
+            self.webDriver.findElement('id','MenuView_disksAnchor',True)
+            time.sleep(1)
+
             result, msg = self.webDriver.isChangedStatus(self._templateCopyDisk, 0, 10, ['잠김', 'Locked'], ['OK'], 180)
 
         except Exception as e:
@@ -317,18 +324,14 @@ class admin_template:
         msg = ''
         try:
             printLog("[REMOVE VM] Compute - Virtual Machines")
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_vmsAnchor',True)
-            time.sleep(2)
+            self.vm.setup()
+
             self._templateVMname = self._templateName + '_vm_%s'%self.storage
             st = time.time()
             cnt = 0
             while True:
                 tdLst = []
                 time.sleep(1)
-                print(self._templateVMname)        
                 try:        
                     table = self.webDriver.getDriver().find_element_by_css_selector('tbody')
                     self.webDriver.explicitlyWait(30, By.TAG_NAME, 'tr')
@@ -355,8 +358,10 @@ class admin_template:
                 except:
                     continue
 
+            self.webDriver.tableSearch(self._templateVMname, 2, False, True)
+
             printLog("[REMOVE VM] Remove vm")
-            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Remove')
             self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
             self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnRemove', True)
@@ -474,7 +479,7 @@ class admin_template:
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
             time.sleep(1)
-            self.webDriver.tableSearch(self._templateName, 1, rowClick=True)    
+            self.webDriver.tableSearch(self._templateName, 1, False, True)    
 
             # 편집 클릭
             self.webDriver.implicitlyWait(10)
