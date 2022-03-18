@@ -279,7 +279,7 @@ class admin_template:
             # 복사 클릭
             printLog("[COPY TEMPLATE DISK] Copy template disk")
             self.webDriver.tableSearch(self._templateName + '_vm_%s_Disk1'%self.storage, 0, False, True)
-            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Copy')
+            time.sleep(1)
             self.webDriver.findElement('id', 'ActionPanelView_Copy', True)
             time.sleep(2)
 
