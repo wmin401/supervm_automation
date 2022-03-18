@@ -631,7 +631,7 @@ class admin_vm:
         
             self.setup()
 
-            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 180)
+            result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['다시 시작 중', 'Rebooting'], ['Up', '실행 중'], 600)
 
             printLog(self.webDriver.getDriver().current_url, debug=True)
         except Exception as e:
@@ -1195,18 +1195,15 @@ class admin_vm:
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
             time.sleep(2)
-            printLog('edit popup', debug=True)
             # 시스템 탭 클릭
             self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)')
             self.webDriver.findElement('css_selector', '#VmPopupWidget > div.wizard-pf-sidebar.dialog_noOverflow > ul > li:nth-child(2)', True)
             time.sleep(1)
             # 메모리 사이즈 변경
-            self.webDriver.explicitlyWait(10, By.ID, 'VmPopupWidget_memSize')
             self.webDriver.findElement('id', 'VmPopupWidget_memSize')
             self.webDriver.clear()
             self._updateSize = '2048'
             self.webDriver.sendKeys(self._updateSize)
-            printLog('changed memory size', debug=True)
 
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
@@ -1217,7 +1214,6 @@ class admin_vm:
                 time.sleep(3)
             except:
                 pass
-            printLog('OK double check', debug=True)
 
 
             self.setup()
@@ -1226,15 +1222,10 @@ class admin_vm:
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
             time.sleep(3)
-            printLog('vm name clicked', debug=True)
-
-
-            self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             _memorySize = self.webDriver.getAttribute('textContent')
             ##############
 
-            printLog('read memory check', debug=True)
 
             if self._updateSize in _memorySize:
                 result = PASS
@@ -1290,11 +1281,6 @@ class admin_vm:
             self.webDriver.findElement('css_selector', '#DefaultConfirmationPopupView_memoryHotUnplug > button', True)
             time.sleep(20)
 
-            self.setup()
-
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
-            time.sleep(3)
-
             self.webDriver.explicitlyWait(10, By.ID, 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row0_value')
             _memorySize = self.webDriver.getAttribute('textContent')
@@ -1348,12 +1334,6 @@ class admin_vm:
             # OK 클릭
             self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
             time.sleep(5)
-
-            self.setup()
-
-            # VM 이름 클릭
-            self.webDriver.tableSearch(self._vmName, 2, False, True)
-            time.sleep(3)
             ##############
             self.webDriver.findElement('id', 'SubTabVirtualMachineGeneralView_form_col1_row4_value')
             _cpuNum = self.webDriver.getAttribute('textContent')
