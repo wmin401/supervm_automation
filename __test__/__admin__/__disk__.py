@@ -2,7 +2,6 @@ from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
 import time
-
 from __common__.__testlink__ import *
 
 class admin_disk:
@@ -29,40 +28,57 @@ class admin_disk:
         self.uploadISO()
 
     def uploadISO(self):
-        printLog('Create Disk')
-        
-        # 스토리지
-        time.sleep(1)
-        self.webDriver.implicitlyWait(10)
-        self.webDriver.findElement('id','MenuView_storageTab',True)
+        printLog('Upload Disk')
+        try: 
+            # 스토리지
+            time.sleep(1)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_storageTab',True)
 
-        # 디스크
-        self.webDriver.implicitlyWait(10)
-        self.webDriver.findElement('id','MenuView_disksAnchor',True)
-            
-        #새로 만들기                  
-        time.sleep(1)
-        self.webDriver.implicitlyWait(10)
-        self.webDriver.findElement('css_selector','#ActionPanelView____ > button',True)            
-        self.webDriver.findElement('css_selector','#ActionPanelView____ > ul > li:nth-child(1) > a',True)
+            # 디스크
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_disksAnchor',True)
+                
+            #새로 만들기                  
+            time.sleep(1)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('css_selector','#ActionPanelView____ > button',True)            
+            self.webDriver.findElement('css_selector','#ActionPanelView____ > ul > li:nth-child(1) > a',True)
 
-        # 파일 선택 클릭
-        # self.webDriver.explicitlyWait(10, By.ID, 'UploadImagePopupView_fileUploadButton')
-        # self.webDriver.findElement('id','UploadImagePopupView_fileUploadButton',True)
+            time.sleep(2)
 
-        time.sleep(2)
+            self.webDriver.findElement('id', 'UploadImagePopupView_fileUpload')
+            self.webDriver.sendKeys(self.isoFilePath + '\\' + self.isoFileName)
+            time.sleep(10)
 
+            self.webDriver.findElement('css_selector', '#UploadImagePopupView_Ok > button', True)
 
-        self.webDriver.findElement('id', 'UploadImagePopupView_fileUpload')
-        self.webDriver.sendKeys(self.isoFilePath + '\\' + self.isoFileName)
-        time.sleep(1)
+            time.sleep(60)
 
-        self.webDriver.findElement('css_selector', '#UploadImagePopupView_Ok > button', True)
+            #result, msg = self.webDriver.isChangedStatus(self.isoFileName, 0, 7, ['OK'], 600)
 
-        time.sleep(2)
+            #tmp = self.webDriver.tableSearch(self.isoFileName, 0, False, False, True)
 
-        tmp = self.webDriver.tableSearch(self.isoFileName, 0, False, False, True)
+            _uploadCheck = self.webDriver.tableSearch(self.isoFileName,0)
 
+            if _uploadCheck == True:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to Upload Disk..."
+   
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+        printLog("[UPLOAD DISK] " + msg)
+
+        # 결과 출력
+        printLog("[UPLOAD DISK] RESULT : " + result)
+        self._diskResult.append(['disk' + DELIM + 'upload' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('UPLOAD_DISK',result, msg)
+    
         
     def create(self):
         printLog('Create Disk')
@@ -104,17 +120,6 @@ class admin_disk:
             _cancelBtn = webDriver.findElement('id','VmDiskPopupView_Cancel',True)
             '''
             
-            '''
-            # 업로드
-            time.sleep(1)
-            webDriver.implicitlyWait(10)
-            _uploadBtn = webDriver.findElement('id','ActionPanelView____',True)
-            _startBtn = webDriver.findElement('css_selector','#ActionPanelView____ > ul > li:nth-child(1) > a',True)
-            _connetctestBtn = webDriver.findElement('css_selector','body > div.popup-content.ui-draggable > div > div > div > div:nth-child(2) > div > div > div > div.GHYIDY4CA4B > button',True)
-            _uploadcancelBtn = webDriver.findElement('id','UploadImagePopupView_Cancel',True)
-            result = PASS
-            msg = ''
-            '''
             _createCheck = self.webDriver.tableSearch(self._diskName, 0)            
             if _createCheck == True:
                 result = PASS

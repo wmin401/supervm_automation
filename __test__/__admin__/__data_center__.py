@@ -1,3 +1,4 @@
+from operator import truediv
 from __common__.__parameter__ import *
 from __common__.__module__ import *
 from selenium.webdriver.common.by import By
@@ -10,15 +11,17 @@ class admin_data_center:
         self._data_centerResult = []
         self._data_centerName = 'TEST'
         self.webDriver = webDriver
+        self.domainName = 'nfs-231'
         self.tl = testlink()
         
     def test(self):
         #self.create()
         #self.edit_changeStorageType()
         #self.edit_changeStorageCompatibleVersion()
-        time.sleep(2)
-        self.datacenterForceRemove()
+        #time.sleep(2)
+        #self.datacenterForceRemove()
         #self.remove()
+        self.datacenterDetachDomain()
         
     def create(self):
         printLog('Create data_center')
@@ -264,3 +267,81 @@ class admin_data_center:
         printLog("[DATACENTER FORCE REMOVE] RESULT : " + result)
         self._data_centerResult.append(['datacenter' + DELIM + 'force remove' + DELIM + result + DELIM + msg])        
         self.tl.junitBuilder('DATACENTER_FORCE_REMOVE',result, msg)
+
+    def datacenterDetachDomain(self):    
+        printLog(printSquare('Datacenter Detach Domain'))
+        result = FAIL
+        msg = ''
+
+        try:
+            # 컴퓨팅 click
+            self.webDriver.explicitlyWait(10, By.ID, 'compute')
+            self.webDriver.findElement('id', 'compute', True)
+
+            # 데이터 센터 click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#MenuView_dataCentersAnchor > .list-group-item-value')
+            self.webDriver.findElement('css_selector', '#MenuView_dataCentersAnchor > .list-group-item-value', True)
+
+            time.sleep(2)
+
+            # 데이터 센터 이름 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._data_centerName,2,False,True)
+
+            time.sleep(2)
+
+            # 분리할 스토리지 도메인 선택
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self.domainName,2,True)
+
+            # 유지보수 click
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Maintenance')
+            self.webDriver.findElement('id', 'DetailActionPanelView_Maintenance', True)
+
+            # OK click
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnMaintenance')
+            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnMaintenance', True)
+
+            time.sleep(40)
+
+            # 상단 데이터 센터 click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(1) > div > div.detailMainBreadcrumbs > div > ol > li:nth-child(2) > a')
+            self.webDriver.findElement('css_selector', 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div > div:nth-child(1) > div > div.detailMainBreadcrumbs > div > ol > li:nth-child(2) > a', True)
+
+            # 데이터 센터 이름 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self._data_centerName,2,False,True)
+
+            # 분리할 스토리지 도메인 선택
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.tableSearch(self.domainName,2,True)
+
+            # 분리 click
+            self.webDriver.explicitlyWait(10, By.ID, 'DetailActionPanelView_Detach')
+            self.webDriver.findElement('id', 'DetailActionPanelView_Detach', True)
+
+            # OK click
+            self.webDriver.explicitlyWait(10, By.ID, 'RemoveConfirmationPopupView_OnDetach')
+            self.webDriver.findElement('id', 'RemoveConfirmationPopupView_OnDetach', True)
+
+            time.sleep(30)
+
+            _detachCheck = self.webDriver.tableSearch(self.domainName,2)
+            
+            if _detachCheck == False:
+                result = PASS
+                msg = ''
+            else:
+                result = FAIL
+                msg = "Failed to detach domain..."
+   
+        except Exception as e:   
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+        printLog("[DATACENTER DETACH DOMAIN] " + msg)
+
+        # 결과 출력
+        printLog("[DATACENTER DETACH DOMAIN] RESULT : " + result)
+        self._data_centerResult.append(['datacenter' + DELIM + 'detach remove' + DELIM + result + DELIM + msg])        
+        self.tl.junitBuilder('DATACENTER_DETACH_DOMAIN',result, msg)
