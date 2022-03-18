@@ -376,10 +376,11 @@ class admin_vm:
 
             printLog("[VM COPY] VM Copy")
 
-            self.webDriver.tableSearch(self._vmName, 2, False, True)            
+            self.webDriver.tableSearch(self._vmName, 2, False, True)   
+            time.sleep(1)         
             
             self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
-            time.sleep(0.3)
+            time.sleep(1)
             self.webDriver.findElement('id', 'ActionPanelView_CloneVm', True)
         
             time.sleep(1)
@@ -392,16 +393,16 @@ class admin_vm:
 
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
 
-            self.setup()
-
             time.sleep(60)
+
+            self.setup()
 
             st = time.time()
             while True:
                 time.sleep(1)
                 try:
-                    _createCheck = self.webDriver.tableSearch('copy_%s'%self._vmName, 2)
-                    if _createCheck == True:
+                    _createCheck = self.webDriver.tableSearch('copy_%s'%self._vmName, 2, False, False, True)
+                    if _createCheck[2] == 'copy_%s'%self._vmName:
                         result = PASS
                         try:
                             printLog("[VM COPY] VM is copied")
@@ -459,8 +460,10 @@ class admin_vm:
             self.setup()
 
             # 생성한 vm 클릭
-            self.webDriver.tableSearch(self._vmName, 2, True)            
-            self.webDriver.findElement('css_selector','#ActionPanelView_Run > button',True)   
+            self.webDriver.tableSearch(self._vmName, 2, False, True)            
+            self.webDriver.findElement('css_selector','#ActionPanelView_Run > button',True)  
+
+            self.setup() 
 
             st=time.time()
             cnt = 0
@@ -526,7 +529,7 @@ class admin_vm:
                 self.tl.junitBuilder('VM_SHUTDOWN',result, msg) # 모두 대문자
                 return
             # 선택
-            self.webDriver.tableSearch(self._vmName, 2, True)
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
             self.webDriver.findElement('css_selector','#ActionPanelView_Shutdown > button:nth-child(1)',True)
             time.sleep(3)
                 # OK 클릭
@@ -534,6 +537,8 @@ class admin_vm:
                 self.webDriver.findElement('css_selector','#RemoveConfirmationPopupView_OnShutdown > button',True)
             except:
                 pass
+
+            self.setup()
 
             time.sleep(2)
             printLog("[STATUS CHECK] Check status changed")
@@ -1431,7 +1436,7 @@ class admin_vm:
             self.webDriver.findElement('css_selector', '#VmPopupView_OnSave > button', True)
             time.sleep(2)
             self.webDriver.findElement('css_selector', '#VmNextRunConfigurationPopupView_updateExistingVm > button', True)
-            time.sleep(3)
+            time.sleep(15)
 
             # 재부팅
             self.reboot(save = False)
