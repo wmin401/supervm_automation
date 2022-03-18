@@ -659,9 +659,9 @@ class admin_vm:
             cnt = 0
             while True:
                 time.sleep(1)
-                self.webDriver.tableSearch(self._vmName, 2, True)            
+                self.webDriver.tableSearch(self._vmName, 2, False, True)
                 # self.webDriver.tableSearch('auto_vm_HnpZbEOS', 2, True)            
-                self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+                self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
                 time.sleep(0.3)
                 self.webDriver.findElement('id', 'ActionPanelView_Remove', True)
 
@@ -683,6 +683,8 @@ class admin_vm:
                     break
             
             time.sleep(2)
+
+            self.setup()
             
             st = time.time()
             while True:
