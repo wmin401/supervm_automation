@@ -39,7 +39,7 @@ class admin_template:
         time.sleep(0.3)
         self.remove()
         
-        self.templeteMigration()
+        # self.templeteMigration()
 
         self.vm.remove()
 
