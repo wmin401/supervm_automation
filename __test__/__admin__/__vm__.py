@@ -321,7 +321,7 @@ class admin_vm:
             self.setup()
 
             # 생성한 vm 클릭
-            self.webDriver.tableSearch(self._vmName, 2, True)
+            self.webDriver.tableSearch(self._vmName, 2, False, True)
 
             # 편집 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)    
@@ -337,7 +337,7 @@ class admin_vm:
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
             time.sleep(2)
 
-            # VM 이름 클릭
+            self.setup()
             des = self.webDriver.tableSearch(self._vmName, 2, False, False, True)
 
             if 'updated by automation' in des[15]:
@@ -376,9 +376,9 @@ class admin_vm:
 
             printLog("[VM COPY] VM Copy")
 
-            self.webDriver.tableSearch(self._vmName, 2, True)            
+            self.webDriver.tableSearch(self._vmName, 2, False, True)            
             
-            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(0.3)
             self.webDriver.findElement('id', 'ActionPanelView_CloneVm', True)
         
@@ -391,6 +391,8 @@ class admin_vm:
             self.webDriver.sendKeys('copied by automation')
 
             self.webDriver.findElement('id', 'VmPopupView_OnSave', True)
+
+            self.setup()
 
             time.sleep(60)
 
@@ -1515,7 +1517,7 @@ class admin_vm:
         
         self.tl.junitBuilder('VM_VIEWING_PINNED_HOSTS',result, msg) # 모두 대문자
 
-    def     changeCD(self):        
+    def changeCD(self):        
         printLog(printSquare('Change CD for VM'))
         result = FAIL
         msg = ''
