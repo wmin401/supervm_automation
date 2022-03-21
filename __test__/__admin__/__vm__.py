@@ -1587,6 +1587,7 @@ class admin_vm:
 
             # VM 이름 클릭
             self.webDriver.tableSearch(self._vmName, 2, False, True)
+            time.sleep(1)
             # 일시중지 클릭
             self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_Pause')
             self.webDriver.findElement('id','ActionPanelView_Pause', True)
@@ -1594,6 +1595,7 @@ class admin_vm:
             time.sleep(90)
 
             self.setup()
+            time.sleep(1)
 
             # result, msg = self.webDriver.isChangedStatus(self._vmName, 2, 13, ['실행 중', 'Up', 'Down'],['일시중지됨', 'Suspended'])
 
@@ -1601,7 +1603,7 @@ class admin_vm:
             st=time.time()
             while True:
                 time.sleep(1)
-                if time.time()-st > 120:
+                if time.time()-st > 180:
                     result = FAIL
                     msg = 'Timeout(120s)'
                     printLog("[VM PAUSE] MESSAGE : " + msg)     
