@@ -66,7 +66,7 @@ class admin_vm2(admin_vm): # 상속
         self.vmCreateInSnapshot()
         self.snapshotRemove()
 
-        # # 내보내기 - 2
+        # 내보내기 - 2
         self.exportToDomain()
         self.exportToHost()
 
@@ -450,9 +450,9 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
                 # 생성한 VM 이름 클릭
             self.webDriver.tableSearch(self._vm2Name, 2, False, True)
+            time.sleep(1)
 
             # 스냅샷 클릭
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '스냅샷')
             self.webDriver.findElement('link_text', '스냅샷', True)
             time.sleep(1)
             	
@@ -489,7 +489,8 @@ class admin_vm2(admin_vm): # 상속
             isClicked = False
             for li in lis:
                 try:
-                    if 'Active VM before the preview' in li.text: 
+                    snapshot = li.find_element_by_css_selector('div.list-view-pf-main-info > div.list-view-pf-body > div.list-view-pf-description > div.list-group-item-heading')
+                    if 'Active VM before the preview' in snapshot.text: 
                         li.click()
                         result = PASS
                         msg = ''                        
@@ -516,7 +517,7 @@ class admin_vm2(admin_vm): # 상속
         # 테스트 이후 되돌리기 클릭
         self.webDriver.findElement('id', 'DetailActionPanelView_Undo', True)
         printLog("[VM SNAPSHOT RESTORE VM] Go back before restore...")
-        time.sleep(90)
+        time.sleep(60)
 
     def vmCreateInSnapshot(self):        
         printLog(printSquare('Create VM in snapshot'))
@@ -541,7 +542,9 @@ class admin_vm2(admin_vm): # 상속
             isClicked = False
             for li in lis:
                 try:
-                    if self._snapshotName in li.text: 
+                    snapshot = li.find_element_by_css_selector('div.list-view-pf-main-info > div.list-view-pf-body > div.list-view-pf-description > div.list-group-item-heading')
+                    if self._snapshotName in snapshot.text: 
+                    # if self._snapshotName in li.text: 
                         printLog("[VM CREATE IN SNAPSHOT] Snapshot Name : %s"%self._snapshotName)
                         li.click()
                         isClicked = True
@@ -675,9 +678,10 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 클릭
-            self.webDriver.tableSearch(self._vm2Name, 2, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)            
 
             # 내보내기 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_VmExport')
             self.webDriver.findElement('id', 'ActionPanelView_VmExport', True)
             time.sleep(2)
 
@@ -687,6 +691,9 @@ class admin_vm2(admin_vm): # 상속
 
             # 내보내기 버튼 클릭
             self.webDriver.findElement('xpath', '/html/body/div[4]/div/div/div/footer/button[1]', True)
+            time.sleep(2)
+
+            self.setup()
 
             # 생성될 때 까지 대기
             st = time.time()
@@ -731,10 +738,10 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 클릭
-            self.webDriver.tableSearch(self._vm2Name, 2, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 가져오기 클릭
-            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(1)
             self.webDriver.findElement('id', 'ActionPanelView_ExportOva', True)            
             time.sleep(5)
@@ -804,10 +811,10 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 클릭
-            self.webDriver.tableSearch(self._vm2Name, 2, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 가져오기 클릭
-            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div[5]/button', True)
             time.sleep(0.3)
             self.webDriver.findElement('id', 'ActionPanelView_ImportVm', True)
             time.sleep(2)
@@ -833,13 +840,13 @@ class admin_vm2(admin_vm): # 상속
             time.sleep(15)
 
             # 가상머신 클릭
-            vmTable = self.webDriver.findElement('css_selector_all', 'tbody')[1]
+            vmTable = self.webDriver.findElement('css_selector_all', 'tbody')[0]
             for tr in vmTable.find_elements_by_tag_name('tr'):
                 td = tr.find_elements_by_tag_name('td')
                 if 'exported_%s.ova'%self._vm2Name in td[1].text:
                     td[0].click()
                     break
-
+                
             # 화살표 버튼 클릭 후 OK
             self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[2]/div/div/div/div[9]/div/div/div[4]/table/tbody/tr/td/table/tbody/tr[1]/td/div/div/img', True)
             self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/div[2]/button', True)
@@ -863,6 +870,8 @@ class admin_vm2(admin_vm): # 상속
                 
                 self.webDriver.findElement('xpath', '/html/body/div[5]/div/div/div/div[3]/div[1]/div[3]/button', True)
                 time.sleep(2)
+
+                self.setup()
 
                 isCreated = self.webDriver.tableSearch('from_host_%s'%self._vm2Name, 2, False, False, True)
                 if isCreated == False:
@@ -908,7 +917,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 클릭
-            self.webDriver.tableSearch(self._vm2Name, 2, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 편집 버튼 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
@@ -953,7 +962,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 클릭
-            self.webDriver.tableSearch(self._vm2Name, 2, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 편집 버튼 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
@@ -1308,7 +1317,7 @@ class admin_vm2(admin_vm): # 상속
             self.setup()
 
             # 생성한 VM 클릭
-            self.webDriver.tableSearch(self._vm2Name, 2, True)
+            self.webDriver.tableSearch(self._vm2Name, 2, False, True)
 
             # 편집 버튼 클릭
             self.webDriver.findElement('id','ActionPanelView_Edit',True)
