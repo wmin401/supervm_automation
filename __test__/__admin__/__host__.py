@@ -108,8 +108,6 @@ class admin_host:
         self.cockpitAccess()
         
         self.remove()
-
-
         
     def create(self):
         printLog(printSquare('Create Host'))
