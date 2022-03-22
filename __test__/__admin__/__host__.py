@@ -104,6 +104,9 @@ class admin_host:
         self.reinstall()     
 
         self.moveToMaintenance()
+
+        self.cockpitAccess()
+        
         self.remove()
 
 
@@ -419,3 +422,57 @@ class admin_host:
         self._hostResult.append(['host;remove;' + result + ';' + msg])
         self.tl.junitBuilder('HOST_REMOVE',result, msg) # 모두 대문자
   
+    def cockpitAccess(self):
+        printLog(printSquare('Cockpit Access'))
+        
+        result = FAIL
+        msg = ''
+
+        try:
+            self.setup()
+
+            self.webDriver.tableSearch(self._hostName, 2, False, True)
+
+            self.webDriver.explicitlyWait(10, By.ID, 'ActionPanelView_HostConsole')
+            self.webDriver.findElement('id', 'ActionPanelView_HostConsole', True)
+            time.sleep(2)
+
+            # 테스트 pc에 호스트 등록이 되어있어야됨
+
+            # Cockpit 탭으로 이동
+            windows = self.webDriver.getDriver().window_handles
+            self.webDriver.getDriver().switch_to_window(windows[-1])
+            print('[HOST COCKPIT ACCESS] Change Tab : %s'%self.webDriver.getDriver().current_url)
+
+            src = self.webDriver.getDriver().page_source
+
+            try:
+                self.webDriver.findElement('id', 'details-button', True)
+                self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#proceed-link')
+                self.webDriver.findElement('css_selector', '#proceed-link', True)
+            except:
+                pass
+
+            self.webDriver.explicitlyWait(10, By.ID, 'brand')
+            self.webDriver.findElement('id', 'brand')
+            brand = self.webDriver.getAttribute('textContent')
+
+            if 'ProLinux' in brand:
+                result = PASS
+                msg = ''
+
+            # 원래 탭으로 돌아오기
+            self.webDriver.getDriver().switch_to_window(windows[0])
+            print('[HOST COCKPIT ACCESS] Change Tab : %s'%self.webDriver.getDriver().current_url)
+            
+
+
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("[HOST COCKPIT ACCESS] MESSAGE : " + msg)
+        printLog("[HOST COCKPIT ACCESS] RESULT : " + result)
+        self._hostResult.append(['host;cockpit access;' + result + ';' + msg])
+        self.tl.junitBuilder('HOST_COCKPIT_ACCESS',result, msg) # 모두 대문자
