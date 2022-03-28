@@ -6,6 +6,10 @@
 
 import requests
 
+# p : path
+# h : header 
+# d : data
+
 class restAPI():
 
     def __init__(self, URL,verify, id_, pw):
