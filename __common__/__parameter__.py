@@ -42,6 +42,7 @@ if IN_JENKINS == 'true':
     TEMPLATE_TEST = os.getenv('TEMPLATE_TEST')
     VM_TEST = os.getenv('VM_TEST')
     VM2_TEST = os.getenv('VM2_TEST')
+    VM3_TEST = os.getenv('VM3_TEST')
     POOLS_TEST = os.getenv('POOLS_TEST')
     EXTERNAL_PROVIDER_TEST = os.getenv('EXTERNAL_PROVIDER_TEST')
     QUOTA_TEST = os.getenv('QUOTA_TEST')
@@ -55,16 +56,16 @@ if IN_JENKINS == 'true':
     BUILD_ID = os.getenv('BUILD_ID')
     
 else: # 로컬
-    ENGINE_VM_FQDN = 'master165.tmax.com'
+    ENGINE_VM_FQDN = 'master166.tmax.com'
     
     ## 설치 자동화 매개변수 ##
     INSTALL_SUPERVM = 'false'
-    ADMIN_HOSTNAME = 'hypervm41.tmax.dom'
+    ADMIN_HOSTNAME = 'worker230.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc2/prolinux/8/arch/x86_64/'
     
-    ENGINE_VM_IP = '192.168.17.165'
-    ADMIN_HOST_IP = '192.168.17.41'
-    ADMIN_GATEWAY = '192.168.17.1'
+    ENGINE_VM_IP = '192.168.1.166'
+    ADMIN_HOST_IP = '192.168.1.230'
+    ADMIN_GATEWAY = '192.168.1.1'
     ADMIN_HOST_ID = 'root'
     ADMIN_HOST_PW = 'asdf'
     ENGINE_VM_MEMORY = '4096'
@@ -105,6 +106,7 @@ else: # 로컬
     TEMPLATE_TEST = 'false'
     VM_TEST = 'false'
     VM2_TEST = 'false'
+    VM3_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
     QUOTA_TEST = 'false'

@@ -133,6 +133,16 @@ def main():
             _totalResult = saveResult(_vm2._vm2Result, _totalResult)
             time.sleep(1)
 
+        if VM3_TEST == 'true':
+            printLine()
+            printLog(printSquare("*** VM3 Test ***"))
+            _vm3 = admin_vm3(webDriver)
+            _vm3.test()
+                
+            _totalResult = saveResult(_vm3._vm3Result, _totalResult)
+            time.sleep(1)
+
+
         if POOLS_TEST == 'true':
             printLine()
             printLog("*** POOLS Test ***")

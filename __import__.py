@@ -17,6 +17,7 @@ from __test__.__admin__.__template__ import *
 from __test__.__admin__.__qos__ import *
 from __test__.__admin__.__vm__ import *
 from __test__.__admin__.__vm2__ import *
+from __test__.__admin__.__vm3__ import *
 from __test__.__admin__.__pools__ import *
 from __test__.__admin__.__external_provider__ import *
 from __test__.__vm__.__vm__ import *
