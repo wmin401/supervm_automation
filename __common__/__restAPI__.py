@@ -20,19 +20,21 @@ class restAPI():
 
     def get(self, p=None, h=None):
         res = requests.get(self.URL + p, headers = h,verify = self.verify, auth = (self.id_, self.pw))
-        #print(res.text)
         return res.text
     
     def post(self, p=None, h=None, d=None):
         res = requests.post(self.URL + p, headers = h,  data = d, verify = self.verify, auth = (self.id_, self.pw))
-        #print(res.text)
         return res.text
         
     def delete(self,p=None, h=None, d=None):
         res = requests.delete(self.URL + p, headers = h,  data = d, verify = self.verify, auth = (self.id_, self.pw))
-        #print(res.text)
+        return res.text
+        
+    def put(self,p=None, h={},d={}):
+        res = requests.put(self.URL + p, headers = h,  data=d, verify = self.verify, auth = (self.id_, self.pw))
         return res.text
     
+
 def get_property_value_from_xml(xml, tag, prop):
     # 전체 태그 입력시, 원하는 태그의 속성을 추출
     xml = xml.split('\n')
@@ -53,4 +55,3 @@ def get_property_value_from_xml(xml, tag, prop):
         print(tag,prop,':',propValue)
         
         return propValue
-
