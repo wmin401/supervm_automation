@@ -7,7 +7,7 @@ IN_JENKINS = os.getenv('IN_JENKINS')
 
 ######## 현재 젠킨스 테스트 중
 if IN_JENKINS == 'true':    
-    INSTALL_SUPERVM = os.getenv('INSTALL_SUPERVM')
+    INSTALL_HYPERVM = os.getenv('INSTALL_HYPERVM')
     ADMIN_HOSTNAME = os.getenv('ADMIN_HOSTNAME')
     SUPERVM_REPO_URL = os.getenv('SUPERVM_REPO_URL')
     ENGINE_VM_FQDN = os.getenv('ENGINE_VM_FQDN')
@@ -59,7 +59,7 @@ else: # 로컬
     ENGINE_VM_FQDN = 'master166.tmax.com'
     
     ## 설치 자동화 매개변수 ##
-    INSTALL_SUPERVM = 'false'
+    INSTALL_HYPERVM = 'false'
     ADMIN_HOSTNAME = 'worker230.tmax.dom'
     SUPERVM_REPO_URL = 'http://172.21.7.2/supervm/22.0.0-rc2/prolinux/8/arch/x86_64/'
     

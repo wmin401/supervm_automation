@@ -390,7 +390,7 @@ def main():
 
     initResult(csvSave=False)
 
-    if INSTALL_SUPERVM == 'true':
+    if INSTALL_HYPERVM == 'true':
         install_time = time.time()
         try:
             hypervm = install()
