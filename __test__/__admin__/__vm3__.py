@@ -17,27 +17,6 @@ class admin_vm3:
 
         self.rest = restAPI('https://master166.tmax.com/ovirt-engine/api/','__tools__/__rest_api__/master166_ca.crt', 'admin@internal', 'asdf')
 
-    def get_property_value_from_xml(self, xml_, tag, prop):
-        # 전체 태그 입력시, 원하는 태그의 속성을 추출
-        xml_ = xml_.split('\n')
-        tag_name = ''
-        for i in xml_:
-            if '<'+tag+' ' in i:
-                tag_name = i
-                break
-        print('tag :', tag_name)
-        if tag_name == '':
-            print("No tag")
-            return
-        else:
-            propIdx = tag_name.find(prop)
-            prop_ = tag_name[propIdx+len(prop)+2:]
-            a = prop_.find('"')
-            propValue = prop_[:a]
-            print(tag,prop,':',propValue)
-            
-            return propValue
-
     def setup(self):
         # 컴퓨팅
         time.sleep(1)
