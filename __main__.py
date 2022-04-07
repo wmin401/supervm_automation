@@ -50,7 +50,7 @@ def main():
     if ADMIN_TEST == 'true':       
         accessAdminPortal(webDriver) 
         time.sleep(3) 
-        webDriver.trunOffAlert()        
+        webDriver.turnOffAlert()        
 
         if CLUSTER_TEST == 'true':        
             printLine()

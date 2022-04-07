@@ -266,7 +266,7 @@ class SuperVM_driver:
                 printLog('[STATUS CHECK] %s'%(str(e)))
                 continue
 
-    def trunOffAlert(self):
+    def turnOffAlert(self):
         printLog("[TURN OFF NOTIFICATION] Turn off notification")
 
         # notification 팝업을 보여지게 한다.
