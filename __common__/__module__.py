@@ -11,6 +11,10 @@ def secToHms(start, end): # 시작시간, 끝나는 시간
     h, m = divmod(m, 60)
     return h,m,s
 
+
+# 출력되는 내용을 로그에 똑같이 기록하기 위해 만든 함수
+# debug일 경우엔 앞에 DEBUG가 붙는다
+# install은 install 로그파일에 출력된다.
 def printLog(text, debug=False, install=False):
     print(text)
 
@@ -52,6 +56,7 @@ def makeFolder(path_):
 def printLine():
     print('---------------------------------------------------------')
 
+# 8개의 문자열을 임의로 생성해준다.(숫자+영문대소문자)
 def randomString(length=8):
     string_ = ''
     for i in range(length):
@@ -67,6 +72,7 @@ def makeUpMsg(msg_list):
         returnMsg.append(i)
     return returnMsg
 
+
 def printSquare(msg):
     m = '''=========================================================
  %s
@@ -76,6 +82,7 @@ def printSquare(msg):
 
 def selectDropdownMenu(webDriver, type_, ulTagPath, name):
     # 드롭다운 메뉴에서 원하는거 클릭하고 싶을때 사용    
+    # element의 type과 ul 태그의 경로를 매개변수로 입력받고, 클릭하고자 하는 메뉴를 매개변수로 입력받는다.
     time.sleep(1)
     printLog("[SELECT DROPDOWN MENU] Selecting menu")
     if type_ == 'css_selector':

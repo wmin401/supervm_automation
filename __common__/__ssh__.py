@@ -29,6 +29,8 @@ class ssh_connection():
 
     def commandExec(self, e, t=30, pty = False): # exection, timeout
         # default timeout = 30sec
+        # 명령어 입력
+        # get_pty는 tmux 의 기능을 대체
         try:
             if pty == True:
                 stdin, stdout, stderr = self.ssh.exec_command(e, get_pty = pty, timeout=t)        
