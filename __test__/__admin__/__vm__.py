@@ -152,7 +152,7 @@ class admin_vm:
 
             # 디스크 생성 클릭
             # printLog('Create disk', True)
-            self.webDriver.findElement('id','VmPopupWidget_instanceImages__createEdit',True)
+            self.webDriver.findElement('css_selector','#VmPopupWidget_instanceImages__createEdit > button',True)
             time.sleep(1)
 
             # 크기 입력
