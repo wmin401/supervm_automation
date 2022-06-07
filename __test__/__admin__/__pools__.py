@@ -118,7 +118,7 @@ class admin_pools:
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
             time.sleep(0.5)
-            self.webDriver.tableSearch(self._poolsName, 0, rowClick=True)    
+            self.webDriver.tableSearch(self._poolsName, 1, rowClick=True)    
 
             # 편집 클릭
             printLog("[EDIT POOLS] Edit pools")
@@ -161,7 +161,7 @@ class admin_pools:
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
             time.sleep(0.5)
-            self.webDriver.tableSearch(self._poolsName, 0, rowClick=True)
+            self.webDriver.tableSearch(self._poolsName, 1, rowClick=True)
 
             # 편집 클릭
             printLog("[PRESTART VMS IN POOLS] Edit pools")
@@ -223,7 +223,7 @@ class admin_pools:
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
             time.sleep(0.5)
-            self.webDriver.tableSearch(self._poolsName, 0, rowClick=True)
+            self.webDriver.tableSearch(self._poolsName, 1, rowClick=True)
 
             # 편집 클릭
             printLog("[ADD VMS IN POOLS] Edit pools")
@@ -369,7 +369,7 @@ class admin_pools:
 
             # table 내부 전부 검색해서 입력한 이름이 있을경우 클릭
             time.sleep(0.5)
-            self.webDriver.tableSearch(self._poolsName, 0, rowClick=True)    
+            self.webDriver.tableSearch(self._poolsName, 1, rowClick=True)    
 
             # 삭제 클릭
             printLog("[DELETE POOLS] Delete pools")
