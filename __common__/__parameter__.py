@@ -43,6 +43,7 @@ if IN_JENKINS == 'true':
     VM_TEST = os.getenv('VM_TEST')
     VM2_TEST = os.getenv('VM2_TEST')
     VM3_TEST = os.getenv('VM3_TEST')
+    LOGICAL_NETWORK_TEST = os.getenv('LOGICAL_NETWORK_TEST')
     POOLS_TEST = os.getenv('POOLS_TEST')
     EXTERNAL_PROVIDER_TEST = os.getenv('EXTERNAL_PROVIDER_TEST')
     QUOTA_TEST = os.getenv('QUOTA_TEST')
@@ -107,6 +108,7 @@ else: # 로컬
     VM_TEST = 'false'
     VM2_TEST = 'false'
     VM3_TEST = 'false'
+    LOGICAL_NETWORK_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
     QUOTA_TEST = 'false'

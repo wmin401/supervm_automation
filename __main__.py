@@ -142,6 +142,14 @@ def main():
             _totalResult = saveResult(_vm3._vm3Result, _totalResult)
             time.sleep(1)
 
+        if LOGICAL_NETWORK_TEST == 'true':
+            printLine()
+            printLog("*** NETWORK Test ***")
+            _logical_network = admin_logical_network(webDriver)
+            _logical_network.test()
+
+            _logical_network = saveResult(_logical_network._logicalNetworkResult, _totalResult)
+            time.sleep(1)
 
         if POOLS_TEST == 'true':
             printLine()
