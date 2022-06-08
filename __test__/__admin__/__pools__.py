@@ -394,10 +394,10 @@ class admin_pools:
                         msg = ''
                         break
                     else:
-                        printLog("[DELETE POOL] Pools status is still deleted ...")
+                        printLog("[DELETE POOLS] Pools status is still deleted ...")
                         _endTime = time.time()
                         if _endTime - _startTime >= 60:
-                            printLog("[DELETE POOL] Failed status changed : Timeout")
+                            printLog("[DELETE POOLS] Failed status changed : Timeout")
                             result = FAIL
                             msg = "Failed to delete new pools..."
                             break
