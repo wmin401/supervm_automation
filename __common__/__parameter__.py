@@ -32,6 +32,9 @@ if IN_JENKINS == 'true':
     USER_ID = os.getenv('USER_ID')
     USER_PW = os.getenv('USER_PW')
 
+    ONLY_CLI_TEST = os.getenv('ONLY_CLI_TEST')
+    UTILITIES_TEST = os.getenv('UTILITIES_TEST')
+    
     ADMIN_TEST = os.getenv('ADMIN_TEST')
     CLUSTER_TEST = os.getenv('CLUSTER_TEST')
     DATA_CENTER_TEST = os.getenv('DATA_CENTER_TEST')
@@ -43,6 +46,7 @@ if IN_JENKINS == 'true':
     VM_TEST = os.getenv('VM_TEST')
     VM2_TEST = os.getenv('VM2_TEST')
     VM3_TEST = os.getenv('VM3_TEST')
+    LOGICAL_NETWORK_TEST = os.getenv('LOGICAL_NETWORK_TEST')
     POOLS_TEST = os.getenv('POOLS_TEST')
     EXTERNAL_PROVIDER_TEST = os.getenv('EXTERNAL_PROVIDER_TEST')
     QUOTA_TEST = os.getenv('QUOTA_TEST')
@@ -80,7 +84,7 @@ else: # 로컬
     SECURE = 'true'
     ## 브라우저 정보
     BROWSER_NAME = 'chrome'
-    BROWSER_VERSION = 'ver100'
+    BROWSER_VERSION = 'ver102'
     BROWSER_BIT = 32 ## 32비트 또는 64비트 ## firefox만 사용
 
     IF_HEADLESS = 'false' # 헤드리스 사용 여부(사용 금지)
@@ -95,6 +99,9 @@ else: # 로컬
 
     # 테스트 실행여부
 
+    ONLY_CLI_TEST = 'false'
+    UTILITIES_TEST = 'false'
+
     ADMIN_TEST = 'true' ## admin test 할때는 체크
 
     CLUSTER_TEST = 'false'
@@ -107,6 +114,7 @@ else: # 로컬
     VM_TEST = 'false'
     VM2_TEST = 'false'
     VM3_TEST = 'false'
+    LOGICAL_NETWORK_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
     QUOTA_TEST = 'false'
