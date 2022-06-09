@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 from __test__.__admin__.__template__ import *
 
 '''
-    작성자 : CQA2 김정현
+    작성자 : Infra QA 김정현
 '''
 
 class admin_pools:
