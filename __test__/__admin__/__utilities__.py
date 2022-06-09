@@ -15,7 +15,8 @@ class admin_utilities: # 모두 소문자
         self._utilitiesResult = [] # lowerCamelCase 로
         self._engineConfigOutput = 'AffinityRulesEnforcementManagerEnabled'
         self._engineConfigKeyName = 'IsIncrementalBackupSupported'
-        self._engineConfigKeyValue = 'true'
+        self._engineConfigKeyValueTrue = 'true'
+        self._engineConfigKeyValueFalse = 'false'
         self._engineConfigVersion = '4.2'
         self._engineUpStatus = 'active'
         self.tl = testlink()
@@ -56,9 +57,9 @@ class admin_utilities: # 모두 소문자
                 printLog("[ENGINE CONFIGURATION TOOL] Get option - OK")
 
             printLog("[ENGINE CONFIGURATION TOOL] Set option")
-            ssh.commandExec('engine-config --set ' +  self._engineConfigKeyName + '=' + self._engineConfigKeyValue + ' --cver=' + self._engineConfigVersion)
+            ssh.commandExec('engine-config --set ' +  self._engineConfigKeyName + '=' + self._engineConfigKeyValueTrue + ' --cver=' + self._engineConfigVersion)
             _set_option_output, _set_option_error = ssh.commandExec('engine-config --get ' + self._engineConfigKeyName)
-            if self._engineConfigKeyValue not in _set_option_output[0]:
+            if self._engineConfigKeyValueTrue not in _set_option_output[0]:
                 result = FAIL
                 msg = _set_option_error
             else:
@@ -84,7 +85,7 @@ class admin_utilities: # 모두 소문자
                         continue
 
                     _get_option_output, _get_option_error = ssh.commandExec('engine-config --get ' + self._engineConfigKeyName)
-                    if self._engineConfigKeyValue not in _get_option_output[0]:
+                    if self._engineConfigKeyValueTrue not in _get_option_output[0]:
                         printLog("[ENGINE CONFIGURATION TOOL] Engine config is still not applying...")
                         continue
                     else:
@@ -95,6 +96,9 @@ class admin_utilities: # 모두 소문자
 
             if result != FAIL:
                 result = PASS
+                printLog("[ENGINE CONFIGURATION TOOL] Restore key value")
+                ssh.commandExec('engine-config --set ' +  self._engineConfigKeyName + '=' + self._engineConfigKeyValueFalse + ' --cver=' + self._engineConfigVersion)
+                ssh.commandExec('systemctl restart ovirt-engine.service')
 
             ssh.deactivate()
         except Exception as e:
