@@ -32,6 +32,9 @@ if IN_JENKINS == 'true':
     USER_ID = os.getenv('USER_ID')
     USER_PW = os.getenv('USER_PW')
 
+    ONLY_CLI_TEST = os.getenv('ONLY_CLI_TEST')
+    UTILITIES_TEST = os.getenv('UTILITIES_TEST')
+    
     ADMIN_TEST = os.getenv('ADMIN_TEST')
     CLUSTER_TEST = os.getenv('CLUSTER_TEST')
     DATA_CENTER_TEST = os.getenv('DATA_CENTER_TEST')
@@ -95,6 +98,9 @@ else: # 로컬
     G_USER_PW = 'asdf'
 
     # 테스트 실행여부
+
+    ONLY_CLI_TEST = 'false'
+    UTILITIES_TEST = 'false'
 
     ADMIN_TEST = 'true' ## admin test 할때는 체크
 
