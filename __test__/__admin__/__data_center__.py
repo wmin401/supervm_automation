@@ -16,15 +16,18 @@ class admin_data_center:
         
     def test(self):
         #self.create()
+        #time.sleep(5)
         #self.edit_changeStorageType()
         #self.edit_changeStorageCompatibleVersion()
         #time.sleep(2)
-        #self.datacenterForceRemove()
         #self.remove()
-        self.datacenterDetachDomain()
+        self.create()
+        time.sleep(5)
+        self.datacenterForceRemove()
+        #self.datacenterDetachDomain()
         
     def create(self):
-        printLog('Create data_center')
+        printLog('Create data center')
         
         try:
             # 컴퓨팅
@@ -84,6 +87,99 @@ class admin_data_center:
 
         self.tl.junitBuilder('DATA_CENTER_CREATE', result, msg)
 
+    def edit_changeStorageType(self):
+        printLog('Edit type data center')
+        
+        try:
+            # 컴퓨팅
+            time.sleep(2)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','compute',True)
+
+            # 데이터 센터
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_dataCentersAnchor',True)
+
+            # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
+            self.webDriver.tableSearch(self._data_centerName, 2, True)
+            time.sleep(1)
+
+            # 편집 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+
+            # 스토리지 유형 클릭 및 로컬 클릭
+            time.sleep(3)
+            self.webDriver.implicitlyWait(10)
+            #self.webDriver.findElement('id','DataCenterPopupView_storagePoolTypeEditor',True)
+            self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[3]/div/div[1]/div/div/div',True)
+            self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[3]/div/div[1]/div/div/div/ul/li[2]',True)
+            
+            # 새로운 데이터 센터 OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','DataCenterPopupView_OnSave',True)
+
+            result, msg = self.webDriver.isChangedStatus(self._data_centerName, 2, 4, ['공유됨', 'Shared'], ['로컬','Local'], 600)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._data_centerResult.append(['data center' + DELIM + 'edit storage type' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('DATA_CENTER_EDIT_TYPE', result, msg)
+
+    def edit_changeStorageCompatibleVersion(self):
+        printLog('Edit version data center')
+        
+        try:
+            # 컴퓨팅
+            time.sleep(2)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','compute',True)
+
+            # 데이터 센터
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','MenuView_dataCentersAnchor',True)
+
+            # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
+            self.webDriver.tableSearch(self._data_centerName, 2, True)
+            time.sleep(1)
+
+            # 편집 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+
+            # 호환 버전 클릭
+            time.sleep(1)
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','DataCenterPopupView_versionEditor',True)
+            self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div/div[1]/div/div/div/button/span[1]',True)
+            
+            # 새로운 데이터 센터 OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','DataCenterPopupView_OnSave',True)
+            '''
+
+            # 데이터 센터의 호환 버전을 변경 OK 버튼 클릭
+            self.webDriver.implicitlyWait(10)
+            self.webDriver.findElement('id','DefaultConfirmationPopupView_OnSaveInternal',True)
+            '''
+
+            result, msg = self.webDriver.isChangedStatus(self._data_centerName, 2, 6, ['4.4', '4.5'], ['4.6'], 600)
+
+        except Exception as e:
+            result = FAIL
+            msg = str(e).replace("\n",'')
+            msg = msg[:msg.find('Element <')]
+            printLog("* MESSAGE : " + msg)
+        printLog("* RESULT : " + result)
+        self._data_centerResult.append(['data center' + DELIM + 'edit version' + DELIM + result + DELIM + msg])
+
+        self.tl.junitBuilder('DATA_CENTER_EDIT_VERSION', result, msg)
+
     def remove(self):
         printLog('Remove data_center')
         
@@ -130,38 +226,44 @@ class admin_data_center:
 
         self.tl.junitBuilder('DATA_CENTER_REMOVE', result, msg)
 
-    def edit_changeStorageType(self):
-        printLog('Edit type data_center')
-        
+    def datacenterForceRemove(self):    
+        printLog(printSquare('Datacenter Force Remove'))
+        result = FAIL
+        msg = ''
+
         try:
-            # 컴퓨팅
-            time.sleep(2)
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
+            # 컴퓨팅 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'compute')
+            self.webDriver.findElement('id', 'compute', True)
 
-            # 데이터 센터
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_dataCentersAnchor',True)
+            # 데이터 센터 탭 클릭
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#MenuView_dataCentersAnchor > .list-group-item-value')
+            self.webDriver.findElement('css_selector', '#MenuView_dataCentersAnchor > .list-group-item-value', True)
 
-            # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
+            # data center 이름 클릭
+            self.webDriver.implicitlyWait(10)
             self.webDriver.tableSearch(self._data_centerName, 2, True)
-            time.sleep(1)
 
-            # 편집 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','ActionPanelView_Edit',True)
+            time.sleep(5)
 
-            # 스토리지 유형 클릭
-            time.sleep(1)
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','DataCenterPopupView_storagePoolTypeEditor',True)
-            self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[3]/div/div[1]/div/div/div/ul/li[2]',True)
-            
-            # 새로운 데이터 센터 OK 버튼 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','DataCenterPopupView_OnSave',True)
+            # 최상단 점 세로로 세개 (더보기) 클릭
+            self.webDriver.explicitlyWait(10, By.XPATH, '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div')
+            self.webDriver.findElement('xpath', '/html/body/div[3]/div[4]/div/div[1]/div/div[2]/div/div/div[1]/div[2]/div', True)
 
-            '''
+            # 강제 제거 클릭
+            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '강제 제거')
+            self.webDriver.findElement('link_text', '강제 제거', True)
+
+            # 작업 승인 체크박스 클릭
+            self.webDriver.explicitlyWait(10, By.ID, 'ForceRemoveConfirmationPopupView_latch')
+            self.webDriver.findElement('id', 'ForceRemoveConfirmationPopupView_latch', True)
+
+            time.sleep(3)
+
+            # OK click
+            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
+            self.webDriver.findElement('css_selector', '.btn-primary', True)
+
             _removeCheck = self.webDriver.tableSearch(self._data_centerName,2)
             if _removeCheck == True:
                 result = FAIL
@@ -169,104 +271,15 @@ class admin_data_center:
             else:
                 result = PASS
                 msg = ''
-            '''
-
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-
-        #self.tl.junitBuilder('DATA_CENTER_EDIT_TYPE', result, msg)
-
-    def edit_changeStorageCompatibleVersion(self):
-        printLog('Edit version data_center')
-        
-        try:
-            # 컴퓨팅
-            time.sleep(2)
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','compute',True)
-
-            # 데이터 센터
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','MenuView_dataCentersAnchor',True)
-
-            # table 내부에 생성한 도메인의 이름이 있을 경우 해당 row 클릭
-            self.webDriver.tableSearch(self._data_centerName, 2, True)
-            time.sleep(1)
-
-            # 편집 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','ActionPanelView_Edit',True)
-
-            # 스토리지 유형 클릭
-            time.sleep(1)
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','DataCenterPopupView_versionEditor',True)
-            self.webDriver.findElement('xpath','/html/body/div[5]/div/div/div/div[2]/div/div/div/div[4]/div/div[1]/div/div/div/ul/li[2]',True)
-            
-            # 새로운 데이터 센터 OK 버튼 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','DataCenterPopupView_OnSave',True)
-
-            # 데이터 센터의 호환 버전을 변경 OK 버튼 클릭
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.findElement('id','DefaultConfirmationPopupView_OnSaveInternal',True)
-
-        except Exception as e:
-            result = FAIL
-            msg = str(e).replace("\n",'')
-            msg = msg[:msg.find('Element <')]
-            printLog("* MESSAGE : " + msg)
-        
-        #self.tl.junitBuilder('DATA_CENTER_EDIT_VERSION', result, msg)
-
-    def datacenterForceRemove(self):    
-        printLog(printSquare('Datacenter Force Remove'))
-        result = FAIL
-        msg = ''
-
-        try:
-            # click
-            self.webDriver.explicitlyWait(10, By.ID, 'compute')
-            self.webDriver.findElement('id', 'compute', True)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '#MenuView_dataCentersAnchor > .list-group-item-value')
-            self.webDriver.findElement('css_selector', '#MenuView_dataCentersAnchor > .list-group-item-value', True)
-
-            self.webDriver.implicitlyWait(10)
-            self.webDriver.tableSearch(self._data_centerName,2,True,False)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button')
-            self.webDriver.findElement('css_selector', 'body > div.GB10KEXCJUB > div.container-pf-nav-pf-vertical > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div.toolbar-pf-actions > div:nth-child(2) > div > button', True)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.LINK_TEXT, '강제 제거')
-            self.webDriver.findElement('link_text', '강제 제거', True)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.ID, 'ForceRemoveConfirmationPopupView_latch')
-            self.webDriver.findElement('id', 'ForceRemoveConfirmationPopupView_latch', True)
-
-            time.sleep(3)
-
-            # click
-            self.webDriver.explicitlyWait(10, By.CSS_SELECTOR, '.btn-primary')
-            self.webDriver.findElement('css_selector', '.btn-primary', True)
    
         except Exception as e:   
             result = FAIL
             msg = str(e).replace("\n",'')
             msg = msg[:msg.find('Element <')]
-        printLog("[DATACENTER FORCE REMOVE] " + msg)
+        printLog("* RESULT : " + result)
+        self._data_centerResult.append(['data center' + DELIM + 'force remove' + DELIM + result + DELIM + msg])
 
-        # 결과 출력
-        printLog("[DATACENTER FORCE REMOVE] RESULT : " + result)
-        self._data_centerResult.append(['datacenter' + DELIM + 'force remove' + DELIM + result + DELIM + msg])        
-        self.tl.junitBuilder('DATACENTER_FORCE_REMOVE',result, msg)
+        self.tl.junitBuilder('DATA_CENTER_FORCE_REMOVE', result, msg)
 
     def datacenterDetachDomain(self):    
         printLog(printSquare('Datacenter Detach Domain'))
