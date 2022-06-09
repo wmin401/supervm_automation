@@ -178,6 +178,15 @@ def main():
 
                 _totalResult = saveResult(_externalProvider._externalProviderResult, _totalResult)
                 time.sleep(1)
+            
+            if EVENT_NOTIFICATIONS_TEST == 'true':
+                printLine()
+                printLog("*** Event Notifications Test ***")
+                _eventNotifications = admin_event_notifications(webDriver)
+                _eventNotifications.test()
+
+                _totalResult = saveResult(_eventNotifications._eventNotificationsResult, _totalResult)
+                time.sleep(1)
                 
             if QUOTA_TEST == 'true':
                 printLine()

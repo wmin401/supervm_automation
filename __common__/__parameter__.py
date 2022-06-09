@@ -49,6 +49,7 @@ if IN_JENKINS == 'true':
     LOGICAL_NETWORK_TEST = os.getenv('LOGICAL_NETWORK_TEST')
     POOLS_TEST = os.getenv('POOLS_TEST')
     EXTERNAL_PROVIDER_TEST = os.getenv('EXTERNAL_PROVIDER_TEST')
+    EVENT_NOTIFICATIONS_TEST = os.getenv('EVENT_NOTIFICATIONS_TEST')
     QUOTA_TEST = os.getenv('QUOTA_TEST')
 
     VM_PORTAL_TEST = os.getenv('VM_PORTAL_TEST')
@@ -117,6 +118,7 @@ else: # 로컬
     LOGICAL_NETWORK_TEST = 'false'
     POOLS_TEST = 'false'
     EXTERNAL_PROVIDER_TEST = 'false'
+    EVENT_NOTIFICATIONS_TEST = 'false'
     QUOTA_TEST = 'false'
     
     VM_PORTAL_TEST = 'false'
